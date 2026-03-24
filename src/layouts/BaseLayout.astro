@@ -40,6 +40,14 @@ const {
     jsonLd={jsonLd}
     noIndex={noIndex}
   />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWJ06N3894"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DWJ06N3894');
+  </script>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50">
   <Header />
