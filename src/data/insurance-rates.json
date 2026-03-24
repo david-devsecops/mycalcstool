@@ -1,0 +1,24 @@
+{
+  "year": 2026,
+  "comment": "2026년 4대보험 요율 (단위: %)",
+  "nationalPension": {
+    "rate": 4.5,
+    "employeeRate": 4.5,
+    "maxMonthlyIncome": 5900000,
+    "minMonthlyIncome": 370000,
+    "description": "국민연금 (기준소득월액 상한 590만원)"
+  },
+  "healthInsurance": {
+    "rate": 3.545,
+    "longTermCareRate": 12.95,
+    "description": "건강보험 3.545% + 장기요양보험 건보료의 12.95%"
+  },
+  "employmentInsurance": {
+    "rate": 0.9,
+    "description": "고용보험 (150인 미만 사업장 기준)"
+  },
+  "industrialAccident": {
+    "rate": 0,
+    "description": "산재보험은 사업주 전액 부담 (직원 부담 없음)"
+  }
+}

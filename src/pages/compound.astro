@@ -1,0 +1,268 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '복리 계산기 - 투자 원금, 이율, 기간으로 미래 자산 계산';
+const description = '원금, 연 이율, 투자 기간, 추가 납입금을 입력하면 복리 효과로 불어나는 미래 자산 가치를 계산합니다. 단리 vs 복리 비교도 제공합니다.';
+const keywords = '복리 계산기, 복리이자 계산기, 투자 수익 계산기, 미래 자산 계산, 연복리 계산, 적금 계산기, 투자 계산기';
+
+const faqItems = [
+  {
+    question: '복리와 단리의 차이는 무엇인가요?',
+    answer: '단리는 원금에만 이자가 붙지만, 복리는 이자에도 이자가 붙습니다. 예를 들어 1,000만원을 연 5%로 10년 투자하면, 단리는 1,500만원이 되지만 복리는 약 1,629만원이 됩니다. 투자 기간이 길수록 복리 효과가 극적으로 커집니다.',
+  },
+  {
+    question: '72의 법칙이란 무엇인가요?',
+    answer: '72를 연 수익률(%)로 나누면 원금이 두 배가 되는 시간(년)을 구할 수 있습니다. 예: 연 6% 수익률이면 72÷6=12년에 원금이 2배가 됩니다. 투자 목표를 빠르게 계산할 때 유용한 법칙입니다.',
+  },
+  {
+    question: '매달 추가 납입은 얼마나 중요한가요?',
+    answer: '매달 소액이라도 꾸준히 추가 납입하면 복리 효과가 극대화됩니다. 예를 들어 초기 1,000만원에 매달 30만원을 추가 납입하며 연 7%로 20년 운용하면, 추가 납입 없을 때(약 3,870만원)보다 훨씬 큰 약 1억 6천만원이 됩니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '복리 계산기',
+  description,
+  url: 'https://mycalcstool.com/compound',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">복리 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📈 복리 계산기</h1>
+    <p class="text-gray-500 mt-2">투자 원금과 이율로 미래 자산 가치를 계산하세요</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 투자 정보 입력</h2>
+    <div class="space-y-6">
+      <div>
+        <label for="principal" class="block text-sm font-semibold text-gray-700 mb-2">초기 투자 원금</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="principal" class="input-field flex-1" value="1000" min="0" max="1000000" step="100" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <input type="range" id="principal-slider" class="range-slider mt-2" min="0" max="50000" step="100" value="1000" aria-label="원금 슬라이더" />
+      </div>
+      <div>
+        <label for="monthly-add" class="block text-sm font-semibold text-gray-700 mb-2">월 추가 납입금 <span class="text-gray-400 font-normal">(선택)</span></label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="monthly-add" class="input-field flex-1" value="30" min="0" max="10000" step="10" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <input type="range" id="monthly-add-slider" class="range-slider mt-2" min="0" max="500" step="10" value="30" aria-label="월 납입금 슬라이더" />
+      </div>
+      <div>
+        <label for="annual-rate" class="block text-sm font-semibold text-gray-700 mb-2">연 수익률</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="annual-rate" class="input-field flex-1" value="7" min="0.1" max="50" step="0.1" inputmode="decimal" />
+          <span class="text-gray-600 font-medium">%</span>
+        </div>
+        <input type="range" id="annual-rate-slider" class="range-slider mt-2" min="0.1" max="20" step="0.1" value="7" aria-label="수익률 슬라이더" />
+        <div class="flex gap-2 mt-2">
+          {[3, 5, 7, 10].map(r => (
+            <button class="rate-btn px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-600 hover:border-primary-400 hover:text-primary-600 transition-colors" data-rate={r} type="button">{r}%</button>
+          ))}
+        </div>
+      </div>
+      <div>
+        <label for="invest-years" class="block text-sm font-semibold text-gray-700 mb-2">투자 기간</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="invest-years" class="input-field flex-1" value="20" min="1" max="50" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">년</span>
+        </div>
+        <input type="range" id="invest-years-slider" class="range-slider mt-2" min="1" max="50" step="1" value="20" aria-label="투자기간 슬라이더" />
+        <div class="flex gap-2 mt-2">
+          {[10, 20, 30].map(y => (
+            <button class="year-btn px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-600 hover:border-primary-400 hover:text-primary-600 transition-colors" data-year={y} type="button">{y}년</button>
+          ))}
+        </div>
+      </div>
+      <button id="calc-compound-btn" class="btn-primary" type="button">🔍 계산하기</button>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="compound-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 복리 계산 결과</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
+        <div class="bg-primary-50 border border-primary-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-primary-600 font-medium mb-1">최종 자산 (복리)</p>
+          <p class="text-3xl font-bold tabular-nums text-primary-700" id="final-amount">-</p>
+          <p class="text-xs text-primary-500">만원</p>
+        </div>
+        <div class="bg-green-50 border border-green-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-green-600 font-medium mb-1">총 수익</p>
+          <p class="text-3xl font-bold tabular-nums text-green-700" id="total-profit">-</p>
+          <p class="text-xs text-green-500">만원</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-gray-600 font-medium mb-1">총 납입금</p>
+          <p class="text-3xl font-bold tabular-nums text-gray-700" id="total-invested">-</p>
+          <p class="text-xs text-gray-400">만원</p>
+        </div>
+      </div>
+      <div class="p-4 bg-yellow-50 border border-yellow-200 rounded-xl">
+        <p class="text-sm font-semibold text-yellow-800 mb-1">⚡ 72의 법칙</p>
+        <p class="text-sm text-yellow-700" id="rule72-text">-</p>
+      </div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+
+    <!-- 연도별 성장 차트 -->
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📈</span> 연도별 자산 성장</h2>
+      <div class="relative" style="height: 220px;">
+        <canvas id="compound-chart" aria-label="연도별 자산 성장 차트" role="img"></canvas>
+      </div>
+    </section>
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📖</span> 복리 투자 가이드</h2>
+    <div class="text-gray-700 space-y-3 leading-relaxed text-sm">
+      <p>아인슈타인이 "세계 8대 불가사의"라고 불렀다는 복리. 시간이 지날수록 기하급수적으로 자산이 늘어나는 복리의 마법을 활용하면 장기 투자에서 놀라운 결과를 얻을 수 있습니다.</p>
+      <p>핵심은 <strong>일찍 시작하고, 꾸준히 납입하고, 오래 유지</strong>하는 것입니다. 시장 변동에 흔들리지 않고 장기 투자를 유지하는 것이 복리 효과를 극대화하는 가장 좋은 방법입니다.</p>
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/loan', label: '🏦 대출 이자', desc: '대출 상환 비교' },
+        { href: '/salary', label: '💰 연봉 계산기', desc: '실수령액 계산' },
+        { href: '/severance', label: '📝 퇴직금', desc: '퇴직금 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+<script>
+let chartInst: any = null;
+
+function calcCompound(principal: number, monthlyAdd: number, ratePercent: number, years: number) {
+  const r = ratePercent / 100 / 12;
+  const n = years * 12;
+  let balance = principal * 10000;
+  const yearlyData: number[] = [balance / 10000];
+  for (let m = 1; m <= n; m++) {
+    balance = balance * (1 + r) + monthlyAdd * 10000;
+    if (m % 12 === 0) yearlyData.push(Math.round(balance / 10000));
+  }
+  return yearlyData;
+}
+
+function calculate() {
+  const get = (id: string) => parseFloat((document.getElementById(id) as HTMLInputElement)?.value || '0');
+  const principal = get('principal');
+  const monthlyAdd = get('monthly-add');
+  const rate = get('annual-rate');
+  const years = get('invest-years');
+
+  if (isNaN(principal) || principal < 0 || principal > 1000000) { alert('원금을 올바르게 입력해주세요.'); return; }
+  if (isNaN(rate) || rate < 0.1 || rate > 50) { alert('수익률을 올바르게 입력해주세요. (0.1%~50%)'); return; }
+  if (isNaN(years) || years < 1 || years > 50) { alert('투자 기간을 올바르게 입력해주세요. (1~50년)'); return; }
+
+  const yearlyData = calcCompound(principal, monthlyAdd, rate, years);
+  const finalWan = yearlyData[yearlyData.length - 1];
+  const totalInvested = principal + monthlyAdd * 12 * years;
+  const totalProfit = finalWan - totalInvested;
+  const doubleYears = (72 / rate).toFixed(1);
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('final-amount', Math.round(finalWan).toLocaleString('ko-KR'));
+  setText('total-profit', Math.round(totalProfit).toLocaleString('ko-KR'));
+  setText('total-invested', Math.round(totalInvested).toLocaleString('ko-KR'));
+  setText('rule72-text', `연 ${rate}% 수익률로 ${doubleYears}년 후 원금이 약 2배가 됩니다.`);
+
+  // 차트
+  const tryChart = () => {
+    if (!(window as any).Chart) { setTimeout(tryChart, 100); return; }
+    if (chartInst) chartInst.destroy();
+    const canvas = document.getElementById('compound-chart') as HTMLCanvasElement;
+    const ctx = canvas?.getContext('2d');
+    if (!ctx) return;
+    chartInst = new (window as any).Chart(ctx, {
+      type: 'line',
+      data: {
+        labels: yearlyData.map((_, i) => `${i}년`),
+        datasets: [{
+          label: '자산 (만원)',
+          data: yearlyData,
+          borderColor: '#2563EB',
+          backgroundColor: 'rgba(59,130,246,0.1)',
+          fill: true,
+          tension: 0.3,
+          pointRadius: years <= 20 ? 3 : 0,
+        }],
+      },
+      options: {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: (c: any) => `${c.raw.toLocaleString('ko-KR')}만원` } } },
+        scales: {
+          y: { ticks: { callback: (v: number) => v.toLocaleString('ko-KR') + '만', maxTicksLimit: 5 }, grid: { color: 'rgba(0,0,0,0.05)' } },
+          x: { grid: { display: false }, ticks: { maxTicksLimit: 10 } },
+        },
+      },
+    });
+  };
+  tryChart();
+
+  const results = document.getElementById('compound-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const pairs = [['principal','principal-slider'],['monthly-add','monthly-add-slider'],['annual-rate','annual-rate-slider'],['invest-years','invest-years-slider']];
+  pairs.forEach(([inp, sld]) => {
+    const i = document.getElementById(inp) as HTMLInputElement;
+    const s = document.getElementById(sld) as HTMLInputElement;
+    i?.addEventListener('input', () => { if (!isNaN(parseFloat(i.value))) s.value = i.value; });
+    s?.addEventListener('input', () => { i.value = s.value; });
+  });
+  document.querySelectorAll('.rate-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const r = (btn as HTMLElement).dataset.rate || '7';
+      (document.getElementById('annual-rate') as HTMLInputElement).value = r;
+      (document.getElementById('annual-rate-slider') as HTMLInputElement).value = r;
+    });
+  });
+  document.querySelectorAll('.year-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const y = (btn as HTMLElement).dataset.year || '20';
+      (document.getElementById('invest-years') as HTMLInputElement).value = y;
+      (document.getElementById('invest-years-slider') as HTMLInputElement).value = y;
+    });
+  });
+  document.getElementById('calc-compound-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

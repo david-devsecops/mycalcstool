@@ -1,0 +1,229 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '기초대사량(BMR) TDEE 계산기 - 하루 칼로리 소비량';
+const description = '나이, 성별, 키, 몸무게, 활동량을 입력하면 기초대사량(BMR)과 총 에너지 소비량(TDEE)을 계산합니다. Mifflin-St Jeor 공식 적용.';
+const keywords = '기초대사량 계산기, BMR 계산기, TDEE 계산기, 하루 칼로리 소비량, 칼로리 소모량 계산기, 다이어트 칼로리';
+
+const activityLevels = [
+  { id: 'sedentary', label: '거의 활동 없음', desc: '책상 업무, 운동 안 함', factor: 1.2 },
+  { id: 'light', label: '가벼운 활동', desc: '주 1~3회 가벼운 운동', factor: 1.375 },
+  { id: 'moderate', label: '보통 활동', desc: '주 3~5회 운동', factor: 1.55 },
+  { id: 'active', label: '활발한 활동', desc: '주 6~7회 강도 높은 운동', factor: 1.725 },
+  { id: 'very-active', label: '매우 활발', desc: '매일 격렬한 운동 또는 육체 노동', factor: 1.9 },
+];
+
+const faqItems = [
+  {
+    question: '기초대사량(BMR)과 TDEE의 차이는?',
+    answer: 'BMR(기초대사량)은 아무 활동도 하지 않고 가만히 누워 있을 때 생명 유지에 필요한 최소 칼로리입니다. TDEE(Total Daily Energy Expenditure)는 BMR에 활동량을 곱한 하루 총 에너지 소비량입니다. 다이어트나 체중 유지를 위해서는 TDEE를 기준으로 식단을 계획해야 합니다.',
+  },
+  {
+    question: '살을 빼려면 TDEE보다 얼마나 적게 먹어야 하나요?',
+    answer: 'TDEE보다 500kcal 적게 섭취하면 주당 약 0.5kg 감량이 가능합니다. 그러나 BMR 이하로 섭취하면 근육 손실과 대사 저하가 생길 수 있습니다. 건강한 감량은 주당 0.5~1kg을 목표로 하세요.',
+  },
+  {
+    question: 'Mifflin-St Jeor 공식이란?',
+    answer: 'Mifflin-St Jeor 공식은 1990년 개발된 현재 가장 정확한 BMR 계산 공식입니다. 남성: BMR = 10×체중(kg) + 6.25×키(cm) - 5×나이 + 5, 여성: BMR = 10×체중(kg) + 6.25×키(cm) - 5×나이 - 161로 계산합니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '기초대사량(TDEE) 계산기',
+  description,
+  url: 'https://mycalcstool.com/tdee',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">기초대사량(TDEE) 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">🔥 기초대사량(TDEE) 계산기</h1>
+    <p class="text-gray-500 mt-2">Mifflin-St Jeor 공식으로 정확한 하루 칼로리 소비량 계산</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 신체 정보 입력</h2>
+    <div class="space-y-6">
+      <!-- 성별 -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">성별</p>
+        <div class="flex gap-3">
+          <button id="tdee-btn-male" class="tdee-gender-btn flex-1 py-3 rounded-xl border-2 border-primary-500 bg-primary-50 text-primary-700 font-semibold transition-all" data-gender="male" type="button">남성</button>
+          <button id="tdee-btn-female" class="tdee-gender-btn flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold transition-all" data-gender="female" type="button">여성</button>
+        </div>
+      </div>
+      <!-- 나이 -->
+      <div>
+        <label for="tdee-age" class="block text-sm font-semibold text-gray-700 mb-2">나이</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="tdee-age" class="input-field flex-1" value="30" min="10" max="100" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">세</span>
+        </div>
+        <input type="range" id="tdee-age-slider" class="range-slider mt-2" min="10" max="80" step="1" value="30" aria-label="나이 슬라이더" />
+      </div>
+      <!-- 키 -->
+      <div>
+        <label for="tdee-height" class="block text-sm font-semibold text-gray-700 mb-2">키</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="tdee-height" class="input-field flex-1" value="170" min="100" max="250" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">cm</span>
+        </div>
+        <input type="range" id="tdee-height-slider" class="range-slider mt-2" min="140" max="220" step="1" value="170" aria-label="키 슬라이더" />
+      </div>
+      <!-- 몸무게 -->
+      <div>
+        <label for="tdee-weight" class="block text-sm font-semibold text-gray-700 mb-2">몸무게</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="tdee-weight" class="input-field flex-1" value="70" min="20" max="300" step="0.5" inputmode="decimal" />
+          <span class="text-gray-600 font-medium">kg</span>
+        </div>
+        <input type="range" id="tdee-weight-slider" class="range-slider mt-2" min="30" max="150" step="0.5" value="70" aria-label="몸무게 슬라이더" />
+      </div>
+      <!-- 활동 수준 -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-3">활동 수준</p>
+        <div class="space-y-2">
+          {activityLevels.map((level, idx) => (
+            <label class="flex items-center gap-3 p-3 border border-gray-200 rounded-xl cursor-pointer hover:border-primary-300 hover:bg-primary-50 transition-all has-[:checked]:border-primary-500 has-[:checked]:bg-primary-50">
+              <input type="radio" name="activity" value={level.factor} class="accent-primary-600" checked={idx === 1} />
+              <div>
+                <p class="text-sm font-semibold text-gray-700">{level.label}</p>
+                <p class="text-xs text-gray-500">{level.desc}</p>
+              </div>
+            </label>
+          ))}
+        </div>
+      </div>
+      <button id="calc-tdee-btn" class="btn-primary" type="button">🔍 계산하기</button>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="tdee-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 칼로리 소비량 결과</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-primary-50 border border-primary-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-primary-600 font-medium mb-1">하루 총 소비 칼로리 (TDEE)</p>
+          <p class="text-4xl font-bold tabular-nums text-primary-700" id="tdee-result">-</p>
+          <p class="text-sm text-primary-600">kcal/일</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-gray-600 font-medium mb-1">기초대사량 (BMR)</p>
+          <p class="text-3xl font-bold tabular-nums text-gray-700" id="bmr-result">-</p>
+          <p class="text-sm text-gray-400">kcal/일</p>
+        </div>
+      </div>
+      <!-- 목표별 칼로리 -->
+      <h3 class="font-semibold text-gray-700 mb-3">목표별 권장 칼로리</h3>
+      <div class="space-y-2">
+        {[
+          { id: 'goal-lose-fast', label: '🔥 빠른 감량 (주 1kg)', color: 'text-red-600' },
+          { id: 'goal-lose', label: '📉 감량 (주 0.5kg)', color: 'text-orange-600' },
+          { id: 'goal-maintain', label: '⚖️ 체중 유지', color: 'text-green-600' },
+          { id: 'goal-gain', label: '📈 근육량 증가', color: 'text-blue-600' },
+        ].map(goal => (
+          <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+            <span class={`text-sm font-medium ${goal.color}`}>{goal.label}</span>
+            <span class="text-sm tabular-nums text-gray-700 font-bold" id={goal.id}>-</span>
+          </div>
+        ))}
+      </div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/calorie', label: '🍎 칼로리 계산기', desc: '음식별 칼로리' },
+        { href: '/bmi', label: '⚖️ BMI 계산기', desc: '체질량지수 확인' },
+        { href: '/due-date', label: '👶 출산 예정일', desc: '출산 날짜 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+let tdeeGender = 'male';
+
+function calculate() {
+  const age = parseFloat((document.getElementById('tdee-age') as HTMLInputElement)?.value || '0');
+  const height = parseFloat((document.getElementById('tdee-height') as HTMLInputElement)?.value || '0');
+  const weight = parseFloat((document.getElementById('tdee-weight') as HTMLInputElement)?.value || '0');
+  const activityEl = document.querySelector('input[name="activity"]:checked') as HTMLInputElement;
+  const activity = parseFloat(activityEl?.value || '1.375');
+
+  if (isNaN(age) || age < 10 || age > 100) { alert('나이를 올바르게 입력해주세요.'); return; }
+  if (isNaN(height) || height < 100 || height > 250) { alert('키를 올바르게 입력해주세요.'); return; }
+  if (isNaN(weight) || weight < 20 || weight > 300) { alert('몸무게를 올바르게 입력해주세요.'); return; }
+
+  // Mifflin-St Jeor 공식
+  const bmr = tdeeGender === 'male'
+    ? 10 * weight + 6.25 * height - 5 * age + 5
+    : 10 * weight + 6.25 * height - 5 * age - 161;
+  const tdee = Math.round(bmr * activity);
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('tdee-result', tdee.toLocaleString('ko-KR'));
+  setText('bmr-result', Math.round(bmr).toLocaleString('ko-KR'));
+  setText('goal-lose-fast', `${(tdee - 1000).toLocaleString('ko-KR')} kcal`);
+  setText('goal-lose', `${(tdee - 500).toLocaleString('ko-KR')} kcal`);
+  setText('goal-maintain', `${tdee.toLocaleString('ko-KR')} kcal`);
+  setText('goal-gain', `${(tdee + 300).toLocaleString('ko-KR')} kcal`);
+
+  const results = document.getElementById('tdee-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const pairs = [['tdee-age','tdee-age-slider'],['tdee-height','tdee-height-slider'],['tdee-weight','tdee-weight-slider']];
+  pairs.forEach(([inp, sld]) => {
+    const i = document.getElementById(inp) as HTMLInputElement;
+    const s = document.getElementById(sld) as HTMLInputElement;
+    i?.addEventListener('input', () => { if (!isNaN(parseFloat(i.value))) s.value = i.value; });
+    s?.addEventListener('input', () => { i.value = s.value; });
+  });
+  document.querySelectorAll('.tdee-gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      tdeeGender = (btn as HTMLElement).dataset.gender || 'male';
+      document.querySelectorAll('.tdee-gender-btn').forEach(b => {
+        const isSel = b === btn;
+        b.classList.toggle('border-primary-500', isSel);
+        b.classList.toggle('bg-primary-50', isSel);
+        b.classList.toggle('text-primary-700', isSel);
+        b.classList.toggle('border-gray-200', !isSel);
+        b.classList.toggle('text-gray-500', !isSel);
+      });
+    });
+  });
+  document.getElementById('calc-tdee-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

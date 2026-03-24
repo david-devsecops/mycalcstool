@@ -1,0 +1,92 @@
+/* Pretendard 폰트 로드 */
+@import url('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard.min.css');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    font-family: 'Pretendard', 'Inter', system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  body {
+    @apply bg-gray-50 text-gray-900;
+  }
+
+  /* 숫자 고정 너비 */
+  .tabular-nums {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+@layer components {
+  /* 카드 컴포넌트 */
+  .card {
+    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-6;
+  }
+
+  /* 입력 필드 */
+  .input-field {
+    @apply w-full px-4 py-3 border border-gray-300 rounded-lg text-base
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent
+           transition-colors;
+  }
+
+  /* 슬라이더 스타일 */
+  .range-slider {
+    @apply w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer
+           accent-primary-600;
+  }
+
+  /* 버튼 */
+  .btn-primary {
+    @apply w-full py-4 bg-primary-600 text-white text-lg font-semibold rounded-xl
+           hover:bg-primary-700 active:bg-primary-800
+           transition-colors duration-200
+           focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
+  }
+
+  /* 결과 숫자 */
+  .result-number {
+    @apply text-3xl font-bold tabular-nums text-primary-700;
+  }
+
+  /* 섹션 제목 */
+  .section-title {
+    @apply text-xl font-bold text-gray-800 mb-4 flex items-center gap-2;
+  }
+
+  /* FAQ 아코디언 */
+  .faq-item {
+    @apply border border-gray-200 rounded-lg overflow-hidden mb-3;
+  }
+
+  .faq-question {
+    @apply w-full text-left px-5 py-4 font-semibold text-gray-700
+           hover:bg-gray-50 transition-colors flex justify-between items-center;
+  }
+
+  .faq-answer {
+    @apply px-5 pb-4 text-gray-600 leading-relaxed hidden;
+  }
+
+  .faq-answer.open {
+    @apply block;
+  }
+}
+
+@layer utilities {
+  /* 광고 슬롯 */
+  .ad-slot {
+    @apply w-full bg-gray-100 rounded-lg flex items-center justify-center
+           text-gray-400 text-sm font-medium border-2 border-dashed border-gray-300;
+  }
+
+  /* 스크롤 부드럽게 */
+  .smooth-scroll {
+    scroll-behavior: smooth;
+  }
+}

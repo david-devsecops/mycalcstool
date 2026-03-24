@@ -1,0 +1,814 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '2026 대출 이자 계산기 - 원리금균등·원금균등·만기일시 비교';
+const description = '대출금액, 금리, 기간을 입력하면 원리금균등, 원금균등, 만기일시 3가지 상환 방식을 한눈에 비교합니다. 월 상환금, 총 이자, 상환 스케줄까지 무료로 확인하세요.';
+const keywords = '대출 이자 계산기, 주택담보대출 계산기, 대출 상환 계산기, 원리금균등상환, 원금균등상환, 만기일시상환, 대출 이자 비교, 모기지 계산기, 대출 상환 스케줄';
+
+const faqItems = [
+  {
+    question: '원리금균등상환과 원금균등상환 중 어떤 게 유리한가요?',
+    answer: '총 이자 절약 측면에서는 원금균등상환이 유리합니다. 원금균등은 매달 원금을 동일하게 갚으므로 잔액이 빠르게 줄어 이자 부담이 적습니다. 다만 초기 상환금이 원리금균등보다 높아 자금 여유가 필요합니다. 초기에 여유 자금이 있다면 원금균등, 매달 일정한 금액을 납부하고 싶다면 원리금균등을 선택하세요.',
+  },
+  {
+    question: '중도상환하면 이자가 줄어드나요?',
+    answer: '네, 중도상환 시 남은 원금이 줄어들어 이후 이자 부담이 크게 감소합니다. 다만 많은 금융기관에서 대출 후 3년 이내 중도상환 시 중도상환수수료(통상 대출잔액의 1~2%)를 부과합니다. 중도상환 전 수수료와 이자 절약액을 비교해보시기 바랍니다.',
+  },
+  {
+    question: '거치기간이란 무엇인가요?',
+    answer: '거치기간(이자만 납부 기간)은 대출 초기 일정 기간 동안 원금 상환 없이 이자만 납부하는 기간입니다. 이 기간에는 월 부담이 줄어드는 장점이 있지만, 원금이 줄지 않아 총 이자 부담은 증가합니다. 주로 주택담보대출이나 전세대출에서 활용됩니다.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '대출 이자 계산기',
+    description,
+    url: 'https://mycalcstool.com/loan',
+    applicationCategory: 'FinanceApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'KRW',
+    },
+    inLanguage: 'ko',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <!-- 페이지 제목 -->
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">대출 이자 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">
+      🏦 대출 이자 계산기
+    </h1>
+    <p class="text-gray-500 mt-2">
+      3가지 상환 방식(원리금균등·원금균등·만기일시)을 한눈에 비교하세요
+    </p>
+  </div>
+
+  <!-- 상단 광고 -->
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- 입력 폼 -->
+  <section class="card mb-6" aria-labelledby="input-section">
+    <h2 class="section-title" id="input-section">
+      <span aria-hidden="true">📝</span>
+      대출 정보 입력
+    </h2>
+
+    <div class="space-y-6">
+      <!-- 대출 금액 -->
+      <div>
+        <label for="loan-amount" class="block text-sm font-semibold text-gray-700 mb-2">
+          대출 금액
+        </label>
+        <div class="flex items-center gap-3">
+          <input
+            type="number"
+            id="loan-amount"
+            class="input-field flex-1"
+            value="10000"
+            min="100"
+            max="500000"
+            step="100"
+            aria-describedby="loan-amount-desc"
+            inputmode="numeric"
+          />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <input
+          type="range"
+          id="loan-amount-slider"
+          class="range-slider mt-2"
+          min="100"
+          max="200000"
+          step="100"
+          value="10000"
+          aria-label="대출 금액 슬라이더"
+        />
+        <p id="loan-amount-desc" class="text-xs text-gray-400 mt-1">100만원 ~ 200,000만원</p>
+      </div>
+
+      <!-- 연 이자율 -->
+      <div>
+        <label for="interest-rate" class="block text-sm font-semibold text-gray-700 mb-2">
+          연 이자율
+        </label>
+        <div class="flex items-center gap-3">
+          <input
+            type="number"
+            id="interest-rate"
+            class="input-field flex-1"
+            value="3.5"
+            min="0.1"
+            max="30"
+            step="0.1"
+            aria-describedby="interest-rate-desc"
+            inputmode="decimal"
+          />
+          <span class="text-gray-600 font-medium">%</span>
+        </div>
+        <input
+          type="range"
+          id="interest-rate-slider"
+          class="range-slider mt-2"
+          min="0.1"
+          max="20"
+          step="0.1"
+          value="3.5"
+          aria-label="이자율 슬라이더"
+        />
+        <p id="interest-rate-desc" class="text-xs text-gray-400 mt-1">0.1% ~ 30%</p>
+      </div>
+
+      <!-- 대출 기간 -->
+      <div>
+        <label for="loan-period" class="block text-sm font-semibold text-gray-700 mb-2">
+          대출 기간
+        </label>
+        <div class="flex items-center gap-3">
+          <input
+            type="number"
+            id="loan-period"
+            class="input-field flex-1"
+            value="30"
+            min="1"
+            max="50"
+            step="1"
+            aria-describedby="loan-period-desc"
+            inputmode="numeric"
+          />
+          <span class="text-gray-600 font-medium">년</span>
+        </div>
+        <input
+          type="range"
+          id="loan-period-slider"
+          class="range-slider mt-2"
+          min="1"
+          max="50"
+          step="1"
+          value="30"
+          aria-label="대출 기간 슬라이더"
+        />
+        <!-- 빠른 선택 버튼 -->
+        <div class="flex gap-2 mt-2">
+          {[10, 20, 30, 40].map(year => (
+            <button
+              class="period-btn px-3 py-1 text-sm rounded-lg border border-gray-300 text-gray-600 hover:border-primary-400 hover:text-primary-600 transition-colors"
+              data-year={year}
+              type="button"
+              aria-label={`대출기간 ${year}년`}
+            >
+              {year}년
+            </button>
+          ))}
+        </div>
+        <p id="loan-period-desc" class="text-xs text-gray-400 mt-1">1년 ~ 50년</p>
+      </div>
+
+      <!-- 거치 기간 -->
+      <div>
+        <label for="grace-period" class="block text-sm font-semibold text-gray-700 mb-2">
+          거치 기간 <span class="text-gray-400 font-normal">(선택사항)</span>
+        </label>
+        <div class="flex items-center gap-3">
+          <input
+            type="number"
+            id="grace-period"
+            class="input-field flex-1"
+            value="0"
+            min="0"
+            max="10"
+            step="1"
+            aria-describedby="grace-period-desc"
+            inputmode="numeric"
+          />
+          <span class="text-gray-600 font-medium">년</span>
+        </div>
+        <p id="grace-period-desc" class="text-xs text-gray-400 mt-1">0년 = 거치기간 없음 (바로 원금 상환)</p>
+      </div>
+
+      <!-- 계산 버튼 -->
+      <button id="calculate-btn" class="btn-primary" type="button">
+        🔍 계산하기
+      </button>
+    </div>
+  </section>
+
+  <!-- 결과 영역 (초기에는 숨김) -->
+  <div id="results-section" class="hidden" aria-live="polite" aria-atomic="true">
+
+    <!-- 3가지 상환 방식 비교 카드 -->
+    <section class="card mb-6" aria-labelledby="comparison-title">
+      <h2 class="section-title" id="comparison-title">
+        <span aria-hidden="true">📊</span>
+        3가지 상환 방식 비교
+      </h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+
+        <!-- 원리금균등 -->
+        <div class="bg-blue-50 border border-blue-200 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl" aria-hidden="true">⭐</span>
+            <h3 class="font-bold text-blue-800">원리금균등상환</h3>
+          </div>
+          <dl class="space-y-2">
+            <div>
+              <dt class="text-xs text-blue-600">월 상환금</dt>
+              <dd class="result-number text-blue-700" id="equal-payment-monthly">-</dd>
+              <dd class="text-xs text-blue-600">원</dd>
+            </div>
+            <div class="pt-2 border-t border-blue-200">
+              <dt class="text-xs text-gray-600">총 이자</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="equal-payment-interest">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-gray-600">총 상환금</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="equal-payment-total">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+          </dl>
+          <p class="text-xs text-blue-600 mt-3 font-medium">매달 동일한 금액 납부 · 계획적 자금 관리</p>
+        </div>
+
+        <!-- 원금균등 -->
+        <div class="bg-green-50 border border-green-200 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl" aria-hidden="true">💰</span>
+            <h3 class="font-bold text-green-800">원금균등상환</h3>
+          </div>
+          <dl class="space-y-2">
+            <div>
+              <dt class="text-xs text-green-600">첫달 상환금</dt>
+              <dd class="result-number text-green-700" id="equal-principal-first">-</dd>
+              <dd class="text-xs text-green-600">원</dd>
+            </div>
+            <div class="pt-2 border-t border-green-200">
+              <dt class="text-xs text-gray-600">총 이자</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="equal-principal-interest">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-gray-600">총 상환금</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="equal-principal-total">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+          </dl>
+          <p class="text-xs text-green-600 mt-3 font-medium">이자 절약 최대 · 초기 부담 높음</p>
+        </div>
+
+        <!-- 만기일시 -->
+        <div class="bg-red-50 border border-red-200 rounded-xl p-5">
+          <div class="flex items-center gap-2 mb-3">
+            <span class="text-2xl" aria-hidden="true">⚠️</span>
+            <h3 class="font-bold text-red-800">만기일시상환</h3>
+          </div>
+          <dl class="space-y-2">
+            <div>
+              <dt class="text-xs text-red-600">월 이자</dt>
+              <dd class="result-number text-red-700" id="bullet-monthly">-</dd>
+              <dd class="text-xs text-red-600">원</dd>
+            </div>
+            <div class="pt-2 border-t border-red-200">
+              <dt class="text-xs text-gray-600">총 이자</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="bullet-interest">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+            <div>
+              <dt class="text-xs text-gray-600">총 상환금</dt>
+              <dd class="text-lg font-bold tabular-nums text-gray-700" id="bullet-total">-</dd>
+              <dd class="text-xs text-gray-600">원</dd>
+            </div>
+          </dl>
+          <p class="text-xs text-red-600 mt-3 font-medium">이자 부담 가장 높음 · 만기에 원금 일시 납부</p>
+        </div>
+      </div>
+
+      <!-- 이자 절약 비교 메시지 -->
+      <div id="saving-message" class="mt-4 p-4 bg-success/10 border border-green-200 rounded-lg text-sm text-green-700 font-medium text-center hidden">
+      </div>
+    </section>
+
+    <!-- 결과 광고 -->
+    <AdSlot slot="result" format="rectangle" />
+
+    <!-- 이자 비교 차트 -->
+    <section class="card mb-6" aria-labelledby="chart-title">
+      <h2 class="section-title" id="chart-title">
+        <span aria-hidden="true">📈</span>
+        총 이자 비교 차트
+      </h2>
+      <div class="relative" style="height: 200px;">
+        <canvas id="interest-chart" aria-label="총 이자 비교 바 차트" role="img"></canvas>
+      </div>
+    </section>
+
+    <!-- 월별 상환 스케줄 -->
+    <section class="card mb-6" aria-labelledby="schedule-title">
+      <div class="flex items-center justify-between mb-4">
+        <h2 class="section-title mb-0" id="schedule-title">
+          <span aria-hidden="true">📋</span>
+          월별 상환 스케줄
+        </h2>
+        <div>
+          <label for="schedule-type" class="sr-only">상환 방식 선택</label>
+          <select id="schedule-type" class="text-sm border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary-500">
+            <option value="equal-payment">원리금균등</option>
+            <option value="equal-principal">원금균등</option>
+            <option value="bullet">만기일시</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="overflow-x-auto -mx-6 px-6">
+        <table class="w-full text-sm" aria-label="월별 상환 스케줄">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600">
+              <th scope="col" class="px-3 py-2 text-left font-semibold">회차</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">원금</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">이자</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">월 납입금</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">남은 잔액</th>
+            </tr>
+          </thead>
+          <tbody id="schedule-tbody" class="divide-y divide-gray-100">
+          </tbody>
+        </table>
+      </div>
+
+      <div class="mt-4 flex justify-center">
+        <button id="toggle-schedule" class="text-sm text-primary-600 hover:text-primary-700 font-medium border border-primary-300 rounded-lg px-4 py-2 hover:bg-primary-50 transition-colors" type="button">
+          전체 보기 ▼
+        </button>
+      </div>
+    </section>
+
+    <!-- 콘텐츠 광고 -->
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <!-- SEO 콘텐츠 -->
+  <section class="card mb-6">
+    <h2 class="section-title">
+      <span aria-hidden="true">📖</span>
+      대출 상환 방식 가이드
+    </h2>
+    <div class="prose prose-sm max-w-none text-gray-700 space-y-4 leading-relaxed">
+      <p>
+        대출을 받을 때 상환 방식 선택은 총 이자 비용에 큰 영향을 미칩니다.
+        동일한 대출 조건이라도 상환 방식에 따라 총 이자 부담이 수백만 원에서 수천만 원까지 차이가 날 수 있습니다.
+      </p>
+
+      <h3 class="text-lg font-bold text-gray-800">원리금균등상환이란?</h3>
+      <p>
+        원리금균등상환은 매달 동일한 금액(원금 + 이자)을 납부하는 방식입니다.
+        상환 초기에는 이자 비중이 높고, 후반부로 갈수록 원금 비중이 높아집니다.
+        가장 일반적인 대출 상환 방식으로, 월 지출을 예측하기 쉬운 장점이 있습니다.
+      </p>
+
+      <h3 class="text-lg font-bold text-gray-800">원금균등상환이란?</h3>
+      <p>
+        원금균등상환은 매달 동일한 원금을 납부하고, 이자는 남은 원금에 따라 줄어드는 방식입니다.
+        초기 상환 부담이 크지만, 시간이 지날수록 월 납부금이 줄어듭니다.
+        총 이자 비용이 가장 적어 장기적으로 가장 경제적입니다.
+      </p>
+
+      <h3 class="text-lg font-bold text-gray-800">만기일시상환이란?</h3>
+      <p>
+        만기일시상환은 대출 기간 동안 매달 이자만 납부하고, 만기에 원금 전액을 한 번에 상환하는 방식입니다.
+        월 납부 부담이 가장 적지만, 원금이 줄지 않아 총 이자 부담이 가장 큽니다.
+        주로 단기 대출이나 전세자금 대출에 활용됩니다.
+      </p>
+
+      <h3 class="text-lg font-bold text-gray-800">어떤 방식이 유리할까?</h3>
+      <p>
+        총 이자 절약을 원한다면 <strong>원금균등상환</strong>이 최선입니다.
+        매달 일정한 금액으로 계획적인 자금 관리를 원한다면 <strong>원리금균등상환</strong>을 추천합니다.
+        초기 자금 여유가 있고 장기 대출을 계획한다면, 원금균등으로 시작해 재정 상황에 따라 조기 상환을 고려하세요.
+      </p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <FAQ items={faqItems} />
+
+  <!-- 관련 계산기 -->
+  <section class="card mt-6">
+    <h2 class="section-title">
+      <span aria-hidden="true">🔗</span>
+      관련 계산기
+    </h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/salary', label: '💰 연봉 실수령액', desc: '세후 실수령액 계산' },
+        { href: '/compound', label: '📈 복리 계산기', desc: '투자 미래 가치 계산' },
+        { href: '/severance', label: '📝 퇴직금 계산기', desc: '퇴직금 예상액 계산' },
+      ].map(link => (
+        <a
+          href={link.href}
+          class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group"
+        >
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{link.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{link.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<!-- Chart.js CDN (defer로 성능 최적화) -->
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+
+<script>
+// ============================================================
+// 대출 이자 계산기 - 순수 JavaScript
+// 보안: 모든 입력값 검증 후 처리, eval() 미사용
+// ============================================================
+
+/** 숫자 형식화 (천 단위 콤마) */
+function formatNumber(num: number): string {
+  return Math.round(num).toLocaleString('ko-KR');
+}
+
+/** 만원 단위를 원 단위로 변환 */
+function manToWon(man: number): number {
+  return man * 10000;
+}
+
+/** 입력값 검증 및 파싱 */
+function parseInputs(): { amount: number; rate: number; period: number; grace: number } | null {
+  const amountEl = document.getElementById('loan-amount') as HTMLInputElement;
+  const rateEl = document.getElementById('interest-rate') as HTMLInputElement;
+  const periodEl = document.getElementById('loan-period') as HTMLInputElement;
+  const graceEl = document.getElementById('grace-period') as HTMLInputElement;
+
+  const amount = parseFloat(amountEl?.value || '0');
+  const rate = parseFloat(rateEl?.value || '0');
+  const period = parseInt(periodEl?.value || '0', 10);
+  const grace = parseInt(graceEl?.value || '0', 10);
+
+  // 입력값 검증 (보안: 범위 확인)
+  if (isNaN(amount) || amount < 100 || amount > 500000) {
+    alert('대출 금액을 올바르게 입력해주세요. (100만원 ~ 500,000만원)');
+    return null;
+  }
+  if (isNaN(rate) || rate < 0.1 || rate > 30) {
+    alert('이자율을 올바르게 입력해주세요. (0.1% ~ 30%)');
+    return null;
+  }
+  if (isNaN(period) || period < 1 || period > 50) {
+    alert('대출 기간을 올바르게 입력해주세요. (1년 ~ 50년)');
+    return null;
+  }
+  if (isNaN(grace) || grace < 0 || grace >= period) {
+    alert('거치 기간은 대출 기간보다 짧아야 합니다.');
+    return null;
+  }
+
+  return { amount, rate, period, grace };
+}
+
+/** 원리금균등상환 계산 */
+function calculateEqualPayment(
+  principal: number,
+  monthlyRate: number,
+  totalMonths: number
+): { monthly: number; schedule: Array<{ principal: number; interest: number; payment: number; balance: number }> } {
+  if (monthlyRate === 0) {
+    const monthly = principal / totalMonths;
+    const schedule = Array.from({ length: totalMonths }, (_, i) => ({
+      principal: monthly,
+      interest: 0,
+      payment: monthly,
+      balance: principal - monthly * (i + 1),
+    }));
+    return { monthly, schedule };
+  }
+
+  const monthly = principal * monthlyRate * Math.pow(1 + monthlyRate, totalMonths) /
+    (Math.pow(1 + monthlyRate, totalMonths) - 1);
+
+  const schedule = [];
+  let balance = principal;
+
+  for (let i = 0; i < totalMonths; i++) {
+    const interest = balance * monthlyRate;
+    const principalPayment = monthly - interest;
+    balance = Math.max(0, balance - principalPayment);
+    schedule.push({ principal: principalPayment, interest, payment: monthly, balance });
+  }
+
+  return { monthly, schedule };
+}
+
+/** 원금균등상환 계산 */
+function calculateEqualPrincipal(
+  principal: number,
+  monthlyRate: number,
+  totalMonths: number
+): { firstPayment: number; schedule: Array<{ principal: number; interest: number; payment: number; balance: number }> } {
+  const principalPayment = principal / totalMonths;
+  const schedule = [];
+  let balance = principal;
+
+  for (let i = 0; i < totalMonths; i++) {
+    const interest = balance * monthlyRate;
+    const payment = principalPayment + interest;
+    balance = Math.max(0, balance - principalPayment);
+    schedule.push({ principal: principalPayment, interest, payment, balance });
+  }
+
+  return { firstPayment: schedule[0]?.payment || 0, schedule };
+}
+
+/** 만기일시상환 계산 */
+function calculateBullet(
+  principal: number,
+  monthlyRate: number,
+  totalMonths: number
+): { monthly: number; schedule: Array<{ principal: number; interest: number; payment: number; balance: number }> } {
+  const monthlyInterest = principal * monthlyRate;
+  const schedule = Array.from({ length: totalMonths }, (_, i) => ({
+    principal: i === totalMonths - 1 ? principal : 0,
+    interest: monthlyInterest,
+    payment: i === totalMonths - 1 ? principal + monthlyInterest : monthlyInterest,
+    balance: i === totalMonths - 1 ? 0 : principal,
+  }));
+  return { monthly: monthlyInterest, schedule };
+}
+
+// 전역 상태 (계산 결과 저장)
+let schedules: Record<string, Array<{ principal: number; interest: number; payment: number; balance: number }>> = {};
+let showFullSchedule = false;
+let chartInstance: any = null;
+
+/** 스케줄 테이블 렌더링 */
+function renderSchedule(type: string): void {
+  const tbody = document.getElementById('schedule-tbody');
+  if (!tbody || !schedules[type]) return;
+
+  const data = schedules[type];
+  const displayCount = showFullSchedule ? data.length : Math.min(12, data.length);
+
+  // XSS 방지: innerHTML 대신 DOM API 사용
+  tbody.innerHTML = '';
+
+  for (let i = 0; i < displayCount; i++) {
+    const row = data[i];
+    const tr = document.createElement('tr');
+    tr.className = i % 2 === 0 ? 'bg-white' : 'bg-gray-50';
+
+    const cellTexts = [
+      `${i + 1}회`,
+      `${formatNumber(row.principal)}원`,
+      `${formatNumber(row.interest)}원`,
+      `${formatNumber(row.payment)}원`,
+      `${formatNumber(row.balance)}원`,
+    ];
+
+    cellTexts.forEach((text, idx) => {
+      const td = document.createElement('td');
+      td.className = idx === 0
+        ? 'px-3 py-2 text-left text-gray-500'
+        : 'px-3 py-2 text-right tabular-nums text-gray-700';
+      td.textContent = text; // XSS 안전: textContent 사용
+      tr.appendChild(td);
+    });
+
+    tbody.appendChild(tr);
+  }
+
+  // 전체 보기 버튼
+  const toggleBtn = document.getElementById('toggle-schedule');
+  if (toggleBtn) {
+    if (data.length <= 12) {
+      toggleBtn.classList.add('hidden');
+    } else {
+      toggleBtn.classList.remove('hidden');
+      toggleBtn.textContent = showFullSchedule ? '접기 ▲' : `전체 보기 (${data.length}개월) ▼`;
+    }
+  }
+}
+
+/** 메인 계산 함수 */
+function calculate(): void {
+  const inputs = parseInputs();
+  if (!inputs) return;
+
+  const { amount, rate, period, grace } = inputs;
+  const principal = manToWon(amount);
+  const monthlyRate = rate / 100 / 12;
+  const totalMonths = period * 12;
+  const graceMonths = grace * 12;
+  const repayMonths = totalMonths - graceMonths;
+
+  // 거치기간 처리
+  const effectivePrincipal = principal;
+  const graceInterest = graceMonths > 0 ? principal * monthlyRate * graceMonths : 0;
+
+  // 각 상환 방식 계산
+  const ep = calculateEqualPayment(effectivePrincipal, monthlyRate, repayMonths);
+  const epr = calculateEqualPrincipal(effectivePrincipal, monthlyRate, repayMonths);
+  const bullet = calculateBullet(effectivePrincipal, monthlyRate, totalMonths);
+
+  const epTotalInterest = ep.schedule.reduce((sum, r) => sum + r.interest, 0) + graceInterest;
+  const eprTotalInterest = epr.schedule.reduce((sum, r) => sum + r.interest, 0) + graceInterest;
+  const bulletTotalInterest = bullet.schedule.reduce((sum, r) => sum + r.interest, 0);
+
+  // 스케줄 저장
+  schedules = {
+    'equal-payment': ep.schedule,
+    'equal-principal': epr.schedule,
+    'bullet': bullet.schedule,
+  };
+
+  // UI 업데이트 (XSS 안전: textContent 사용)
+  const setText = (id: string, value: string) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  };
+
+  setText('equal-payment-monthly', formatNumber(ep.monthly));
+  setText('equal-payment-interest', formatNumber(epTotalInterest));
+  setText('equal-payment-total', formatNumber(principal + epTotalInterest));
+
+  setText('equal-principal-first', formatNumber(epr.firstPayment));
+  setText('equal-principal-interest', formatNumber(eprTotalInterest));
+  setText('equal-principal-total', formatNumber(principal + eprTotalInterest));
+
+  setText('bullet-monthly', formatNumber(bullet.monthly));
+  setText('bullet-interest', formatNumber(bulletTotalInterest));
+  setText('bullet-total', formatNumber(principal + bulletTotalInterest));
+
+  // 이자 절약 메시지
+  const saving = epTotalInterest - eprTotalInterest;
+  const savingMsg = document.getElementById('saving-message');
+  if (savingMsg && saving > 0) {
+    savingMsg.textContent = `💡 원금균등이 원리금균등 대비 ${formatNumber(saving)}원 이자 절약!`;
+    savingMsg.classList.remove('hidden');
+  }
+
+  // 차트 업데이트
+  updateChart(epTotalInterest, eprTotalInterest, bulletTotalInterest);
+
+  // 스케줄 렌더링
+  showFullSchedule = false;
+  renderSchedule('equal-payment');
+
+  // 결과 영역 표시
+  const resultsSection = document.getElementById('results-section');
+  if (resultsSection) {
+    resultsSection.classList.remove('hidden');
+    resultsSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+/** 차트 업데이트 */
+function updateChart(epInterest: number, eprInterest: number, bulletInterest: number): void {
+  const canvas = document.getElementById('interest-chart') as HTMLCanvasElement;
+  if (!canvas) return;
+
+  // Chart.js 로드 대기
+  const tryUpdateChart = () => {
+    if (typeof window === 'undefined' || !(window as any).Chart) {
+      setTimeout(tryUpdateChart, 100);
+      return;
+    }
+
+    const Chart = (window as any).Chart;
+
+    if (chartInstance) {
+      chartInstance.destroy();
+    }
+
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+
+    chartInstance = new Chart(ctx, {
+      type: 'bar',
+      data: {
+        labels: ['원리금균등', '원금균등', '만기일시'],
+        datasets: [{
+          label: '총 이자 (원)',
+          data: [Math.round(epInterest), Math.round(eprInterest), Math.round(bulletInterest)],
+          backgroundColor: ['rgba(59, 130, 246, 0.7)', 'rgba(16, 185, 129, 0.7)', 'rgba(239, 68, 68, 0.7)'],
+          borderColor: ['#2563EB', '#059669', '#DC2626'],
+          borderWidth: 2,
+          borderRadius: 6,
+        }],
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: {
+            callbacks: {
+              label: (context: any) => `총 이자: ${formatNumber(context.raw)}원`,
+            },
+          },
+        },
+        scales: {
+          y: {
+            beginAtZero: true,
+            ticks: {
+              callback: (value: number) => `${formatNumber(value)}원`,
+              maxTicksLimit: 5,
+            },
+            grid: { color: 'rgba(0,0,0,0.05)' },
+          },
+          x: {
+            grid: { display: false },
+          },
+        },
+      },
+    });
+  };
+
+  tryUpdateChart();
+}
+
+/** 슬라이더 ↔ 입력 연동 설정 */
+function setupSliderSync(inputId: string, sliderId: string): void {
+  const input = document.getElementById(inputId) as HTMLInputElement;
+  const slider = document.getElementById(sliderId) as HTMLInputElement;
+  if (!input || !slider) return;
+
+  input.addEventListener('input', () => {
+    const val = parseFloat(input.value);
+    if (!isNaN(val)) slider.value = String(val);
+  });
+
+  slider.addEventListener('input', () => {
+    input.value = slider.value;
+  });
+}
+
+/** 이벤트 리스너 초기화 */
+document.addEventListener('DOMContentLoaded', () => {
+  // 슬라이더 연동
+  setupSliderSync('loan-amount', 'loan-amount-slider');
+  setupSliderSync('interest-rate', 'interest-rate-slider');
+  setupSliderSync('loan-period', 'loan-period-slider');
+
+  // 기간 빠른 선택
+  document.querySelectorAll('.period-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const year = (btn as HTMLElement).dataset.year;
+      const input = document.getElementById('loan-period') as HTMLInputElement;
+      const slider = document.getElementById('loan-period-slider') as HTMLInputElement;
+      if (input && slider && year) {
+        input.value = year;
+        slider.value = year;
+      }
+    });
+  });
+
+  // 계산 버튼
+  const calcBtn = document.getElementById('calculate-btn');
+  if (calcBtn) calcBtn.addEventListener('click', calculate);
+
+  // Enter 키로 계산
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' && (e.target as HTMLElement)?.closest?.('.card')) {
+      calculate();
+    }
+  });
+
+  // 스케줄 타입 변경
+  const scheduleSelect = document.getElementById('schedule-type') as HTMLSelectElement;
+  if (scheduleSelect) {
+    scheduleSelect.addEventListener('change', () => {
+      showFullSchedule = false;
+      renderSchedule(scheduleSelect.value);
+    });
+  }
+
+  // 전체 보기 토글
+  const toggleBtn = document.getElementById('toggle-schedule');
+  if (toggleBtn) {
+    toggleBtn.addEventListener('click', () => {
+      showFullSchedule = !showFullSchedule;
+      const scheduleSelect = document.getElementById('schedule-type') as HTMLSelectElement;
+      renderSchedule(scheduleSelect?.value || 'equal-payment');
+    });
+  }
+
+  // 초기 계산 실행 (기본값으로)
+  calculate();
+});
+</script>

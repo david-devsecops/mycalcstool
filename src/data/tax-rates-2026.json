@@ -1,0 +1,27 @@
+{
+  "year": 2026,
+  "comment": "2026년 소득세 과세표준 구간",
+  "brackets": [
+    { "min": 0,        "max": 14000000,  "rate": 0.06, "deduction": 0 },
+    { "min": 14000000, "max": 50000000,  "rate": 0.15, "deduction": 1260000 },
+    { "min": 50000000, "max": 88000000,  "rate": 0.24, "deduction": 5760000 },
+    { "min": 88000000, "max": 150000000, "rate": 0.35, "deduction": 15440000 },
+    { "min": 150000000,"max": 300000000, "rate": 0.38, "deduction": 19940000 },
+    { "min": 300000000,"max": 500000000, "rate": 0.40, "deduction": 25940000 },
+    { "min": 500000000,"max": 1000000000,"rate": 0.42, "deduction": 35940000 },
+    { "min": 1000000000,"max": null,     "rate": 0.45, "deduction": 65940000 }
+  ],
+  "localIncomeTaxRate": 0.10,
+  "basicDeduction": 1500000,
+  "employeeDeduction": {
+    "comment": "근로소득공제 (연봉 기준)",
+    "brackets": [
+      { "min": 0,         "max": 5000000,   "rate": 0.70, "limit": null },
+      { "min": 5000000,   "max": 15000000,  "rate": 0.40, "base": 3500000, "limit": null },
+      { "min": 15000000,  "max": 45000000,  "rate": 0.15, "base": 7500000, "limit": null },
+      { "min": 45000000,  "max": 100000000, "rate": 0.05, "base": 12000000,"limit": null },
+      { "min": 100000000, "max": null,      "rate": 0.02, "base": 14750000,"limit": 20000000 }
+    ]
+  },
+  "mealAllowanceExemption": 200000
+}

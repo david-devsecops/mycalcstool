@@ -1,0 +1,108 @@
+{
+  "siteName": "mycalcstool",
+  "domain": "https://mycalcstool.com",
+  "description": "무료 온라인 계산기 모음 - 대출 이자, 연봉 실수령액, BMI, 복리, 퇴직금, 칼로리 등 실생활 유용한 계산기를 제공합니다.",
+  "keywords": "계산기, 대출계산기, 연봉계산기, BMI계산기, 복리계산기, 퇴직금계산기, 무료계산기",
+  "author": "mycalcstool",
+  "year": 2026,
+  "adsense": {
+    "enabled": false,
+    "publisherId": ""
+  },
+  "ga4": {
+    "enabled": false,
+    "measurementId": ""
+  },
+  "calculators": [
+    {
+      "id": "loan",
+      "path": "/loan",
+      "name": "대출 이자 계산기",
+      "description": "원리금균등·원금균등·만기일시 3가지 상환 방식 비교",
+      "icon": "🏦",
+      "category": "금융",
+      "priority": 1.0
+    },
+    {
+      "id": "salary",
+      "path": "/salary",
+      "name": "연봉 실수령액 계산기",
+      "description": "4대보험, 소득세 공제 후 실수령액 계산",
+      "icon": "💰",
+      "category": "금융",
+      "priority": 1.0
+    },
+    {
+      "id": "tax-refund",
+      "path": "/tax-refund",
+      "name": "연말정산 환급 계산기",
+      "description": "2026 연말정산 예상 환급액 계산",
+      "icon": "📋",
+      "category": "금융",
+      "priority": 0.9
+    },
+    {
+      "id": "bmi",
+      "path": "/bmi",
+      "name": "BMI 계산기",
+      "description": "체질량지수(BMI) 및 표준체중 계산",
+      "icon": "⚖️",
+      "category": "건강",
+      "priority": 0.9
+    },
+    {
+      "id": "compound",
+      "path": "/compound",
+      "name": "복리 계산기",
+      "description": "복리 이자로 미래 자산 가치 계산",
+      "icon": "📈",
+      "category": "금융",
+      "priority": 0.9
+    },
+    {
+      "id": "calorie",
+      "path": "/calorie",
+      "name": "칼로리 계산기",
+      "description": "음식별 칼로리 및 하루 권장 섭취량",
+      "icon": "🍎",
+      "category": "건강",
+      "priority": 0.8
+    },
+    {
+      "id": "severance",
+      "path": "/severance",
+      "name": "퇴직금 계산기",
+      "description": "근무 기간, 평균 임금으로 퇴직금 계산",
+      "icon": "📝",
+      "category": "금융",
+      "priority": 0.8
+    },
+    {
+      "id": "due-date",
+      "path": "/due-date",
+      "name": "출산 예정일 계산기",
+      "description": "마지막 생리일 기준 출산 예정일 계산",
+      "icon": "👶",
+      "category": "생활",
+      "priority": 0.8
+    },
+    {
+      "id": "tdee",
+      "path": "/tdee",
+      "name": "기초대사량(TDEE) 계산기",
+      "description": "나이·성별·활동량 기반 하루 칼로리 소비량",
+      "icon": "🔥",
+      "category": "건강",
+      "priority": 0.8
+    },
+    {
+      "id": "dday",
+      "path": "/dday",
+      "name": "D-day 날짜 계산기",
+      "description": "두 날짜 사이의 일수 및 D-day 계산",
+      "icon": "📅",
+      "category": "생활",
+      "priority": 0.8
+    }
+  ]
+}

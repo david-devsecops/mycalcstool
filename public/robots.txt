@@ -1,0 +1,25 @@
+User-agent: *
+Allow: /
+
+# 계산기 페이지 크롤링 허용
+Allow: /loan
+Allow: /salary
+Allow: /bmi
+Allow: /compound
+Allow: /calorie
+Allow: /severance
+Allow: /due-date
+Allow: /tdee
+Allow: /dday
+Allow: /tax-refund
+
+# 법적 페이지
+Allow: /privacy
+Allow: /terms
+Allow: /about
+
+# Sitemap
+Sitemap: https://mycalcstool.com/sitemap-index.xml
+
+# 크롤링 속도 제한 (서버 부하 방지)
+Crawl-delay: 1

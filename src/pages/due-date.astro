@@ -1,0 +1,221 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '출산 예정일 계산기 - 마지막 생리일로 출산예정일 계산';
+const description = '마지막 생리 첫날을 입력하면 출산 예정일(분만예정일), 임신 주수, 각 임신 단계별 일정을 자동으로 계산합니다. 네겔레 공식 적용.';
+const keywords = '출산 예정일 계산기, 분만 예정일 계산기, 임신 주수 계산기, 임신 달력, 출산 날짜 계산, 네겔레 공식';
+
+const faqItems = [
+  {
+    question: '출산 예정일은 어떻게 계산하나요?',
+    answer: '네겔레(Naegele) 공식을 사용합니다: 마지막 생리 첫날에서 달수를 3개월 빼고 7일을 더합니다. 즉, 마지막 생리 첫날로부터 280일(40주) 후가 출산 예정일입니다. 실제 출산은 37~42주 사이면 정상 범위입니다.',
+  },
+  {
+    question: '임신 주수는 어떻게 계산하나요?',
+    answer: '임신 주수는 마지막 생리 첫날부터 계산합니다. 수정은 약 2주 후에 이루어지지만, 의학적으로는 마지막 생리 첫날을 기준 0주로 계산하는 것이 표준입니다. 총 임신 기간은 40주(280일)입니다.',
+  },
+  {
+    question: '생리 주기가 28일이 아닌 경우도 맞나요?',
+    answer: '네겔레 공식은 생리 주기가 28일인 경우를 기준으로 합니다. 생리 주기가 다르면 실제 출산 예정일과 차이가 생길 수 있습니다. 정확한 예정일은 임신 초기(6~12주) 초음파 검사로 확인하는 것이 가장 정확합니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '출산 예정일 계산기',
+  description,
+  url: 'https://mycalcstool.com/due-date',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">출산 예정일 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">👶 출산 예정일 계산기</h1>
+    <p class="text-gray-500 mt-2">마지막 생리일로 출산 예정일 · 임신 주수 · 임신 단계 계산</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 생리 정보 입력</h2>
+    <div class="space-y-6">
+      <div>
+        <label for="lmp-date" class="block text-sm font-semibold text-gray-700 mb-2">마지막 생리 첫날 (LMP)</label>
+        <input type="date" id="lmp-date" class="input-field" aria-label="마지막 생리 첫날" />
+        <p class="text-xs text-gray-400 mt-1">마지막 생리가 시작된 첫 번째 날을 입력하세요</p>
+      </div>
+      <div>
+        <label for="cycle-length" class="block text-sm font-semibold text-gray-700 mb-2">생리 주기 <span class="text-gray-400 font-normal">(선택, 기본 28일)</span></label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="cycle-length" class="input-field flex-1" value="28" min="20" max="45" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">일</span>
+        </div>
+      </div>
+      <button id="calc-due-btn" class="btn-primary" type="button">🔍 출산 예정일 계산하기</button>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="due-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 출산 예정일 결과</h2>
+      <div class="text-center py-6 bg-pink-50 rounded-xl mb-6">
+        <p class="text-sm text-pink-600 font-medium mb-2">출산 예정일 (D-day)</p>
+        <p class="text-4xl font-bold text-pink-700" id="due-date-result">-</p>
+        <p class="text-lg font-medium text-pink-600 mt-1" id="due-dday">-</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3 mb-6">
+        {[
+          { id: 'current-week', label: '현재 임신 주수' },
+          { id: 'trimester', label: '임신 단계' },
+          { id: 'conception-date', label: '수정 예정일' },
+        ].map(item => (
+          <div class="bg-gray-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-500 mb-1">{item.label}</p>
+            <p class="text-lg font-bold text-gray-700" id={item.id}>-</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- 임신 단계별 일정 -->
+      <h3 class="font-semibold text-gray-700 mb-3">임신 단계별 주요 일정</h3>
+      <div class="space-y-2" id="pregnancy-milestones"></div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📖</span> 임신 주수별 태아 발달</h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      {[
+        { range: '1~13주 (1삼분기)', desc: '임신 확인, 심장 형성, 주요 장기 발달, 입덧 시작' },
+        { range: '14~27주 (2삼분기)', desc: '태동 시작, 성별 확인 가능, 청각 발달, 입덧 완화' },
+        { range: '28~40주 (3삼분기)', desc: '체중 증가, 폐 성숙, 출산 준비, 태아 위치 고정' },
+      ].map(stage => (
+        <div class="p-4 bg-pink-50 rounded-xl">
+          <p class="font-semibold text-pink-700 mb-1">{stage.range}</p>
+          <p class="text-gray-600">{stage.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/bmi', label: '⚖️ BMI 계산기', desc: '체질량지수 확인' },
+        { href: '/dday', label: '📅 D-day 계산기', desc: '날짜 계산' },
+        { href: '/tdee', label: '🔥 기초대사량', desc: '칼로리 소비량' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+function formatDate(d: Date): string {
+  return `${d.getFullYear()}년 ${d.getMonth()+1}월 ${d.getDate()}일`;
+}
+function addDays(d: Date, days: number): Date {
+  const r = new Date(d); r.setDate(r.getDate() + days); return r;
+}
+
+function calculate() {
+  const lmpEl = document.getElementById('lmp-date') as HTMLInputElement;
+  const cycleEl = document.getElementById('cycle-length') as HTMLInputElement;
+  if (!lmpEl?.value) { alert('마지막 생리 첫날을 입력해주세요.'); return; }
+
+  const lmp = new Date(lmpEl.value);
+  if (isNaN(lmp.getTime())) { alert('올바른 날짜를 입력해주세요.'); return; }
+
+  const cycle = parseInt(cycleEl?.value || '28', 10);
+  const offset = cycle - 28; // 28일 기준 조정
+
+  const dueDate = addDays(lmp, 280 + offset);
+  const conceptionDate = addDays(lmp, 14 + offset);
+  const today = new Date();
+  const daysPregnant = Math.floor((today.getTime() - lmp.getTime()) / (1000 * 60 * 60 * 24));
+  const weeksPregnant = Math.floor(daysPregnant / 7);
+  const daysExtra = daysPregnant % 7;
+  const daysUntilDue = Math.floor((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+
+  let trimester = '임신 전';
+  if (weeksPregnant >= 1 && weeksPregnant <= 13) trimester = '1삼분기';
+  else if (weeksPregnant <= 27) trimester = '2삼분기';
+  else if (weeksPregnant <= 42) trimester = '3삼분기';
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('due-date-result', formatDate(dueDate));
+  setText('due-dday', daysUntilDue > 0 ? `D-${daysUntilDue}` : daysUntilDue === 0 ? 'D-Day!' : `D+${Math.abs(daysUntilDue)}`);
+  setText('current-week', daysPregnant > 0 ? `${weeksPregnant}주 ${daysExtra}일` : '-');
+  setText('trimester', trimester);
+  setText('conception-date', formatDate(conceptionDate));
+
+  // 주요 일정
+  const milestones = [
+    { label: '임신 확인 시기', date: addDays(lmp, 28) },
+    { label: '1차 기형아 검사 (NT)', date: addDays(lmp, 84) },
+    { label: '2삼분기 시작', date: addDays(lmp, 98) },
+    { label: '정밀 초음파', date: addDays(lmp, 140) },
+    { label: '3삼분기 시작', date: addDays(lmp, 196) },
+    { label: '조기 출산 가능 기간', date: addDays(lmp, 259) },
+    { label: '만삭 (37주)', date: addDays(lmp, 259) },
+    { label: '출산 예정일 (40주)', date: dueDate },
+  ];
+
+  const container = document.getElementById('pregnancy-milestones');
+  if (container) {
+    container.innerHTML = '';
+    milestones.forEach(m => {
+      const isPast = today > m.date;
+      const div = document.createElement('div');
+      div.className = `flex justify-between items-center py-2 border-b border-gray-100 last:border-0 ${isPast ? 'opacity-50' : ''}`;
+      const label = document.createElement('span');
+      label.className = 'text-sm text-gray-600';
+      label.textContent = (isPast ? '✓ ' : '') + m.label;
+      const date = document.createElement('span');
+      date.className = 'text-sm tabular-nums text-gray-700 font-medium';
+      date.textContent = formatDate(m.date);
+      div.appendChild(label);
+      div.appendChild(date);
+      container.appendChild(div);
+    });
+  }
+
+  const results = document.getElementById('due-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 기본값: 오늘 기준 1달 전
+  const lmpEl = document.getElementById('lmp-date') as HTMLInputElement;
+  if (lmpEl) {
+    const d = new Date(); d.setMonth(d.getMonth() - 1);
+    lmpEl.value = d.toISOString().split('T')[0];
+  }
+  document.getElementById('calc-due-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

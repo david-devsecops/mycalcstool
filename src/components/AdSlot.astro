@@ -1,0 +1,38 @@
+---
+interface Props {
+  slot: 'top' | 'result' | 'content';
+  format?: 'auto' | 'rectangle' | 'horizontal';
+  label?: string;
+}
+
+const { slot, format = 'auto', label = '광고' } = Astro.props;
+
+// 슬롯별 높이 설정
+const heights: Record<string, string> = {
+  top: 'h-24',
+  result: 'h-64',
+  content: 'h-48',
+};
+const height = heights[slot] || 'h-32';
+---
+
+<!-- 애드센스 승인 전 플레이스홀더 -->
+<div
+  class={`ad-slot ${height} my-4`}
+  aria-label={label}
+  data-ad-slot={slot}
+  data-ad-format={format}
+  role="complementary"
+>
+  <span class="text-xs">Ad</span>
+</div>
+
+<!--
+  애드센스 승인 후 아래 코드로 교체:
+  <ins class="adsbygoogle"
+    style="display:block"
+    data-ad-client="ca-pub-XXXXXXXXXXXX"
+    data-ad-slot="XXXXXXXXXX"
+    data-ad-format={format}>
+  </ins>
+-->

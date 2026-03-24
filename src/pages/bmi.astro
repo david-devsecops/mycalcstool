@@ -1,0 +1,266 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = 'BMI 계산기 - 체질량지수, 표준체중, 비만도 확인';
+const description = '키와 몸무게를 입력하면 BMI(체질량지수), 표준체중, 비만도를 즉시 계산합니다. WHO 기준과 한국인 기준 BMI 판정을 함께 제공합니다.';
+const keywords = 'BMI 계산기, 체질량지수 계산기, 비만도 계산기, 표준체중 계산기, 체중 계산기, 건강 체중';
+
+const faqItems = [
+  {
+    question: 'BMI 정상 범위는 얼마인가요?',
+    answer: 'WHO 기준으로 BMI 18.5~24.9가 정상(Normal)입니다. 한국비만학회는 23~24.9를 과체중, 25 이상을 비만으로 분류합니다. 서양인 대비 한국인은 같은 BMI에서 체지방률이 높아 더 엄격한 기준을 적용합니다.',
+  },
+  {
+    question: 'BMI만으로 건강 상태를 판단할 수 있나요?',
+    answer: 'BMI는 체지방량을 직접 측정하지 않고 키와 몸무게만으로 계산하는 간접 지표입니다. 근육량이 많은 운동선수는 BMI가 높아도 건강할 수 있으며, 노인이나 여성은 BMI가 정상이어도 체지방률이 높을 수 있습니다. 정확한 건강 상태는 의사와 상담하세요.',
+  },
+  {
+    question: '표준체중은 어떻게 계산하나요?',
+    answer: '브로카 공식: 남성 = (키-100) × 0.9, 여성 = (키-100) × 0.85로 계산합니다. 또는 BMI 22를 기준으로 표준체중 = 22 × 키(m)² 로도 계산합니다. 이 계산기는 BMI 22 기준을 사용합니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'BMI 계산기',
+  description,
+  url: 'https://mycalcstool.com/bmi',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">BMI 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">⚖️ BMI 계산기</h1>
+    <p class="text-gray-500 mt-2">체질량지수 · 표준체중 · 비만도를 한번에 확인하세요</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 신체 정보 입력</h2>
+    <div class="space-y-6">
+      <!-- 성별 -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">성별</p>
+        <div class="flex gap-3">
+          <button id="btn-male" class="gender-btn flex-1 py-3 rounded-xl border-2 border-primary-500 bg-primary-50 text-primary-700 font-semibold transition-all" data-gender="male" type="button">남성</button>
+          <button id="btn-female" class="gender-btn flex-1 py-3 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold transition-all" data-gender="female" type="button">여성</button>
+        </div>
+      </div>
+      <!-- 키 -->
+      <div>
+        <label for="height" class="block text-sm font-semibold text-gray-700 mb-2">키</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="height" class="input-field flex-1" value="170" min="100" max="250" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">cm</span>
+        </div>
+        <input type="range" id="height-slider" class="range-slider mt-2" min="140" max="220" step="1" value="170" aria-label="키 슬라이더" />
+      </div>
+      <!-- 몸무게 -->
+      <div>
+        <label for="weight" class="block text-sm font-semibold text-gray-700 mb-2">몸무게</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="weight" class="input-field flex-1" value="70" min="20" max="300" step="0.1" inputmode="decimal" />
+          <span class="text-gray-600 font-medium">kg</span>
+        </div>
+        <input type="range" id="weight-slider" class="range-slider mt-2" min="30" max="150" step="0.5" value="70" aria-label="몸무게 슬라이더" />
+      </div>
+      <!-- 나이 -->
+      <div>
+        <label for="age" class="block text-sm font-semibold text-gray-700 mb-2">나이 <span class="text-gray-400 font-normal">(참고용)</span></label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="age" class="input-field flex-1" value="30" min="10" max="100" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">세</span>
+        </div>
+      </div>
+      <button id="calc-bmi-btn" class="btn-primary" type="button">🔍 계산하기</button>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="bmi-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> BMI 결과</h2>
+      <!-- BMI 수치 -->
+      <div class="text-center py-8">
+        <p class="text-gray-500 text-sm mb-2">내 BMI</p>
+        <p class="text-6xl font-bold tabular-nums" id="bmi-value" style="color: #2563EB">-</p>
+        <p class="text-2xl font-bold mt-2" id="bmi-label">-</p>
+        <p class="text-sm text-gray-500 mt-1" id="bmi-sublabel">-</p>
+      </div>
+      <!-- BMI 게이지 -->
+      <div class="relative mb-6">
+        <div class="h-4 rounded-full overflow-hidden flex">
+          <div class="flex-1 bg-blue-300" title="저체중 (~18.4)"></div>
+          <div class="flex-1 bg-green-400" title="정상 (18.5~22.9)"></div>
+          <div class="flex-1 bg-yellow-400" title="과체중 (23~24.9)"></div>
+          <div class="flex-1 bg-orange-400" title="비만 1단계 (25~29.9)"></div>
+          <div class="flex-1 bg-red-500" title="비만 2단계 (30~)"></div>
+        </div>
+        <div id="bmi-indicator" class="absolute top-0 w-1 h-4 bg-gray-800 rounded transition-all" style="left: 30%"></div>
+        <div class="flex justify-between text-xs text-gray-400 mt-1">
+          <span>저체중</span><span>정상</span><span>과체중</span><span>비만1</span><span>비만2</span>
+        </div>
+      </div>
+      <!-- 세부 정보 -->
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-4">
+        {[
+          { id: 'std-weight', label: '표준체중', unit: 'kg' },
+          { id: 'weight-diff', label: '표준체중 대비', unit: '' },
+          { id: 'ideal-range', label: '정상 체중 범위', unit: '' },
+        ].map(item => (
+          <div class="bg-gray-50 rounded-xl p-4 text-center">
+            <p class="text-xs text-gray-500 mb-1">{item.label}</p>
+            <p class="text-lg font-bold tabular-nums text-gray-700" id={item.id}>-</p>
+          </div>
+        ))}
+      </div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📖</span> BMI 판정 기준표</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-600">
+            <th class="px-3 py-2 text-left font-semibold">분류</th>
+            <th class="px-3 py-2 text-center font-semibold">WHO 기준</th>
+            <th class="px-3 py-2 text-center font-semibold">한국 기준</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          {[
+            ['저체중', '18.5 미만', '18.5 미만'],
+            ['정상', '18.5 ~ 24.9', '18.5 ~ 22.9'],
+            ['과체중', '25 ~ 29.9', '23 ~ 24.9'],
+            ['비만 1단계', '30 ~ 34.9', '25 ~ 29.9'],
+            ['비만 2단계', '35 이상', '30 이상'],
+          ].map(row => (
+            <tr>
+              {row.map((cell, i) => (
+                <td class={`px-3 py-2 ${i === 0 ? 'font-medium text-gray-700' : 'text-center text-gray-600'}`}>{cell}</td>
+              ))}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/calorie', label: '🍎 칼로리 계산기', desc: '음식 칼로리 계산' },
+        { href: '/tdee', label: '🔥 기초대사량', desc: '하루 칼로리 소비량' },
+        { href: '/due-date', label: '👶 출산 예정일', desc: '출산 예정일 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+let selectedGender = 'male';
+
+function setBMILabel(bmi: number) {
+  // 한국인 기준
+  if (bmi < 18.5) return { label: '저체중', color: '#3B82F6', sub: '체중이 조금 부족합니다' };
+  if (bmi < 23)   return { label: '정상', color: '#10B981', sub: '건강한 체중입니다' };
+  if (bmi < 25)   return { label: '과체중', color: '#F59E0B', sub: '약간 과체중입니다' };
+  if (bmi < 30)   return { label: '비만 1단계', color: '#F97316', sub: '체중 감량이 필요합니다' };
+  return { label: '비만 2단계', color: '#EF4444', sub: '건강 관리가 시급합니다' };
+}
+
+function getIndicatorPos(bmi: number): number {
+  // 15~40 범위를 0~100%로 매핑
+  const min = 15, max = 40;
+  return Math.max(0, Math.min(100, ((bmi - min) / (max - min)) * 100));
+}
+
+function calculate() {
+  const heightEl = document.getElementById('height') as HTMLInputElement;
+  const weightEl = document.getElementById('weight') as HTMLInputElement;
+  const h = parseFloat(heightEl?.value || '0');
+  const w = parseFloat(weightEl?.value || '0');
+
+  if (isNaN(h) || h < 100 || h > 250) { alert('키를 올바르게 입력해주세요. (100~250cm)'); return; }
+  if (isNaN(w) || w < 20 || w > 300)  { alert('몸무게를 올바르게 입력해주세요. (20~300kg)'); return; }
+
+  const hm = h / 100;
+  const bmi = w / (hm * hm);
+  const stdWeight = 22 * hm * hm;
+  const diff = w - stdWeight;
+  const minWeight = 18.5 * hm * hm;
+  const maxWeight = 22.9 * hm * hm;
+
+  const info = setBMILabel(bmi);
+  const bmiEl = document.getElementById('bmi-value');
+  const labelEl = document.getElementById('bmi-label');
+  const subEl = document.getElementById('bmi-sublabel');
+  const indEl = document.getElementById('bmi-indicator');
+
+  if (bmiEl) { bmiEl.textContent = bmi.toFixed(1); bmiEl.style.color = info.color; }
+  if (labelEl) { labelEl.textContent = info.label; labelEl.style.color = info.color; }
+  if (subEl) subEl.textContent = info.sub;
+  if (indEl) indEl.style.left = getIndicatorPos(bmi) + '%';
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('std-weight', stdWeight.toFixed(1) + 'kg');
+  setText('weight-diff', (diff >= 0 ? '+' : '') + diff.toFixed(1) + 'kg');
+  setText('ideal-range', minWeight.toFixed(1) + '~' + maxWeight.toFixed(1) + 'kg');
+
+  const results = document.getElementById('bmi-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 슬라이더 연동
+  const pairs = [['height','height-slider'],['weight','weight-slider']];
+  pairs.forEach(([inp, sld]) => {
+    const i = document.getElementById(inp) as HTMLInputElement;
+    const s = document.getElementById(sld) as HTMLInputElement;
+    i?.addEventListener('input', () => { if (!isNaN(parseFloat(i.value))) s.value = i.value; });
+    s?.addEventListener('input', () => { i.value = s.value; });
+  });
+  // 성별
+  document.querySelectorAll('.gender-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedGender = (btn as HTMLElement).dataset.gender || 'male';
+      document.querySelectorAll('.gender-btn').forEach(b => {
+        const isSel = b === btn;
+        b.classList.toggle('border-primary-500', isSel);
+        b.classList.toggle('bg-primary-50', isSel);
+        b.classList.toggle('text-primary-700', isSel);
+        b.classList.toggle('border-gray-200', !isSel);
+        b.classList.toggle('text-gray-500', !isSel);
+      });
+    });
+  });
+  document.getElementById('calc-bmi-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

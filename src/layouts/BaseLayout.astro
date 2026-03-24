@@ -1,0 +1,77 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  ogImage?: string;
+  canonicalUrl?: string;
+  lang?: string;
+  jsonLd?: object | object[];
+  noIndex?: boolean;
+}
+
+const {
+  title,
+  description,
+  keywords,
+  ogImage,
+  canonicalUrl,
+  lang = 'ko',
+  jsonLd,
+  noIndex = false,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang={lang}>
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    keywords={keywords}
+    ogImage={ogImage}
+    canonicalUrl={canonicalUrl}
+    lang={lang}
+    jsonLd={jsonLd}
+    noIndex={noIndex}
+  />
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+  <Header />
+  <main class="flex-1 max-w-4xl mx-auto px-4 py-8 w-full" id="main-content">
+    <slot />
+  </main>
+  <Footer />
+
+  <!-- FAQ 아코디언 JS (XSS 안전: DOM 조작만, eval 없음) -->
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const faqQuestions = document.querySelectorAll('.faq-question');
+      faqQuestions.forEach(question => {
+        question.addEventListener('click', () => {
+          const answer = question.nextElementSibling;
+          const icon = question.querySelector('.faq-icon');
+          const isOpen = answer?.classList.contains('open');
+
+          // 모든 FAQ 닫기
+          document.querySelectorAll('.faq-answer').forEach(a => a.classList.remove('open'));
+          document.querySelectorAll('.faq-icon').forEach(i => {
+            if (i instanceof HTMLElement) i.textContent = '+';
+          });
+
+          // 클릭한 항목 토글
+          if (!isOpen && answer) {
+            answer.classList.add('open');
+            if (icon instanceof HTMLElement) icon.textContent = '−';
+          }
+        });
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,350 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+import insuranceRates from '../data/insurance-rates.json';
+import taxRates from '../data/tax-rates-2026.json';
+
+const title = '2026 연봉 실수령액 계산기 - 4대보험 소득세 공제 후 실수령액';
+const description = '2026년 기준 연봉을 입력하면 국민연금, 건강보험, 고용보험, 소득세, 지방소득세를 자동 계산하여 월 실수령액과 연 실수령액을 보여줍니다.';
+const keywords = '연봉 실수령액 계산기, 세후 연봉 계산기, 4대보험 계산기, 소득세 계산기, 월급 실수령액, 연봉 세금 계산, 2026 연봉계산기';
+
+const faqItems = [
+  {
+    question: '연봉 실수령액은 어떻게 계산되나요?',
+    answer: '연봉에서 4대보험(국민연금 4.5%, 건강보험 3.545%, 장기요양보험 건보료의 12.95%, 고용보험 0.9%)과 소득세, 지방소득세(소득세의 10%)를 공제한 금액이 실수령액입니다. 소득세는 근로소득공제를 반영한 과세표준에 누진세율을 적용해 계산합니다.',
+  },
+  {
+    question: '비과세 식대 20만원은 무엇인가요?',
+    answer: '2023년부터 식대 비과세 한도가 월 10만원에서 20만원으로 확대되었습니다. 회사에서 식대를 지급하는 경우 월 20만원까지 소득세가 부과되지 않아 실수령액이 높아집니다. 계산기에서는 기본적으로 월 20만원의 비과세 식대를 적용합니다.',
+  },
+  {
+    question: '부양가족 수가 왜 중요한가요?',
+    answer: '부양가족 수에 따라 소득세 간이세액표 적용 구간이 달라집니다. 부양가족이 많을수록 공제 금액이 커져 소득세가 줄어들고 실수령액이 높아집니다. 본인 포함한 기본공제 대상자 수를 입력하세요.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '연봉 실수령액 계산기',
+  description,
+  url: 'https://mycalcstool.com/salary',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">연봉 실수령액 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">💰 연봉 실수령액 계산기</h1>
+    <p class="text-gray-500 mt-2">2026년 기준 4대보험 + 소득세 공제 후 실수령액</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- 입력 폼 -->
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 급여 정보 입력</h2>
+    <div class="space-y-6">
+      <!-- 연봉 -->
+      <div>
+        <label for="annual-salary" class="block text-sm font-semibold text-gray-700 mb-2">연봉</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="annual-salary" class="input-field flex-1" value="5000" min="1000" max="100000" step="100" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <input type="range" id="annual-salary-slider" class="range-slider mt-2" min="1000" max="30000" step="100" value="5000" aria-label="연봉 슬라이더" />
+        <p class="text-xs text-gray-400 mt-1">1,000만원 ~ 100,000만원</p>
+      </div>
+
+      <!-- 부양가족 -->
+      <div>
+        <label for="dependents" class="block text-sm font-semibold text-gray-700 mb-2">부양가족 수 <span class="text-gray-400 font-normal">(본인 포함)</span></label>
+        <div class="flex gap-2">
+          {[1,2,3,4,5].map(n => (
+            <button class="dependent-btn px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-600 hover:border-primary-400 hover:text-primary-600 transition-colors" data-val={n} type="button">{n}명</button>
+          ))}
+        </div>
+        <input type="hidden" id="dependents" value="1" />
+      </div>
+
+      <!-- 비과세 식대 -->
+      <div>
+        <label for="meal-allowance" class="block text-sm font-semibold text-gray-700 mb-2">월 비과세 식대</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="meal-allowance" class="input-field flex-1" value="20" min="0" max="20" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">만원</span>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">최대 20만원 (2023년 비과세 한도)</p>
+      </div>
+
+      <button id="calc-salary-btn" class="btn-primary" type="button">🔍 계산하기</button>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <div id="salary-results" class="hidden" aria-live="polite">
+    <!-- 핵심 결과 -->
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 실수령액 결과</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-primary-50 border border-primary-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-primary-600 font-medium mb-1">월 실수령액</p>
+          <p class="text-4xl font-bold tabular-nums text-primary-700" id="monthly-net">-</p>
+          <p class="text-sm text-primary-600">원</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-gray-600 font-medium mb-1">연 실수령액</p>
+          <p class="text-3xl font-bold tabular-nums text-gray-700" id="annual-net">-</p>
+          <p class="text-sm text-gray-500">원</p>
+        </div>
+      </div>
+
+      <!-- 공제 항목 상세 -->
+      <h3 class="font-semibold text-gray-700 mb-3">월 공제 내역</h3>
+      <div class="space-y-2">
+        {[
+          { id: 'deduct-pension', label: '국민연금 (4.5%)', color: 'text-blue-600' },
+          { id: 'deduct-health', label: '건강보험 (3.545%)', color: 'text-green-600' },
+          { id: 'deduct-ltc', label: '장기요양보험', color: 'text-teal-600' },
+          { id: 'deduct-employ', label: '고용보험 (0.9%)', color: 'text-purple-600' },
+          { id: 'deduct-income', label: '소득세', color: 'text-orange-600' },
+          { id: 'deduct-local', label: '지방소득세', color: 'text-red-600' },
+        ].map(item => (
+          <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+            <span class={`text-sm font-medium ${item.color}`}>{item.label}</span>
+            <span class="text-sm tabular-nums text-gray-700 font-medium" id={item.id}>-</span>
+          </div>
+        ))}
+        <div class="flex justify-between items-center pt-3 font-bold">
+          <span class="text-gray-700">총 공제액</span>
+          <span class="tabular-nums text-danger" id="total-deduction">-</span>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+
+    <!-- 연봉별 실수령액 비교표 -->
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📋</span> 연봉별 실수령액 비교</h2>
+      <div class="overflow-x-auto -mx-6 px-6">
+        <table class="w-full text-sm" aria-label="연봉별 실수령액 비교">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600">
+              <th scope="col" class="px-3 py-2 text-left font-semibold">연봉</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">월 실수령액</th>
+              <th scope="col" class="px-3 py-2 text-right font-semibold">공제율</th>
+            </tr>
+          </thead>
+          <tbody id="comparison-table" class="divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <!-- SEO 콘텐츠 -->
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📖</span> 연봉 실수령액 계산 가이드</h2>
+    <div class="text-gray-700 space-y-4 leading-relaxed text-sm">
+      <p>연봉이 높다고 실제로 받는 돈이 그만큼은 아닙니다. 연봉에서 4대보험과 세금이 공제된 후 실제로 통장에 입금되는 금액이 실수령액입니다.</p>
+      <h3 class="text-base font-bold text-gray-800">4대보험 요율 (2026년 기준)</h3>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>국민연금: 4.5% (기준소득월액 상한 590만원)</li>
+        <li>건강보험: 3.545%</li>
+        <li>장기요양보험: 건강보험료의 12.95%</li>
+        <li>고용보험: 0.9%</li>
+      </ul>
+      <p>소득세는 근로소득공제 후 과세표준에 누진세율(6%~45%)을 적용하며, 지방소득세는 소득세의 10%입니다.</p>
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/loan', label: '🏦 대출 이자', desc: '대출 상환 계획' },
+        { href: '/tax-refund', label: '📋 연말정산', desc: '환급액 예측' },
+        { href: '/severance', label: '📝 퇴직금', desc: '퇴직금 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+// 연봉 실수령액 계산기
+// 보안: 입력값 검증, textContent 사용, eval 금지
+
+function fmt(n: number): string {
+  return Math.round(n).toLocaleString('ko-KR') + '원';
+}
+
+// 근로소득공제 계산
+function calcEmployeeDeduction(annualSalary: number): number {
+  if (annualSalary <= 5000000) return annualSalary * 0.70;
+  if (annualSalary <= 15000000) return 3500000 + (annualSalary - 5000000) * 0.40;
+  if (annualSalary <= 45000000) return 7500000 + (annualSalary - 15000000) * 0.15;
+  if (annualSalary <= 100000000) return 12000000 + (annualSalary - 45000000) * 0.05;
+  return Math.min(14750000 + (annualSalary - 100000000) * 0.02, 20000000);
+}
+
+// 소득세 계산 (누진세)
+function calcIncomeTax(taxBase: number): number {
+  if (taxBase <= 0) return 0;
+  const brackets = [
+    { max: 14000000,  rate: 0.06, deduction: 0 },
+    { max: 50000000,  rate: 0.15, deduction: 1260000 },
+    { max: 88000000,  rate: 0.24, deduction: 5760000 },
+    { max: 150000000, rate: 0.35, deduction: 15440000 },
+    { max: 300000000, rate: 0.38, deduction: 19940000 },
+    { max: 500000000, rate: 0.40, deduction: 25940000 },
+    { max: 1000000000,rate: 0.42, deduction: 35940000 },
+    { max: Infinity,  rate: 0.45, deduction: 65940000 },
+  ];
+  for (const b of brackets) {
+    if (taxBase <= b.max) return Math.max(0, taxBase * b.rate - b.deduction);
+  }
+  return 0;
+}
+
+function calcSalary(annualWan: number, dependents: number, mealWan: number) {
+  const annual = annualWan * 10000;
+  const mealExemption = mealWan * 10000 * 12; // 연간 비과세
+  const taxableAnnual = Math.max(0, annual - mealExemption);
+  const monthlyGross = annual / 12;
+
+  // 4대보험 (월 기준)
+  const PENSION_MAX = 5900000;
+  const pensionBase = Math.min(monthlyGross, PENSION_MAX);
+  const pension = Math.round(pensionBase * 0.045);
+  const health = Math.round(monthlyGross * 0.03545);
+  const ltc = Math.round(health * 0.1295);
+  const employ = Math.round(monthlyGross * 0.009);
+
+  // 소득세 (연간 기준)
+  const employeeDeduction = calcEmployeeDeduction(taxableAnnual);
+  const basicDeduction = 1500000 * dependents;
+  const taxBase = Math.max(0, taxableAnnual - employeeDeduction - basicDeduction);
+  const annualIncomeTax = calcIncomeTax(taxBase);
+  const monthlyIncomeTax = Math.round(annualIncomeTax / 12);
+  const monthlyLocalTax = Math.round(monthlyIncomeTax * 0.1);
+
+  const totalDeduction = pension + health + ltc + employ + monthlyIncomeTax + monthlyLocalTax;
+  const monthlyNet = Math.round(monthlyGross - totalDeduction);
+
+  return { pension, health, ltc, employ, monthlyIncomeTax, monthlyLocalTax, totalDeduction, monthlyNet };
+}
+
+let selectedDependents = 1;
+
+function setText(id: string, val: string) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = val;
+}
+
+function calculate() {
+  const salaryEl = document.getElementById('annual-salary') as HTMLInputElement;
+  const mealEl = document.getElementById('meal-allowance') as HTMLInputElement;
+  const salaryWan = parseFloat(salaryEl?.value || '0');
+  const mealWan = parseFloat(mealEl?.value || '20');
+
+  if (isNaN(salaryWan) || salaryWan < 1000 || salaryWan > 100000) {
+    alert('연봉을 올바르게 입력해주세요. (1,000만원 ~ 100,000만원)');
+    return;
+  }
+  if (isNaN(mealWan) || mealWan < 0 || mealWan > 20) {
+    alert('비과세 식대는 0~20만원 사이로 입력해주세요.');
+    return;
+  }
+
+  const r = calcSalary(salaryWan, selectedDependents, mealWan);
+
+  setText('monthly-net', Math.round(r.monthlyNet).toLocaleString('ko-KR'));
+  setText('annual-net', Math.round(r.monthlyNet * 12).toLocaleString('ko-KR'));
+  setText('deduct-pension', fmt(r.pension));
+  setText('deduct-health', fmt(r.health));
+  setText('deduct-ltc', fmt(r.ltc));
+  setText('deduct-employ', fmt(r.employ));
+  setText('deduct-income', fmt(r.monthlyIncomeTax));
+  setText('deduct-local', fmt(r.monthlyLocalTax));
+  setText('total-deduction', fmt(r.totalDeduction));
+
+  // 비교표 렌더링 (XSS 안전: DOM API)
+  const tbody = document.getElementById('comparison-table');
+  if (tbody) {
+    tbody.innerHTML = '';
+    const salaryList = [3000, 4000, 5000, 6000, 7000, 8000, 10000, 15000, 20000];
+    salaryList.forEach(wan => {
+      const res = calcSalary(wan, selectedDependents, mealWan);
+      const rate = ((res.totalDeduction / (wan * 10000 / 12)) * 100).toFixed(1);
+      const tr = document.createElement('tr');
+      tr.className = wan === salaryWan ? 'bg-primary-50 font-semibold' : '';
+      [
+        wan.toLocaleString('ko-KR') + '만원',
+        Math.round(res.monthlyNet).toLocaleString('ko-KR') + '원',
+        rate + '%',
+      ].forEach((text, i) => {
+        const td = document.createElement('td');
+        td.className = i === 0 ? 'px-3 py-2 text-gray-700' : 'px-3 py-2 text-right tabular-nums text-gray-700';
+        td.textContent = text;
+        tr.appendChild(td);
+      });
+      tbody.appendChild(tr);
+    });
+  }
+
+  const resultsEl = document.getElementById('salary-results');
+  if (resultsEl) {
+    resultsEl.classList.remove('hidden');
+    resultsEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 슬라이더 연동
+  const salaryInput = document.getElementById('annual-salary') as HTMLInputElement;
+  const salarySlider = document.getElementById('annual-salary-slider') as HTMLInputElement;
+  salaryInput?.addEventListener('input', () => { if (!isNaN(parseFloat(salaryInput.value))) salarySlider.value = salaryInput.value; });
+  salarySlider?.addEventListener('input', () => { salaryInput.value = salarySlider.value; });
+
+  // 부양가족 선택
+  document.querySelectorAll('.dependent-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedDependents = parseInt((btn as HTMLElement).dataset.val || '1', 10);
+      document.querySelectorAll('.dependent-btn').forEach(b => {
+        b.classList.toggle('bg-primary-600', b === btn);
+        b.classList.toggle('text-white', b === btn);
+        b.classList.toggle('border-primary-600', b === btn);
+      });
+      const hiddenEl = document.getElementById('dependents') as HTMLInputElement;
+      if (hiddenEl) hiddenEl.value = String(selectedDependents);
+    });
+  });
+
+  // 1명 버튼 초기 선택
+  const firstBtn = document.querySelector('.dependent-btn') as HTMLElement;
+  if (firstBtn) firstBtn.click();
+
+  document.getElementById('calc-salary-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

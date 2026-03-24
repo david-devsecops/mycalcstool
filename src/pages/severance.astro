@@ -1,0 +1,202 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '퇴직금 계산기 2026 - 근속연수, 평균임금으로 퇴직금 계산';
+const description = '입사일, 퇴사일, 최근 3개월 평균임금을 입력하면 법정 퇴직금을 즉시 계산합니다. 2026년 근로기준법 기준 퇴직금 계산기입니다.';
+const keywords = '퇴직금 계산기, 퇴직금 계산, 퇴직금 공식, 평균임금 계산, 퇴직금 세금, 근속연수 퇴직금, 2026 퇴직금';
+
+const faqItems = [
+  {
+    question: '퇴직금 계산 공식은 무엇인가요?',
+    answer: '퇴직금 = 1일 평균임금 × 30일 × (총 재직일수 ÷ 365). 1일 평균임금은 퇴직 전 3개월간 받은 임금 총액을 해당 기간의 총 일수로 나눈 금액입니다. 1년 이상 근무해야 퇴직금 수급 자격이 생깁니다.',
+  },
+  {
+    question: '퇴직금에 세금이 붙나요?',
+    answer: '퇴직금은 퇴직소득세 과세 대상입니다. 근속연수에 따라 공제가 적용되며, 일반적으로 분리과세됩니다. 퇴직소득세 = (퇴직급여액 - 퇴직소득공제) × 세율 × (12 ÷ 근속연수)로 계산됩니다. 세율은 6%~45%의 누진세율이 적용됩니다.',
+  },
+  {
+    question: '주 15시간 미만 단시간 근로자도 퇴직금을 받나요?',
+    answer: '4주간을 평균하여 1주 소정근로시간이 15시간 미만인 단시간 근로자는 퇴직금 지급 대상에서 제외됩니다. 단, 15시간 이상 근무한 경우에는 1년 이상 근무 시 퇴직금을 받을 수 있습니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '퇴직금 계산기',
+  description,
+  url: 'https://mycalcstool.com/severance',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">퇴직금 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📝 퇴직금 계산기</h1>
+    <p class="text-gray-500 mt-2">2026 근로기준법 기준 법정 퇴직금 계산</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 근무 정보 입력</h2>
+    <div class="space-y-6">
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        <div>
+          <label for="join-date" class="block text-sm font-semibold text-gray-700 mb-2">입사일</label>
+          <input type="date" id="join-date" class="input-field" aria-label="입사일" />
+        </div>
+        <div>
+          <label for="leave-date" class="block text-sm font-semibold text-gray-700 mb-2">퇴사일</label>
+          <input type="date" id="leave-date" class="input-field" aria-label="퇴사일" />
+        </div>
+      </div>
+      <div>
+        <label for="monthly-wage" class="block text-sm font-semibold text-gray-700 mb-2">최근 3개월 월 평균 급여</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="monthly-wage" class="input-field flex-1" value="350" min="100" max="10000" step="10" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">기본급 + 제 수당 + 식대 등 포함 (상여금은 1/12 포함)</p>
+      </div>
+      <div>
+        <label for="bonus" class="block text-sm font-semibold text-gray-700 mb-2">최근 1년 상여금 합계 <span class="text-gray-400 font-normal">(선택)</span></label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="bonus" class="input-field flex-1" value="0" min="0" max="100000" step="10" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">상여금은 1/12를 평균임금에 가산</p>
+      </div>
+      <button id="calc-severance-btn" class="btn-primary" type="button">🔍 퇴직금 계산하기</button>
+    </div>
+  </section>
+
+  <div id="severance-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 퇴직금 계산 결과</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+        <div class="bg-primary-50 border border-primary-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-primary-600 font-medium mb-1">예상 퇴직금</p>
+          <p class="text-4xl font-bold tabular-nums text-primary-700" id="severance-amount">-</p>
+          <p class="text-sm text-primary-600">원</p>
+        </div>
+        <div class="bg-gray-50 border border-gray-200 rounded-xl p-5 text-center">
+          <p class="text-sm text-gray-600 font-medium mb-1">근속 기간</p>
+          <p class="text-3xl font-bold tabular-nums text-gray-700" id="work-period">-</p>
+        </div>
+      </div>
+      <div class="space-y-2">
+        {[
+          { id: 'daily-avg-wage', label: '1일 평균임금' },
+          { id: 'total-days', label: '총 재직 일수' },
+          { id: 'calc-formula', label: '계산 공식' },
+        ].map(item => (
+          <div class="flex justify-between items-center py-2 border-b border-gray-100 last:border-0">
+            <span class="text-sm text-gray-600">{item.label}</span>
+            <span class="text-sm tabular-nums text-gray-700 font-medium" id={item.id}>-</span>
+          </div>
+        ))}
+      </div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📖</span> 퇴직금 제도 안내</h2>
+    <div class="text-gray-700 space-y-3 leading-relaxed text-sm">
+      <p>퇴직금제도는 1년 이상 근무한 근로자에게 퇴직 시 지급하는 법정 제도입니다. 2012년부터는 퇴직연금(DB·DC형)으로 전환이 가능하며, 퇴직연금에 가입한 경우 계산 방식이 다를 수 있습니다.</p>
+      <p>퇴직금을 IRP(개인형 퇴직연금) 계좌로 수령하면 퇴직소득세를 이연할 수 있어 절세 효과가 있습니다. 55세 이후 연금 형태로 수령 시 퇴직소득세의 30~40%를 감면받을 수 있습니다.</p>
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/salary', label: '💰 연봉 계산기', desc: '실수령액 계산' },
+        { href: '/tax-refund', label: '📋 연말정산', desc: '환급액 예측' },
+        { href: '/loan', label: '🏦 대출 이자', desc: '대출 상환 계획' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+function fmt(n: number): string { return Math.round(n).toLocaleString('ko-KR') + '원'; }
+
+function calculate() {
+  const joinEl = document.getElementById('join-date') as HTMLInputElement;
+  const leaveEl = document.getElementById('leave-date') as HTMLInputElement;
+  const wageEl = document.getElementById('monthly-wage') as HTMLInputElement;
+  const bonusEl = document.getElementById('bonus') as HTMLInputElement;
+
+  const joinDate = new Date(joinEl?.value);
+  const leaveDate = new Date(leaveEl?.value);
+  const monthlyWageWan = parseFloat(wageEl?.value || '0');
+  const bonusWan = parseFloat(bonusEl?.value || '0');
+
+  if (!joinEl?.value || !leaveEl?.value) { alert('입사일과 퇴사일을 입력해주세요.'); return; }
+  if (isNaN(joinDate.getTime()) || isNaN(leaveDate.getTime())) { alert('올바른 날짜를 입력해주세요.'); return; }
+  if (leaveDate <= joinDate) { alert('퇴사일은 입사일보다 이후여야 합니다.'); return; }
+  if (isNaN(monthlyWageWan) || monthlyWageWan < 100) { alert('월 평균 급여를 올바르게 입력해주세요.'); return; }
+
+  const totalDays = Math.floor((leaveDate.getTime() - joinDate.getTime()) / (1000 * 60 * 60 * 24));
+  if (totalDays < 365) { alert('퇴직금은 1년(365일) 이상 근무해야 발생합니다.'); return; }
+
+  const monthlyWage = monthlyWageWan * 10000;
+  const bonusMonthly = (bonusWan * 10000) / 12;
+  // 3개월 평균임금 계산 (91일 기준)
+  const threeMonthWage = monthlyWage * 3 + bonusMonthly * 3;
+  const dailyAvgWage = threeMonthWage / 91;
+  const severance = Math.round(dailyAvgWage * 30 * (totalDays / 365));
+
+  const years = Math.floor(totalDays / 365);
+  const months = Math.floor((totalDays % 365) / 30);
+  const days = totalDays % 30;
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('severance-amount', severance.toLocaleString('ko-KR'));
+  setText('work-period', `${years}년 ${months}개월 ${days}일`);
+  setText('daily-avg-wage', fmt(dailyAvgWage));
+  setText('total-days', `${totalDays.toLocaleString('ko-KR')}일`);
+  setText('calc-formula', `${fmt(dailyAvgWage)} × 30일 × (${totalDays}일 ÷ 365)`);
+
+  const results = document.getElementById('severance-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  // 오늘 날짜 기본값
+  const today = new Date();
+  const leaveEl = document.getElementById('leave-date') as HTMLInputElement;
+  const joinEl = document.getElementById('join-date') as HTMLInputElement;
+  if (leaveEl) leaveEl.value = today.toISOString().split('T')[0];
+  if (joinEl) {
+    const threeYearsAgo = new Date(today);
+    threeYearsAgo.setFullYear(today.getFullYear() - 3);
+    joinEl.value = threeYearsAgo.toISOString().split('T')[0];
+  }
+  document.getElementById('calc-severance-btn')?.addEventListener('click', calculate);
+  calculate();
+});
+</script>

@@ -1,0 +1,299 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '2026 연말정산 환급 계산기 - 예상 환급액 미리 계산';
+const description = '2026년 연말정산 예상 환급액을 미리 계산하세요. 연봉, 각종 공제 항목(신용카드, 의료비, 교육비, 기부금 등)을 입력하면 예상 환급액 또는 추가 납부액을 확인할 수 있습니다.';
+const keywords = '연말정산 환급 계산기, 2026 연말정산, 연말정산 예상 환급액, 소득공제 계산기, 세액공제 계산기, 연말정산 계산';
+
+const faqItems = [
+  {
+    question: '연말정산 환급은 언제 받을 수 있나요?',
+    answer: '회사에서는 매년 2월 급여 지급 시 연말정산 환급금 또는 추가 납부액을 반영합니다. 환급액이 있으면 2월 급여에 더해서 받고, 추가 납부액이 있으면 2월 급여에서 차감됩니다. 일부 회사는 3월에 처리하기도 합니다.',
+  },
+  {
+    question: '13월의 급여를 받으려면 어떻게 해야 하나요?',
+    answer: '소득공제와 세액공제 항목을 최대한 활용하면 환급액을 높일 수 있습니다. 주요 방법: ① 신용카드보다 체크카드 사용 비율 높이기 ② ISA, IRP 등 절세 금융상품 활용 ③ 의료비, 교육비 영수증 챙기기 ④ 기부금 공제 활용. 11~12월에 전통시장, 대중교통, 도서 구매를 늘리는 것도 도움이 됩니다.',
+  },
+  {
+    question: '신용카드 소득공제는 어떻게 계산하나요?',
+    answer: '총 급여의 25%를 초과하는 사용액에 대해 공제가 적용됩니다. 신용카드 15%, 체크카드·현금영수증 30%, 전통시장·대중교통 40%, 도서·공연 30% 공제율이 적용됩니다. 공제 한도는 총급여에 따라 200~300만원입니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '연말정산 환급 계산기',
+  description,
+  url: 'https://mycalcstool.com/tax-refund',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">연말정산 환급 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📋 연말정산 환급 계산기</h1>
+    <p class="text-gray-500 mt-2">2026년 예상 환급액을 미리 확인하세요</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <div class="bg-yellow-50 border border-yellow-200 rounded-xl p-4 mb-6">
+    <p class="text-sm text-yellow-800">⚠️ <strong>참고용 계산기입니다.</strong> 실제 환급액은 개인 상황에 따라 다를 수 있으며, 정확한 계산은 국세청 홈택스를 이용하세요.</p>
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> 기본 정보</h2>
+    <div class="space-y-5">
+      <div>
+        <label for="tr-salary" class="block text-sm font-semibold text-gray-700 mb-2">연봉 (총급여액)</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="tr-salary" class="input-field flex-1" value="5000" min="1000" max="200000" step="100" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+      </div>
+      <div>
+        <label for="tr-paid-tax" class="block text-sm font-semibold text-gray-700 mb-2">기납부 소득세 (연간 납부한 소득세 합계)</label>
+        <div class="flex items-center gap-3">
+          <input type="number" id="tr-paid-tax" class="input-field flex-1" value="150" min="0" max="100000" step="10" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+        </div>
+        <p class="text-xs text-gray-400 mt-1">연봉계산기의 월 소득세 × 12로 대략 확인 가능합니다</p>
+      </div>
+      <div>
+        <label for="tr-dependents" class="block text-sm font-semibold text-gray-700 mb-2">부양가족 수 (본인 포함)</label>
+        <div class="flex gap-2">
+          {[1,2,3,4,5].map(n => (
+            <button class="tr-dep-btn px-4 py-2 rounded-lg border border-gray-300 text-sm font-medium text-gray-600 hover:border-primary-400 hover:text-primary-600 transition-colors" data-val={n} type="button">{n}명</button>
+          ))}
+        </div>
+        <input type="hidden" id="tr-dependents" value="1" />
+      </div>
+    </div>
+  </section>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">💳</span> 소득공제 항목</h2>
+    <div class="space-y-4">
+      {[
+        { id: 'tr-credit-card', label: '신용카드 사용액', hint: '연간 신용카드 사용액 총합' },
+        { id: 'tr-debit-card', label: '체크카드·현금영수증', hint: '체크카드 + 현금영수증 합계' },
+        { id: 'tr-traditional', label: '전통시장·대중교통', hint: '전통시장 + 대중교통 사용액' },
+      ].map(item => (
+        <div>
+          <label for={item.id} class="block text-sm font-semibold text-gray-700 mb-1">{item.label}</label>
+          <div class="flex items-center gap-3">
+            <input type="number" id={item.id} class="input-field flex-1" value="0" min="0" max="100000" step="10" inputmode="numeric" />
+            <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+          </div>
+          <p class="text-xs text-gray-400 mt-1">{item.hint}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">🏥</span> 세액공제 항목</h2>
+    <div class="space-y-4">
+      {[
+        { id: 'tr-medical', label: '의료비', hint: '본인·부양가족 의료비 (총급여 3% 초과분부터 공제)' },
+        { id: 'tr-education', label: '교육비', hint: '본인 대학원비, 자녀 교육비 등' },
+        { id: 'tr-donation', label: '기부금', hint: '종교단체, 지정기부금 등' },
+        { id: 'tr-irp', label: 'IRP·연금저축 납입액', hint: '연간 최대 900만원까지 납입 시 세액공제' },
+      ].map(item => (
+        <div>
+          <label for={item.id} class="block text-sm font-semibold text-gray-700 mb-1">{item.label}</label>
+          <div class="flex items-center gap-3">
+            <input type="number" id={item.id} class="input-field flex-1" value="0" min="0" max="100000" step="10" inputmode="numeric" />
+            <span class="text-gray-600 font-medium whitespace-nowrap">만원</span>
+          </div>
+          <p class="text-xs text-gray-400 mt-1">{item.hint}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <button id="calc-tax-refund-btn" class="btn-primary mb-6" type="button">🔍 연말정산 계산하기</button>
+
+  <!-- 결과 -->
+  <div id="tax-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> 연말정산 예상 결과</h2>
+      <div id="refund-banner" class="text-center py-8 rounded-xl mb-6"></div>
+      <div class="space-y-2">
+        {[
+          { id: 'tr-taxable-income', label: '과세표준 (공제 후)' },
+          { id: 'tr-calculated-tax', label: '산출세액' },
+          { id: 'tr-total-deduct', label: '세액공제 합계' },
+          { id: 'tr-final-tax', label: '결정세액' },
+          { id: 'tr-paid-display', label: '기납부 소득세' },
+          { id: 'tr-refund-amount', label: '환급 / 추가납부', bold: true },
+        ].map(item => (
+          <div class={`flex justify-between items-center py-2 border-b border-gray-100 last:border-0 ${item.bold ? 'font-bold text-lg' : ''}`}>
+            <span class={`text-sm ${item.bold ? 'text-gray-800' : 'text-gray-600'}`}>{item.label}</span>
+            <span class={`tabular-nums ${item.bold ? 'text-xl' : 'text-sm text-gray-700'}`} id={item.id}>-</span>
+          </div>
+        ))}
+      </div>
+    </section>
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">💡</span> 연말정산 절세 팁</h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      <div class="flex gap-3 p-3 bg-blue-50 rounded-xl">
+        <span class="text-xl">💳</span>
+        <div><p class="font-semibold text-blue-800">신용카드보다 체크카드</p><p class="text-blue-700">체크카드·현금영수증은 30% 공제, 신용카드는 15% 공제</p></div>
+      </div>
+      <div class="flex gap-3 p-3 bg-green-50 rounded-xl">
+        <span class="text-xl">🏦</span>
+        <div><p class="font-semibold text-green-800">IRP·연금저축 활용</p><p class="text-green-700">연간 최대 900만원 납입 시 16.5% 세액공제 (최대 148.5만원)</p></div>
+      </div>
+      <div class="flex gap-3 p-3 bg-purple-50 rounded-xl">
+        <span class="text-xl">🚌</span>
+        <div><p class="font-semibold text-purple-800">대중교통·전통시장 이용</p><p class="text-purple-700">40% 공제율 적용, 한도 추가 100만원</p></div>
+      </div>
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/salary', label: '💰 연봉 계산기', desc: '월 실수령액 계산' },
+        { href: '/loan', label: '🏦 대출 이자', desc: '대출 상환 계획' },
+        { href: '/compound', label: '📈 복리 계산기', desc: '투자 수익 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+let trDependents = 1;
+
+function calcEmployeeDeduction(annual: number): number {
+  if (annual <= 5000000) return annual * 0.70;
+  if (annual <= 15000000) return 3500000 + (annual - 5000000) * 0.40;
+  if (annual <= 45000000) return 7500000 + (annual - 15000000) * 0.15;
+  if (annual <= 100000000) return 12000000 + (annual - 45000000) * 0.05;
+  return Math.min(14750000 + (annual - 100000000) * 0.02, 20000000);
+}
+
+function calcIncomeTax(base: number): number {
+  if (base <= 0) return 0;
+  const brackets = [
+    {max:14000000, rate:0.06, ded:0},{max:50000000, rate:0.15, ded:1260000},
+    {max:88000000, rate:0.24, ded:5760000},{max:150000000, rate:0.35, ded:15440000},
+    {max:300000000, rate:0.38, ded:19940000},{max:Infinity, rate:0.40, ded:25940000},
+  ];
+  for (const b of brackets) if (base <= b.max) return Math.max(0, base * b.rate - b.ded);
+  return 0;
+}
+
+function fmt(n: number): string { return Math.round(n).toLocaleString('ko-KR') + '원'; }
+
+function calculate() {
+  const getVal = (id: string) => parseFloat((document.getElementById(id) as HTMLInputElement)?.value || '0') * 10000;
+  const salary = getVal('tr-salary');
+  const paidTax = getVal('tr-paid-tax');
+  const creditCard = getVal('tr-credit-card');
+  const debitCard = getVal('tr-debit-card');
+  const traditional = getVal('tr-traditional');
+  const medical = getVal('tr-medical');
+  const education = getVal('tr-education');
+  const donation = getVal('tr-donation');
+  const irp = getVal('tr-irp');
+
+  if (salary < 1000000) { alert('연봉을 올바르게 입력해주세요.'); return; }
+
+  // 근로소득공제
+  const empDeduction = calcEmployeeDeduction(salary);
+  // 기본공제
+  const basicDeduction = 1500000 * trDependents;
+
+  // 신용카드 소득공제
+  const cardThreshold = salary * 0.25;
+  const totalCard = creditCard + debitCard + traditional;
+  let cardDeduction = 0;
+  if (totalCard > cardThreshold) {
+    const excess = totalCard - cardThreshold;
+    // 간이 계산: 초과분의 평균 공제율 25% 적용
+    cardDeduction = Math.min(excess * 0.25, 3000000);
+  }
+
+  const taxableIncome = Math.max(0, salary - empDeduction - basicDeduction - cardDeduction);
+  const calculatedTax = calcIncomeTax(taxableIncome);
+
+  // 세액공제
+  const medicalCredit = Math.max(0, medical - salary * 0.03) * 0.15;
+  const educationCredit = education * 0.15;
+  const donationCredit = donation * 0.15;
+  const irpCredit = Math.min(irp, 9000000) * 0.165;
+  const totalCredit = medicalCredit + educationCredit + donationCredit + irpCredit;
+
+  const finalTax = Math.max(0, calculatedTax - totalCredit);
+  const localTax = finalTax * 0.1;
+  const totalFinalTax = finalTax + localTax;
+  const refund = paidTax - totalFinalTax;
+
+  const setText = (id: string, val: string) => { const el = document.getElementById(id); if (el) el.textContent = val; };
+  setText('tr-taxable-income', fmt(taxableIncome));
+  setText('tr-calculated-tax', fmt(calculatedTax));
+  setText('tr-total-deduct', fmt(totalCredit));
+  setText('tr-final-tax', fmt(totalFinalTax));
+  setText('tr-paid-display', fmt(paidTax));
+  setText('tr-refund-amount', (refund >= 0 ? '환급 ' : '추가납부 ') + fmt(Math.abs(refund)));
+
+  const banner = document.getElementById('refund-banner');
+  if (banner) {
+    if (refund >= 0) {
+      banner.className = 'text-center py-8 rounded-xl mb-6 bg-green-50 border border-green-200';
+      banner.innerHTML = `<p class="text-sm text-green-600 font-medium mb-2">🎉 예상 환급액</p><p class="text-5xl font-bold tabular-nums text-green-700">${Math.abs(Math.round(refund)).toLocaleString('ko-KR')}</p><p class="text-green-600 mt-1">원</p>`;
+    } else {
+      banner.className = 'text-center py-8 rounded-xl mb-6 bg-red-50 border border-red-200';
+      banner.innerHTML = `<p class="text-sm text-red-600 font-medium mb-2">⚠️ 예상 추가 납부액</p><p class="text-5xl font-bold tabular-nums text-red-700">${Math.abs(Math.round(refund)).toLocaleString('ko-KR')}</p><p class="text-red-600 mt-1">원</p>`;
+    }
+  }
+
+  const results = document.getElementById('tax-results');
+  if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('.tr-dep-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      trDependents = parseInt((btn as HTMLElement).dataset.val || '1', 10);
+      document.querySelectorAll('.tr-dep-btn').forEach(b => {
+        b.classList.toggle('bg-primary-600', b === btn);
+        b.classList.toggle('text-white', b === btn);
+        b.classList.toggle('border-primary-600', b === btn);
+      });
+      (document.getElementById('tr-dependents') as HTMLInputElement).value = String(trDependents);
+    });
+  });
+  const firstBtn = document.querySelector('.tr-dep-btn') as HTMLElement;
+  if (firstBtn) firstBtn.click();
+  document.getElementById('calc-tax-refund-btn')?.addEventListener('click', calculate);
+});
+</script>

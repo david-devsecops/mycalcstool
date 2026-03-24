@@ -1,0 +1,62 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import siteConfig from '../data/site-config.json';
+
+const title = '사이트 소개 - mycalcstool';
+const description = 'mycalcstool은 실생활에 필요한 계산기를 무료로 제공하는 온라인 서비스입니다. 대출, 연봉, 건강, 생활 전반의 계산기를 제공합니다.';
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="space-y-6">
+    <div class="card">
+      <h1 class="text-2xl font-bold text-gray-800 mb-4">mycalcstool 소개</h1>
+      <p class="text-gray-600 leading-relaxed">
+        mycalcstool은 복잡한 계산을 쉽고 빠르게 해결해드리는 무료 온라인 계산기 서비스입니다.
+        대출 이자, 연봉 실수령액, BMI, 복리 투자 수익, 퇴직금 등 일상 생활과 금융에 필요한
+        다양한 계산기를 제공합니다.
+      </p>
+    </div>
+
+    <div class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">서비스 특징</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+        {[
+          { icon: '⚡', title: '빠른 계산', desc: '입력 즉시 계산 결과를 확인할 수 있습니다.' },
+          { icon: '🔒', title: '개인정보 보호', desc: '모든 계산은 브라우저에서 처리됩니다. 데이터가 서버로 전송되지 않습니다.' },
+          { icon: '📱', title: '모바일 최적화', desc: '스마트폰, 태블릿, PC 어디서나 편리하게 사용할 수 있습니다.' },
+          { icon: '💯', title: '무료 제공', desc: '모든 계산기는 회원가입 없이 무료로 이용할 수 있습니다.' },
+        ].map(feature => (
+          <div class="flex gap-3">
+            <span class="text-2xl flex-shrink-0" aria-hidden="true">{feature.icon}</span>
+            <div>
+              <h3 class="font-semibold text-gray-700">{feature.title}</h3>
+              <p class="text-sm text-gray-500 mt-1">{feature.desc}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">제공 계산기 목록</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+        {siteConfig.calculators.map(calc => (
+          <a href={calc.path} class="flex items-center gap-2 p-2 rounded-lg hover:bg-gray-50 transition-colors group">
+            <span class="text-xl" aria-hidden="true">{calc.icon}</span>
+            <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600 transition-colors">{calc.name}</span>
+          </a>
+        ))}
+      </div>
+    </div>
+
+    <div class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-3">면책 조항</h2>
+      <p class="text-sm text-gray-600 leading-relaxed">
+        mycalcstool의 계산 결과는 일반적인 참고 정보 제공을 목적으로 하며,
+        법적 효력이 없습니다. 실제 금융 계약, 세금 신고, 의료 결정 등 중요한 사항에 대해서는
+        반드시 공인된 전문가(공인중개사, 세무사, 의사 등)와 상담하시기 바랍니다.
+        계산 결과의 정확성에 대해 서비스 운영자는 책임을 지지 않습니다.
+      </p>
+    </div>
+  </div>
+</BaseLayout>
