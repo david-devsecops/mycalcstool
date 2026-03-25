@@ -1,0 +1,259 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Compound Interest Calculator — See How Your Money Grows';
+const description = 'Calculate compound interest with monthly contributions. Visualize your investment growth over time with interactive charts.';
+const keywords = 'compound interest calculator, investment calculator, savings calculator, interest rate calculator, money growth';
+
+const faqItems = [
+  {
+    question: 'What is compound interest?',
+    answer: 'Compound interest is interest calculated on both the initial principal and the accumulated interest from previous periods. This "interest on interest" effect causes investments to grow exponentially over time — the longer you invest, the more powerful the effect becomes.',
+  },
+  {
+    question: 'How often should interest compound for maximum growth?',
+    answer: 'The more frequently interest compounds, the more you earn. Daily compounding yields slightly more than monthly, which yields more than annual. For most savings accounts and investments, monthly compounding is most common. The difference between daily and monthly compounding is usually small.',
+  },
+  {
+    question: 'What is the Rule of 72?',
+    answer: 'The Rule of 72 is a quick way to estimate how long it takes to double your money. Divide 72 by your annual interest rate: at 8% per year, your money doubles in approximately 72 ÷ 8 = 9 years.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Compound Interest Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/compound-interest-calculator',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Compound Interest Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📈 Compound Interest Calculator</h1>
+    <p class="text-gray-500 mt-2">Watch your savings and investments grow over time</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">💰</span> Investment Details</h2>
+    <div class="space-y-4">
+      <div>
+        <label for="principal" class="block text-sm font-semibold text-gray-700 mb-1">Initial Investment</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold text-lg">$</span>
+          <input type="number" id="principal" class="input-field" value="10000" min="0" step="100" inputmode="numeric" oninput="calcCompound()" />
+        </div>
+      </div>
+      <div>
+        <label for="monthly-contrib" class="block text-sm font-semibold text-gray-700 mb-1">Monthly Contribution</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold text-lg">$</span>
+          <input type="number" id="monthly-contrib" class="input-field" value="200" min="0" step="10" inputmode="numeric" oninput="calcCompound()" />
+        </div>
+      </div>
+      <div>
+        <label for="annual-rate" class="block text-sm font-semibold text-gray-700 mb-1">Annual Interest Rate</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="annual-rate" class="input-field" value="7" min="0" max="100" step="0.1" inputmode="decimal" oninput="calcCompound()" />
+          <span class="text-gray-600 font-medium">%</span>
+        </div>
+        <!-- Preset buttons -->
+        <div class="flex gap-2 mt-2 flex-wrap">
+          <button class="rate-btn px-3 py-1 rounded-lg border text-xs font-semibold border-gray-200 text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="setRate(10.3,'S&amp;P 500 avg')">S&P 500 (10.3%)</button>
+          <button class="rate-btn px-3 py-1 rounded-lg border text-xs font-semibold border-gray-200 text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="setRate(5,'Bond avg')">Bond avg (5%)</button>
+          <button class="rate-btn px-3 py-1 rounded-lg border text-xs font-semibold border-gray-200 text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="setRate(4.5,'Savings')">Savings (4.5%)</button>
+          <button class="rate-btn px-3 py-1 rounded-lg border text-xs font-semibold border-gray-200 text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="setRate(3,'Conservative')">Conservative (3%)</button>
+        </div>
+      </div>
+      <div>
+        <label for="years" class="block text-sm font-semibold text-gray-700 mb-1">Time Period</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="years" class="input-field" value="20" min="1" max="50" step="1" inputmode="numeric" oninput="calcCompound()" />
+          <span class="text-gray-600 font-medium">years</span>
+        </div>
+        <input type="range" id="years-slider" class="range-slider mt-2" min="1" max="50" step="1" value="20" oninput="document.getElementById('years').value=this.value;calcCompound()" />
+      </div>
+      <div>
+        <label for="compound-freq" class="block text-sm font-semibold text-gray-700 mb-1">Compound Frequency</label>
+        <select id="compound-freq" class="input-field" onchange="calcCompound()">
+          <option value="12" selected>Monthly</option>
+          <option value="365">Daily</option>
+          <option value="4">Quarterly</option>
+          <option value="1">Annually</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="card mb-6" aria-live="polite">
+    <h2 class="section-title"><span aria-hidden="true">📊</span> Results</h2>
+    <div class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6">
+      <div class="bg-primary-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Future Value</p>
+        <p class="text-xl font-bold tabular-nums text-primary-700" id="res-future">—</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Total Contributions</p>
+        <p class="text-xl font-bold tabular-nums text-gray-700" id="res-contributions">—</p>
+      </div>
+      <div class="bg-green-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Interest Earned</p>
+        <p class="text-xl font-bold tabular-nums text-green-700" id="res-interest">—</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Interest %</p>
+        <p class="text-xl font-bold tabular-nums text-gray-700" id="res-interest-pct">—</p>
+      </div>
+    </div>
+    <canvas id="growth-chart" height="280"></canvas>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <!-- Year-by-year table -->
+  <section class="card mb-6">
+    <div class="flex justify-between items-center mb-3">
+      <h2 class="section-title mb-0"><span aria-hidden="true">📅</span> Year-by-Year Breakdown</h2>
+      <button id="toggle-table" class="text-sm text-primary-600 font-semibold hover:underline" type="button" onclick="toggleTable()">Show all</button>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-600">
+            <th class="px-3 py-2 text-center font-semibold">Year</th>
+            <th class="px-3 py-2 text-right font-semibold">Balance</th>
+            <th class="px-3 py-2 text-right font-semibold">Contributions</th>
+            <th class="px-3 py-2 text-right font-semibold">Interest</th>
+          </tr>
+        </thead>
+        <tbody id="breakdown-table" class="divide-y divide-gray-100"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <AdSlot slot="content" format="rectangle" />
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script is:inline>
+let growthChart = null;
+let tableExpanded = false;
+let yearlyData = [];
+
+function setRate(rate, label) {
+  document.getElementById('annual-rate').value = rate;
+  calcCompound();
+}
+
+function fmtDollar(n) {
+  return '$' + Math.round(n).toLocaleString('en-US');
+}
+
+function calcCompound() {
+  const P = parseFloat(document.getElementById('principal').value) || 0;
+  const PMT = parseFloat(document.getElementById('monthly-contrib').value) || 0;
+  const r = (parseFloat(document.getElementById('annual-rate').value) || 0) / 100;
+  const t = parseInt(document.getElementById('years').value) || 1;
+  const n = parseInt(document.getElementById('compound-freq').value) || 12;
+  document.getElementById('years-slider').value = t;
+
+  yearlyData = [];
+  let balance = P;
+  let totalContributions = P;
+
+  for (let year = 1; year <= t; year++) {
+    const prevBalance = balance;
+    // Compound the balance for this year
+    balance = balance * Math.pow(1 + r/n, n);
+    // Add PMT contributions compounded
+    const contribThisYear = PMT * 12;
+    const pmtGrowth = PMT * (Math.pow(1 + r/n, n) - 1) / (r/n || 1);
+    if (r > 0) {
+      balance = balance + PMT * ((Math.pow(1 + r/n, n) - 1) / (r/n));
+    } else {
+      balance = balance + PMT * 12;
+    }
+    totalContributions += contribThisYear;
+    yearlyData.push({ year, balance, contributions: totalContributions, interest: balance - totalContributions });
+  }
+
+  const finalBalance = yearlyData[yearlyData.length - 1]?.balance || P;
+  const totalInterest = finalBalance - totalContributions;
+  const interestPct = finalBalance > 0 ? (totalInterest / finalBalance) * 100 : 0;
+
+  document.getElementById('res-future').textContent = fmtDollar(finalBalance);
+  document.getElementById('res-contributions').textContent = fmtDollar(totalContributions);
+  document.getElementById('res-interest').textContent = fmtDollar(totalInterest);
+  document.getElementById('res-interest-pct').textContent = interestPct.toFixed(1) + '%';
+
+  renderChart();
+  renderTable();
+}
+
+function renderChart() {
+  const labels = yearlyData.map(d => 'Year ' + d.year);
+  const contributions = yearlyData.map(d => Math.round(d.contributions));
+  const interest = yearlyData.map(d => Math.max(0, Math.round(d.interest)));
+
+  if (growthChart) growthChart.destroy();
+  const ctx = document.getElementById('growth-chart').getContext('2d');
+  growthChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels,
+      datasets: [
+        { label: 'Contributions', data: contributions, backgroundColor: '#93C5FD', stack: 's' },
+        { label: 'Interest', data: interest, backgroundColor: '#10B981', stack: 's' },
+      ],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { position: 'bottom' }, tooltip: { callbacks: { label: ctx => ctx.dataset.label + ': $' + ctx.raw.toLocaleString('en-US') } } },
+      scales: { x: { stacked: true }, y: { stacked: true, ticks: { callback: v => '$' + (v/1000).toFixed(0) + 'k' } } },
+    },
+  });
+}
+
+function renderTable() {
+  const showRows = tableExpanded ? yearlyData.length : Math.min(5, yearlyData.length);
+  const tbody = document.getElementById('breakdown-table');
+  tbody.innerHTML = yearlyData.slice(0, showRows).map(d => `
+    <tr>
+      <td class="px-3 py-2 text-center font-medium text-gray-700">${d.year}</td>
+      <td class="px-3 py-2 text-right tabular-nums">${fmtDollar(d.balance)}</td>
+      <td class="px-3 py-2 text-right tabular-nums">${fmtDollar(d.contributions)}</td>
+      <td class="px-3 py-2 text-right tabular-nums text-green-600">${fmtDollar(d.interest)}</td>
+    </tr>
+  `).join('');
+  const btn = document.getElementById('toggle-table');
+  if (btn) btn.textContent = tableExpanded ? 'Show less' : 'Show all';
+}
+
+function toggleTable() {
+  tableExpanded = !tableExpanded;
+  renderTable();
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  calcCompound();
+});
+</script>

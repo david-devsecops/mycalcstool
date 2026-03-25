@@ -1,0 +1,282 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'TDEE Calculator — Total Daily Energy Expenditure & Calories';
+const description = 'Calculate your TDEE, BMR, and daily calorie needs based on age, gender, weight, height, and activity level. Get personalized macro recommendations.';
+const keywords = 'TDEE calculator, calorie calculator, how many calories, BMR calculator, daily calorie needs, macros calculator';
+
+const faqItems = [
+  {
+    question: 'What is TDEE and why does it matter?',
+    answer: 'TDEE (Total Daily Energy Expenditure) is the total number of calories your body burns in a day, including your basal metabolic rate (BMR) plus calories burned through activity. Knowing your TDEE helps you determine how many calories to eat to lose weight, maintain, or gain muscle.',
+  },
+  {
+    question: 'What is the difference between BMR and TDEE?',
+    answer: 'BMR (Basal Metabolic Rate) is the number of calories your body needs at complete rest to maintain basic functions like breathing and circulation. TDEE multiplies BMR by an activity factor to account for daily movement and exercise.',
+  },
+  {
+    question: 'How accurate is the Mifflin-St Jeor equation?',
+    answer: 'The Mifflin-St Jeor equation is widely considered the most accurate BMR formula for most people, with research showing it predicts actual resting metabolic rate within about 10%. Individual factors like muscle mass, hormones, and genetics can cause variation.',
+  },
+  {
+    question: 'How many calories should I eat to lose weight?',
+    answer: 'A deficit of approximately 500 calories per day below your TDEE will result in about 1 lb (0.45 kg) of weight loss per week. Avoid going below 1,200 calories/day (women) or 1,500 calories/day (men) without medical supervision.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'TDEE Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/tdee-calculator',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">TDEE Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">🔥 TDEE Calculator</h1>
+    <p class="text-gray-500 mt-2">Total Daily Energy Expenditure · BMR · Macros</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> Your Details</h2>
+    <div class="space-y-4">
+      <!-- Gender -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">Gender</p>
+        <div class="flex gap-3">
+          <button id="tdee-male" class="gender-btn flex-1 py-2 rounded-xl border-2 border-primary-500 bg-primary-50 text-primary-700 font-semibold text-sm" type="button" onclick="setGender('male')">Male</button>
+          <button id="tdee-female" class="gender-btn flex-1 py-2 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold text-sm" type="button" onclick="setGender('female')">Female</button>
+        </div>
+      </div>
+      <!-- Age -->
+      <div>
+        <label for="tdee-age" class="block text-sm font-semibold text-gray-700 mb-1">Age</label>
+        <input type="number" id="tdee-age" class="input-field" value="30" min="10" max="100" step="1" inputmode="numeric" />
+      </div>
+      <!-- Unit toggle -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">Units</p>
+        <div class="flex gap-3">
+          <button id="tdee-imperial" class="unit-btn flex-1 py-2 rounded-xl border-2 border-primary-500 bg-primary-50 text-primary-700 font-semibold text-sm" type="button" onclick="setUnit('imperial')">Imperial</button>
+          <button id="tdee-metric" class="unit-btn flex-1 py-2 rounded-xl border-2 border-gray-200 text-gray-500 font-semibold text-sm" type="button" onclick="setUnit('metric')">Metric</button>
+        </div>
+      </div>
+      <!-- Height imperial -->
+      <div id="height-imperial">
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Height</label>
+        <div class="flex gap-3">
+          <div class="flex items-center gap-2 flex-1">
+            <input type="number" id="tdee-ft" class="input-field" value="5" min="1" max="8" step="1" inputmode="numeric" />
+            <span class="text-gray-600 font-medium">ft</span>
+          </div>
+          <div class="flex items-center gap-2 flex-1">
+            <input type="number" id="tdee-in" class="input-field" value="9" min="0" max="11" step="1" inputmode="numeric" />
+            <span class="text-gray-600 font-medium">in</span>
+          </div>
+        </div>
+      </div>
+      <!-- Height metric -->
+      <div id="height-metric" class="hidden">
+        <label for="tdee-cm" class="block text-sm font-semibold text-gray-700 mb-1">Height</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="tdee-cm" class="input-field" value="175" min="50" max="300" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">cm</span>
+        </div>
+      </div>
+      <!-- Weight imperial -->
+      <div id="weight-imperial">
+        <label for="tdee-lbs" class="block text-sm font-semibold text-gray-700 mb-1">Weight</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="tdee-lbs" class="input-field" value="160" min="50" max="700" step="0.1" inputmode="decimal" />
+          <span class="text-gray-600 font-medium">lbs</span>
+        </div>
+      </div>
+      <!-- Weight metric -->
+      <div id="weight-metric" class="hidden">
+        <label for="tdee-kg" class="block text-sm font-semibold text-gray-700 mb-1">Weight</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="tdee-kg" class="input-field" value="70" min="20" max="300" step="0.1" inputmode="decimal" />
+          <span class="text-gray-600 font-medium">kg</span>
+        </div>
+      </div>
+      <!-- Activity -->
+      <div>
+        <label for="activity" class="block text-sm font-semibold text-gray-700 mb-1">Activity Level</label>
+        <select id="activity" class="input-field">
+          <option value="1.2">Sedentary (office job, little or no exercise)</option>
+          <option value="1.375">Lightly active (1–3 days/week)</option>
+          <option value="1.55" selected>Moderately active (3–5 days/week)</option>
+          <option value="1.725">Very active (6–7 days/week)</option>
+          <option value="1.9">Extremely active (athlete, 2× daily training)</option>
+        </select>
+      </div>
+      <button id="calc-tdee-btn" class="btn-primary" type="button">Calculate TDEE</button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <div id="tdee-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> Your Results</h2>
+      <div class="grid grid-cols-2 gap-4 mb-4">
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">BMR</p>
+          <p class="text-2xl font-bold tabular-nums text-gray-700" id="res-bmr">—</p>
+          <p class="text-xs text-gray-400">calories/day at rest</p>
+        </div>
+        <div class="bg-primary-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">TDEE</p>
+          <p class="text-2xl font-bold tabular-nums text-primary-700" id="res-tdee">—</p>
+          <p class="text-xs text-gray-400">maintenance calories</p>
+        </div>
+      </div>
+      <!-- Goal cards -->
+      <h3 class="font-semibold text-gray-700 mb-3">Daily Calorie Goals</h3>
+      <div class="grid grid-cols-3 gap-3 mb-5">
+        <div class="rounded-xl p-4 text-center bg-blue-50 border border-blue-100">
+          <p class="text-xs text-blue-600 font-semibold mb-1">Lose Weight</p>
+          <p class="text-xl font-bold tabular-nums text-blue-700" id="res-lose">—</p>
+          <p class="text-xs text-blue-400">–500 cal/day</p>
+        </div>
+        <div class="rounded-xl p-4 text-center bg-green-50 border border-green-100">
+          <p class="text-xs text-green-600 font-semibold mb-1">Maintain</p>
+          <p class="text-xl font-bold tabular-nums text-green-700" id="res-maintain">—</p>
+          <p class="text-xs text-green-400">TDEE</p>
+        </div>
+        <div class="rounded-xl p-4 text-center bg-orange-50 border border-orange-100">
+          <p class="text-xs text-orange-600 font-semibold mb-1">Gain Muscle</p>
+          <p class="text-xl font-bold tabular-nums text-orange-700" id="res-gain">—</p>
+          <p class="text-xs text-orange-400">+300 cal/day</p>
+        </div>
+      </div>
+      <!-- Macros (based on maintain) -->
+      <h3 class="font-semibold text-gray-700 mb-3">Recommended Macros <span class="text-gray-400 font-normal text-sm">(based on maintenance)</span></h3>
+      <div class="grid grid-cols-3 gap-3">
+        <div class="bg-yellow-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-yellow-600 font-semibold mb-1">Carbs (50%)</p>
+          <p class="text-xl font-bold tabular-nums text-yellow-700" id="res-carbs">—</p>
+          <p class="text-xs text-yellow-400">grams/day</p>
+        </div>
+        <div class="bg-red-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-red-600 font-semibold mb-1">Protein (30%)</p>
+          <p class="text-xl font-bold tabular-nums text-red-700" id="res-protein">—</p>
+          <p class="text-xs text-red-400">grams/day</p>
+        </div>
+        <div class="bg-purple-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-purple-600 font-semibold mb-1">Fat (20%)</p>
+          <p class="text-xl font-bold tabular-nums text-purple-700" id="res-fat">—</p>
+          <p class="text-xs text-purple-400">grams/day</p>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline>
+let tdeeGender = 'male';
+let tdeeUnit = 'imperial';
+
+function setGender(g) {
+  tdeeGender = g;
+  ['male','female'].forEach(x => {
+    const active = x === g;
+    const btn = document.getElementById('tdee-' + x);
+    btn.classList.toggle('border-primary-500', active);
+    btn.classList.toggle('bg-primary-50', active);
+    btn.classList.toggle('text-primary-700', active);
+    btn.classList.toggle('border-gray-200', !active);
+    btn.classList.toggle('text-gray-500', !active);
+  });
+}
+
+function setUnit(u) {
+  tdeeUnit = u;
+  ['imperial','metric'].forEach(x => {
+    const active = x === u;
+    document.getElementById('tdee-' + x).classList.toggle('border-primary-500', active);
+    document.getElementById('tdee-' + x).classList.toggle('bg-primary-50', active);
+    document.getElementById('tdee-' + x).classList.toggle('text-primary-700', active);
+    document.getElementById('tdee-' + x).classList.toggle('border-gray-200', !active);
+    document.getElementById('tdee-' + x).classList.toggle('text-gray-500', !active);
+    document.getElementById('height-' + x).classList.toggle('hidden', !active);
+    document.getElementById('weight-' + x).classList.toggle('hidden', !active);
+  });
+}
+
+function calcTDEE() {
+  const age = parseFloat(document.getElementById('tdee-age').value);
+  let weightKg, heightCm;
+
+  if (tdeeUnit === 'imperial') {
+    const ft = parseFloat(document.getElementById('tdee-ft').value) || 0;
+    const inc = parseFloat(document.getElementById('tdee-in').value) || 0;
+    const lbs = parseFloat(document.getElementById('tdee-lbs').value);
+    if (isNaN(lbs) || lbs <= 0) { alert('Please enter a valid weight.'); return; }
+    heightCm = (ft * 12 + inc) * 2.54;
+    weightKg = lbs * 0.453592;
+  } else {
+    heightCm = parseFloat(document.getElementById('tdee-cm').value);
+    weightKg = parseFloat(document.getElementById('tdee-kg').value);
+    if (isNaN(heightCm) || isNaN(weightKg) || heightCm <= 0 || weightKg <= 0) { alert('Please enter valid height and weight.'); return; }
+  }
+
+  if (isNaN(age) || age < 10 || age > 120) { alert('Please enter a valid age (10–120).'); return; }
+
+  // Mifflin-St Jeor
+  let bmr;
+  if (tdeeGender === 'male') {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age + 5;
+  } else {
+    bmr = 10 * weightKg + 6.25 * heightCm - 5 * age - 161;
+  }
+
+  const activityFactor = parseFloat(document.getElementById('activity').value);
+  const tdee = bmr * activityFactor;
+  const lose = tdee - 500;
+  const gain = tdee + 300;
+
+  const carbs = (tdee * 0.50) / 4;
+  const protein = (tdee * 0.30) / 4;
+  const fat = (tdee * 0.20) / 9;
+
+  function fmtCal(n) { return Math.round(n).toLocaleString('en-US') + ' cal'; }
+  document.getElementById('res-bmr').textContent = fmtCal(bmr);
+  document.getElementById('res-tdee').textContent = fmtCal(tdee);
+  document.getElementById('res-lose').textContent = fmtCal(Math.max(1000, lose));
+  document.getElementById('res-maintain').textContent = fmtCal(tdee);
+  document.getElementById('res-gain').textContent = fmtCal(gain);
+  document.getElementById('res-carbs').textContent = Math.round(carbs) + 'g';
+  document.getElementById('res-protein').textContent = Math.round(protein) + 'g';
+  document.getElementById('res-fat').textContent = Math.round(fat) + 'g';
+
+  const results = document.getElementById('tdee-results');
+  results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calc-tdee-btn').addEventListener('click', calcTDEE);
+});
+</script>

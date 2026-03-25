@@ -1,0 +1,91 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Privacy Policy | mycalcstool';
+const description = 'Privacy Policy for mycalcstool.com — learn how we handle your data when you use our free online calculators.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Privacy Policy',
+  url: 'https://mycalcstool.com/en/privacy',
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Privacy Policy</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Privacy Policy</h1>
+    <p class="text-gray-400 text-sm mt-1">Last updated: March 2026</p>
+  </div>
+
+  <section class="card mb-6 prose prose-gray max-w-none">
+    <h2 class="text-lg font-bold text-gray-800 mb-3">1. Overview</h2>
+    <p class="text-gray-600 mb-4">
+      mycalcstool.com ("we", "our", or "us") is committed to protecting your privacy. This Privacy Policy explains what information we collect, how we use it, and your rights regarding your data. By using our website, you agree to the practices described in this policy.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">2. Information We Collect</h2>
+    <h3 class="font-semibold text-gray-700 mb-2">Calculator Inputs</h3>
+    <p class="text-gray-600 mb-3">
+      All calculations on mycalcstool.com are performed entirely in your browser (client-side JavaScript). We do <strong>not</strong> collect, store, or transmit any numbers, measurements, financial data, or personal health information you enter into our calculators. Your data never leaves your device.
+    </p>
+    <h3 class="font-semibold text-gray-700 mb-2">Analytics (Google Analytics)</h3>
+    <p class="text-gray-600 mb-3">
+      We use Google Analytics to understand how visitors use our site. Google Analytics collects anonymized data including: pages visited, time spent on pages, browser and device type, approximate geographic location (country/city level), and referring website. This data does not identify you personally. You can opt out using the <a href="https://tools.google.com/dlpage/gaoptout" class="text-primary-600 hover:underline" target="_blank" rel="noopener">Google Analytics Opt-out Browser Add-on</a>.
+    </p>
+    <h3 class="font-semibold text-gray-700 mb-2">Advertising (Google AdSense)</h3>
+    <p class="text-gray-600 mb-4">
+      We display advertisements served by Google AdSense. Google may use cookies and similar technologies to serve personalized ads based on your browsing history. For more information, see <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">Google's Privacy Policy</a>. You can manage your ad personalization settings at <a href="https://adssettings.google.com" class="text-primary-600 hover:underline" target="_blank" rel="noopener">adssettings.google.com</a>.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">3. Cookies</h2>
+    <p class="text-gray-600 mb-4">
+      We use the following types of cookies:
+    </p>
+    <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+      <li><strong>Analytics cookies</strong> — set by Google Analytics to track usage patterns</li>
+      <li><strong>Advertising cookies</strong> — set by Google AdSense to serve relevant ads</li>
+      <li><strong>Preference cookies</strong> — we may store your language/unit preferences locally in your browser</li>
+    </ul>
+    <p class="text-gray-600 mb-4">You can control cookies through your browser settings. Blocking cookies may affect some site functionality.</p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">4. Third-Party Services</h2>
+    <p class="text-gray-600 mb-4">
+      Our site uses the following third-party services, each with their own privacy policies:
+    </p>
+    <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+      <li>Google Analytics — <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
+      <li>Google AdSense — <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
+      <li>Chart.js (CDN by jsDelivr) — no personal data collected</li>
+      <li>Cloudflare (hosting/CDN) — <a href="https://www.cloudflare.com/privacypolicy/" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
+    </ul>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">5. Children's Privacy</h2>
+    <p class="text-gray-600 mb-4">
+      Our services are not directed to children under 13. We do not knowingly collect personal information from children. If you believe a child has provided us with personal information, please contact us.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">6. Your Rights</h2>
+    <p class="text-gray-600 mb-4">
+      Depending on your location, you may have the right to access, correct, or delete any personal data we hold about you. Since we collect minimal personal data (only anonymized analytics), most requests can be handled by opting out of Google Analytics as described above.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">7. Changes to This Policy</h2>
+    <p class="text-gray-600 mb-4">
+      We may update this Privacy Policy from time to time. Changes will be posted on this page with an updated revision date. Continued use of our site after changes constitutes acceptance of the updated policy.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">8. Contact</h2>
+    <p class="text-gray-600">
+      If you have questions about this Privacy Policy, please contact us via the feedback form on our website.
+    </p>
+  </section>
+</BaseLayout>

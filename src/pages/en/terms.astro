@@ -1,0 +1,97 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Terms of Use | mycalcstool';
+const description = 'Terms of Use for mycalcstool.com — please read before using our free online calculators.';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Terms of Use',
+  url: 'https://mycalcstool.com/en/terms',
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Terms of Use</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Terms of Use</h1>
+    <p class="text-gray-400 text-sm mt-1">Last updated: March 2026</p>
+  </div>
+
+  <section class="card mb-6">
+    <h2 class="text-lg font-bold text-gray-800 mb-3">1. Acceptance of Terms</h2>
+    <p class="text-gray-600 mb-4">
+      By accessing or using mycalcstool.com (the "Site"), you agree to be bound by these Terms of Use. If you do not agree to these terms, please do not use the Site. We reserve the right to update these terms at any time; continued use of the Site constitutes acceptance of any changes.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">2. Informational Purposes Only</h2>
+    <p class="text-gray-600 mb-4">
+      All calculators, tools, and content provided on mycalcstool.com are for <strong>informational and educational purposes only</strong>. The results produced by our calculators are estimates based on the inputs you provide and standard mathematical formulas.
+    </p>
+    <p class="text-gray-600 mb-4">
+      Nothing on this Site constitutes financial, legal, tax, medical, or professional advice of any kind. Before making any financial, health, or legal decisions, please consult with a qualified professional (such as a licensed financial advisor, CPA, attorney, or healthcare provider).
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">3. No Warranties</h2>
+    <p class="text-gray-600 mb-4">
+      The Site and all its content are provided on an "as is" and "as available" basis without warranty of any kind, either express or implied, including but not limited to:
+    </p>
+    <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+      <li>Accuracy, completeness, or timeliness of calculation results</li>
+      <li>Fitness for a particular purpose</li>
+      <li>Non-infringement of third-party rights</li>
+      <li>Uninterrupted or error-free operation</li>
+    </ul>
+    <p class="text-gray-600 mb-4">
+      Tax rates, financial regulations, and other data used in our calculators may change. While we strive to keep our data current, we make no guarantee that all figures reflect the most recent laws or rates. Always verify important figures with official sources (e.g., IRS.gov for US tax information).
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">4. Limitation of Liability</h2>
+    <p class="text-gray-600 mb-4">
+      To the fullest extent permitted by applicable law, mycalcstool.com and its operators shall not be liable for any direct, indirect, incidental, consequential, or punitive damages arising from:
+    </p>
+    <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+      <li>Your use of or reliance on any calculator results or content on this Site</li>
+      <li>Errors, inaccuracies, or omissions in our content</li>
+      <li>Any interruption or cessation of service</li>
+      <li>Any unauthorized access to or alteration of your data</li>
+    </ul>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">5. Intellectual Property</h2>
+    <p class="text-gray-600 mb-4">
+      All content on this Site, including but not limited to text, graphics, logos, calculator code, and design, is the property of mycalcstool.com or its content suppliers and is protected by applicable intellectual property laws. You may use the calculators for personal, non-commercial purposes. You may not reproduce, distribute, modify, or create derivative works without prior written permission.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">6. Third-Party Links</h2>
+    <p class="text-gray-600 mb-4">
+      Our Site may contain links to third-party websites. These links are provided for your convenience only. We have no control over the content of those sites and accept no responsibility for them or for any loss or damage that may arise from your use of them.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">7. Prohibited Uses</h2>
+    <p class="text-gray-600 mb-4">You agree not to:</p>
+    <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
+      <li>Use the Site for any unlawful purpose</li>
+      <li>Attempt to gain unauthorized access to any part of the Site</li>
+      <li>Use automated tools (bots, scrapers) to access or copy Site content in bulk</li>
+      <li>Interfere with or disrupt the integrity or performance of the Site</li>
+    </ul>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">8. Governing Law</h2>
+    <p class="text-gray-600 mb-4">
+      These Terms of Use shall be governed by and construed in accordance with applicable laws. Any disputes arising from these terms or your use of the Site shall be resolved through good-faith negotiation, and if necessary, binding arbitration.
+    </p>
+
+    <h2 class="text-lg font-bold text-gray-800 mb-3">9. Contact</h2>
+    <p class="text-gray-600">
+      If you have questions about these Terms of Use, please contact us through the feedback form on our website.
+    </p>
+  </section>
+</BaseLayout>

@@ -1,0 +1,339 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Mortgage Calculator 2026 — Estimate Monthly Payments with PMI & Taxes';
+const description = 'Calculate your monthly mortgage payment including principal, interest, taxes, insurance, and PMI. Compare 15-year vs 30-year options.';
+const keywords = 'mortgage calculator, home loan calculator, mortgage payment, how much house can I afford, amortization calculator';
+
+const faqItems = [
+  {
+    question: 'What is included in a monthly mortgage payment?',
+    answer: 'A full mortgage payment often includes: Principal & Interest (P&I) — the loan repayment portion; Property Tax — typically 1–2% of home value per year; Homeowner\'s Insurance — protects against damage/liability; PMI (Private Mortgage Insurance) — required if down payment is less than 20%; and HOA Fees — if applicable to your neighborhood.',
+  },
+  {
+    question: 'How much should I put down on a house?',
+    answer: 'A 20% down payment is the traditional recommendation because it avoids PMI and qualifies you for better interest rates. However, many buyers put down 3–10% using conventional loans or FHA loans. A larger down payment means lower monthly payments and less total interest paid.',
+  },
+  {
+    question: 'Should I choose a 15-year or 30-year mortgage?',
+    answer: 'A 30-year mortgage has lower monthly payments but costs significantly more in total interest. A 15-year mortgage has higher monthly payments but you build equity faster and pay far less interest overall. Choose based on your budget and financial goals.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Mortgage Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/mortgage-calculator',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Mortgage Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">🏠 Mortgage Calculator</h1>
+    <p class="text-gray-500 mt-2">Monthly payment · Amortization · 15 vs 30 year comparison</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">🏡</span> Loan Details</h2>
+    <div class="space-y-4">
+      <!-- Home price -->
+      <div>
+        <label for="home-price" class="block text-sm font-semibold text-gray-700 mb-1">Home Price</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold">$</span>
+          <input type="number" id="home-price" class="input-field" value="400000" min="0" step="1000" inputmode="numeric" oninput="syncDownPayment('price')" />
+        </div>
+      </div>
+      <!-- Down payment -->
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Down Payment</label>
+        <div class="flex gap-3">
+          <div class="flex items-center gap-2 flex-1">
+            <span class="text-gray-600 font-semibold">$</span>
+            <input type="number" id="down-dollar" class="input-field" value="80000" min="0" step="1000" inputmode="numeric" oninput="syncDownPayment('dollar')" />
+          </div>
+          <div class="flex items-center gap-2 w-28">
+            <input type="number" id="down-pct" class="input-field" value="20" min="0" max="100" step="0.5" inputmode="decimal" oninput="syncDownPayment('pct')" />
+            <span class="text-gray-600 font-semibold">%</span>
+          </div>
+        </div>
+      </div>
+      <!-- Loan amount -->
+      <div>
+        <label for="loan-amount" class="block text-sm font-semibold text-gray-700 mb-1">Loan Amount</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold">$</span>
+          <input type="number" id="loan-amount" class="input-field bg-gray-50" value="320000" readonly />
+        </div>
+      </div>
+      <!-- Interest rate -->
+      <div>
+        <label for="interest-rate" class="block text-sm font-semibold text-gray-700 mb-1">Annual Interest Rate</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="interest-rate" class="input-field" value="6.8" min="0" max="30" step="0.05" inputmode="decimal" />
+          <span class="text-gray-600 font-semibold">%</span>
+        </div>
+        <input type="range" id="rate-slider" class="range-slider mt-2" min="2" max="15" step="0.05" value="6.8" oninput="document.getElementById('interest-rate').value=parseFloat(this.value).toFixed(2)" />
+      </div>
+      <!-- Loan term -->
+      <div>
+        <label for="loan-term" class="block text-sm font-semibold text-gray-700 mb-1">Loan Term</label>
+        <select id="loan-term" class="input-field">
+          <option value="30" selected>30 years</option>
+          <option value="20">20 years</option>
+          <option value="15">15 years</option>
+        </select>
+      </div>
+
+      <!-- Advanced toggle -->
+      <button type="button" class="text-sm text-primary-600 font-semibold hover:underline flex items-center gap-1" onclick="toggleAdvanced()">
+        <span id="adv-icon">▶</span> Advanced Options (Tax, Insurance, PMI, HOA)
+      </button>
+      <div id="advanced-section" class="hidden space-y-3 border-t pt-4">
+        <div>
+          <label for="prop-tax" class="block text-sm font-semibold text-gray-700 mb-1">Annual Property Tax</label>
+          <div class="flex items-center gap-2"><span class="text-gray-600">$</span><input type="number" id="prop-tax" class="input-field" value="4800" min="0" step="100" inputmode="numeric" /></div>
+        </div>
+        <div>
+          <label for="insurance" class="block text-sm font-semibold text-gray-700 mb-1">Annual Homeowner's Insurance</label>
+          <div class="flex items-center gap-2"><span class="text-gray-600">$</span><input type="number" id="insurance" class="input-field" value="1200" min="0" step="100" inputmode="numeric" /></div>
+        </div>
+        <div id="pmi-row">
+          <label for="pmi-rate" class="block text-sm font-semibold text-gray-700 mb-1">PMI Rate <span class="text-gray-400 font-normal">(applies when down payment &lt; 20%)</span></label>
+          <div class="flex items-center gap-2"><input type="number" id="pmi-rate" class="input-field" value="0.5" min="0" max="3" step="0.05" inputmode="decimal" /><span class="text-gray-600">%/year</span></div>
+        </div>
+        <div>
+          <label for="hoa" class="block text-sm font-semibold text-gray-700 mb-1">HOA Fees</label>
+          <div class="flex items-center gap-2"><span class="text-gray-600">$</span><input type="number" id="hoa" class="input-field" value="0" min="0" step="10" inputmode="numeric" /><span class="text-gray-600 whitespace-nowrap">/month</span></div>
+        </div>
+      </div>
+
+      <button id="calc-mort-btn" class="btn-primary" type="button">Calculate Payment</button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <div id="mort-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> Monthly Payment Breakdown</h2>
+      <div class="text-center py-4 mb-4">
+        <p class="text-sm text-gray-500 mb-1">Total Monthly Payment</p>
+        <p class="text-5xl font-bold tabular-nums text-primary-700" id="res-total-monthly">—</p>
+      </div>
+      <div class="space-y-2 mb-4" id="payment-breakdown"></div>
+      <canvas id="payment-chart" height="280"></canvas>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+
+    <!-- 15 vs 30 comparison -->
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">⚖️</span> 15-Year vs 30-Year Comparison</h2>
+      <div class="grid grid-cols-2 gap-4" id="comparison-cards"></div>
+    </section>
+
+    <!-- Amortization table -->
+    <section class="card mb-6">
+      <div class="flex justify-between items-center mb-3">
+        <h2 class="section-title mb-0"><span aria-hidden="true">📅</span> Amortization Schedule</h2>
+        <button id="show-all-amort" class="text-sm text-primary-600 font-semibold hover:underline" type="button" onclick="toggleAmort()">Show all</button>
+      </div>
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm">
+          <thead><tr class="bg-gray-50 text-gray-600">
+            <th class="px-2 py-2 text-center font-semibold">Month</th>
+            <th class="px-2 py-2 text-right font-semibold">Payment</th>
+            <th class="px-2 py-2 text-right font-semibold">Principal</th>
+            <th class="px-2 py-2 text-right font-semibold">Interest</th>
+            <th class="px-2 py-2 text-right font-semibold">Balance</th>
+          </tr></thead>
+          <tbody id="amort-tbody" class="divide-y divide-gray-100"></tbody>
+        </table>
+      </div>
+    </section>
+
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script is:inline>
+let payChart = null;
+let amortData = [];
+let amortExpanded = false;
+
+function syncDownPayment(source) {
+  const price = parseFloat(document.getElementById('home-price').value) || 0;
+  let dollar = parseFloat(document.getElementById('down-dollar').value) || 0;
+  let pct = parseFloat(document.getElementById('down-pct').value) || 0;
+
+  if (source === 'price' || source === 'pct') {
+    dollar = price * (pct / 100);
+    document.getElementById('down-dollar').value = Math.round(dollar);
+  } else {
+    pct = price > 0 ? (dollar / price) * 100 : 0;
+    document.getElementById('down-pct').value = pct.toFixed(2);
+  }
+  const loan = Math.max(0, price - dollar);
+  document.getElementById('loan-amount').value = Math.round(loan);
+
+  // Show/hide PMI
+  const pmiRow = document.getElementById('pmi-row');
+  if (pmiRow) pmiRow.style.opacity = pct < 20 ? '1' : '0.4';
+}
+
+function toggleAdvanced() {
+  const sec = document.getElementById('advanced-section');
+  const icon = document.getElementById('adv-icon');
+  const hidden = sec.classList.toggle('hidden');
+  icon.textContent = hidden ? '▶' : '▼';
+}
+
+function toggleAmort() {
+  amortExpanded = !amortExpanded;
+  renderAmort();
+  document.getElementById('show-all-amort').textContent = amortExpanded ? 'Show less' : 'Show all';
+}
+
+function fmtD(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+function fmtD2(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function calcMonthlyPI(loan, annualRate, years) {
+  const r = (annualRate / 100) / 12;
+  const n = years * 12;
+  if (r === 0) return loan / n;
+  return loan * (r * Math.pow(1+r, n)) / (Math.pow(1+r, n) - 1);
+}
+
+function calcMortgage() {
+  const price = parseFloat(document.getElementById('home-price').value) || 0;
+  const downDollar = parseFloat(document.getElementById('down-dollar').value) || 0;
+  const loan = Math.max(0, price - downDollar);
+  const rate = parseFloat(document.getElementById('interest-rate').value) || 0;
+  const term = parseInt(document.getElementById('loan-term').value) || 30;
+  const propTax = (parseFloat(document.getElementById('prop-tax').value) || 0) / 12;
+  const ins = (parseFloat(document.getElementById('insurance').value) || 0) / 12;
+  const pmiRate = parseFloat(document.getElementById('pmi-rate').value) || 0;
+  const hoa = parseFloat(document.getElementById('hoa').value) || 0;
+  const downPct = price > 0 ? (downDollar / price) * 100 : 100;
+  const pmi = downPct < 20 ? (loan * (pmiRate / 100)) / 12 : 0;
+
+  const pi = calcMonthlyPI(loan, rate, term);
+  const total = pi + propTax + ins + pmi + hoa;
+
+  document.getElementById('res-total-monthly').textContent = fmtD2(total);
+
+  // Breakdown rows
+  const breakdown = document.getElementById('payment-breakdown');
+  const rows = [
+    { label: 'Principal & Interest', value: pi, color: '#3B82F6' },
+    { label: 'Property Tax', value: propTax, color: '#F59E0B' },
+    { label: 'Homeowner\'s Insurance', value: ins, color: '#10B981' },
+    ...(pmi > 0 ? [{ label: 'PMI', value: pmi, color: '#EF4444' }] : []),
+    ...(hoa > 0 ? [{ label: 'HOA Fees', value: hoa, color: '#8B5CF6' }] : []),
+  ];
+  breakdown.innerHTML = rows.map(r => `
+    <div class="flex items-center justify-between py-2 border-b border-gray-100">
+      <div class="flex items-center gap-2">
+        <div class="w-3 h-3 rounded-full" style="background:${r.color}"></div>
+        <span class="text-gray-700">${r.label}</span>
+      </div>
+      <span class="font-semibold tabular-nums">${fmtD2(r.value)}</span>
+    </div>
+  `).join('');
+
+  // Chart
+  if (payChart) payChart.destroy();
+  const ctx = document.getElementById('payment-chart').getContext('2d');
+  payChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: rows.map(r => r.label),
+      datasets: [{ data: rows.map(r => parseFloat(r.value.toFixed(2))), backgroundColor: rows.map(r => r.color) }],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + fmtD2(ctx.raw) } },
+      },
+    },
+  });
+
+  // 15 vs 30
+  const pi30 = calcMonthlyPI(loan, rate, 30);
+  const pi15 = calcMonthlyPI(loan, rate, 15);
+  const totalInt30 = pi30 * 360 - loan;
+  const totalInt15 = pi15 * 180 - loan;
+  const comp = document.getElementById('comparison-cards');
+  comp.innerHTML = [
+    { years: 15, pi: pi15, totalInt: totalInt15 },
+    { years: 30, pi: pi30, totalInt: totalInt30 },
+  ].map(c => `
+    <div class="bg-gray-50 rounded-xl p-4 ${c.years === term ? 'border-2 border-primary-300' : ''}">
+      <p class="font-bold text-gray-700 mb-2">${c.years}-Year ${c.years === term ? '(selected)' : ''}</p>
+      <p class="text-sm text-gray-500 mb-1">Monthly P&I</p>
+      <p class="text-xl font-bold tabular-nums text-primary-700 mb-2">${fmtD2(c.pi)}</p>
+      <p class="text-sm text-gray-500 mb-1">Total Interest</p>
+      <p class="text-base font-bold tabular-nums text-red-600">${fmtD(c.totalInt)}</p>
+    </div>
+  `).join('');
+
+  // Build amortization
+  amortData = [];
+  let balance = loan;
+  const r = (rate / 100) / 12;
+  const n = term * 12;
+  for (let month = 1; month <= n; month++) {
+    const intPay = balance * r;
+    const prinPay = pi - intPay;
+    balance -= prinPay;
+    amortData.push({ month, payment: pi, principal: prinPay, interest: intPay, balance: Math.max(0, balance) });
+  }
+  renderAmort();
+
+  const results = document.getElementById('mort-results');
+  results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+function renderAmort() {
+  const rows = amortExpanded ? amortData : amortData.slice(0, 12);
+  document.getElementById('amort-tbody').innerHTML = rows.map(r =>
+    `<tr><td class="px-2 py-2 text-center text-gray-600">${r.month}</td>
+     <td class="px-2 py-2 text-right tabular-nums">${fmtD2(r.payment)}</td>
+     <td class="px-2 py-2 text-right tabular-nums text-primary-600">${fmtD2(r.principal)}</td>
+     <td class="px-2 py-2 text-right tabular-nums text-red-500">${fmtD2(r.interest)}</td>
+     <td class="px-2 py-2 text-right tabular-nums">${fmtD2(r.balance)}</td></tr>`
+  ).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calc-mort-btn').addEventListener('click', calcMortgage);
+  document.getElementById('rate-slider').addEventListener('input', function() {
+    document.getElementById('interest-rate').value = parseFloat(this.value).toFixed(2);
+  });
+  document.getElementById('interest-rate').addEventListener('input', function() {
+    document.getElementById('rate-slider').value = this.value;
+  });
+});
+</script>

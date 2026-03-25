@@ -1,0 +1,185 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Percentage Calculator — Free Online Percent Calculator';
+const description = 'Calculate percentages instantly. Find X% of Y, what percent X is of Y, and percentage increase or decrease.';
+const keywords = 'percentage calculator, percent of, percentage increase, percentage decrease, how to calculate percentage';
+
+const faqItems = [
+  {
+    question: 'How do I calculate a percentage?',
+    answer: 'Divide the part by the whole and multiply by 100. For example, to find what percentage 25 is of 200: (25 ÷ 200) × 100 = 12.5%.',
+  },
+  {
+    question: 'What is the percentage increase formula?',
+    answer: 'Percentage increase = ((New Value − Old Value) / Old Value) × 100. For example, going from 50 to 75: ((75 − 50) / 50) × 100 = 50% increase.',
+  },
+  {
+    question: 'What is the difference between percentage and percentile?',
+    answer: 'Percentage is a fraction expressed out of 100 (e.g., 75% = 75 out of 100). Percentile indicates the value below which a given percentage of data in a dataset falls — for example, scoring in the 90th percentile means you scored higher than 90% of test takers.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Percentage Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/percentage-calculator',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Percentage Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">💯 Percentage Calculator</h1>
+    <p class="text-gray-500 mt-2">Find percentages instantly — three calculation modes</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- Mode Tabs -->
+  <div class="flex gap-2 mb-4 overflow-x-auto pb-1">
+    <button id="tab-a" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-primary-500 bg-primary-50 text-primary-700 whitespace-nowrap" type="button" onclick="showMode('a')">X% of Y</button>
+    <button id="tab-b" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-gray-200 text-gray-500 whitespace-nowrap" type="button" onclick="showMode('b')">X is what % of Y</button>
+    <button id="tab-c" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-gray-200 text-gray-500 whitespace-nowrap" type="button" onclick="showMode('c')">% Change</button>
+  </div>
+
+  <!-- Mode A -->
+  <section id="mode-a" class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">🔢</span> What is X% of Y?</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="a-x" class="block text-sm font-semibold text-gray-700 mb-1">X (%)</label>
+        <input type="number" id="a-x" class="input-field" placeholder="e.g. 15" min="0" step="any" oninput="calcA()" />
+      </div>
+      <div>
+        <label for="a-y" class="block text-sm font-semibold text-gray-700 mb-1">Y (number)</label>
+        <input type="number" id="a-y" class="input-field" placeholder="e.g. 200" step="any" oninput="calcA()" />
+      </div>
+    </div>
+    <div id="result-a" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">Result</p>
+      <p class="text-3xl font-bold tabular-nums text-primary-700" id="result-a-val">—</p>
+      <p class="text-sm text-gray-500 mt-1" id="result-a-desc"></p>
+    </div>
+  </section>
+
+  <!-- Mode B -->
+  <section id="mode-b" class="card mb-6 hidden">
+    <h2 class="section-title"><span aria-hidden="true">🔢</span> X is what percent of Y?</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="b-x" class="block text-sm font-semibold text-gray-700 mb-1">X (part)</label>
+        <input type="number" id="b-x" class="input-field" placeholder="e.g. 25" step="any" oninput="calcB()" />
+      </div>
+      <div>
+        <label for="b-y" class="block text-sm font-semibold text-gray-700 mb-1">Y (whole)</label>
+        <input type="number" id="b-y" class="input-field" placeholder="e.g. 200" step="any" oninput="calcB()" />
+      </div>
+    </div>
+    <div id="result-b" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">Result</p>
+      <p class="text-3xl font-bold tabular-nums text-primary-700" id="result-b-val">—</p>
+      <p class="text-sm text-gray-500 mt-1" id="result-b-desc"></p>
+    </div>
+  </section>
+
+  <!-- Mode C -->
+  <section id="mode-c" class="card mb-6 hidden">
+    <h2 class="section-title"><span aria-hidden="true">📊</span> Percentage change from X to Y</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="c-x" class="block text-sm font-semibold text-gray-700 mb-1">Original value (X)</label>
+        <input type="number" id="c-x" class="input-field" placeholder="e.g. 50" step="any" oninput="calcC()" />
+      </div>
+      <div>
+        <label for="c-y" class="block text-sm font-semibold text-gray-700 mb-1">New value (Y)</label>
+        <input type="number" id="c-y" class="input-field" placeholder="e.g. 75" step="any" oninput="calcC()" />
+      </div>
+    </div>
+    <div id="result-c" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">Percentage Change</p>
+      <p class="text-3xl font-bold tabular-nums" id="result-c-val">—</p>
+      <p class="text-sm text-gray-500 mt-1" id="result-c-desc"></p>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline>
+function showMode(mode) {
+  ['a','b','c'].forEach(m => {
+    const section = document.getElementById('mode-' + m);
+    const tab = document.getElementById('tab-' + m);
+    if (!section || !tab) return;
+    const active = m === mode;
+    section.classList.toggle('hidden', !active);
+    tab.classList.toggle('border-primary-500', active);
+    tab.classList.toggle('bg-primary-50', active);
+    tab.classList.toggle('text-primary-700', active);
+    tab.classList.toggle('border-gray-200', !active);
+    tab.classList.toggle('text-gray-500', !active);
+  });
+}
+
+function fmt(n) {
+  return n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+}
+
+function calcA() {
+  const x = parseFloat(document.getElementById('a-x').value);
+  const y = parseFloat(document.getElementById('a-y').value);
+  const res = document.getElementById('result-a');
+  const val = document.getElementById('result-a-val');
+  const desc = document.getElementById('result-a-desc');
+  if (isNaN(x) || isNaN(y)) { res.classList.add('hidden'); return; }
+  const result = y * (x / 100);
+  val.textContent = fmt(result);
+  desc.textContent = x + '% of ' + fmt(y) + ' = ' + fmt(result);
+  res.classList.remove('hidden');
+}
+
+function calcB() {
+  const x = parseFloat(document.getElementById('b-x').value);
+  const y = parseFloat(document.getElementById('b-y').value);
+  const res = document.getElementById('result-b');
+  const val = document.getElementById('result-b-val');
+  const desc = document.getElementById('result-b-desc');
+  if (isNaN(x) || isNaN(y) || y === 0) { res.classList.add('hidden'); return; }
+  const result = (x / y) * 100;
+  val.textContent = fmt(result) + '%';
+  desc.textContent = fmt(x) + ' is ' + fmt(result) + '% of ' + fmt(y);
+  res.classList.remove('hidden');
+}
+
+function calcC() {
+  const x = parseFloat(document.getElementById('c-x').value);
+  const y = parseFloat(document.getElementById('c-y').value);
+  const res = document.getElementById('result-c');
+  const val = document.getElementById('result-c-val');
+  const desc = document.getElementById('result-c-desc');
+  if (isNaN(x) || isNaN(y) || x === 0) { res.classList.add('hidden'); return; }
+  const result = ((y - x) / Math.abs(x)) * 100;
+  const isIncrease = result >= 0;
+  val.textContent = (isIncrease ? '+' : '') + fmt(result) + '%';
+  val.style.color = isIncrease ? '#10B981' : '#EF4444';
+  desc.textContent = 'From ' + fmt(x) + ' to ' + fmt(y) + ': ' + fmt(Math.abs(result)) + '% ' + (isIncrease ? 'increase' : 'decrease');
+  res.classList.remove('hidden');
+}
+</script>

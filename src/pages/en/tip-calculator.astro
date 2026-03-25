@@ -1,0 +1,213 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Tip Calculator — Split Bills & Calculate Gratuity Instantly';
+const description = 'Calculate tips for any bill amount. Split between multiple people with custom tip percentages. Free and instant.';
+const keywords = 'tip calculator, how much to tip, gratuity calculator, split bill calculator, restaurant tip';
+
+const faqItems = [
+  {
+    question: 'How much should I tip at a restaurant?',
+    answer: 'The standard tip in the US is 15–20% for good service. For excellent service, 20–25% is appropriate. For takeout or counter service, 10–15% is common. Use the calculator above to find the exact amount.',
+  },
+  {
+    question: 'Should I tip on the pre-tax or post-tax amount?',
+    answer: 'It is generally considered proper etiquette to tip on the pre-tax amount (the cost of food and drink before tax). However, many people tip on the total post-tax bill for simplicity — the difference is usually small.',
+  },
+  {
+    question: 'How do I split a bill unevenly?',
+    answer: 'This calculator splits the total bill (including tip) equally among the number of people you specify. For uneven splits, divide the total by the number of people and adjust individually. The tip percentage applies to the full bill before splitting.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Tip Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/tip-calculator',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Tip Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">🍽️ Tip Calculator</h1>
+    <p class="text-gray-500 mt-2">Calculate gratuity and split the bill instantly</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">💵</span> Bill Details</h2>
+    <div class="space-y-5">
+      <!-- Bill amount -->
+      <div>
+        <label for="bill-amount" class="block text-sm font-semibold text-gray-700 mb-1">Bill Amount</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold text-lg">$</span>
+          <input type="number" id="bill-amount" class="input-field" value="50.00" min="0" step="0.01" inputmode="decimal" oninput="updateTip()" />
+        </div>
+      </div>
+
+      <!-- Tax toggle -->
+      <div class="flex items-center gap-3">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="tax-included" class="sr-only peer" onchange="toggleTax()" />
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+        </label>
+        <span class="text-sm font-medium text-gray-700">Tax already included in bill</span>
+      </div>
+      <div id="tax-field" class="hidden">
+        <label for="tax-pct" class="block text-sm font-semibold text-gray-700 mb-1">Tax Rate (%)</label>
+        <input type="number" id="tax-pct" class="input-field" value="8.875" min="0" max="20" step="0.001" inputmode="decimal" oninput="updateTip()" />
+      </div>
+
+      <!-- Tip percent buttons -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">Tip Percentage</p>
+        <div class="flex gap-2 flex-wrap mb-2">
+          {[15, 18, 20, 25].map(pct => (
+            <button class="tip-preset-btn px-4 py-2 rounded-lg border-2 font-semibold text-sm transition-all border-gray-200 text-gray-600 hover:border-primary-400" type="button" data-pct={pct} onclick={`selectTipPct(${pct})`}>{pct}%</button>
+          ))}
+        </div>
+        <div class="flex items-center gap-2">
+          <input type="number" id="custom-tip" class="input-field w-24" placeholder="Custom" min="0" max="100" step="0.5" inputmode="decimal" oninput="updateTip()" />
+          <span class="text-gray-600 font-medium">%</span>
+        </div>
+      </div>
+
+      <!-- Split -->
+      <div>
+        <label for="split-count" class="block text-sm font-semibold text-gray-700 mb-1">Split between</label>
+        <div class="flex items-center gap-3">
+          <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(-1)">−</button>
+          <input type="number" id="split-count" class="input-field text-center" value="2" min="1" max="50" step="1" inputmode="numeric" oninput="updateTip()" style="max-width:80px" />
+          <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(1)">+</button>
+          <span class="text-gray-600 font-medium">people</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <section class="card mb-6" aria-live="polite">
+    <h2 class="section-title"><span aria-hidden="true">🧾</span> Results</h2>
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Tip Amount</p>
+        <p class="text-2xl font-bold tabular-nums text-primary-700" id="res-tip">$0.00</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Total</p>
+        <p class="text-2xl font-bold tabular-nums text-gray-800" id="res-total">$0.00</p>
+      </div>
+      <div class="bg-primary-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">Per Person</p>
+        <p class="text-2xl font-bold tabular-nums text-primary-700" id="res-per">$0.00</p>
+      </div>
+    </div>
+
+    <!-- Comparison table -->
+    <h3 class="font-semibold text-gray-700 mb-2 text-sm">Tip Comparison</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-600">
+            <th class="px-2 py-2 text-center font-semibold">Tip %</th>
+            <th class="px-2 py-2 text-center font-semibold">Tip</th>
+            <th class="px-2 py-2 text-center font-semibold">Total</th>
+            <th class="px-2 py-2 text-center font-semibold">Per Person</th>
+          </tr>
+        </thead>
+        <tbody id="comparison-table" class="divide-y divide-gray-100">
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline>
+let currentTipPct = 20;
+
+function selectTipPct(pct) {
+  currentTipPct = pct;
+  document.getElementById('custom-tip').value = pct;
+  document.querySelectorAll('.tip-preset-btn').forEach(btn => {
+    const active = parseInt(btn.dataset.pct) === pct;
+    btn.classList.toggle('border-primary-500', active);
+    btn.classList.toggle('bg-primary-50', active);
+    btn.classList.toggle('text-primary-700', active);
+    btn.classList.toggle('border-gray-200', !active);
+    btn.classList.toggle('text-gray-600', !active);
+  });
+  updateTip();
+}
+
+function toggleTax() {
+  const checked = document.getElementById('tax-included').checked;
+  document.getElementById('tax-field').classList.toggle('hidden', checked);
+  updateTip();
+}
+
+function adjustSplit(delta) {
+  const el = document.getElementById('split-count');
+  const val = parseInt(el.value) || 1;
+  el.value = Math.max(1, val + delta);
+  updateTip();
+}
+
+function fmt(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function updateTip() {
+  const bill = parseFloat(document.getElementById('bill-amount').value) || 0;
+  const tipPct = parseFloat(document.getElementById('custom-tip').value);
+  const split = Math.max(1, parseInt(document.getElementById('split-count').value) || 1);
+  const taxIncluded = document.getElementById('tax-included').checked;
+  const taxPct = taxIncluded ? 0 : (parseFloat(document.getElementById('tax-pct').value) || 0);
+
+  const preTaxBill = taxIncluded ? bill : bill;
+  const taxAmount = preTaxBill * (taxPct / 100);
+  const billForTip = preTaxBill;
+
+  if (!isNaN(tipPct)) currentTipPct = tipPct;
+  const tipAmt = billForTip * (currentTipPct / 100);
+  const total = preTaxBill + taxAmount + tipAmt;
+  const perPerson = total / split;
+
+  document.getElementById('res-tip').textContent = fmt(tipAmt);
+  document.getElementById('res-total').textContent = fmt(total);
+  document.getElementById('res-per').textContent = fmt(perPerson);
+
+  // Comparison table
+  const tbody = document.getElementById('comparison-table');
+  tbody.innerHTML = [15,18,20,25].map(pct => {
+    const t = billForTip * (pct / 100);
+    const tot = preTaxBill + taxAmount + t;
+    const pp = tot / split;
+    const isCur = pct === currentTipPct;
+    const cls = isCur ? 'bg-primary-50 font-semibold' : '';
+    return `<tr class="${cls}"><td class="px-2 py-2 text-center">${pct}%</td><td class="px-2 py-2 text-center">${fmt(t)}</td><td class="px-2 py-2 text-center">${fmt(tot)}</td><td class="px-2 py-2 text-center">${fmt(pp)}</td></tr>`;
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  selectTipPct(20);
+});
+</script>

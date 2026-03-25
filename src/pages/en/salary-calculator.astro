@@ -1,0 +1,312 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+import usTax from '../../data/us-tax-2026.json';
+import usStateTax from '../../data/us-state-tax.json';
+
+const title = 'Salary Calculator — Take-Home Pay After Taxes (US 2026)';
+const description = 'Calculate your take-home pay after federal and state taxes, Social Security, and Medicare. Supports all 50 US states.';
+const keywords = 'salary calculator, take home pay calculator, paycheck calculator, salary after tax, net pay calculator';
+
+const faqItems = [
+  {
+    question: 'How is federal income tax calculated?',
+    answer: 'The US uses a progressive tax bracket system. Your taxable income (salary minus standard deduction and pre-tax deductions) is taxed at increasing rates as it falls into higher brackets. For example in 2026, the first $11,925 of taxable income for single filers is taxed at 10%, the next portion at 12%, and so on up to 37%.',
+  },
+  {
+    question: 'What is the standard deduction for 2026?',
+    answer: 'For tax year 2026: Single filers get a $15,700 standard deduction; Married Filing Jointly get $31,400; Head of Household get $23,550. These amounts reduce your taxable income before calculating federal income tax.',
+  },
+  {
+    question: 'What are FICA taxes?',
+    answer: 'FICA (Federal Insurance Contributions Act) taxes fund Social Security and Medicare. Employees pay 6.2% for Social Security (on wages up to $176,100 in 2026) and 1.45% for Medicare. An additional 0.9% Medicare surtax applies to wages over $200,000 for single filers.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Salary Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/salary-calculator',
+  applicationCategory: 'FinanceApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+
+const stateList = Object.entries(usStateTax.states)
+  .sort((a, b) => a[1].name.localeCompare(b[1].name))
+  .map(([code, s]) => ({ code, name: s.name }));
+
+// Serialize tax data for client-side use
+const usTaxJson = JSON.stringify(usTax);
+const usStateTaxJson = JSON.stringify(usStateTax);
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Salary Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">💵 Salary Calculator</h1>
+    <p class="text-gray-500 mt-2">US 2026 · Take-home pay after federal & state taxes</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> Your Information</h2>
+    <div class="space-y-4">
+      <!-- Annual salary -->
+      <div>
+        <label for="annual-salary" class="block text-sm font-semibold text-gray-700 mb-1">Annual Salary</label>
+        <div class="flex items-center gap-2">
+          <span class="text-gray-600 font-semibold">$</span>
+          <input type="number" id="annual-salary" class="input-field" value="75000" min="0" step="1000" inputmode="numeric" />
+        </div>
+      </div>
+      <!-- Pay frequency -->
+      <div>
+        <label for="pay-freq" class="block text-sm font-semibold text-gray-700 mb-1">Pay Frequency</label>
+        <select id="pay-freq" class="input-field">
+          <option value="26" selected>Bi-weekly (26 paychecks/year)</option>
+          <option value="52">Weekly (52 paychecks/year)</option>
+          <option value="24">Semi-monthly (24 paychecks/year)</option>
+          <option value="12">Monthly (12 paychecks/year)</option>
+        </select>
+      </div>
+      <!-- Filing status -->
+      <div>
+        <label for="filing-status" class="block text-sm font-semibold text-gray-700 mb-1">Filing Status</label>
+        <select id="filing-status" class="input-field">
+          <option value="single" selected>Single</option>
+          <option value="marriedFilingJointly">Married Filing Jointly</option>
+          <option value="headOfHousehold">Head of Household</option>
+        </select>
+      </div>
+      <!-- State -->
+      <div>
+        <label for="state-select" class="block text-sm font-semibold text-gray-700 mb-1">State</label>
+        <select id="state-select" class="input-field">
+          {stateList.map(s => (
+            <option value={s.code}>{s.name}</option>
+          ))}
+        </select>
+      </div>
+      <!-- Pre-tax deductions -->
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">Pre-Tax Deductions <span class="text-gray-400 font-normal">(optional)</span></p>
+        <div class="grid grid-cols-2 gap-3">
+          <div>
+            <label for="k401" class="text-xs text-gray-500 mb-1 block">401(k) / month</label>
+            <div class="flex items-center gap-1"><span class="text-gray-500">$</span><input type="number" id="k401" class="input-field" value="0" min="0" step="50" inputmode="numeric" /></div>
+          </div>
+          <div>
+            <label for="health-ins" class="text-xs text-gray-500 mb-1 block">Health Insurance / month</label>
+            <div class="flex items-center gap-1"><span class="text-gray-500">$</span><input type="number" id="health-ins" class="input-field" value="0" min="0" step="10" inputmode="numeric" /></div>
+          </div>
+        </div>
+      </div>
+      <button id="calc-salary-btn" class="btn-primary" type="button">Calculate Take-Home Pay</button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <div id="salary-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> Your Take-Home Pay</h2>
+      <!-- Summary table -->
+      <div class="overflow-x-auto mb-5">
+        <table class="w-full text-sm">
+          <thead>
+            <tr class="bg-gray-50 text-gray-600">
+              <th class="px-3 py-2 text-left font-semibold"></th>
+              <th class="px-3 py-2 text-right font-semibold">Annual</th>
+              <th class="px-3 py-2 text-right font-semibold">Monthly</th>
+              <th class="px-3 py-2 text-right font-semibold">Per Paycheck</th>
+            </tr>
+          </thead>
+          <tbody class="divide-y divide-gray-100" id="summary-table"></tbody>
+        </table>
+      </div>
+      <!-- Deductions breakdown -->
+      <h3 class="font-semibold text-gray-700 mb-3">Deductions Breakdown</h3>
+      <div id="deductions-breakdown" class="space-y-2 mb-5"></div>
+      <!-- Tax rates -->
+      <div class="grid grid-cols-2 gap-3 mb-4">
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Effective Tax Rate</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="effective-rate">—</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Marginal Tax Rate</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="marginal-rate">—</p>
+        </div>
+      </div>
+      <!-- Donut chart -->
+      <canvas id="deductions-chart" height="280"></canvas>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline define:vars={{ usTaxJson, usStateTaxJson }}>
+const TAX = JSON.parse(usTaxJson);
+const STATE_TAX = JSON.parse(usStateTaxJson);
+let deductChart = null;
+
+function calcFederalTax(taxableIncome, filingStatus) {
+  const brackets = TAX.federalBrackets[filingStatus];
+  let tax = 0;
+  let marginalRate = 0;
+  for (const b of brackets) {
+    if (taxableIncome <= 0) break;
+    const max = b.max === null ? Infinity : b.max;
+    const taxable = Math.min(taxableIncome, max - b.min);
+    if (taxable <= 0) continue;
+    tax += taxable * (b.rate / 100);
+    marginalRate = b.rate;
+    taxableIncome -= taxable;
+  }
+  return { tax, marginalRate };
+}
+
+function calcStateTax(salary, stateCode) {
+  const s = STATE_TAX.states[stateCode];
+  if (!s || s.type === 'none') return 0;
+  if (s.type === 'flat') return salary * (s.rate / 100);
+  if (s.type === 'brackets') {
+    let income = salary, tax = 0;
+    for (const b of s.brackets) {
+      if (income <= 0) break;
+      const max = b.max === null ? Infinity : b.max;
+      const taxable = Math.min(income, max - b.min);
+      if (taxable <= 0) continue;
+      tax += taxable * (b.rate / 100);
+      income -= taxable;
+    }
+    return tax;
+  }
+  return 0;
+}
+
+function fmtD(n) { return '$' + Math.round(n).toLocaleString('en-US'); }
+function fmtD2(n) { return '$' + n.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 }); }
+
+function calcSalary() {
+  const salary = parseFloat(document.getElementById('annual-salary').value) || 0;
+  const payFreq = parseInt(document.getElementById('pay-freq').value);
+  const filingStatus = document.getElementById('filing-status').value;
+  const stateCode = document.getElementById('state-select').value;
+  const k401Monthly = parseFloat(document.getElementById('k401').value) || 0;
+  const healthMonthly = parseFloat(document.getElementById('health-ins').value) || 0;
+
+  const preTaxAnnual = (k401Monthly + healthMonthly) * 12;
+  const standardDed = TAX.standardDeduction[filingStatus];
+  const taxableIncome = Math.max(0, salary - standardDed - preTaxAnnual);
+
+  const { tax: federalTax, marginalRate } = calcFederalTax(taxableIncome, filingStatus);
+  const stateTax = calcStateTax(salary - preTaxAnnual, stateCode);
+
+  const ssWageBase = TAX.fica.socialSecurity.wageBase;
+  const ssTax = Math.min(salary, ssWageBase) * (TAX.fica.socialSecurity.rate / 100);
+
+  const medRate = TAX.fica.medicare.rate / 100;
+  const addMedThreshold = TAX.fica.medicare.additionalThreshold[filingStatus] || 200000;
+  let medicareTax = salary * medRate;
+  if (salary > addMedThreshold) {
+    medicareTax += (salary - addMedThreshold) * (TAX.fica.medicare.additionalRate / 100);
+  }
+
+  const k401Annual = k401Monthly * 12;
+  const healthAnnual = healthMonthly * 12;
+  const totalDeductions = federalTax + stateTax + ssTax + medicareTax + k401Annual + healthAnnual;
+  const netPay = salary - totalDeductions;
+
+  const effectiveRate = salary > 0 ? ((federalTax + stateTax) / salary) * 100 : 0;
+
+  // Summary table
+  const summaryRows = [
+    { label: 'Gross Pay', annual: salary, isGross: true },
+    { label: 'Net (Take-Home) Pay', annual: netPay, isNet: true },
+  ];
+  document.getElementById('summary-table').innerHTML = summaryRows.map(r => {
+    const annual = r.annual;
+    const monthly = annual / 12;
+    const perPaycheck = annual / payFreq;
+    const cls = r.isNet ? 'bg-primary-50 font-bold text-primary-700' : '';
+    return `<tr class="${cls}">
+      <td class="px-3 py-2 font-semibold">${r.label}</td>
+      <td class="px-3 py-2 text-right tabular-nums">${fmtD2(annual)}</td>
+      <td class="px-3 py-2 text-right tabular-nums">${fmtD2(monthly)}</td>
+      <td class="px-3 py-2 text-right tabular-nums">${fmtD2(perPaycheck)}</td>
+    </tr>`;
+  }).join('');
+
+  // Deductions
+  const deductItems = [
+    { label: 'Federal Income Tax', value: federalTax, pct: salary > 0 ? (federalTax/salary)*100 : 0, color: '#3B82F6' },
+    { label: 'State Income Tax (' + (STATE_TAX.states[stateCode]?.name || stateCode) + ')', value: stateTax, pct: salary > 0 ? (stateTax/salary)*100 : 0, color: '#8B5CF6' },
+    { label: 'Social Security (6.2%)', value: ssTax, pct: salary > 0 ? (ssTax/salary)*100 : 0, color: '#F59E0B' },
+    { label: 'Medicare (1.45%+)', value: medicareTax, pct: salary > 0 ? (medicareTax/salary)*100 : 0, color: '#10B981' },
+    ...(k401Annual > 0 ? [{ label: '401(k) Contribution', value: k401Annual, pct: salary > 0 ? (k401Annual/salary)*100 : 0, color: '#6366F1' }] : []),
+    ...(healthAnnual > 0 ? [{ label: 'Health Insurance', value: healthAnnual, pct: salary > 0 ? (healthAnnual/salary)*100 : 0, color: '#EC4899' }] : []),
+    { label: 'Total Deductions', value: totalDeductions, pct: salary > 0 ? (totalDeductions/salary)*100 : 0, color: '#EF4444', isTotal: true },
+  ];
+
+  document.getElementById('deductions-breakdown').innerHTML = deductItems.map(d => `
+    <div class="flex items-center justify-between py-2 ${d.isTotal ? 'border-t-2 border-gray-200 font-bold' : 'border-b border-gray-100'}">
+      <div class="flex items-center gap-2">
+        ${!d.isTotal ? `<div class="w-3 h-3 rounded-full" style="background:${d.color}"></div>` : ''}
+        <span class="${d.isTotal ? 'text-gray-800' : 'text-gray-600'}">${d.label}</span>
+      </div>
+      <div class="text-right">
+        <span class="${d.isTotal ? 'text-red-600' : ''} font-semibold tabular-nums">${fmtD2(d.value)}</span>
+        <span class="text-xs text-gray-400 ml-2">${d.pct.toFixed(1)}%</span>
+      </div>
+    </div>
+  `).join('');
+
+  document.getElementById('effective-rate').textContent = effectiveRate.toFixed(2) + '%';
+  document.getElementById('marginal-rate').textContent = marginalRate + '%';
+
+  // Chart
+  if (deductChart) deductChart.destroy();
+  const chartItems = deductItems.filter(d => !d.isTotal && d.value > 0);
+  chartItems.push({ label: 'Net Pay', value: netPay, color: '#D1FAE5' });
+  const ctx = document.getElementById('deductions-chart').getContext('2d');
+  deductChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: chartItems.map(d => d.label),
+      datasets: [{ data: chartItems.map(d => parseFloat(d.value.toFixed(2))), backgroundColor: chartItems.map(d => d.color) }],
+    },
+    options: {
+      responsive: true,
+      plugins: {
+        legend: { position: 'bottom' },
+        tooltip: { callbacks: { label: ctx => ctx.label + ': ' + fmtD2(ctx.raw) } },
+      },
+    },
+  });
+
+  const results = document.getElementById('salary-results');
+  results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calc-salary-btn').addEventListener('click', calcSalary);
+});
+</script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

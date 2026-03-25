@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Unit Converter — Length, Weight, Temperature & More';
+const description = 'Convert between metric and imperial units instantly. Length, weight, temperature, area, volume, speed, and data size.';
+const keywords = 'unit converter, cm to inches, kg to lbs, celsius to fahrenheit, meters to feet, unit conversion';
+
+const faqItems = [
+  {
+    question: 'How do I convert Celsius to Fahrenheit?',
+    answer: 'Use the formula: °F = (°C × 9/5) + 32. For example, 100°C = (100 × 1.8) + 32 = 212°F. To convert Fahrenheit to Celsius: °C = (°F − 32) × 5/9.',
+  },
+  {
+    question: 'How many centimeters are in an inch?',
+    answer: 'There are exactly 2.54 centimeters in one inch. Therefore, 1 foot (12 inches) = 30.48 cm, and 1 meter = approximately 39.37 inches.',
+  },
+  {
+    question: 'How do I convert kg to lbs?',
+    answer: '1 kilogram = approximately 2.20462 pounds. To convert kg to lbs, multiply by 2.20462. To convert lbs to kg, multiply by 0.453592.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Unit Converter',
+  description,
+  url: 'https://mycalcstool.com/en/unit-converter',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+
+const categories = ['Length','Weight','Temperature','Area','Volume','Speed','Data'];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Unit Converter</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📐 Unit Converter</h1>
+    <p class="text-gray-500 mt-2">Instant bidirectional conversion across 7 categories</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- Category tabs -->
+  <div class="flex gap-2 overflow-x-auto pb-2 mb-4">
+    {categories.map((cat, i) => (
+      <button
+        class={`cat-tab px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap border-2 transition-all ${i === 0 ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-500'}`}
+        type="button"
+        data-cat={cat.toLowerCase()}
+        onclick={`showCat('${cat.toLowerCase()}')`}
+      >{cat}</button>
+    ))}
+  </div>
+
+  <section class="card mb-6">
+    <!-- Length -->
+    <div id="cat-length" class="converter-panel">
+      <h2 class="section-title"><span aria-hidden="true">📏</span> Length Converter</h2>
+      <div id="length-ui"></div>
+    </div>
+    <!-- Weight -->
+    <div id="cat-weight" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">⚖️</span> Weight Converter</h2>
+      <div id="weight-ui"></div>
+    </div>
+    <!-- Temperature -->
+    <div id="cat-temperature" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🌡️</span> Temperature Converter</h2>
+      <div id="temperature-ui"></div>
+    </div>
+    <!-- Area -->
+    <div id="cat-area" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🗺️</span> Area Converter</h2>
+      <div id="area-ui"></div>
+    </div>
+    <!-- Volume -->
+    <div id="cat-volume" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🥛</span> Volume Converter</h2>
+      <div id="volume-ui"></div>
+    </div>
+    <!-- Speed -->
+    <div id="cat-speed" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">💨</span> Speed Converter</h2>
+      <div id="speed-ui"></div>
+    </div>
+    <!-- Data -->
+    <div id="cat-data" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">💾</span> Data Size Converter</h2>
+      <div id="data-ui"></div>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <!-- Popular conversions -->
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">⚡</span> Popular Conversions</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+      {[
+        ['1 inch', '2.54 cm'],
+        ['1 foot', '30.48 cm'],
+        ['1 mile', '1.609 km'],
+        ['1 kg', '2.205 lbs'],
+        ['1 oz', '28.35 g'],
+        ['0°C', '32°F'],
+        ['100°C', '212°F'],
+        ['1 gallon', '3.785 L'],
+        ['1 acre', '4,047 m²'],
+        ['1 mph', '1.609 kph'],
+        ['1 GB', '1,024 MB'],
+        ['1 stone', '6.35 kg'],
+      ].map(([from, to]) => (
+        <div class="p-2 bg-gray-50 rounded-lg text-center">
+          <span class="font-semibold text-gray-700">{from}</span>
+          <span class="text-gray-400 mx-1">=</span>
+          <span class="font-semibold text-primary-600">{to}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline>
+const UNITS = {
+  length: { meter: 1, cm: 0.01, mm: 0.001, km: 1000, inch: 0.0254, foot: 0.3048, yard: 0.9144, mile: 1609.344 },
+  weight: { kg: 1, g: 0.001, mg: 0.000001, lb: 0.453592, oz: 0.0283495, stone: 6.35029 },
+  temperature: null, // special
+  area: { 'sq meter': 1, 'sq foot': 0.092903, 'sq km': 1000000, 'sq mile': 2589988, acre: 4046.86, hectare: 10000 },
+  volume: { liter: 1, ml: 0.001, gallon: 3.78541, quart: 0.946353, cup: 0.236588, 'fl oz': 0.0295735 },
+  speed: { 'm/s': 1, 'km/h': 0.277778, 'mph': 0.44704, knot: 0.514444 },
+  data: { byte: 1, KB: 1024, MB: 1048576, GB: 1073741824, TB: 1099511627776 },
+};
+
+const TEMP_UNITS = ['Celsius (°C)', 'Fahrenheit (°F)', 'Kelvin (K)'];
+
+function convertTemp(val, from, to) {
+  let celsius;
+  if (from === 'Celsius (°C)') celsius = val;
+  else if (from === 'Fahrenheit (°F)') celsius = (val - 32) * 5/9;
+  else celsius = val - 273.15;
+  if (to === 'Celsius (°C)') return celsius;
+  if (to === 'Fahrenheit (°F)') return celsius * 9/5 + 32;
+  return celsius + 273.15;
+}
+
+function buildUI(catId, units) {
+  const el = document.getElementById(catId + '-ui');
+  const isTemp = catId === 'temperature';
+  const unitNames = isTemp ? TEMP_UNITS : Object.keys(units);
+
+  const opts = unitNames.map(u => `<option value="${u}">${u}</option>`).join('');
+
+  el.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">From</label>
+        <select id="${catId}-from-unit" class="input-field mb-2" onchange="convert('${catId}')">${opts}</select>
+        <input type="number" id="${catId}-from-val" class="input-field" placeholder="Enter value" step="any" oninput="convert('${catId}')" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">To</label>
+        <select id="${catId}-to-unit" class="input-field mb-2" onchange="convert('${catId}')">${opts.replace('<option', '<option selected').replace('selected', '').replace('</option>', '</option>').replace('<option', '<option selected')}</select>
+        <input type="number" id="${catId}-to-val" class="input-field" placeholder="Result" step="any" oninput="convertReverse('${catId}')" />
+      </div>
+    </div>
+  `;
+
+  // Set sensible defaults
+  const fromSel = document.getElementById(catId + '-from-unit');
+  const toSel = document.getElementById(catId + '-to-unit');
+  if (isTemp) {
+    fromSel.value = 'Celsius (°C)';
+    toSel.value = 'Fahrenheit (°F)';
+  } else {
+    const keys = Object.keys(units);
+    if (keys.length >= 2) { fromSel.value = keys[0]; toSel.value = keys[1]; }
+  }
+}
+
+function fmtResult(n) {
+  if (Math.abs(n) < 0.0001 && n !== 0) return n.toExponential(6);
+  return parseFloat(n.toPrecision(8)).toString();
+}
+
+function convert(catId) {
+  const fromUnit = document.getElementById(catId + '-from-unit').value;
+  const toUnit = document.getElementById(catId + '-to-unit').value;
+  const val = parseFloat(document.getElementById(catId + '-from-val').value);
+  if (isNaN(val)) { document.getElementById(catId + '-to-val').value = ''; return; }
+
+  let result;
+  if (catId === 'temperature') {
+    result = convertTemp(val, fromUnit, toUnit);
+  } else {
+    const units = UNITS[catId];
+    result = (val * units[fromUnit]) / units[toUnit];
+  }
+  document.getElementById(catId + '-to-val').value = fmtResult(result);
+}
+
+function convertReverse(catId) {
+  const fromUnit = document.getElementById(catId + '-from-unit').value;
+  const toUnit = document.getElementById(catId + '-to-unit').value;
+  const val = parseFloat(document.getElementById(catId + '-to-val').value);
+  if (isNaN(val)) { document.getElementById(catId + '-from-val').value = ''; return; }
+
+  let result;
+  if (catId === 'temperature') {
+    result = convertTemp(val, toUnit, fromUnit);
+  } else {
+    const units = UNITS[catId];
+    result = (val * units[toUnit]) / units[fromUnit];
+  }
+  document.getElementById(catId + '-from-val').value = fmtResult(result);
+}
+
+function showCat(cat) {
+  document.querySelectorAll('.converter-panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById('cat-' + cat).classList.remove('hidden');
+  document.querySelectorAll('.cat-tab').forEach(t => {
+    const active = t.dataset.cat === cat;
+    t.classList.toggle('border-primary-500', active);
+    t.classList.toggle('bg-primary-50', active);
+    t.classList.toggle('text-primary-700', active);
+    t.classList.toggle('border-gray-200', !active);
+    t.classList.toggle('text-gray-500', !active);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  Object.keys(UNITS).forEach(cat => {
+    buildUI(cat, UNITS[cat]);
+  });
+  // Pre-fill defaults
+  document.getElementById('length-from-val').value = '1';
+  convert('length');
+});
+</script>

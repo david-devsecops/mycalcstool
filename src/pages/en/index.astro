@@ -1,0 +1,81 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Free Online Calculators — Finance, Health, Math & More | mycalcstool';
+const description = 'Free online calculators for mortgage, salary, BMI, compound interest, and more. Fast, accurate, and no signup required.';
+const keywords = 'free online calculator, mortgage calculator, salary calculator, BMI calculator, compound interest calculator, percentage calculator';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebSite',
+  name: 'mycalcstool',
+  url: 'https://mycalcstool.com/en/',
+  description,
+  inLanguage: 'en',
+};
+
+const categories = [
+  {
+    name: 'Finance',
+    icon: '💰',
+    calculators: [
+      { icon: '🏠', title: 'Mortgage Calculator', desc: 'Estimate your monthly mortgage payment with taxes and insurance.', href: '/en/mortgage-calculator' },
+      { icon: '💵', title: 'Salary Calculator', desc: 'Calculate your take-home pay after federal and state taxes.', href: '/en/salary-calculator' },
+      { icon: '📈', title: 'Compound Interest Calculator', desc: 'See how your savings and investments grow over time.', href: '/en/compound-interest-calculator' },
+    ],
+  },
+  {
+    name: 'Health',
+    icon: '❤️',
+    calculators: [
+      { icon: '⚖️', title: 'BMI Calculator', desc: 'Check your body mass index and healthy weight range.', href: '/en/bmi-calculator' },
+      { icon: '🔥', title: 'TDEE / Calorie Calculator', desc: 'Find your total daily energy expenditure and calorie needs.', href: '/en/tdee-calculator' },
+      { icon: '👶', title: 'Due Date Calculator', desc: 'Calculate your estimated pregnancy due date and milestones.', href: '/en/due-date-calculator' },
+    ],
+  },
+  {
+    name: 'Math & Utility',
+    icon: '🧮',
+    calculators: [
+      { icon: '💯', title: 'Percentage Calculator', desc: 'Find percentages, percentage change, and percent of a number.', href: '/en/percentage-calculator' },
+      { icon: '🎂', title: 'Age Calculator', desc: 'Calculate your exact age in years, months, days, and more.', href: '/en/age-calculator' },
+      { icon: '🍽️', title: 'Tip Calculator', desc: 'Calculate gratuity and split the bill between multiple people.', href: '/en/tip-calculator' },
+      { icon: '📐', title: 'Unit Converter', desc: 'Convert length, weight, temperature, volume, speed, and more.', href: '/en/unit-converter' },
+    ],
+  },
+];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-8 text-center">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Free Online Calculators</h1>
+    <p class="text-gray-500 text-lg max-w-2xl mx-auto">Fast, accurate, and free — no signup required. Finance, health, math, and more.</p>
+  </div>
+
+  {categories.map(cat => (
+    <section class="mb-10">
+      <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
+        <span aria-hidden="true">{cat.icon}</span> {cat.name}
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+        {cat.calculators.map(calc => (
+          <a href={calc.href} class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
+            <div class="text-3xl">{calc.icon}</div>
+            <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">{calc.title}</div>
+            <div class="text-sm text-gray-500">{calc.desc}</div>
+          </a>
+        ))}
+      </div>
+    </section>
+  ))}
+
+  <section class="card mt-4 bg-primary-50 border-primary-100">
+    <h2 class="text-lg font-bold text-primary-800 mb-2">Why mycalcstool?</h2>
+    <ul class="space-y-1 text-primary-700 text-sm list-disc list-inside">
+      <li>100% free — no account, no fees</li>
+      <li>All calculations happen in your browser — your data never leaves your device</li>
+      <li>Updated for 2026 tax rates and rules</li>
+      <li>Mobile-friendly and fast</li>
+    </ul>
+  </section>
+</BaseLayout>

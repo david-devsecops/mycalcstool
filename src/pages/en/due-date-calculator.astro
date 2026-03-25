@@ -1,0 +1,263 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+
+const title = 'Due Date Calculator — When Is My Baby Due?';
+const description = 'Calculate your estimated due date based on your last menstrual period or conception date. See week-by-week pregnancy milestones.';
+const keywords = 'due date calculator, pregnancy calculator, when is my baby due, pregnancy week calculator, conception date';
+
+const faqItems = [
+  {
+    question: 'How is a pregnancy due date calculated?',
+    answer: "The most common method is Naegele's Rule: add 280 days (40 weeks) to the first day of your last menstrual period (LMP). This assumes a 28-day cycle. If your cycle is longer or shorter, the calculator adjusts accordingly.",
+  },
+  {
+    question: 'How accurate is an estimated due date?',
+    answer: 'Only about 5% of babies are born exactly on their due date. Most births occur within 2 weeks before or after the estimated due date. Your healthcare provider may adjust your due date based on ultrasound measurements.',
+  },
+  {
+    question: 'What are the three trimesters of pregnancy?',
+    answer: 'The first trimester spans weeks 1–12, the second trimester weeks 13–27, and the third trimester begins at week 28 and continues until birth. Each trimester involves distinct developmental milestones for the baby.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Due Date Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/due-date-calculator',
+  applicationCategory: 'HealthApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+
+const today = new Date().toISOString().split('T')[0];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Due Date Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">👶 Due Date Calculator</h1>
+    <p class="text-gray-500 mt-2">Estimate your baby's due date and track pregnancy milestones</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📅</span> Calculate By</h2>
+    <!-- Mode selector -->
+    <div class="space-y-2 mb-5">
+      <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-primary-200 bg-primary-50">
+        <input type="radio" name="dd-mode" value="lmp" checked class="accent-primary-600" onchange="setMode('lmp')" />
+        <span class="font-semibold text-primary-700">Last Menstrual Period (LMP)</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-gray-200">
+        <input type="radio" name="dd-mode" value="conception" class="accent-primary-600" onchange="setMode('conception')" />
+        <span class="font-semibold text-gray-600">Conception Date</span>
+      </label>
+      <label class="flex items-center gap-3 cursor-pointer p-3 rounded-lg border-2 border-gray-200">
+        <input type="radio" name="dd-mode" value="ivf" class="accent-primary-600" onchange="setMode('ivf')" />
+        <span class="font-semibold text-gray-600">IVF Transfer Date</span>
+      </label>
+    </div>
+
+    <!-- LMP inputs -->
+    <div id="mode-lmp" class="space-y-3">
+      <div>
+        <label for="lmp-date" class="block text-sm font-semibold text-gray-700 mb-1">First Day of Last Period</label>
+        <input type="date" id="lmp-date" class="input-field" max={today} />
+      </div>
+      <div>
+        <label for="cycle-length" class="block text-sm font-semibold text-gray-700 mb-1">Average Cycle Length</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="cycle-length" class="input-field" value="28" min="20" max="45" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium">days</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Conception inputs -->
+    <div id="mode-conception" class="hidden">
+      <label for="conception-date" class="block text-sm font-semibold text-gray-700 mb-1">Conception Date</label>
+      <input type="date" id="conception-date" class="input-field" max={today} />
+    </div>
+
+    <!-- IVF inputs -->
+    <div id="mode-ivf" class="hidden space-y-3">
+      <div>
+        <label for="ivf-date" class="block text-sm font-semibold text-gray-700 mb-1">IVF Transfer Date</label>
+        <input type="date" id="ivf-date" class="input-field" max={today} />
+      </div>
+      <div>
+        <p class="block text-sm font-semibold text-gray-700 mb-2">Transfer Day</p>
+        <div class="flex gap-3">
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ivf-day" value="3" checked class="accent-primary-600" />
+            <span class="font-medium text-gray-700">Day 3</span>
+          </label>
+          <label class="flex items-center gap-2 cursor-pointer">
+            <input type="radio" name="ivf-day" value="5" class="accent-primary-600" />
+            <span class="font-medium text-gray-700">Day 5 (blastocyst)</span>
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <button id="calc-dd-btn" class="btn-primary mt-5" type="button">Calculate Due Date</button>
+  </section>
+
+  <!-- Results -->
+  <div id="dd-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">🎉</span> Estimated Due Date</h2>
+      <div class="text-center py-6">
+        <p class="text-4xl font-bold text-primary-700" id="res-due-date">—</p>
+        <p class="text-gray-500 mt-2" id="res-trimester">—</p>
+      </div>
+      <div class="grid grid-cols-3 gap-3 mb-4">
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Current Week</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="res-week">—</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Days Remaining</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="res-days-left">—</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Progress</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="res-progress">—</p>
+        </div>
+      </div>
+      <!-- Progress bar -->
+      <div class="w-full bg-gray-100 rounded-full h-3 mb-2">
+        <div id="progress-bar" class="bg-primary-500 h-3 rounded-full transition-all" style="width:0%"></div>
+      </div>
+      <div class="flex justify-between text-xs text-gray-400">
+        <span>Week 1</span><span>Week 20</span><span>Week 40</span>
+      </div>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📍</span> Key Milestones</h2>
+      <div class="space-y-2" id="milestones-list"></div>
+    </section>
+
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+</BaseLayout>
+
+<script is:inline>
+let currentMode = 'lmp';
+const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+const MILESTONES = [
+  { week: 8, label: 'First heartbeat detectable', icon: '❤️' },
+  { week: 12, label: 'End of first trimester', icon: '🌱' },
+  { week: 20, label: 'Anatomy scan (gender reveal possible)', icon: '👁️' },
+  { week: 24, label: 'Viability milestone', icon: '⭐' },
+  { week: 28, label: 'Third trimester begins', icon: '🌟' },
+  { week: 37, label: 'Full term', icon: '✅' },
+  { week: 40, label: 'Due date', icon: '👶' },
+];
+
+function setMode(mode) {
+  currentMode = mode;
+  ['lmp','conception','ivf'].forEach(m => {
+    document.getElementById('mode-' + m).classList.toggle('hidden', m !== mode);
+  });
+}
+
+function addDays(date, days) {
+  const d = new Date(date);
+  d.setDate(d.getDate() + days);
+  return d;
+}
+
+function fmtDate(d) {
+  return MONTHS[d.getMonth()] + ' ' + d.getDate() + ', ' + d.getFullYear();
+}
+
+function calcDueDate() {
+  let dueDate, lmpDate;
+  const today = new Date();
+  today.setHours(0,0,0,0);
+
+  if (currentMode === 'lmp') {
+    const lmpVal = document.getElementById('lmp-date').value;
+    if (!lmpVal) { alert('Please enter your last menstrual period date.'); return; }
+    lmpDate = new Date(lmpVal);
+    const cycle = parseInt(document.getElementById('cycle-length').value) || 28;
+    dueDate = addDays(lmpDate, 280 + (cycle - 28));
+  } else if (currentMode === 'conception') {
+    const conVal = document.getElementById('conception-date').value;
+    if (!conVal) { alert('Please enter a conception date.'); return; }
+    const conDate = new Date(conVal);
+    dueDate = addDays(conDate, 266);
+    lmpDate = addDays(conDate, -14);
+  } else {
+    const ivfVal = document.getElementById('ivf-date').value;
+    if (!ivfVal) { alert('Please enter an IVF transfer date.'); return; }
+    const ivfDate = new Date(ivfVal);
+    const ivfDay = parseInt(document.querySelector('input[name="ivf-day"]:checked').value);
+    dueDate = addDays(ivfDate, ivfDay === 5 ? 261 : 263);
+    lmpDate = addDays(ivfDate, ivfDay === 5 ? -19 : -17);
+  }
+
+  const diffMs = today - lmpDate;
+  const totalDaysPreg = Math.floor(diffMs / 86400000);
+  const weeksPreg = Math.max(0, Math.floor(totalDaysPreg / 7));
+  const daysExtra = Math.max(0, totalDaysPreg % 7);
+  const daysLeft = Math.max(0, Math.ceil((dueDate - today) / 86400000));
+  const progress = Math.min(100, Math.max(0, (totalDaysPreg / 280) * 100));
+
+  let trimester = '';
+  if (weeksPreg <= 12) trimester = '1st Trimester';
+  else if (weeksPreg <= 27) trimester = '2nd Trimester';
+  else trimester = '3rd Trimester';
+
+  document.getElementById('res-due-date').textContent = fmtDate(dueDate);
+  document.getElementById('res-trimester').textContent = trimester + ' · Week ' + weeksPreg + ', Day ' + daysExtra;
+  document.getElementById('res-week').textContent = 'Week ' + weeksPreg + '+' + daysExtra;
+  document.getElementById('res-days-left').textContent = daysLeft + ' days';
+  document.getElementById('res-progress').textContent = progress.toFixed(0) + '%';
+  document.getElementById('progress-bar').style.width = progress + '%';
+
+  // Milestones
+  const list = document.getElementById('milestones-list');
+  list.innerHTML = MILESTONES.map(m => {
+    const milestoneDate = addDays(lmpDate, m.week * 7);
+    const isPast = milestoneDate < today;
+    const isCurrent = weeksPreg === m.week;
+    const cls = isPast ? 'bg-green-50 border-green-200' : isCurrent ? 'bg-primary-50 border-primary-200' : 'bg-gray-50 border-gray-200';
+    return `<div class="flex items-center gap-3 p-3 rounded-lg border ${cls}">
+      <span class="text-xl">${m.icon}</span>
+      <div class="flex-1">
+        <span class="font-semibold text-sm text-gray-700">Week ${m.week}: ${m.label}</span>
+        <p class="text-xs text-gray-400">${fmtDate(milestoneDate)}</p>
+      </div>
+      ${isPast ? '<span class="text-green-500 text-lg">✓</span>' : ''}
+    </div>`;
+  }).join('');
+
+  const results = document.getElementById('dd-results');
+  results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calc-dd-btn').addEventListener('click', calcDueDate);
+});
+</script>
