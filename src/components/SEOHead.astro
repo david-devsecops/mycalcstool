@@ -8,6 +8,7 @@ interface Props {
   lang?: string;
   jsonLd?: object | object[];
   noIndex?: boolean;
+  hreflangKo?: string;
 }
 
 const {
@@ -19,6 +20,7 @@ const {
   lang = 'ko',
   jsonLd,
   noIndex = false,
+  hreflangKo,
 } = Astro.props;
 
 const siteUrl = 'https://mycalcstool.com';
@@ -65,7 +67,9 @@ const jsonLdArray = jsonLd ? (Array.isArray(jsonLd) ? jsonLd : [jsonLd]) : [];
 <!-- hreflang -->
 {lang === 'ko' && <link rel="alternate" hreflang="ko" href={pageUrl} />}
 {lang === 'en' && <link rel="alternate" hreflang="en" href={pageUrl} />}
-<link rel="alternate" hreflang="x-default" href={siteUrl} />
+{lang === 'en' && hreflangKo && <link rel="alternate" hreflang="ko" href={siteUrl + hreflangKo} />}
+{lang === 'en' && <link rel="alternate" hreflang="x-default" href={pageUrl} />}
+{lang === 'ko' && <link rel="alternate" hreflang="x-default" href={siteUrl} />}
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

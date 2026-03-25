@@ -13,6 +13,7 @@ interface Props {
   lang?: string;
   jsonLd?: object | object[];
   noIndex?: boolean;
+  hreflangKo?: string;
 }
 
 const {
@@ -24,6 +25,7 @@ const {
   lang = 'ko',
   jsonLd,
   noIndex = false,
+  hreflangKo,
 } = Astro.props;
 ---
 
@@ -39,6 +41,7 @@ const {
     lang={lang}
     jsonLd={jsonLd}
     noIndex={noIndex}
+    hreflangKo={hreflangKo}
   />
   <!-- Google Analytics -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWJ06N3894"></script>
