@@ -1,0 +1,234 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+
+const title = 'How Much to Tip in 2026 — The Complete US Tipping Guide';
+const description = 'Confused about tipping in America? This complete 2026 guide covers exactly how much to tip at restaurants, bars, hotels, rideshare, and more — with a free tip calculator.';
+const keywords = 'how much to tip, tipping guide 2026, restaurant tip percentage, tip etiquette, gratuity guide US, how much tip restaurant';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/tipping-guide';
+const publishDate = '2026-03-31';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: canonicalUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    inLanguage: 'en',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How much should I tip at a restaurant in 2026?',
+        acceptedAnswer: { '@type': 'Answer', text: 'The standard in 2026 is 18–20% of the pre-tax bill. 15% for below-average service, 22–25% for outstanding service.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Should I tip on the pre-tax or post-tax amount?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Technically you should tip on the pre-tax amount. Most people tip on the post-tax total for simplicity — the difference is usually a dollar or two.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do I need to tip at coffee shops?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Tipping at coffee shops is optional. For a simple drip coffee, you don\'t need to tip. For a handcrafted specialty drink, $1–2 is appreciated.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'How much should I tip for food delivery?',
+        acceptedAnswer: { '@type': 'Answer', text: '15–20% is the standard for food delivery, with a minimum of $3–5 regardless of order size.' },
+      },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  category="Money & Finance"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">How Much to Tip in 2026 — The Complete US Tipping Guide (With Calculator)</Fragment>
+
+  <p>Tipping in America can feel like solving a math problem every time you eat out.</p>
+  <p>Is 15% still okay? Should you tip on the pre-tax or post-tax amount? What about takeout? Coffee shops? Hotels? And now that tablets are spinning around asking for 25%, how much is actually expected?</p>
+  <p>This guide breaks down exactly how much to tip in every common situation in 2026, plus a quick way to calculate it without doing mental math at the table.</p>
+
+  <hr />
+
+  <h2>The Quick Answer</h2>
+  <p>If you're in a rush, here's the short version:</p>
+  <ul>
+    <li><strong>Restaurants (sit-down):</strong> 18–20% of the pre-tax bill. 15% for below-average service, 22–25% for outstanding service.</li>
+    <li><strong>Coffee shops / fast casual:</strong> $1–2 per drink, or 0–15% at your discretion. Not obligatory.</li>
+    <li><strong>Bars:</strong> $1–2 per drink, or 15–20% on a tab.</li>
+    <li><strong>Food delivery:</strong> 15–20%, minimum $3–5.</li>
+    <li><strong>Rideshare (Uber/Lyft):</strong> 15–20%, or $2–5 for short rides.</li>
+    <li><strong>Hotels:</strong> $2–5 per night for housekeeping, $1–2 per bag for bellhop.</li>
+    <li><strong>Hair salons / barbers:</strong> 15–20%.</li>
+  </ul>
+
+  <blockquote>
+    <p>👉 <a href="https://mycalcstool.com/en/tip-calculator"><strong>Tip Calculator</strong></a> — Enter your bill amount and split between friends. Get the exact tip and total per person instantly.</p>
+  </blockquote>
+
+  <AdSlot slot="mid" format="horizontal" />
+
+  <hr />
+
+  <h2>Restaurant Tipping: The Most Common Question</h2>
+
+  <h3>How much should I tip at a restaurant?</h3>
+  <p>The standard in 2026 is <strong>18–20% of the pre-tax bill</strong>. This has shifted up from the old standard of 15% over the past decade, especially in major cities.</p>
+  <p>Here's a practical breakdown:</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Service quality</th>
+        <th>Tip percentage</th>
+        <th>On a $50 bill</th>
+        <th>On a $100 bill</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Below average</td><td>15%</td><td>$7.50</td><td>$15.00</td></tr>
+      <tr><td>Good (standard)</td><td>18%</td><td>$9.00</td><td>$18.00</td></tr>
+      <tr><td>Great</td><td>20%</td><td>$10.00</td><td>$20.00</td></tr>
+      <tr><td>Outstanding</td><td>22–25%</td><td>$11–12.50</td><td>$22–25.00</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Pre-tax or post-tax?</h3>
+  <p>Technically, you should tip on the <strong>pre-tax</strong> amount. But in practice, most people tip on the total (post-tax) because it's easier to calculate. The difference is usually only a dollar or two. Either way is acceptable.</p>
+
+  <h3>What about large groups?</h3>
+  <p>Many restaurants automatically add an 18–20% gratuity for parties of 6 or more. Check your bill before adding an extra tip on top.</p>
+
+  <hr />
+
+  <h2>The Tipping Situations Nobody Talks About</h2>
+
+  <h3>Takeout / pickup orders</h3>
+  <p>This is the most debated one. Before 2020, tipping on takeout was rare. Post-pandemic, 10–15% has become common but is <strong>not obligatory</strong>. If the restaurant staff packaged your order with care, especially a large or complex order, a small tip is a nice gesture.</p>
+
+  <h3>Coffee shops</h3>
+  <p>The tablet tip screen at coffee shops can feel aggressive, but tipping here is truly optional. For a simple drip coffee, you don't need to tip. For a handcrafted specialty drink, $1–2 is appreciated. The barista won't judge you either way.</p>
+
+  <h3>Food delivery (DoorDash, Uber Eats, etc.)</h3>
+  <p><strong>15–20%</strong> is the standard, with a minimum of $3–5 regardless of order size. Remember: delivery drivers use their own cars and gas. In bad weather or for long-distance deliveries, tipping more is considerate.</p>
+
+  <h3>Rideshare (Uber/Lyft)</h3>
+  <p><strong>15–20%</strong> of the fare, or a flat $2–5 for short rides. Unlike taxis, rideshare tipping isn't automatic, but it's increasingly expected. You can tip through the app after your ride.</p>
+
+  <h3>Hotels</h3>
+  <p>Housekeeping: <strong>$2–5 per night</strong>, left on the nightstand or pillow with a note. Many travelers forget this one, but housekeeping is one of the hardest jobs in hospitality.</p>
+  <ul>
+    <li>Bellhop / porter: <strong>$1–2 per bag</strong></li>
+    <li>Concierge: $5–20 depending on the complexity of the request (restaurant reservations vs. hard-to-get tickets)</li>
+    <li>Valet parking: <strong>$2–5</strong> when your car is returned</li>
+  </ul>
+
+  <h3>Hair salons and barbers</h3>
+  <p><strong>15–20%</strong> of the total service cost. If your stylist is the salon owner, tipping is optional but still appreciated.</p>
+
+  <h3>Movers</h3>
+  <p><strong>$20–50 per mover</strong> for a local move, or 15–20% of the total moving cost for long-distance moves.</p>
+
+  <hr />
+
+  <h2>When You Don't Need to Tip</h2>
+  <p>Not every situation requires a tip. Here are cases where tipping is <strong>not expected</strong>:</p>
+  <ul>
+    <li>Fast food restaurants (McDonald's, Subway, etc.)</li>
+    <li>Retail store employees</li>
+    <li>Medical professionals (doctors, nurses, dentists)</li>
+    <li>Government workers (postal workers during regular service)</li>
+    <li>Self-checkout or fully automated services</li>
+    <li>Buffet-style restaurants (though $1–2 for the drink server is nice)</li>
+  </ul>
+
+  <AdSlot slot="mid2" format="rectangle" />
+
+  <hr />
+
+  <h2>The Easy Math Trick</h2>
+  <p>Don't want to pull out a calculator at the table? Here's the simplest mental math method:</p>
+  <p><strong>For 20%:</strong> Move the decimal point one place left (that's 10%), then double it.</p>
+  <p>Example: $47.50 bill → 10% = $4.75 → double = <strong>$9.50 tip</strong> (20%)</p>
+  <p><strong>For 15%:</strong> Calculate 10% first, then add half of that.</p>
+  <p>Example: $47.50 bill → 10% = $4.75 → half = $2.38 → total = <strong>$7.13 tip</strong> (15%)</p>
+  <p><strong>For splitting the bill:</strong> This is where it gets messy. If 4 people are splitting a $200 bill with 20% tip: Total with tip = $240, each person pays $60.</p>
+  <p>Or just use the calculator and skip the math entirely:</p>
+
+  <blockquote>
+    <p>👉 <a href="https://mycalcstool.com/en/tip-calculator"><strong>Tip Calculator — Split the Bill</strong></a> — Enter the bill, tip %, and number of people. Done in 2 seconds.</p>
+  </blockquote>
+
+  <hr />
+
+  <h2>Tipping Etiquette FAQs</h2>
+
+  <h3>Is it rude to tip exactly 15%?</h3>
+  <p>No, 15% is still acceptable. But in 2026, 18–20% has become the new norm in most US cities. If the service was genuinely poor, 15% communicates that you're not thrilled without being rude.</p>
+
+  <h3>Should I tip more in expensive cities?</h3>
+  <p>The percentage stays the same, but since bills are higher in cities like New York, San Francisco, and LA, the dollar amount is naturally larger. You don't need to tip 25% just because you're in Manhattan.</p>
+
+  <h3>What if the service was terrible?</h3>
+  <p>Tipping 10% (or even nothing in extreme cases) is your right. But consider speaking to a manager first. Sometimes the issue isn't the server's fault — the kitchen might be backed up, or they might be short-staffed.</p>
+
+  <h3>Do servers actually rely on tips?</h3>
+  <p>Yes. In most US states, the tipped minimum wage is <strong>$2.13 per hour</strong> (federally), far below the regular minimum wage. Tips make up the majority of a server's income. This is why tipping is considered essential, not optional, at sit-down restaurants in America.</p>
+
+  <h3>Is tipping different in other countries?</h3>
+  <p>Absolutely. In Japan, tipping can be considered insulting. In most of Europe, a 5–10% tip is generous (and service charge is often included). In Australia, tipping is appreciated but not expected. The US has one of the strongest tipping cultures in the world.</p>
+
+  <hr />
+
+  <h2>Summary</h2>
+
+  <table>
+    <thead>
+      <tr>
+        <th>Situation</th>
+        <th>Standard tip</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Restaurant (sit-down)</td><td>18–20%</td><td>Pre-tax amount</td></tr>
+      <tr><td>Bar</td><td>$1–2/drink or 15–20%</td><td>On a tab</td></tr>
+      <tr><td>Coffee shop</td><td>$0–2</td><td>Optional</td></tr>
+      <tr><td>Food delivery</td><td>15–20%, min $3–5</td><td>Higher in bad weather</td></tr>
+      <tr><td>Rideshare</td><td>15–20% or $2–5</td><td>Via app</td></tr>
+      <tr><td>Hotel housekeeping</td><td>$2–5/night</td><td>Leave daily</td></tr>
+      <tr><td>Hair salon / barber</td><td>15–20%</td><td>Of total service</td></tr>
+      <tr><td>Movers</td><td>$20–50/person</td><td>Local move</td></tr>
+      <tr><td>Takeout</td><td>0–15%</td><td>Optional</td></tr>
+    </tbody>
+  </table>
+
+  <p>Need to calculate the exact tip amount? Skip the mental math:</p>
+
+  <blockquote>
+    <p>👉 <a href="https://mycalcstool.com/en/tip-calculator"><strong>Tip Calculator</strong></a> — Bill amount + tip % + split = instant answer</p>
+    <p>👉 <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> — For any quick percentage calculation</p>
+  </blockquote>
+
+  <hr />
+
+  <p><em>This guide reflects US tipping customs as of 2026. Tipping practices vary by region and culture. When in doubt, 20% is always a safe choice at sit-down restaurants.</em></p>
+</BlogLayout>

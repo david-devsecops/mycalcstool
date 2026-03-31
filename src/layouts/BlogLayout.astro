@@ -1,0 +1,116 @@
+---
+import SEOHead from '../components/SEOHead.astro';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import '../styles/global.css';
+
+interface Props {
+  title: string;
+  description: string;
+  keywords?: string;
+  canonicalUrl?: string;
+  publishDate: string;
+  modifiedDate?: string;
+  author?: string;
+  category?: string;
+  jsonLd?: object | object[];
+}
+
+const {
+  title,
+  description,
+  keywords,
+  canonicalUrl,
+  publishDate,
+  modifiedDate,
+  author = 'mycalcstool',
+  category,
+  jsonLd,
+} = Astro.props;
+---
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <SEOHead
+    title={title}
+    description={description}
+    keywords={keywords}
+    canonicalUrl={canonicalUrl}
+    lang="en"
+    jsonLd={jsonLd}
+  />
+  <!-- Google Analytics -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWJ06N3894"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-DWJ06N3894');
+  </script>
+  <!-- Google AdSense -->
+  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2898972256894696" crossorigin="anonymous"></script>
+  <style>
+    .prose h2 { font-size: 1.5rem; font-weight: 700; margin-top: 2rem; margin-bottom: 0.75rem; color: #1e293b; border-bottom: 2px solid #e2e8f0; padding-bottom: 0.4rem; }
+    .prose h3 { font-size: 1.15rem; font-weight: 600; margin-top: 1.5rem; margin-bottom: 0.5rem; color: #334155; }
+    .prose p { margin-bottom: 1rem; color: #374151; line-height: 1.75; }
+    .prose ul { list-style: disc; padding-left: 1.5rem; margin-bottom: 1rem; color: #374151; }
+    .prose ol { list-style: decimal; padding-left: 1.5rem; margin-bottom: 1rem; color: #374151; }
+    .prose li { margin-bottom: 0.35rem; line-height: 1.7; }
+    .prose strong { font-weight: 700; color: #111827; }
+    .prose table { width: 100%; border-collapse: collapse; margin-bottom: 1.5rem; font-size: 0.9rem; }
+    .prose thead tr { background-color: #f1f5f9; }
+    .prose th { padding: 0.6rem 0.75rem; text-align: left; font-weight: 600; color: #475569; border: 1px solid #e2e8f0; }
+    .prose td { padding: 0.6rem 0.75rem; border: 1px solid #e2e8f0; color: #374151; }
+    .prose tbody tr:nth-child(even) { background-color: #f8fafc; }
+    .prose blockquote { border-left: 4px solid #2563eb; background: #eff6ff; padding: 0.75rem 1rem; border-radius: 0 0.5rem 0.5rem 0; margin: 1.5rem 0; }
+    .prose blockquote p { margin-bottom: 0; color: #1e40af; }
+    .prose hr { border: none; border-top: 1px solid #e2e8f0; margin: 2rem 0; }
+    .prose a { color: #2563eb; text-decoration: underline; }
+    .prose a:hover { color: #1d4ed8; }
+    .prose em { font-style: italic; color: #6b7280; font-size: 0.9rem; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col bg-gray-50">
+  <Header />
+  <main class="flex-1 max-w-3xl mx-auto px-4 py-8 w-full" id="main-content">
+    <!-- Breadcrumb -->
+    <nav class="text-sm text-gray-500 mb-4" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0 flex-wrap">
+        <li><a href="/en/" class="hover:text-blue-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-blue-600 transition-colors">Blog</a></li>
+        {category && (
+          <>
+            <li aria-hidden="true" class="text-gray-300">/</li>
+            <li class="text-gray-500">{category}</li>
+          </>
+        )}
+      </ol>
+    </nav>
+
+    <!-- Article header -->
+    <header class="mb-8">
+      <h1 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight mb-3">
+        <slot name="headline" />
+      </h1>
+      <div class="flex items-center gap-3 text-sm text-gray-500 flex-wrap">
+        <span>By {author}</span>
+        <span aria-hidden="true">·</span>
+        <time datetime={publishDate}>{new Date(publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time>
+        {modifiedDate && (
+          <>
+            <span aria-hidden="true">·</span>
+            <span>Updated <time datetime={modifiedDate}>{new Date(modifiedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
+          </>
+        )}
+      </div>
+    </header>
+
+    <article class="prose">
+      <slot />
+    </article>
+  </main>
+  <Footer />
+</body>
+</html>
