@@ -1,25 +1,36 @@
 ---
 const currentYear = new Date().getFullYear();
+const isEnglish = Astro.url.pathname.startsWith('/en');
 ---
 
 <footer class="bg-white border-t border-gray-200 mt-auto">
   <div class="max-w-4xl mx-auto px-4 py-8">
     <div class="flex flex-col md:flex-row items-center justify-between gap-4">
-      <!-- 로고 + 설명 -->
+      <!-- Logo + description -->
       <div class="text-center md:text-left">
-        <a href="/" class="font-bold text-primary-700 text-lg hover:text-primary-600 transition-colors">
+        <a href={isEnglish ? '/en/' : '/'} class="font-bold text-primary-700 text-lg hover:text-primary-600 transition-colors">
           mycalcstool
         </a>
         <p class="text-sm text-gray-500 mt-1">
-          실생활에 유용한 무료 온라인 계산기 모음
+          {isEnglish ? 'Free online calculators for everyday life' : '실생활에 유용한 무료 온라인 계산기 모음'}
         </p>
       </div>
 
-      <!-- 링크 -->
-      <nav class="flex flex-wrap justify-center gap-4 text-sm" aria-label="푸터 링크">
-        <a href="/about" class="text-gray-500 hover:text-primary-600 transition-colors">사이트 소개</a>
-        <a href="/privacy" class="text-gray-500 hover:text-primary-600 transition-colors">개인정보처리방침</a>
-        <a href="/terms" class="text-gray-500 hover:text-primary-600 transition-colors">이용약관</a>
+      <!-- Links -->
+      <nav class="flex flex-wrap justify-center gap-4 text-sm" aria-label={isEnglish ? 'Footer links' : '푸터 링크'}>
+        {isEnglish ? (
+          <>
+            <a href="/en/blog/" class="text-gray-500 hover:text-primary-600 transition-colors">Blog</a>
+            <a href="/en/privacy" class="text-gray-500 hover:text-primary-600 transition-colors">Privacy Policy</a>
+            <a href="/en/terms" class="text-gray-500 hover:text-primary-600 transition-colors">Terms of Use</a>
+          </>
+        ) : (
+          <>
+            <a href="/about" class="text-gray-500 hover:text-primary-600 transition-colors">사이트 소개</a>
+            <a href="/privacy" class="text-gray-500 hover:text-primary-600 transition-colors">개인정보처리방침</a>
+            <a href="/terms" class="text-gray-500 hover:text-primary-600 transition-colors">이용약관</a>
+          </>
+        )}
       </nav>
     </div>
 
@@ -28,7 +39,9 @@ const currentYear = new Date().getFullYear();
         © {currentYear} mycalcstool. All rights reserved.
       </p>
       <p class="text-center text-xs text-gray-400 mt-1">
-        본 계산기는 참고용이며 법적 효력이 없습니다. 중요한 금융·세무·의료 결정은 전문가와 상담하세요.
+        {isEnglish
+          ? 'Results are for reference only and have no legal effect. Consult a professional for important financial, tax, or medical decisions.'
+          : '본 계산기는 참고용이며 법적 효력이 없습니다. 중요한 금융·세무·의료 결정은 전문가와 상담하세요.'}
       </p>
     </div>
   </div>

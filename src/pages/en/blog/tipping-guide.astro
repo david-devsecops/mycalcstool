@@ -58,6 +58,7 @@ const jsonLd = [
   canonicalUrl={canonicalUrl}
   publishDate={publishDate}
   category="Money & Finance"
+  readTime="8 min read"
   jsonLd={jsonLd}
 >
   <Fragment slot="headline">How Much to Tip in 2026 — The Complete US Tipping Guide (With Calculator)</Fragment>
@@ -94,22 +95,24 @@ const jsonLd = [
   <p>The standard in 2026 is <strong>18–20% of the pre-tax bill</strong>. This has shifted up from the old standard of 15% over the past decade, especially in major cities.</p>
   <p>Here's a practical breakdown:</p>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Service quality</th>
-        <th>Tip percentage</th>
-        <th>On a $50 bill</th>
-        <th>On a $100 bill</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Below average</td><td>15%</td><td>$7.50</td><td>$15.00</td></tr>
-      <tr><td>Good (standard)</td><td>18%</td><td>$9.00</td><td>$18.00</td></tr>
-      <tr><td>Great</td><td>20%</td><td>$10.00</td><td>$20.00</td></tr>
-      <tr><td>Outstanding</td><td>22–25%</td><td>$11–12.50</td><td>$22–25.00</td></tr>
-    </tbody>
-  </table>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Service quality</th>
+          <th>Tip percentage</th>
+          <th>On a $50 bill</th>
+          <th>On a $100 bill</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Below average</td><td>15%</td><td>$7.50</td><td>$15.00</td></tr>
+        <tr><td>Good (standard)</td><td>18%</td><td>$9.00</td><td>$18.00</td></tr>
+        <tr><td>Great</td><td>20%</td><td>$10.00</td><td>$20.00</td></tr>
+        <tr><td>Outstanding</td><td>22–25%</td><td>$11–12.50</td><td>$22–25.00</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <h3>Pre-tax or post-tax?</h3>
   <p>Technically, you should tip on the <strong>pre-tax</strong> amount. But in practice, most people tip on the total (post-tax) because it's easier to calculate. The difference is usually only a dollar or two. Either way is acceptable.</p>
@@ -200,26 +203,28 @@ const jsonLd = [
 
   <h2>Summary</h2>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Situation</th>
-        <th>Standard tip</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody>
-      <tr><td>Restaurant (sit-down)</td><td>18–20%</td><td>Pre-tax amount</td></tr>
-      <tr><td>Bar</td><td>$1–2/drink or 15–20%</td><td>On a tab</td></tr>
-      <tr><td>Coffee shop</td><td>$0–2</td><td>Optional</td></tr>
-      <tr><td>Food delivery</td><td>15–20%, min $3–5</td><td>Higher in bad weather</td></tr>
-      <tr><td>Rideshare</td><td>15–20% or $2–5</td><td>Via app</td></tr>
-      <tr><td>Hotel housekeeping</td><td>$2–5/night</td><td>Leave daily</td></tr>
-      <tr><td>Hair salon / barber</td><td>15–20%</td><td>Of total service</td></tr>
-      <tr><td>Movers</td><td>$20–50/person</td><td>Local move</td></tr>
-      <tr><td>Takeout</td><td>0–15%</td><td>Optional</td></tr>
-    </tbody>
-  </table>
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Situation</th>
+          <th>Standard tip</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Restaurant (sit-down)</td><td>18–20%</td><td>Pre-tax amount</td></tr>
+        <tr><td>Bar</td><td>$1–2/drink or 15–20%</td><td>On a tab</td></tr>
+        <tr><td>Coffee shop</td><td>$0–2</td><td>Optional</td></tr>
+        <tr><td>Food delivery</td><td>15–20%, min $3–5</td><td>Higher in bad weather</td></tr>
+        <tr><td>Rideshare</td><td>15–20% or $2–5</td><td>Via app</td></tr>
+        <tr><td>Hotel housekeeping</td><td>$2–5/night</td><td>Leave daily</td></tr>
+        <tr><td>Hair salon / barber</td><td>15–20%</td><td>Of total service</td></tr>
+        <tr><td>Movers</td><td>$20–50/person</td><td>Local move</td></tr>
+        <tr><td>Takeout</td><td>0–15%</td><td>Optional</td></tr>
+      </tbody>
+    </table>
+  </div>
 
   <p>Need to calculate the exact tip amount? Skip the mental math:</p>
 
