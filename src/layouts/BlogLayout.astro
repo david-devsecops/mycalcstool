@@ -34,6 +34,7 @@ const {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <meta name="color-scheme" content="light" />
   <SEOHead
     title={title}
     description={description}
@@ -59,6 +60,22 @@ const {
       margin: 0 auto;
     }
 
+    :root {
+      color-scheme: light;
+    }
+
+    body.blog-page,
+    body.blog-page header,
+    body.blog-page #mobile-menu,
+    body.blog-page footer {
+      background-color: #ffffff !important;
+    }
+
+    body.blog-page,
+    body.blog-page main {
+      color: #111827 !important;
+    }
+
     /* 블로그 본문 컨테이너 */
     .blog-content {
       max-width: 680px;
@@ -66,13 +83,13 @@ const {
       padding: 0 1.5rem;
       font-size: 1.075rem;
       line-height: 1.9;
-      color: #374151;
+      color: #374151 !important;
     }
 
     /* 문단 간격 */
     .blog-content p {
-      color: #374151;
-      opacity: 1;
+      color: #374151 !important;
+      opacity: 1 !important;
       margin-bottom: 1.5rem;
     }
 
@@ -84,7 +101,7 @@ const {
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
       border-bottom: 2px solid #e5e7eb;
-      color: #111827;
+      color: #111827 !important;
     }
 
     /* H3 - 서브 제목 */
@@ -93,7 +110,7 @@ const {
       font-weight: 600;
       margin-top: 2.5rem;
       margin-bottom: 0.75rem;
-      color: #1f2937;
+      color: #1f2937 !important;
     }
 
     /* H4 */
@@ -102,7 +119,7 @@ const {
       font-weight: 600;
       margin-top: 2rem;
       margin-bottom: 0.5rem;
-      color: #374151;
+      color: #374151 !important;
     }
 
     /* 테이블 */
@@ -122,7 +139,7 @@ const {
       padding: 0.75rem 1rem;
       text-align: left;
       font-weight: 600;
-      color: #374151;
+      color: #374151 !important;
       border-bottom: 2px solid #e5e7eb;
     }
 
@@ -213,7 +230,7 @@ const {
 
     /* 볼드 텍스트 강조 */
     .blog-content strong {
-      color: #111827;
+      color: #111827 !important;
       font-weight: 600;
     }
 
@@ -235,78 +252,8 @@ const {
     /* 글 하단 면책 조항 */
     .blog-content em {
       font-size: 0.875rem;
-      color: #6b7280;
+      color: #6b7280 !important;
       line-height: 1.6;
-    }
-
-    /* 다크모드 지원 */
-    @media (prefers-color-scheme: dark) {
-      body {
-        background-color: #111827;
-        color: #e5e7eb;
-      }
-      header {
-        background-color: #111827;
-        border-bottom-color: #374151;
-      }
-      nav[aria-label="breadcrumb"] {
-        color: #9ca3af;
-      }
-      nav[aria-label="breadcrumb"] a:hover {
-        color: #93c5fd;
-      }
-      header h1 {
-        color: #f9fafb;
-      }
-      header .text-gray-500 {
-        color: #9ca3af;
-      }
-      .blog-content {
-        color: #e5e7eb;
-      }
-      .blog-content p {
-        color: #e5e7eb;
-        opacity: 1;
-      }
-      .blog-content h2 {
-        color: #f9fafb;
-        border-bottom-color: #374151;
-      }
-      .blog-content h3, .blog-content h4 {
-        color: #e5e7eb;
-      }
-      .blog-content strong {
-        color: #f9fafb;
-      }
-      .blog-content blockquote {
-        background: linear-gradient(135deg, #1e293b, #1e3a5f);
-        border-left-color: #60a5fa;
-      }
-      .blog-content blockquote a {
-        color: #60a5fa;
-      }
-      .blog-content thead th {
-        background-color: #1f2937;
-        border-bottom-color: #374151;
-      }
-      .blog-content tbody tr:nth-child(even) {
-        background-color: #1f2937;
-      }
-      .blog-content tbody td {
-        border-bottom-color: #374151;
-      }
-      .blog-content table {
-        border-color: #374151;
-      }
-      .blog-content hr {
-        border-top-color: #374151;
-      }
-      .blog-content code {
-        background-color: #1f2937;
-      }
-      .blog-content em {
-        color: #9ca3af;
-      }
     }
   </style>
 </head>
