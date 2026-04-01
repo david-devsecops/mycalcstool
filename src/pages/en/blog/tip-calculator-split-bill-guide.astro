@@ -1,0 +1,54 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'Tip Calculator Guide: How to Split a Bill Fairly';
+const description = 'Learn how to calculate a tip, split a bill fairly, and avoid common mistakes when dining with friends or large groups.';
+const keywords = 'tip calculator guide, split bill fairly, how to split restaurant bill, tip and split calculator';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/tip-calculator-split-bill-guide';
+const publishDate = '2026-03-24';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Math & Utility" readTime="6 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">Tip Calculator Guide: How to Split a Bill Fairly</Fragment>
+
+  <p>Splitting a restaurant bill sounds simple until tax, tip, shared dishes, and uneven orders enter the picture.</p>
+  <p>A good tip calculator saves time and prevents awkward math at the table, especially when several people are paying.</p>
+
+  <h2>Start With the Bill Total</h2>
+  <p>Begin with the bill amount and decide whether you want to calculate the tip on the pre-tax or total amount. Many people choose the total for simplicity.</p>
+
+  <h2>Choose the Tip Percentage</h2>
+  <p>The right tip depends on the service level and local norms. What matters for the math is being clear before you split the total.</p>
+
+  <h2>Add Tip to the Total</h2>
+  <p>Once the tip amount is calculated, add it to the bill total to get the full amount owed.</p>
+
+  <h2>Divide by the Number of People</h2>
+  <p>If everyone is splitting evenly, divide the final total by the number of diners. That gives a quick equal split.</p>
+
+  <h2>When Equal Splits Feel Unfair</h2>
+  <p>If one person ordered much more than everyone else, an even split may not feel right. In that case, calculate each person's share first and then apply the tip proportionally.</p>
+
+  <h2>Large Group Tip Problems</h2>
+  <p>Large bills often create two mistakes: forgetting an automatic gratuity already added to the bill, or adding the tip twice by accident.</p>
+
+  <h2>Best Tool to Use</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/tip-calculator"><strong>Tip Calculator</strong></a> to enter the bill, tip percentage, and number of people and get the total instantly.</p>
+
+  <h2>Final Takeaway</h2>
+  <p>The cleanest bill split is the one everyone understands. A tip calculator helps you avoid double counting, awkward rounding, and rushed table math.</p>
+</BlogLayout>

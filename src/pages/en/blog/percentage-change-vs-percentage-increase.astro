@@ -1,0 +1,80 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'Percentage Change vs Percentage Increase: What Is the Difference?';
+const description = 'Learn the difference between percentage change, percentage increase, and percentage decrease, with simple formulas and examples you can use in school, work, and finance.';
+const keywords = 'percentage change vs percentage increase, percentage decrease formula, percent change formula, percentage increase difference';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/percentage-change-vs-percentage-increase';
+const publishDate = '2026-03-31';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  category="Math & Utility"
+  readTime="6 min read"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">Percentage Change vs Percentage Increase: What Is the Difference?</Fragment>
+
+  <p>People often use percentage change and percentage increase as if they mean the same thing. They do not.</p>
+  <p><strong>Percentage change</strong> is the broad term. It tells you how much something moved up or down. <strong>Percentage increase</strong> is only used when the value goes up. If the value goes down, you have a <strong>percentage decrease</strong>.</p>
+
+  <h2>Quick Answer</h2>
+  <p>Use percentage increase when the new number is larger than the original number. Use percentage decrease when it is smaller. Use percentage change when you want one formula that covers both cases.</p>
+
+  <h2>Formula</h2>
+  <p>The general percent change formula is <strong>((New - Original) / Original) x 100</strong>.</p>
+  <p>If the result is positive, it is an increase. If the result is negative, it is a decrease.</p>
+
+  <h2>Example: Increase</h2>
+  <p>If a value goes from 40 to 50:</p>
+  <ul>
+    <li>Change = 50 - 40 = 10</li>
+    <li>10 / 40 = 0.25</li>
+    <li>0.25 x 100 = <strong>25%</strong></li>
+  </ul>
+  <p>This is a <strong>25% increase</strong>.</p>
+
+  <h2>Example: Decrease</h2>
+  <p>If a value goes from 40 to 30:</p>
+  <ul>
+    <li>Change = 30 - 40 = -10</li>
+    <li>-10 / 40 = -0.25</li>
+    <li>-0.25 x 100 = <strong>-25%</strong></li>
+  </ul>
+  <p>This is a <strong>25% decrease</strong>, or a <strong>-25% change</strong>.</p>
+
+  <h2>Common Mistakes</h2>
+  <ul>
+    <li>Using percentage increase for a negative result.</li>
+    <li>Dividing by the new value instead of the original value.</li>
+    <li>Confusing percentage change with percentage point change.</li>
+  </ul>
+
+  <h2>Percentage Change vs Percentage Points</h2>
+  <p>If an interest rate moves from 5% to 7%, that is a <strong>2 percentage point increase</strong>. In relative terms, it is a <strong>40% increase</strong>.</p>
+
+  <h2>Best Tool for Both</h2>
+  <p>If you do not want to work it out by hand, use the <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a>. It handles percentage increase, percentage decrease, and other common percent calculations.</p>
+
+  <h2>Final Takeaway</h2>
+  <p><strong>Percentage change</strong> is the umbrella term. <strong>Percentage increase</strong> is one type of percentage change. If the value goes down, the correct term is <strong>percentage decrease</strong>.</p>
+</BlogLayout>

@@ -1,0 +1,51 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'Due Date Calculator Guide: LMP vs Conception vs IVF';
+const description = 'Learn how estimated due dates are calculated using LMP, conception date, or IVF transfer date, and what those methods mean in practice.';
+const keywords = 'due date calculator guide, lmp due date, conception date due date, ivf due date calculator';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/due-date-calculator-guide';
+const publishDate = '2026-03-25';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Health" readTime="7 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">Due Date Calculator Guide: LMP vs Conception vs IVF</Fragment>
+
+  <p>Pregnancy due dates are usually estimates, not guarantees. Different methods can be used depending on what information you have.</p>
+  <p>The three most common inputs are the first day of the last menstrual period (LMP), the conception date, or the IVF transfer date.</p>
+
+  <h2>LMP Method</h2>
+  <p>The LMP method is the most common starting point. It estimates the due date by counting forward from the first day of the last menstrual period.</p>
+
+  <h2>Conception Date Method</h2>
+  <p>If you know the likely conception date, you can estimate the due date from that instead. This can be useful when the conception timing is known more clearly than the cycle history.</p>
+
+  <h2>IVF Transfer Date Method</h2>
+  <p>IVF pregnancies can be estimated based on the embryo transfer date. Because the embryo age is known, this method can be more specific than LMP-based dating.</p>
+
+  <h2>Why Due Dates Are Estimates</h2>
+  <p>Even when the date is calculated correctly, birth does not usually happen on one exact day. Estimated due dates are planning tools, not predictions of the exact delivery date.</p>
+
+  <h2>Why Cycle Length Matters</h2>
+  <p>For people using the LMP method, average cycle length can affect the estimate. A cycle that is shorter or longer than the standard assumption may shift the result.</p>
+
+  <h2>Best Tool to Use</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/due-date-calculator"><strong>Due Date Calculator</strong></a> to compare LMP, conception, and IVF methods in one place.</p>
+
+  <h2>Final Takeaway</h2>
+  <p>If you know your LMP, conception date, or IVF transfer date, a due date calculator can give you a useful estimate and milestone timeline quickly. It is best used as an informational guide, not as a medical guarantee.</p>
+</BlogLayout>

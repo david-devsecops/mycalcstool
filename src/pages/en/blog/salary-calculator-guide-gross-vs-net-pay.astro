@@ -1,0 +1,73 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'Salary Calculator Guide: Gross Pay vs Net Pay Explained';
+const description = 'Learn the difference between gross pay and net pay, what gets deducted from a paycheck, and how to estimate your take-home income with a salary calculator.';
+const keywords = 'salary calculator guide, gross pay vs net pay, take home pay calculator, paycheck deductions explained';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/salary-calculator-guide-gross-vs-net-pay';
+const publishDate = '2026-03-30';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  category="Money & Finance"
+  readTime="7 min read"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">Salary Calculator Guide: Gross Pay vs Net Pay Explained</Fragment>
+
+  <p>Many people know their annual salary but still do not know what they will actually take home each paycheck.</p>
+  <p>That is because <strong>gross pay</strong> and <strong>net pay</strong> are not the same. Gross pay is what you earn before deductions. Net pay is what reaches your bank account after taxes and other withholdings.</p>
+
+  <h2>Gross Pay vs Net Pay</h2>
+  <p><strong>Gross pay</strong> is your salary or wages before taxes, insurance, retirement contributions, or other deductions.</p>
+  <p><strong>Net pay</strong> is your take-home pay after those deductions are removed.</p>
+
+  <h2>Why Your Take-Home Pay Is Lower Than Your Salary</h2>
+  <p>Your paycheck may include deductions for:</p>
+  <ul>
+    <li>Federal income tax</li>
+    <li>State income tax, depending on where you live</li>
+    <li>Social Security and Medicare</li>
+    <li>Health insurance premiums</li>
+    <li>401(k) or other retirement contributions</li>
+    <li>Other pre-tax or post-tax benefits</li>
+  </ul>
+
+  <h2>Simple Example</h2>
+  <p>If your annual salary is $75,000, your paycheck is not simply $75,000 divided by 12 or 26. Taxes and payroll deductions change the final number.</p>
+  <p>That is why a dedicated <a href="https://mycalcstool.com/en/salary-calculator"><strong>Salary Calculator</strong></a> is useful. It gives you a more realistic estimate of your actual take-home pay.</p>
+
+  <h2>Pay Frequency Matters</h2>
+  <p>Your take-home pay depends partly on how often you are paid: weekly, bi-weekly, semi-monthly, or monthly. The annual total may be the same, but the paycheck amount will differ.</p>
+
+  <h2>Common Reasons People Use a Salary Calculator</h2>
+  <ul>
+    <li>Evaluating a new job offer</li>
+    <li>Comparing salaries across states</li>
+    <li>Estimating monthly budget capacity</li>
+    <li>Understanding 401(k) and insurance deductions</li>
+    <li>Checking the difference between gross and net income</li>
+  </ul>
+
+  <h2>Final Takeaway</h2>
+  <p>Your salary number tells only part of the story. What matters for real-life decisions is your net pay after deductions. That is the number to use for budgeting, saving, and comparing job offers.</p>
+</BlogLayout>

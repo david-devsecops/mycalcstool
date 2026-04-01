@@ -1,0 +1,67 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'How Extra Mortgage Payments Can Reduce Interest and Loan Time';
+const description = 'Learn how extra mortgage payments work, why they reduce interest, and when paying extra principal can make financial sense.';
+const keywords = 'extra mortgage payments, pay off mortgage early, extra principal payment, mortgage interest savings';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/extra-mortgage-payments-guide';
+const publishDate = '2026-03-27';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Money & Finance" readTime="6 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">How Extra Mortgage Payments Can Reduce Interest and Loan Time</Fragment>
+
+  <p>Making extra mortgage payments is one of the simplest ways to reduce long-term interest and pay off a home loan faster.</p>
+  <p>Even small extra principal payments can change the total cost of the loan because interest is calculated on the remaining balance.</p>
+
+  <h2>How It Works</h2>
+  <p>When you pay extra toward <strong>principal</strong>, you reduce the loan balance sooner. That means future interest is calculated on a smaller amount.</p>
+
+  <h2>Main Benefits</h2>
+  <ul>
+    <li>Lower total interest paid</li>
+    <li>Shorter loan term</li>
+    <li>Faster equity growth</li>
+    <li>More flexibility later in the loan</li>
+  </ul>
+
+  <h2>One-Time vs Monthly Extra Payments</h2>
+  <p>You can make extra payments in more than one way: small monthly additions, occasional lump sums, or one extra payment per year.</p>
+
+  <h2>Important Check</h2>
+  <p>Make sure the lender applies the extra amount to <strong>principal</strong>, not to future scheduled payments.</p>
+
+  <h2>When Extra Payments Make Sense</h2>
+  <ul>
+    <li>You already have emergency savings</li>
+    <li>You are carrying a large mortgage balance</li>
+    <li>You want a guaranteed reduction in interest cost</li>
+  </ul>
+
+  <h2>When You May Want to Wait</h2>
+  <ul>
+    <li>You have high-interest debt elsewhere</li>
+    <li>You do not yet have a cash reserve</li>
+    <li>Your budget is already tight</li>
+  </ul>
+
+  <h2>Best Tool to Model the Savings</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> to test different payment amounts, loan terms, and payoff scenarios.</p>
+
+  <h2>Final Takeaway</h2>
+  <p>Extra mortgage payments can be powerful because they attack principal early. The key is to balance that strategy against your overall cash flow, debt, and savings needs.</p>
+</BlogLayout>

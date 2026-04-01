@@ -1,0 +1,65 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = '30-Year vs 15-Year Mortgage: Monthly Payment vs Total Interest';
+const description = 'Compare 30-year and 15-year mortgages, including monthly payment, total interest, and long-term tradeoffs, before choosing a loan term.';
+const keywords = '30 year vs 15 year mortgage, mortgage term comparison, total interest mortgage, mortgage payment guide';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/30-year-vs-15-year-mortgage-guide';
+const publishDate = '2026-03-28';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Money & Finance" readTime="6 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">30-Year vs 15-Year Mortgage: Monthly Payment vs Total Interest</Fragment>
+
+  <p>One of the biggest mortgage decisions is choosing the loan term. The most common choice is between a 30-year mortgage and a 15-year mortgage.</p>
+  <p>The shorter term usually means a higher monthly payment but far less interest over time. The longer term usually means a lower payment but more total interest.</p>
+
+  <h2>30-Year Mortgage</h2>
+  <p>A 30-year mortgage spreads payments over a longer period. That usually makes the monthly payment lower and improves cash flow.</p>
+
+  <h2>15-Year Mortgage</h2>
+  <p>A 15-year mortgage has larger required payments, but more of each payment goes to principal earlier. That usually means much lower total interest and faster equity growth.</p>
+
+  <h2>Main Tradeoff</h2>
+  <ul>
+    <li><strong>30-year:</strong> lower monthly payment, higher total interest</li>
+    <li><strong>15-year:</strong> higher monthly payment, lower total interest</li>
+  </ul>
+
+  <h2>Who Might Prefer a 30-Year Loan?</h2>
+  <ul>
+    <li>Buyers who want more monthly breathing room</li>
+    <li>Households with variable income</li>
+    <li>People prioritizing liquidity or investing flexibility</li>
+  </ul>
+
+  <h2>Who Might Prefer a 15-Year Loan?</h2>
+  <ul>
+    <li>Buyers with strong cash flow</li>
+    <li>People focused on minimizing total interest</li>
+    <li>Households aiming to become debt-free sooner</li>
+  </ul>
+
+  <h2>A Middle Ground</h2>
+  <p>Some buyers choose a 30-year loan for flexibility and then make extra principal payments when possible.</p>
+
+  <h2>Best Tool to Use</h2>
+  <p>Run both scenarios in the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> and compare the payment and total cost side by side.</p>
+
+  <h2>Final Takeaway</h2>
+  <p>The best loan term is the one that fits your budget and long-term priorities without creating payment stress.</p>
+</BlogLayout>

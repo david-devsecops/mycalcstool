@@ -1,0 +1,60 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'How Much House Can I Afford? A Practical Mortgage Guide';
+const description = 'Learn how to estimate how much house you can afford based on income, debt, down payment, and monthly payment, then calculate it with a mortgage calculator.';
+const keywords = 'how much house can i afford, mortgage affordability guide, how much mortgage can i afford, house budget calculator';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/how-much-house-can-i-afford-guide';
+const publishDate = '2026-03-29';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Money & Finance" readTime="7 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">How Much House Can I Afford? A Practical Mortgage Guide</Fragment>
+
+  <p>Buying a home is not just about what a bank might approve. It is about what you can comfortably pay month after month.</p>
+  <p>The real answer depends on your income, current debts, down payment, loan term, taxes, insurance, and your own comfort level.</p>
+
+  <h2>Quick Answer</h2>
+  <p>A practical home budget starts with the monthly payment, not the listing price. Work backward from what you can safely afford each month, then estimate the house price that fits.</p>
+
+  <h2>The Main Factors</h2>
+  <ul>
+    <li>Household income</li>
+    <li>Existing monthly debt</li>
+    <li>Down payment amount</li>
+    <li>Interest rate</li>
+    <li>Property taxes and homeowners insurance</li>
+    <li>Loan term, usually 15 or 30 years</li>
+  </ul>
+
+  <h2>Why Monthly Payment Matters More Than Purchase Price</h2>
+  <p>Two homes with the same price can lead to very different monthly costs if taxes, insurance, interest rate, or down payment are different.</p>
+
+  <h2>How to Estimate Affordability</h2>
+  <ol>
+    <li>Estimate your monthly take-home pay.</li>
+    <li>Subtract debt, savings goals, and fixed living costs.</li>
+    <li>Choose a realistic monthly housing budget.</li>
+    <li>Use that payment to estimate the home price range.</li>
+  </ol>
+
+  <h2>Best Tools to Use</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/salary-calculator"><strong>Salary Calculator</strong></a> to estimate take-home pay, then use the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> to test different home prices, down payments, and loan terms.</p>
+
+  <h2>Final Takeaway</h2>
+  <p>The best home budget is one that still leaves room for saving, emergencies, and normal life. A lender approval amount is not the same as a comfortable budget.</p>
+</BlogLayout>
