@@ -1,0 +1,198 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+
+const title = 'How Much Are Tariffs Costing You in 2026? A Household Breakdown';
+const description = 'The average American household is paying $600–$1,800 more per year due to 2026 tariffs. See which products cost more, who gets hit hardest, and how to estimate your own tariff burden.';
+const keywords = 'tariff cost 2026, how much do tariffs cost households, tariff impact on prices, import tariffs 2026, household tariff burden, tariff price increases';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/tariffs-household-cost';
+const publishDate = '2026-04-01';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: canonicalUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    inLanguage: 'en',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How much are tariffs costing the average American household in 2026?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Estimates range from $600 to $1,800 per year depending on the source and which tariffs remain in effect. The Yale Budget Lab estimates roughly $1,292 after consumer substitution, while the Tax Policy Center puts it at around $1,230.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Which products are most affected by 2026 tariffs?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Cars and auto parts are hit hardest — new car prices rose roughly $6,400 on average. Clothing, electronics, appliances, groceries, and home goods are also significantly affected.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Did the Supreme Court strike down tariffs in 2026?',
+        acceptedAnswer: { '@type': 'Answer', text: 'On February 20, 2026, the Supreme Court ruled 6-3 that IEEPA tariffs were unconstitutional. However, Section 122 and Section 232 tariffs on steel, aluminum, vehicles, and lumber remain in effect. The current average effective tariff rate is roughly 12%.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Do tariffs affect lower-income households more?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Yes. Tariffs are regressive — lower-income households spend a larger share of their income on physical goods like food and clothing, which are directly affected by tariffs. The Tax Policy Center found the bottom 20% of earners see a 1.1 percentage point tax rate increase versus 0.9 for the top 20%.' },
+      },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  category="Money & Finance"
+  readTime="7 min read"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">How Much Are Tariffs Costing You in 2026? A Household Breakdown</Fragment>
+
+  <p>If you've noticed your grocery bill creeping up, your new car costing more than expected, or your Amazon orders hitting a little harder — tariffs are a big reason why.</p>
+  <p>In 2026, the average American household is paying somewhere between <strong>$600 and $1,800 extra per year</strong> due to import tariffs, depending on which estimates you look at and which tariffs remain in effect. That's $50 to $150 per month that wasn't in your budget before.</p>
+  <p>This guide breaks down where that money is going, which products are hit hardest, and how to estimate the impact on your specific household.</p>
+
+  <hr />
+
+  <h2>The Numbers: What Experts Say</h2>
+  <p>Multiple nonpartisan research organizations have estimated the household cost of tariffs in 2026. The numbers vary because tariff policy has been changing rapidly, especially after the Supreme Court struck down IEEPA tariffs in February 2026.</p>
+  <p>The <strong>Tax Foundation</strong> estimates the average household burden at roughly <strong>$600 to $1,000</strong> in 2026, accounting for the Section 232 tariffs on steel, aluminum, autos, and lumber, plus the temporary 10% Section 122 tariff.</p>
+  <p>The <strong>Yale Budget Lab</strong> calculated an average household loss of approximately <strong>$1,751</strong> in 2025 dollars before consumers shift their buying habits, dropping to about <strong>$1,292</strong> after substitution effects.</p>
+  <p>The <strong>Tax Policy Center</strong> puts the figure at about <strong>$1,230</strong> per household for 2026, noting that the bottom 20% of earners are hit proportionally harder than the top 20%.</p>
+  <p>The common thread: tariffs act as a hidden tax that gets passed through to consumers via higher prices.</p>
+
+  <hr />
+
+  <h2>Which Products Cost More?</h2>
+  <p>Not everything is affected equally. Here's where you'll feel it most.</p>
+
+  <h3>Cars and auto parts — the biggest single hit</h3>
+  <p>The 25% tariff on imported vehicles remains in effect. Car prices have risen roughly 13.5% on average, adding about <strong>$6,400</strong> to the price of a new car. Even domestically assembled cars are more expensive because their supply chains depend on imported parts from Canada, Mexico, and Asia.</p>
+
+  <h3>Clothing and shoes</h3>
+  <p>Apparel faces tariff rates of 15–25% depending on the country of origin. A toddler clothing set from Southeast Asia that cost $24 might now cost $30–36. Jeans, sneakers, and fast fashion are all affected.</p>
+
+  <h3>Electronics and appliances</h3>
+  <p>Smartphones, laptops, and home appliances have seen modest price increases. While some tech products received exemptions, components like semiconductors and circuit boards still face tariffs that ripple through to final product prices.</p>
+
+  <h3>Groceries and food</h3>
+  <p>About 60% of fresh fruit consumed in the US is imported. Coffee, chocolate, olive oil, and seafood are all subject to tariffs. The impact here is smaller per item but adds up across a monthly grocery bill.</p>
+
+  <h3>Home goods and furniture</h3>
+  <p>Furniture, tools, and building materials (especially lumber and steel) have been directly targeted. If you're renovating or building, expect 10–25% higher material costs.</p>
+
+  <AdSlot slot="mid" format="horizontal" />
+
+  <hr />
+
+  <h2>Who Gets Hit Hardest?</h2>
+  <p>Tariffs are regressive — meaning lower-income households pay a larger share of their income toward tariff-related price increases.</p>
+  <p>The Tax Policy Center found that the bottom 20% of earners see their effective tax rate rise by <strong>1.1 percentage points</strong>, while the top 20% see only a <strong>0.9 percentage point</strong> increase. In dollar terms, wealthier households pay more total, but it's a smaller slice of their budget.</p>
+  <p>This happens because lower-income households spend a larger proportion of their income on physical goods (food, clothing, household items) rather than services, and physical goods are what tariffs directly affect.</p>
+
+  <hr />
+
+  <h2>How to Estimate Your Tariff Cost</h2>
+  <p>Here's a rough way to estimate how much tariffs are costing your household.</p>
+
+  <h3>Step 1: Start with your annual household spending on goods</h3>
+  <p>The baseline estimate is about <strong>2.3% of household spending</strong> going to tariff-related price increases (Yale Budget Lab estimate at peak tariff levels). With current, post-Supreme Court tariff levels, it's closer to <strong>0.8–1.3%</strong>.</p>
+
+  <h3>Step 2: Calculate your approximate extra cost</h3>
+  <p>Take your annual household spending on goods (not services like rent, healthcare, or utilities) and multiply by the tariff impact percentage.</p>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Annual spending on goods</th>
+          <th>Low estimate (0.8%)</th>
+          <th>Mid estimate (1.3%)</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>$30,000</td><td>$240/yr</td><td>$390/yr</td></tr>
+        <tr><td>$50,000</td><td>$400/yr</td><td>$650/yr</td></tr>
+        <tr><td>$80,000</td><td>$640/yr</td><td>$1,040/yr</td></tr>
+        <tr><td>$120,000</td><td>$960/yr</td><td>$1,560/yr</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <h3>Step 3: Adjust for your spending profile</h3>
+  <p>If you bought a new car this year, add $3,000–6,000 to your estimate. If you buy a lot of imported clothing or electronics, your number will be higher. If you mostly buy domestic goods and services, your number will be lower.</p>
+
+  <blockquote>
+    <p>👉 <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> — Quickly calculate what percentage of your income goes to tariff-related costs, or figure out the price increase on any product.</p>
+  </blockquote>
+
+  <hr />
+
+  <h2>What Changed After the Supreme Court Ruling?</h2>
+  <p>On February 20, 2026, the Supreme Court ruled 6-3 that the President cannot impose tariffs under the International Emergency Economic Powers Act (IEEPA). This struck down the bulk of the tariffs that had been in place since 2025.</p>
+  <p>However, the administration responded quickly with alternative tariffs. A new 10% tariff on most imports was imposed under Section 122, and existing Section 232 tariffs on steel, aluminum, vehicles, and lumber remain in effect. Several new Section 301 investigations are also underway targeting manufacturing sectors in over 15 countries.</p>
+  <p>The bottom line: tariffs are lower than their 2025 peak, but they haven't gone away. The current average effective tariff rate sits at roughly <strong>12%</strong> — still the highest in decades.</p>
+
+  <AdSlot slot="mid2" format="rectangle" />
+
+  <hr />
+
+  <h2>Ways to Reduce Your Tariff Exposure</h2>
+  <p>You can't avoid tariffs entirely, but you can minimize their impact on your budget.</p>
+
+  <p><strong>Buy domestic when the price difference is small.</strong> For some products, domestically made alternatives are now price-competitive with tariffed imports. This is especially true for basic groceries and some household goods.</p>
+  <p><strong>Time major purchases carefully.</strong> Tariff rates and exemptions change frequently. If you're planning to buy a car or major appliance, check whether any temporary exemptions are in effect.</p>
+  <p><strong>Comparison shop more aggressively.</strong> Different retailers absorb tariff costs differently. Some pass through 100% to consumers; others eat part of the cost to stay competitive.</p>
+  <p><strong>Consider used or refurbished products.</strong> Tariffs apply to new imports, not secondhand goods. For electronics and vehicles, the used market has become significantly more attractive.</p>
+
+  <hr />
+
+  <h2>Key Takeaways</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Key fact</th>
+          <th>Detail</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Average household cost</td><td>$600–$1,800/year</td></tr>
+        <tr><td>Hardest-hit category</td><td>Cars (+$6,400 avg)</td></tr>
+        <tr><td>Also affected</td><td>Clothing, electronics, groceries, furniture</td></tr>
+        <tr><td>Who pays more (proportionally)</td><td>Lower-income households</td></tr>
+        <tr><td>IEEPA tariffs</td><td>Struck down Feb 20, 2026</td></tr>
+        <tr><td>Still in effect</td><td>Section 122 (10%) + Section 232</td></tr>
+        <tr><td>Current avg tariff rate</td><td>~12% (highest in 80+ years)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p>Want to calculate the exact percentage impact on a specific purchase or your household budget?</p>
+
+  <blockquote>
+    <p>👉 <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> — Calculate tariff percentages, price increases, or budget impact instantly</p>
+    <p>👉 <a href="https://mycalcstool.com/en/tip-calculator"><strong>Tip Calculator</strong></a> — Because even after tariffs, you still need to tip</p>
+    <p>👉 <a href="https://mycalcstool.com/en/salary-calculator"><strong>Salary Calculator</strong></a> — See your take-home pay after taxes and deductions</p>
+  </blockquote>
+
+  <hr />
+
+  <p><em>Sources: Tax Foundation (Tariff Tracker, March 2026), Yale Budget Lab (State of US Tariffs, January 2026), Tax Policy Center (TPC Tariff Tracker, March 2026), Bureau of Labor Statistics (CPI data). Estimates represent averages and may not reflect your specific household situation. Tariff policy is subject to rapid change; check current rates at the US International Trade Commission.</em></p>
+</BlogLayout>
