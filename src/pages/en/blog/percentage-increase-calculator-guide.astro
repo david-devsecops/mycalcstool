@@ -1,0 +1,280 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+
+const title = 'Percentage Increase Calculator: Formula, Examples, and Common Mistakes';
+const description = 'Learn how to calculate percentage increase step by step, see real examples, avoid common mistakes, and use a free percentage increase calculator online.';
+const keywords = 'percentage increase calculator, percentage change calculator, how to calculate percentage increase, percent increase formula, percentage increase examples';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/percentage-increase-calculator-guide';
+const publishDate = '2026-04-01';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: canonicalUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    inLanguage: 'en',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How do I calculate percentage increase?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Subtract the original value from the new value, divide by the original value, and multiply by 100. Formula: ((New - Original) / Original) x 100.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the formula for percentage increase?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Percentage increase = ((New Value - Original Value) / Original Value) x 100.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the difference between percentage increase and percentage change?',
+        acceptedAnswer: { '@type': 'Answer', text: 'Percentage increase is used only when the new value is higher. Percentage change is the broader term that can describe either an increase or a decrease.' },
+      },
+      {
+        '@type': 'Question',
+        name: 'Why do you divide by the original value?',
+        acceptedAnswer: { '@type': 'Answer', text: 'You divide by the original value because percentage increase measures growth relative to the starting point, not the ending point.' },
+      },
+    ],
+  },
+];
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  category="Math & Utility"
+  readTime="7 min read"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">Percentage Increase Calculator: Formula, Examples, and Common Mistakes</Fragment>
+
+  <p>If you have ever asked, "What is the percentage increase from one number to another?", you are not alone.</p>
+  <p>People use percentage increase for salary raises, price changes, stock moves, business reports, school grades, and monthly budgeting. The formula is simple once you know it, but it is also one of the easiest calculations to get wrong when you are moving fast.</p>
+  <p>This guide explains how to calculate percentage increase step by step, when to use percentage change instead, and which mistakes to avoid.</p>
+
+  <blockquote>
+    <p>Use the free <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> to calculate percent increase, percent decrease, or "X% of Y" instantly.</p>
+  </blockquote>
+
+  <hr />
+
+  <h2>Quick Answer</h2>
+  <p>The formula for percentage increase is <strong>((New Value - Original Value) / Original Value) x 100</strong>.</p>
+  <p>Example: if something goes from 80 to 100, the increase is 20. Then 20 / 80 = 0.25. Multiply by 100 and you get a <strong>25% increase</strong>.</p>
+
+  <hr />
+
+  <h2>What Is Percentage Increase?</h2>
+  <p>Percentage increase tells you how much a number has gone up compared with its starting value.</p>
+  <p>It answers questions like:</p>
+  <ul>
+    <li>My salary went from $50,000 to $55,000. What percent increase is that?</li>
+    <li>A product price rose from $80 to $100. How much did it increase by percentage?</li>
+    <li>Website traffic went from 2,000 visits to 2,600 visits. What is the growth rate?</li>
+  </ul>
+  <p>The most important rule is simple: <strong>always compare the change against the original value</strong>.</p>
+
+  <hr />
+
+  <h2>Percentage Increase Formula</h2>
+  <p>The standard formula is:</p>
+  <p><strong>Percentage Increase = ((New Value - Original Value) / Original Value) x 100</strong></p>
+  <p>In plain English:</p>
+  <ol>
+    <li>Subtract the original value from the new value.</li>
+    <li>Divide that difference by the original value.</li>
+    <li>Multiply by 100.</li>
+  </ol>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Step</th>
+          <th>What to do</th>
+          <th>Example</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>1</td><td>Find the increase</td><td>100 - 80 = 20</td></tr>
+        <tr><td>2</td><td>Divide by the original value</td><td>20 / 80 = 0.25</td></tr>
+        <tr><td>3</td><td>Convert to percent</td><td>0.25 x 100 = 25%</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <hr />
+
+  <h2>Examples of Percentage Increase</h2>
+
+  <h3>Example 1: Salary Increase</h3>
+  <p>If your salary goes from <strong>$50,000</strong> to <strong>$55,000</strong>:</p>
+  <ul>
+    <li>Increase: 55,000 - 50,000 = 5,000</li>
+    <li>Divide by original: 5,000 / 50,000 = 0.10</li>
+    <li>Convert to percent: 0.10 x 100 = <strong>10%</strong></li>
+  </ul>
+  <p>Your salary increased by <strong>10%</strong>.</p>
+
+  <h3>Example 2: Price Increase</h3>
+  <p>If a product price changes from <strong>$80</strong> to <strong>$100</strong>:</p>
+  <ul>
+    <li>Increase: 100 - 80 = 20</li>
+    <li>Divide by original: 20 / 80 = 0.25</li>
+    <li>Convert to percent: 0.25 x 100 = <strong>25%</strong></li>
+  </ul>
+  <p>The price increased by <strong>25%</strong>.</p>
+
+  <h3>Example 3: Traffic Growth</h3>
+  <p>If traffic rises from <strong>2,000</strong> monthly visits to <strong>2,600</strong>:</p>
+  <ul>
+    <li>Increase: 2,600 - 2,000 = 600</li>
+    <li>Divide by original: 600 / 2,000 = 0.30</li>
+    <li>Convert to percent: 0.30 x 100 = <strong>30%</strong></li>
+  </ul>
+  <p>Traffic increased by <strong>30%</strong>.</p>
+
+  <AdSlot slot="mid" format="horizontal" />
+
+  <hr />
+
+  <h2>Percentage Increase Shortcut</h2>
+  <p>If you do not want to write the full formula every time, use this shortcut:</p>
+  <ul>
+    <li>Find the difference.</li>
+    <li>Divide by the original number.</li>
+    <li>Move the decimal two places to the right.</li>
+  </ul>
+  <p>Example: from 120 to 150</p>
+  <ul>
+    <li>Difference = 30</li>
+    <li>30 / 120 = 0.25</li>
+    <li>0.25 = <strong>25%</strong></li>
+  </ul>
+
+  <hr />
+
+  <h2>Most Common Mistake</h2>
+  <p>The biggest mistake is dividing by the <strong>new value</strong> instead of the <strong>original value</strong>.</p>
+  <p>Using the salary example:</p>
+  <ul>
+    <li>Original = 50,000</li>
+    <li>New = 55,000</li>
+    <li>Increase = 5,000</li>
+  </ul>
+  <p>Wrong: 5,000 / 55,000 = 9.09%</p>
+  <p>Right: 5,000 / 50,000 = 10%</p>
+  <p><strong>Why?</strong> Because percentage increase measures change relative to where you started.</p>
+
+  <hr />
+
+  <h2>Percentage Increase vs Percentage Change</h2>
+  <p>These terms are related, but they are not always identical.</p>
+  <ul>
+    <li><strong>Percentage increase</strong> is used only when the new value is higher.</li>
+    <li><strong>Percentage decrease</strong> is used when the new value is lower.</li>
+    <li><strong>Percentage change</strong> is the broader term that covers both.</li>
+  </ul>
+  <p>If a number goes from 100 to 80, that is not a percentage increase. It is a <strong>20% decrease</strong>, or more generally a <strong>-20% change</strong>.</p>
+  <p>If you want to calculate either case, use the <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a>.</p>
+
+  <hr />
+
+  <h2>Real-Life Uses</h2>
+
+  <h3>Salary and Compensation</h3>
+  <p>Use percentage increase to compare annual raises, hourly rate changes, bonuses, or freelance pricing.</p>
+
+  <h3>Business and Marketing</h3>
+  <p>It is commonly used for revenue growth, customer growth, conversion rate improvement, and campaign reporting.</p>
+
+  <h3>Personal Finance</h3>
+  <p>You can use it for rent increases, grocery cost changes, subscription price comparisons, and simple investment tracking.</p>
+
+  <h3>School and Test Scores</h3>
+  <p>Students often use percentage increase to measure score improvement between tests or semesters.</p>
+
+  <hr />
+
+  <h2>Special Cases</h2>
+
+  <h3>What if the original value is 0?</h3>
+  <p>If the original value is zero, the normal formula does not work because you cannot divide by zero.</p>
+  <p>In that case, describe it as a move <strong>from zero to a new value</strong> rather than a standard percentage increase.</p>
+
+  <h3>What if the result is negative?</h3>
+  <p>If the new value is smaller than the original value, you do not have an increase. You have a <strong>decrease</strong>.</p>
+  <p>Example: from 200 to 150</p>
+  <ul>
+    <li>Change = -50</li>
+    <li>-50 / 200 = -0.25</li>
+    <li>-0.25 x 100 = <strong>-25%</strong></li>
+  </ul>
+  <p>That means a <strong>25% decrease</strong>.</p>
+
+  <hr />
+
+  <h2>Quick Reference Table</h2>
+
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>Original</th>
+          <th>New</th>
+          <th>Result</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>50</td><td>75</td><td>50% increase</td></tr>
+        <tr><td>80</td><td>100</td><td>25% increase</td></tr>
+        <tr><td>120</td><td>150</td><td>25% increase</td></tr>
+        <tr><td>200</td><td>150</td><td>25% decrease</td></tr>
+        <tr><td>40</td><td>44</td><td>10% increase</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <blockquote>
+    <p>Need an instant answer? Open the <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> and use the percentage change mode.</p>
+  </blockquote>
+
+  <hr />
+
+  <h2>FAQ</h2>
+
+  <h3>How do I calculate percentage increase quickly?</h3>
+  <p>Subtract the old value from the new value, divide by the old value, then multiply by 100.</p>
+
+  <h3>What is the formula for percentage increase?</h3>
+  <p><strong>((New Value - Original Value) / Original Value) x 100</strong></p>
+
+  <h3>Is percentage increase the same as percentage change?</h3>
+  <p>No. Percentage increase applies only when the value goes up. Percentage change can describe either an increase or a decrease.</p>
+
+  <h3>Can percentage increase be more than 100%?</h3>
+  <p>Yes. If a value more than doubles, the increase is greater than 100%.</p>
+  <p>Example: from 50 to 125 gives a <strong>150% increase</strong>.</p>
+
+  <hr />
+
+  <h2>Final Takeaway</h2>
+  <p>Percentage increase is easy once you remember one rule: <strong>always divide by the original number</strong>.</p>
+  <p>That one step prevents most mistakes in budgeting, reporting, pricing, and school math.</p>
+  <p>If you want to skip the manual math, use the free <a href="https://mycalcstool.com/en/percentage-calculator"><strong>Percentage Calculator</strong></a> to get the answer instantly.</p>
+</BlogLayout>
