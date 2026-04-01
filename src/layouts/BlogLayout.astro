@@ -71,6 +71,8 @@ const {
 
     /* 문단 간격 */
     .blog-content p {
+      color: #374151;
+      opacity: 1;
       margin-bottom: 1.5rem;
     }
 
@@ -239,8 +241,32 @@ const {
 
     /* 다크모드 지원 */
     @media (prefers-color-scheme: dark) {
+      body {
+        background-color: #111827;
+        color: #e5e7eb;
+      }
+      header {
+        background-color: #111827;
+        border-bottom-color: #374151;
+      }
+      nav[aria-label="breadcrumb"] {
+        color: #9ca3af;
+      }
+      nav[aria-label="breadcrumb"] a:hover {
+        color: #93c5fd;
+      }
+      header h1 {
+        color: #f9fafb;
+      }
+      header .text-gray-500 {
+        color: #9ca3af;
+      }
       .blog-content {
-        color: #d1d5db;
+        color: #e5e7eb;
+      }
+      .blog-content p {
+        color: #e5e7eb;
+        opacity: 1;
       }
       .blog-content h2 {
         color: #f9fafb;
@@ -284,7 +310,7 @@ const {
     }
   </style>
 </head>
-<body class="min-h-screen flex flex-col bg-gray-50">
+<body class="min-h-screen flex flex-col bg-gray-50 blog-page">
   <Header />
   <main class="flex-1 w-full px-4 py-8" id="main-content">
     <div class="blog-article">
