@@ -6,12 +6,12 @@
   "author": "mycalcstool",
   "year": 2026,
   "adsense": {
-    "enabled": false,
-    "publisherId": ""
+    "enabled": true,
+    "publisherId": "ca-pub-2898972256894696"
   },
   "ga4": {
-    "enabled": false,
-    "measurementId": ""
+    "enabled": true,
+    "measurementId": "G-DWJ06N3894"
   },
   "calculators": [
     {

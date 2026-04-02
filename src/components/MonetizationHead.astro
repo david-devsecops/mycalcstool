@@ -1,22 +1,8 @@
 ---
 import { adProvider, adsenseClient, gaMeasurementId } from '../data/site-meta';
 
-const loadEzoic = adProvider === 'ezoic';
 const loadAdsense = adProvider === 'adsense' && adsenseClient;
 ---
-
-{loadEzoic && (
-  <>
-    <script is:inline data-cfasync="false" src="https://cmp.gatekeeperconsent.com/min.js"></script>
-    <script is:inline data-cfasync="false" src="https://the.gatekeeperconsent.com/cmp.min.js"></script>
-    <script is:inline async src="https://www.ezojs.com/ezoic/sa.min.js"></script>
-    <script>
-      window.ezstandalone = window.ezstandalone || {};
-      ezstandalone.cmd = ezstandalone.cmd || [];
-    </script>
-    <script is:inline src="https://ezoicanalytics.com/analytics.js"></script>
-  </>
-)}
 
 {gaMeasurementId && (
   <>

@@ -3,20 +3,12 @@ import { adProvider as defaultAdProvider, adsenseClient } from '../data/site-met
 
 interface Props {
   slot: 'top' | 'result' | 'content' | 'mid' | 'mid2';
-  provider?: 'auto' | 'ezoic' | 'adsense';
+  provider?: 'auto' | 'adsense';
   format?: 'auto' | 'rectangle' | 'horizontal';
   label?: string;
 }
 
 const { slot, provider = 'auto', format = 'auto', label = '광고' } = Astro.props;
-
-const placementIds: Record<Props['slot'], string | undefined> = {
-  top: import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_TOP,
-  result: import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_RESULT,
-  content: import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_CONTENT,
-  mid: import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_MID,
-  mid2: import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_MID2,
-};
 
 const adsenseSlots: Record<Props['slot'], string | undefined> = {
   top: import.meta.env.PUBLIC_ADSENSE_SLOT_TOP,
@@ -25,33 +17,12 @@ const adsenseSlots: Record<Props['slot'], string | undefined> = {
   mid: import.meta.env.PUBLIC_ADSENSE_SLOT_MID,
   mid2: import.meta.env.PUBLIC_ADSENSE_SLOT_MID2,
 };
-const ezoicPlacementId = placementIds[slot]?.trim();
 const adsenseSlotId = adsenseSlots[slot]?.trim();
 
 const requestedProvider = provider === 'auto' ? defaultAdProvider : provider;
-
 const resolvedProvider =
-  requestedProvider === 'ezoic'
-    ? ezoicPlacementId
-      ? 'ezoic'
-      : 'none'
-    : requestedProvider === 'adsense'
-      ? adsenseClient && adsenseSlotId
-        ? 'adsense'
-        : 'none'
-      : 'none';
-
-const placeholderId =
-  resolvedProvider === 'ezoic' && ezoicPlacementId
-    ? `ezoic-pub-ad-placeholder-${ezoicPlacementId}`
-    : undefined;
+  requestedProvider === 'adsense' && adsenseClient && adsenseSlotId ? 'adsense' : 'none';
 ---
-
-{placeholderId && (
-  <aside class="ad-slot my-4" aria-label={label} data-ezoic-slot={slot} role="complementary">
-    <div id={placeholderId}></div>
-  </aside>
-)}
 
 {resolvedProvider === 'adsense' && adsenseClient && adsenseSlotId && (
   <aside class="ad-slot my-4" aria-label={label} data-adsense-slot={slot} role="complementary">

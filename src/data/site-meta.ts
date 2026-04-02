@@ -1,4 +1,4 @@
-export type AdProvider = 'none' | 'adsense' | 'ezoic';
+export type AdProvider = 'none' | 'adsense';
 
 const rawAdProvider = (import.meta.env.PUBLIC_AD_PROVIDER ?? '').trim().toLowerCase();
 const adsenseClientValue = (import.meta.env.PUBLIC_ADSENSE_CLIENT ?? 'ca-pub-2898972256894696').trim();
@@ -6,23 +6,8 @@ const gaMeasurementIdValue = (import.meta.env.PUBLIC_GA_MEASUREMENT_ID ?? 'G-DWJ
 const contactEmailValue = (import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'golreas@gmail.com').trim();
 const ownerNameValue = (import.meta.env.PUBLIC_SITE_OWNER ?? 'mycalcstool Editorial Team').trim();
 
-const hasEzoicPlaceholders = [
-  import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_TOP,
-  import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_RESULT,
-  import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_CONTENT,
-  import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_MID,
-  import.meta.env.PUBLIC_EZOIC_PLACEHOLDER_MID2,
-].some((value) => Boolean(value?.trim()));
-
-const validProviders: AdProvider[] = ['none', 'adsense', 'ezoic'];
-
-export const adProvider: AdProvider = validProviders.includes(rawAdProvider as AdProvider)
-  ? (rawAdProvider as AdProvider)
-  : hasEzoicPlaceholders
-    ? 'ezoic'
-    : adsenseClientValue
-      ? 'adsense'
-      : 'none';
+export const adProvider: AdProvider =
+  rawAdProvider === 'none' ? 'none' : adsenseClientValue ? 'adsense' : 'none';
 
 export const adsenseClient = adsenseClientValue;
 export const gaMeasurementId = gaMeasurementIdValue;
@@ -42,16 +27,6 @@ export const siteMeta = {
 };
 
 export const adProviderLabel = {
-  ko:
-    adProvider === 'ezoic'
-      ? 'Ezoic 및 광고 파트너'
-      : adProvider === 'adsense'
-        ? 'Google AdSense'
-        : '향후 적용 가능한 광고 파트너',
-  en:
-    adProvider === 'ezoic'
-      ? 'Ezoic and its advertising partners'
-      : adProvider === 'adsense'
-        ? 'Google AdSense'
-        : 'future advertising partners if ads are enabled later',
+  ko: adProvider === 'adsense' ? 'Google AdSense' : '비활성화된 광고 기능',
+  en: adProvider === 'adsense' ? 'Google AdSense' : 'ads are currently disabled',
 };
