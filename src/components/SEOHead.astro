@@ -11,6 +11,7 @@ interface Props {
   jsonLd?: object | object[];
   noIndex?: boolean;
   hreflangKo?: string;
+  hreflangEn?: string;
 }
 
 const {
@@ -23,6 +24,7 @@ const {
   jsonLd,
   noIndex = false,
   hreflangKo,
+  hreflangEn,
 } = Astro.props;
 
 const siteUrl = siteMeta.url;
@@ -83,6 +85,7 @@ const jsonLdArray = [organizationSchema, ...(jsonLd ? (Array.isArray(jsonLd) ? j
 
 <!-- hreflang -->
 {lang === 'ko' && <link rel="alternate" hreflang="ko" href={pageUrl} />}
+{lang === 'ko' && hreflangEn && <link rel="alternate" hreflang="en" href={siteUrl + hreflangEn} />}
 {lang === 'en' && <link rel="alternate" hreflang="en" href={pageUrl} />}
 {lang === 'en' && hreflangKo && <link rel="alternate" hreflang="ko" href={siteUrl + hreflangKo} />}
 {lang === 'en' && <link rel="alternate" hreflang="x-default" href={pageUrl} />}

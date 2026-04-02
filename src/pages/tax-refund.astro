@@ -150,6 +150,15 @@ const jsonLd = {
     </section>
     <AdSlot slot="result" format="rectangle" />
     <AdSlot slot="content" format="rectangle" />
+
+    <section id="tax-share-section" class="card mt-6 hidden" aria-labelledby="tax-share-title">
+      <h2 class="section-title" id="tax-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">현재 연봉, 기납부세액, 주요 공제 항목을 포함한 링크를 복사할 수 있습니다.</p>
+        <button id="copy-tax-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="tax-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
   </div>
 
   <section class="card mb-6">
@@ -171,6 +180,22 @@ const jsonLd = {
   </section>
 
   <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/blog/year-end-tax-refund-guide', label: '연말정산 환급액 핵심 항목', desc: '환급액 차이를 만드는 공제 구조 정리' },
+        { href: '/blog/card-deduction-guide', label: '체크카드 vs 신용카드', desc: '카드 사용 전략과 공제율 차이' },
+        { href: '/blog/salary-take-home-pay-guide', label: '연봉 실수령액과 연결해서 보기', desc: '월급과 환급의 연결 구조 이해' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🛡️</span> 계산 기준 및 문의</h2>
@@ -202,6 +227,59 @@ const jsonLd = {
 
 <script>
 let trDependents = 1;
+
+function applyTaxQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  const setValue = (id: string, key: string) => {
+    const value = params.get(key);
+    if (!value) return;
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (el) el.value = value;
+  };
+
+  setValue('tr-salary', 'salary');
+  setValue('tr-paid-tax', 'paid');
+  setValue('tr-credit-card', 'credit');
+  setValue('tr-debit-card', 'debit');
+  setValue('tr-traditional', 'market');
+  setValue('tr-medical', 'medical');
+  setValue('tr-education', 'education');
+  setValue('tr-donation', 'donation');
+  setValue('tr-irp', 'irp');
+  const deps = params.get('deps');
+  if (deps) trDependents = parseInt(deps, 10) || 1;
+}
+
+function updateTaxShareLink(values: Record<string, number>) {
+  const section = document.getElementById('tax-share-section');
+  const button = document.getElementById('copy-tax-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('tax-share-feedback');
+  const url = new URL(window.location.href);
+  url.search = '';
+  Object.entries(values).forEach(([key, value]) => {
+    url.searchParams.set(key, String(value));
+  });
+
+  if (button) button.dataset.shareUrl = url.toString();
+  if (feedback) {
+    feedback.textContent = `연봉 ${values.salary.toLocaleString('ko-KR')}만원 · 기납부세액 ${values.paid.toLocaleString('ko-KR')}만원 · 부양가족 ${values.deps}명`;
+  }
+  section?.classList.remove('hidden');
+}
+
+async function copyTaxShareLink() {
+  const button = document.getElementById('copy-tax-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('tax-share-feedback');
+  const shareUrl = button?.dataset.shareUrl;
+  if (!shareUrl) return;
+
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
+}
 
 function calcEmployeeDeduction(annual: number): number {
   if (annual <= 5000000) return annual * 0.70;
@@ -237,6 +315,18 @@ function calculate() {
   const irp = getVal('tr-irp');
 
   if (salary < 1000000) { alert('연봉을 올바르게 입력해주세요.'); return; }
+  updateTaxShareLink({
+    salary: salary / 10000,
+    paid: paidTax / 10000,
+    deps: trDependents,
+    credit: creditCard / 10000,
+    debit: debitCard / 10000,
+    market: traditional / 10000,
+    medical: medical / 10000,
+    education: education / 10000,
+    donation: donation / 10000,
+    irp: irp / 10000,
+  });
 
   // 근로소득공제
   const empDeduction = calcEmployeeDeduction(salary);
@@ -292,6 +382,7 @@ function calculate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  applyTaxQueryParams();
   document.querySelectorAll('.tr-dep-btn').forEach(btn => {
     btn.addEventListener('click', () => {
       trDependents = parseInt((btn as HTMLElement).dataset.val || '1', 10);
@@ -304,7 +395,13 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   const firstBtn = document.querySelector('.tr-dep-btn') as HTMLElement;
-  if (firstBtn) firstBtn.click();
+  const targetBtn = document.querySelector(`.tr-dep-btn[data-val="${trDependents}"]`) as HTMLElement | null;
+  if (targetBtn) {
+    targetBtn.click();
+  } else if (firstBtn) {
+    firstBtn.click();
+  }
   document.getElementById('calc-tax-refund-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-tax-share-link')?.addEventListener('click', () => copyTaxShareLink());
 });
 </script>

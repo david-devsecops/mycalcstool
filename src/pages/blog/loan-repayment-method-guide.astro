@@ -1,0 +1,118 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '원리금균등 vs 원금균등 vs 만기일시 상환, 어떻게 다를까?';
+const description = '대출 상환 방식별 월 납입금, 총 이자, 초기 부담 차이를 비교하고 어떤 상황에서 무엇을 고르면 좋은지 설명합니다.';
+const keywords = '원리금균등, 원금균등, 만기일시상환, 대출 상환 방식 비교, 대출 이자 계산기';
+const canonicalUrl = 'https://mycalcstool.com/blog/loan-repayment-method-guide/';
+const publishDate = '2026-04-02';
+const modifiedDate = '2026-04-02';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  modifiedDate={modifiedDate}
+  category="대출"
+  readTime="8분"
+  jsonLd={jsonLd}
+  lang="ko"
+  homeHref="/"
+  blogHref="/blog/"
+  blogLabel="금융 가이드"
+  updatedLabel="업데이트"
+  authorPrefix="작성"
+>
+  <Fragment slot="headline">원리금균등 vs 원금균등 vs 만기일시 상환, 어떻게 다를까?</Fragment>
+
+  <p>대출을 받을 때 금리만 보는 경우가 많지만, 실제 총 이자와 월 부담은 상환 방식에서 크게 갈립니다. 같은 금리와 기간이어도 어떤 방식을 고르느냐에 따라 초반 현금흐름과 총 이자 비용이 달라집니다.</p>
+  <p>가장 많이 비교하는 방식은 <strong>원리금균등상환</strong>, <strong>원금균등상환</strong>, <strong>만기일시상환</strong>입니다. 이름은 비슷하지만 성격은 꽤 다릅니다.</p>
+
+  <h2>빠르게 보면 이렇게 다릅니다</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>방식</th>
+        <th>월 납입금</th>
+        <th>총 이자</th>
+        <th>잘 맞는 상황</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>원리금균등</td>
+        <td>거의 일정</td>
+        <td>중간</td>
+        <td>월 지출을 일정하게 관리하고 싶을 때</td>
+      </tr>
+      <tr>
+        <td>원금균등</td>
+        <td>초반 높고 점점 감소</td>
+        <td>가장 적음</td>
+        <td>초기 상환 여력이 있고 총 이자를 줄이고 싶을 때</td>
+      </tr>
+      <tr>
+        <td>만기일시</td>
+        <td>이자만 내다가 만기에 원금 상환</td>
+        <td>가장 큼</td>
+        <td>단기 자금 운용이거나 만기 자금 계획이 매우 명확할 때</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>원리금균등상환</h2>
+  <p>원리금균등은 매달 내는 금액이 거의 같아서 예산 관리가 쉽습니다. 월급 생활자에게 익숙한 방식이고, 대출 비교도 단순합니다.</p>
+  <p>다만 초반에는 이자 비중이 크고 원금이 천천히 줄어듭니다. 그래서 총 이자는 원금균등보다 더 많이 나오는 경우가 일반적입니다.</p>
+
+  <h2>원금균등상환</h2>
+  <p>원금균등은 매달 같은 원금을 갚고, 남은 잔액에 붙는 이자가 줄어드는 구조입니다. 처음 몇 년의 부담은 크지만 시간이 갈수록 납입금이 내려갑니다.</p>
+  <p>장점은 명확합니다. 잔액이 빨리 줄어 총 이자가 가장 적습니다. 대출 기간이 길수록 이 차이가 더 크게 느껴집니다.</p>
+
+  <h2>만기일시상환</h2>
+  <p>만기일시는 대출 기간 중에는 이자만 내고 만기에 원금을 한 번에 갚는 방식입니다. 매달 부담이 작아 보여도, 원금이 줄지 않기 때문에 전체 이자 부담은 가장 큽니다.</p>
+  <p>전세자금, 브리지 자금, 매각 예정 자산이 있는 경우처럼 만기 상환 계획이 확실할 때가 아니라면 일반적인 장기 대출에는 보수적으로 접근하는 편이 좋습니다.</p>
+
+  <h2>어떤 방식이 유리한가?</h2>
+  <p>정답은 한 가지가 아닙니다. 핵심은 <strong>총이자</strong>와 <strong>초기 현금흐름</strong> 중 어디를 우선하느냐입니다.</p>
+  <ul>
+    <li>월 지출을 일정하게 유지하고 싶다면 원리금균등</li>
+    <li>총 이자를 줄이고 싶고 초반 여력이 있다면 원금균등</li>
+    <li>만기 자금 계획이 뚜렷한 단기성 자금이라면 만기일시 검토</li>
+  </ul>
+
+  <h2>실수하기 쉬운 포인트</h2>
+  <ul>
+    <li>월 납입금만 보고 총 이자를 보지 않는 경우</li>
+    <li>초기 부담을 과소평가해 원금균등을 무리하게 선택하는 경우</li>
+    <li>만기일시를 장기 대출에 가깝게 사용하는 경우</li>
+    <li>중도상환 계획이 있는데도 상환 방식과 수수료를 함께 보지 않는 경우</li>
+  </ul>
+
+  <h2>선택 기준은 두 가지면 충분합니다</h2>
+  <p>첫째, 향후 2~3년 동안 월 현금흐름이 안정적인지 봐야 합니다. 둘째, 총 이자 차이가 본인에게 실제로 의미 있는 규모인지 봐야 합니다. 초기 20만~30만원 차이가 버겁다면 총 이자가 조금 늘어도 원리금균등이 더 현실적일 수 있습니다.</p>
+
+  <blockquote>
+    <p><strong>실무 기준:</strong> 선택이 애매하면 먼저 월 예산에 맞는 상환 방식을 고르고, 그다음 조기상환 가능성을 따져보는 편이 안전합니다.</p>
+    <p><a href="https://mycalcstool.com/loan">대출 계산기에서 세 방식을 직접 비교해보세요.</a></p>
+  </blockquote>
+
+  <h2>마무리</h2>
+  <p>대출 상환 방식은 금리만큼 중요합니다. 원금균등이 항상 정답도 아니고, 원리금균등이 항상 비효율적인 것도 아닙니다. 본인의 월 현금흐름과 조기상환 가능성까지 포함해서 비교해야 실제로 맞는 결정을 할 수 있습니다.</p>
+</BlogLayout>

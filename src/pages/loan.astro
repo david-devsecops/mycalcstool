@@ -41,7 +41,7 @@ const jsonLd = [
 ];
 ---
 
-<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/mortgage-calculator">
   <!-- 페이지 제목 -->
   <div class="mb-6">
     <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
@@ -359,6 +359,18 @@ const jsonLd = [
 
     <!-- 콘텐츠 광고 -->
     <AdSlot slot="content" format="rectangle" />
+
+    <section id="share-section" class="card mt-6 hidden" aria-labelledby="share-title">
+      <h2 class="section-title" id="share-title">
+        <span aria-hidden="true">🔗</span>
+        계산 결과 공유
+      </h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">현재 입력값을 포함한 링크를 복사해 상담, 가족 공유, 메모용으로 활용할 수 있습니다.</p>
+        <button id="copy-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
   </div>
 
   <!-- SEO 콘텐츠 -->
@@ -421,6 +433,25 @@ const jsonLd = [
   </section>
 
   <!-- 관련 계산기 -->
+  <section class="card mt-6">
+    <h2 class="section-title">
+      <span aria-hidden="true">📚</span>
+      관련 가이드
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/blog/loan-repayment-method-guide', label: '상환 방식 비교', desc: '원리금균등, 원금균등, 만기일시 차이 정리' },
+        { href: '/blog/fixed-vs-variable-rate-guide', label: '고정금리 vs 변동금리', desc: '금리 구조 선택 기준 정리' },
+        { href: '/blog/prepayment-fee-break-even-guide', label: '중도상환수수료 손익분기점', desc: '갈아타기 전 꼭 봐야 할 계산' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
   <section class="card mt-6">
     <h2 class="section-title">
       <span aria-hidden="true">🔗</span>
@@ -570,6 +601,62 @@ let schedules: Record<string, Array<{ principal: number; interest: number; payme
 let showFullSchedule = false;
 let chartInstance: any = null;
 
+function applyQueryParams(): void {
+  const params = new URLSearchParams(window.location.search);
+  const amount = params.get('amount');
+  const rate = params.get('rate');
+  const period = params.get('period');
+  const grace = params.get('grace');
+
+  const setValue = (id: string, value: string | null) => {
+    if (!value) return;
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (el) el.value = value;
+  };
+
+  setValue('loan-amount', amount);
+  setValue('loan-amount-slider', amount);
+  setValue('interest-rate', rate);
+  setValue('interest-rate-slider', rate);
+  setValue('loan-period', period);
+  setValue('loan-period-slider', period);
+  setValue('grace-period', grace);
+}
+
+function updateShareLink(amount: number, rate: number, period: number, grace: number): void {
+  const shareSection = document.getElementById('share-section');
+  const copyButton = document.getElementById('copy-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('share-feedback');
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('amount', String(amount));
+  url.searchParams.set('rate', String(rate));
+  url.searchParams.set('period', String(period));
+  url.searchParams.set('grace', String(grace));
+
+  if (copyButton) {
+    copyButton.dataset.shareUrl = url.toString();
+  }
+  if (feedback) {
+    feedback.textContent = `${amount.toLocaleString('ko-KR')}만원 · ${rate}% · ${period}년 · 거치 ${grace}년`;
+  }
+  shareSection?.classList.remove('hidden');
+}
+
+async function copyShareLink(): Promise<void> {
+  const copyButton = document.getElementById('copy-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('share-feedback');
+  const shareUrl = copyButton?.dataset.shareUrl;
+  if (!shareUrl) return;
+
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
+}
+
 /** 스케줄 테이블 렌더링 */
 function renderSchedule(type: string): void {
   const tbody = document.getElementById('schedule-tbody');
@@ -682,6 +769,7 @@ function calculate(): void {
   // 스케줄 렌더링
   showFullSchedule = false;
   renderSchedule('equal-payment');
+  updateShareLink(amount, rate, period, grace);
 
   // 결과 영역 표시
   const resultsSection = document.getElementById('results-section');
@@ -774,6 +862,7 @@ function setupSliderSync(inputId: string, sliderId: string): void {
 
 /** 이벤트 리스너 초기화 */
 document.addEventListener('DOMContentLoaded', () => {
+  applyQueryParams();
   // 슬라이더 연동
   setupSliderSync('loan-amount', 'loan-amount-slider');
   setupSliderSync('interest-rate', 'interest-rate-slider');
@@ -821,6 +910,10 @@ document.addEventListener('DOMContentLoaded', () => {
       renderSchedule(scheduleSelect?.value || 'equal-payment');
     });
   }
+
+  document.getElementById('copy-share-link')?.addEventListener('click', () => {
+    copyShareLink();
+  });
 
   // 초기 계산 실행 (기본값으로)
   calculate();

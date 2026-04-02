@@ -1,0 +1,86 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '세전 연봉과 세후 연봉 차이, 왜 이렇게 크게 날까?';
+const description = '세전과 세후 연봉의 차이가 커지는 이유와 공제 구조, 부양가족, 비과세 항목이 미치는 영향을 사례 중심으로 설명합니다.';
+const keywords = '세전 세후 차이, 세후 연봉, 세후 월급, 실수령액 차이';
+const canonicalUrl = 'https://mycalcstool.com/blog/gross-vs-net-salary-guide/';
+const publishDate = '2026-04-02';
+const modifiedDate = '2026-04-02';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="연봉" readTime="6분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="금융 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">세전 연봉과 세후 연봉 차이, 왜 이렇게 크게 날까?</Fragment>
+
+  <p>채용 공고나 오퍼레터에서는 세전 연봉이 보입니다. 하지만 실제 생활에서 중요한 건 세후 월급입니다. 이 둘의 차이가 생각보다 크게 느껴지는 이유는 공제 항목이 여러 층으로 겹치기 때문입니다.</p>
+
+  <h2>세전은 계약 숫자, 세후는 생활 숫자</h2>
+  <p>세전 연봉은 회사와 계약하는 기준 금액입니다. 세후 연봉은 그 금액에서 각종 보험료와 세금이 빠진 뒤 실제로 손에 쥐는 금액입니다. 월 예산을 짤 때는 세후 기준이 맞고, 연봉 협상이나 시장 비교는 세전 기준이 더 많이 쓰입니다.</p>
+
+  <h2>차이가 커지는 이유</h2>
+  <ul>
+    <li>4대보험이 먼저 빠집니다.</li>
+    <li>소득세는 누진 구조라 연봉이 올라갈수록 체감 차이가 커집니다.</li>
+    <li>지방소득세가 소득세에 붙습니다.</li>
+    <li>비과세 항목 여부에 따라 과세 기준이 달라집니다.</li>
+  </ul>
+
+  <h2>같은 5천만원도 모두 같지 않다</h2>
+  <p>예를 들어 연봉이 같아도 비과세 식대가 있거나 부양가족 수가 다르면 세후 금액은 달라질 수 있습니다. 이 차이는 매달 몇 만원에서 몇 십만원 수준으로 이어질 수 있습니다.</p>
+
+  <h2>연봉 인상 체감이 생각보다 작을 수 있는 이유</h2>
+  <p>세전 연봉이 500만원 오르면 그 500만원이 그대로 실수령 증가분이 되지 않습니다. 늘어난 구간에 대해 보험료와 세금이 같이 적용되기 때문입니다. 그래서 이직이나 연봉 협상에서는 세전 인상폭보다 세후 인상폭을 같이 봐야 합니다.</p>
+
+  <h2>이럴 때 계산기가 특히 필요하다</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>상황</th>
+        <th>왜 필요한가</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>이직 제안 비교</td>
+        <td>겉으로 비슷한 연봉도 실수령이 다를 수 있음</td>
+      </tr>
+      <tr>
+        <td>대출 가능 예산 검토</td>
+        <td>상환 여력은 세후 기준으로 봐야 안전함</td>
+      </tr>
+      <tr>
+        <td>월 고정비 계획</td>
+        <td>주거비, 보험료, 저축 비중을 맞추기 쉬움</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>자주 하는 오해</h2>
+  <ul>
+    <li>세전과 세후 차이를 세금만의 문제로 보는 것</li>
+    <li>연봉 인상폭이 곧 소비 여력 증가폭이라고 생각하는 것</li>
+    <li>비과세 항목을 고려하지 않는 것</li>
+  </ul>
+
+  <blockquote>
+    <p><strong>간단한 기준:</strong> 생활과 대출, 저축 판단은 세후 기준으로, 시장 비교와 협상은 세전 기준으로 보시면 됩니다.</p>
+    <p><a href="https://mycalcstool.com/salary">연봉 계산기에서 세전과 세후 차이를 직접 확인해보세요.</a></p>
+  </blockquote>
+
+  <h2>마무리</h2>
+  <p>세전 연봉은 보기 좋지만, 실제 의사결정은 세후 금액이 합니다. 월급의 구조를 이해하면 이직, 소비, 저축, 대출 판단이 훨씬 정확해집니다.</p>
+</BlogLayout>

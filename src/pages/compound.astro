@@ -35,7 +35,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/compound-interest-calculator">
   <div class="mb-6">
     <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
       <ol class="flex items-center gap-1 list-none p-0">
@@ -135,6 +135,15 @@ const jsonLd = {
       </div>
     </section>
     <AdSlot slot="content" format="rectangle" />
+
+    <section id="compound-share-section" class="card mt-6 hidden" aria-labelledby="compound-share-title">
+      <h2 class="section-title" id="compound-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">현재 원금, 월 납입금, 수익률, 투자 기간을 포함한 링크를 복사할 수 있습니다.</p>
+        <button id="copy-compound-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="compound-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
   </div>
 
   <section class="card mb-6">
@@ -146,6 +155,21 @@ const jsonLd = {
   </section>
 
   <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/blog/compound-interest-guide', label: '복리 계산기 보는 법', desc: '복리와 장기 투자에서 봐야 할 핵심 변수 정리' },
+        { href: '/blog/salary-take-home-pay-guide', label: '월 실수령액과 투자 여력', desc: '투자 원금을 세후 기준으로 잡는 방법' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
@@ -167,6 +191,55 @@ const jsonLd = {
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
 <script>
 let chartInst: any = null;
+
+function applyCompoundQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  const setValue = (id: string, key: string) => {
+    const value = params.get(key);
+    if (!value) return;
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (el) el.value = value;
+  };
+
+  setValue('principal', 'principal');
+  setValue('principal-slider', 'principal');
+  setValue('monthly-add', 'monthly');
+  setValue('monthly-add-slider', 'monthly');
+  setValue('annual-rate', 'rate');
+  setValue('annual-rate-slider', 'rate');
+  setValue('invest-years', 'years');
+  setValue('invest-years-slider', 'years');
+}
+
+function updateCompoundShareLink(principal: number, monthlyAdd: number, rate: number, years: number) {
+  const section = document.getElementById('compound-share-section');
+  const button = document.getElementById('copy-compound-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('compound-share-feedback');
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('principal', String(principal));
+  url.searchParams.set('monthly', String(monthlyAdd));
+  url.searchParams.set('rate', String(rate));
+  url.searchParams.set('years', String(years));
+
+  if (button) button.dataset.shareUrl = url.toString();
+  if (feedback) feedback.textContent = `원금 ${principal.toLocaleString('ko-KR')}만원 · 월 ${monthlyAdd.toLocaleString('ko-KR')}만원 · ${rate}% · ${years}년`;
+  section?.classList.remove('hidden');
+}
+
+async function copyCompoundShareLink() {
+  const button = document.getElementById('copy-compound-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('compound-share-feedback');
+  const shareUrl = button?.dataset.shareUrl;
+  if (!shareUrl) return;
+
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
+}
 
 function calcCompound(principal: number, monthlyAdd: number, ratePercent: number, years: number) {
   const r = ratePercent / 100 / 12;
@@ -192,6 +265,7 @@ function calculate() {
   if (isNaN(years) || years < 1 || years > 50) { alert('투자 기간을 올바르게 입력해주세요. (1~50년)'); return; }
 
   const yearlyData = calcCompound(principal, monthlyAdd, rate, years);
+  updateCompoundShareLink(principal, monthlyAdd, rate, years);
   const finalWan = yearlyData[yearlyData.length - 1];
   const totalInvested = principal + monthlyAdd * 12 * years;
   const totalProfit = finalWan - totalInvested;
@@ -241,6 +315,7 @@ function calculate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  applyCompoundQueryParams();
   const pairs = [['principal','principal-slider'],['monthly-add','monthly-add-slider'],['annual-rate','annual-rate-slider'],['invest-years','invest-years-slider']];
   pairs.forEach(([inp, sld]) => {
     const i = document.getElementById(inp) as HTMLInputElement;
@@ -263,6 +338,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   });
   document.getElementById('calc-compound-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-compound-share-link')?.addEventListener('click', () => copyCompoundShareLink());
   calculate();
 });
 </script>

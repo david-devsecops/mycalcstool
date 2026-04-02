@@ -37,7 +37,7 @@ const jsonLd = {
 };
 ---
 
-<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/salary-calculator">
   <div class="mb-6">
     <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
       <ol class="flex items-center gap-1 list-none p-0">
@@ -153,6 +153,15 @@ const jsonLd = {
     </section>
 
     <AdSlot slot="content" format="rectangle" />
+
+    <section id="salary-share-section" class="card mt-6 hidden" aria-labelledby="salary-share-title">
+      <h2 class="section-title" id="salary-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">현재 연봉, 부양가족, 비과세 식대 조건을 포함한 링크를 복사할 수 있습니다.</p>
+        <button id="copy-salary-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="salary-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
   </div>
 
   <!-- SEO 콘텐츠 -->
@@ -172,6 +181,22 @@ const jsonLd = {
   </section>
 
   <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/blog/salary-take-home-pay-guide', label: '연봉 실수령액 계산기 보는 법', desc: '월 실수령액과 공제액을 같이 해석하는 기준' },
+        { href: '/blog/gross-vs-net-salary-guide', label: '세전 vs 세후 연봉 차이', desc: '왜 같은 연봉도 체감이 다른지 설명' },
+        { href: '/blog/year-end-tax-refund-guide', label: '연말정산 환급 가이드', desc: '실수령액과 환급액이 연결되는 구조 정리' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🛡️</span> 계산 기준 및 문의</h2>
@@ -267,6 +292,50 @@ function calcSalary(annualWan: number, dependents: number, mealWan: number) {
 
 let selectedDependents = 1;
 
+function applySalaryQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  const setValue = (id: string, value: string | null) => {
+    if (!value) return;
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (el) el.value = value;
+  };
+
+  setValue('annual-salary', params.get('salary'));
+  setValue('annual-salary-slider', params.get('salary'));
+  setValue('meal-allowance', params.get('meal'));
+  const deps = params.get('deps');
+  if (deps) selectedDependents = parseInt(deps, 10) || 1;
+}
+
+function updateSalaryShareLink(salaryWan: number, dependents: number, mealWan: number) {
+  const section = document.getElementById('salary-share-section');
+  const button = document.getElementById('copy-salary-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('salary-share-feedback');
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('salary', String(salaryWan));
+  url.searchParams.set('deps', String(dependents));
+  url.searchParams.set('meal', String(mealWan));
+
+  if (button) button.dataset.shareUrl = url.toString();
+  if (feedback) feedback.textContent = `연봉 ${salaryWan.toLocaleString('ko-KR')}만원 · 부양가족 ${dependents}명 · 식대 ${mealWan}만원`;
+  section?.classList.remove('hidden');
+}
+
+async function copySalaryShareLink() {
+  const button = document.getElementById('copy-salary-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('salary-share-feedback');
+  const shareUrl = button?.dataset.shareUrl;
+  if (!shareUrl) return;
+
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
+}
+
 function setText(id: string, val: string) {
   const el = document.getElementById(id);
   if (el) el.textContent = val;
@@ -288,6 +357,7 @@ function calculate() {
   }
 
   const r = calcSalary(salaryWan, selectedDependents, mealWan);
+  updateSalaryShareLink(salaryWan, selectedDependents, mealWan);
 
   setText('monthly-net', Math.round(r.monthlyNet).toLocaleString('ko-KR'));
   setText('annual-net', Math.round(r.monthlyNet * 12).toLocaleString('ko-KR'));
@@ -331,6 +401,7 @@ function calculate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  applySalaryQueryParams();
   // 슬라이더 연동
   const salaryInput = document.getElementById('annual-salary') as HTMLInputElement;
   const salarySlider = document.getElementById('annual-salary-slider') as HTMLInputElement;
@@ -353,9 +424,15 @@ document.addEventListener('DOMContentLoaded', () => {
 
   // 1명 버튼 초기 선택
   const firstBtn = document.querySelector('.dependent-btn') as HTMLElement;
-  if (firstBtn) firstBtn.click();
+  const targetDependentBtn = document.querySelector(`.dependent-btn[data-val="${selectedDependents}"]`) as HTMLElement | null;
+  if (targetDependentBtn) {
+    targetDependentBtn.click();
+  } else if (firstBtn) {
+    firstBtn.click();
+  }
 
   document.getElementById('calc-salary-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-salary-share-link')?.addEventListener('click', () => copySalaryShareLink());
   calculate();
 });
 </script>

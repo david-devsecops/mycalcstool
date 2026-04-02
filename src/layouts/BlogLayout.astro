@@ -19,6 +19,14 @@ interface Props {
   category?: string;
   readTime?: string;
   jsonLd?: object | object[];
+  lang?: 'ko' | 'en';
+  homeHref?: string;
+  blogHref?: string;
+  blogLabel?: string;
+  updatedLabel?: string;
+  authorPrefix?: string;
+  hreflangKo?: string;
+  hreflangEn?: string;
 }
 
 const {
@@ -32,11 +40,19 @@ const {
   category,
   readTime,
   jsonLd,
+  lang = 'en',
+  homeHref = '/en/',
+  blogHref = '/en/blog/',
+  blogLabel = 'Blog',
+  updatedLabel = 'Updated',
+  authorPrefix = 'By',
+  hreflangKo,
+  hreflangEn,
 } = Astro.props;
 ---
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang={lang}>
 <head>
   <MonetizationHead />
   <meta name="color-scheme" content="light" />
@@ -45,8 +61,10 @@ const {
     description={description}
     keywords={keywords}
     canonicalUrl={canonicalUrl}
-    lang="en"
+    lang={lang}
     jsonLd={jsonLd}
+    hreflangKo={hreflangKo}
+    hreflangEn={hreflangEn}
   />
   <style>
     /* Article content wrapper */
@@ -259,9 +277,9 @@ const {
       <!-- Breadcrumb -->
       <nav class="text-sm text-gray-500 mb-4" aria-label="breadcrumb">
         <ol class="flex items-center gap-1 list-none p-0 flex-wrap">
-          <li><a href="/en/" class="hover:text-blue-600 transition-colors">Home</a></li>
+          <li><a href={homeHref} class="hover:text-blue-600 transition-colors">{lang === 'ko' ? '홈' : 'Home'}</a></li>
           <li aria-hidden="true" class="text-gray-300">/</li>
-          <li><a href="/en/blog/" class="hover:text-blue-600 transition-colors">Blog</a></li>
+          <li><a href={blogHref} class="hover:text-blue-600 transition-colors">{blogLabel}</a></li>
           {category && (
             <>
               <li aria-hidden="true" class="text-gray-300">/</li>
@@ -277,15 +295,15 @@ const {
           <slot name="headline" />
         </h1>
         <div class="flex items-center gap-3 text-sm text-gray-500 flex-wrap">
-          <span>By {author}</span>
+          <span>{authorPrefix} {author}</span>
           <span aria-hidden="true">·</span>
           <time datetime={publishDate}>
-            {new Date(publishDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+            {new Date(publishDate).toLocaleDateString(lang === 'ko' ? 'ko-KR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
           </time>
           {modifiedDate && (
             <>
               <span aria-hidden="true">·</span>
-              <span>Updated <time datetime={modifiedDate}>{new Date(modifiedDate).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
+              <span>{updatedLabel} <time datetime={modifiedDate}>{new Date(modifiedDate).toLocaleDateString(lang === 'ko' ? 'ko-KR' : 'en-US', { year: 'numeric', month: 'long', day: 'numeric' })}</time></span>
             </>
           )}
           {readTime && (

@@ -1,0 +1,105 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '중도상환수수료 손익분기점 계산법';
+const description = '대출을 미리 갚거나 갈아탈 때 수수료보다 절감 이자가 큰지 판단하는 기본 계산법과 체크 포인트를 정리합니다.';
+const keywords = '중도상환수수료, 대출 갈아타기 손익분기점, 대출 조기상환, 중도상환 계산';
+const canonicalUrl = 'https://mycalcstool.com/blog/prepayment-fee-break-even-guide/';
+const publishDate = '2026-04-02';
+const modifiedDate = '2026-04-02';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="대출" readTime="7분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="금융 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">중도상환수수료 손익분기점 계산법</Fragment>
+
+  <p>대출을 빨리 갚거나 다른 상품으로 갈아타면 이자를 줄일 수 있습니다. 그런데 중도상환수수료가 붙으면 기대했던 절감액이 생각보다 줄어들 수 있습니다.</p>
+  <p>그래서 중요한 질문은 하나입니다. <strong>수수료보다 절감되는 이자가 더 큰가?</strong> 이 손익분기점만 계산해도 대부분의 판단이 정리됩니다.</p>
+
+  <h2>가장 단순한 계산식</h2>
+  <p>손익분기점은 아래처럼 봅니다.</p>
+  <ul>
+    <li>절감 예상 이자 총액</li>
+    <li>중도상환수수료 + 갈아타기 부대비용</li>
+  </ul>
+  <p>절감 이자가 비용보다 크면 경제적으로는 의미가 있습니다. 작다면 지금 당장 움직일 이유가 약합니다.</p>
+
+  <h2>중도상환수수료만 보면 안 되는 이유</h2>
+  <p>실제 갈아타기에는 인지세, 설정 비용, 서류 비용, 심사 과정에서의 시간 비용이 같이 들어갈 수 있습니다. 단순히 수수료율만 보고 결정하면 생각보다 차이가 적을 수 있습니다.</p>
+
+  <h2>이렇게 계산해보면 된다</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>항목</th>
+        <th>예시</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>남은 대출 잔액</td>
+        <td>2억원</td>
+      </tr>
+      <tr>
+        <td>현재 금리</td>
+        <td>5.2%</td>
+      </tr>
+      <tr>
+        <td>새 금리</td>
+        <td>4.1%</td>
+      </tr>
+      <tr>
+        <td>중도상환수수료</td>
+        <td>120만원</td>
+      </tr>
+      <tr>
+        <td>기타 비용</td>
+        <td>30만원</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>이 경우 판단 기준은 명확합니다. 남은 보유 기간 동안 절감되는 이자가 150만원을 넘는지 보면 됩니다.</p>
+
+  <h2>손익분기점이 빨라지는 경우</h2>
+  <ul>
+    <li>남은 대출 잔액이 크다</li>
+    <li>현재 금리와 새 금리 차이가 크다</li>
+    <li>남은 보유 기간이 길다</li>
+    <li>중도상환수수료가 거의 끝나간다</li>
+  </ul>
+
+  <h2>손익분기점이 늦어지는 경우</h2>
+  <ul>
+    <li>금리 차이가 작다</li>
+    <li>곧 매각이나 전세 전환 계획이 있다</li>
+    <li>수수료와 부대비용이 크다</li>
+    <li>애초에 잔액이 많이 줄어 절감 가능한 이자 자체가 작다</li>
+  </ul>
+
+  <h2>부분 상환도 같은 원리다</h2>
+  <p>전액 갈아타기만이 답은 아닙니다. 여유자금이 있다면 일부만 상환해도 이후 이자 부담을 줄일 수 있습니다. 다만 부분 중도상환도 수수료 구조가 어떻게 잡혀 있는지 약관을 확인해야 합니다.</p>
+
+  <h2>결국 봐야 할 것은 보유 기간</h2>
+  <p>손익분기점이 10개월인데 6개월 뒤 집을 팔 가능성이 높다면 실익이 없습니다. 반대로 2~3년 이상 보유할 예정이라면 작은 금리 차이도 의미를 만들 수 있습니다.</p>
+
+  <blockquote>
+    <p><strong>실무 팁:</strong> 금리 차이만 보지 말고, 남은 잔액과 예상 보유 기간을 같이 넣어보면 판단이 훨씬 빨라집니다.</p>
+    <p><a href="https://mycalcstool.com/loan">대출 계산기로 현재 조건과 새 조건의 총 이자를 먼저 비교해보세요.</a></p>
+  </blockquote>
+
+  <h2>마무리</h2>
+  <p>중도상환과 갈아타기는 감으로 결정하면 안 됩니다. 수수료보다 절감 이자가 더 큰지, 그리고 그 차이를 회수할 시간이 실제로 남아 있는지까지 같이 봐야 합니다.</p>
+</BlogLayout>

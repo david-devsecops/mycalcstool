@@ -1,0 +1,83 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '퇴직금 계산 기준과 평균임금 정리';
+const description = '퇴직금 공식, 평균임금 계산, 상여금 반영, 1년 이상 근무 기준 등 퇴직금 계산의 핵심을 설명합니다.';
+const keywords = '퇴직금 계산, 평균임금, 퇴직금 공식, 퇴직금 계산기';
+const canonicalUrl = 'https://mycalcstool.com/blog/severance-pay-guide/';
+const publishDate = '2026-04-02';
+const modifiedDate = '2026-04-02';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="퇴직금" readTime="7분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="금융 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">퇴직금 계산 기준과 평균임금 정리</Fragment>
+
+  <p>퇴직금은 단순히 "마지막 월급 x 근속연수"로 계산하는 것이 아닙니다. 핵심은 <strong>1일 평균임금</strong>과 <strong>총 재직일수</strong>입니다.</p>
+
+  <h2>가장 기본 공식</h2>
+  <p>퇴직금은 보통 아래 구조로 계산합니다.</p>
+  <p><strong>1일 평균임금 × 30일 × (총 재직일수 ÷ 365)</strong></p>
+  <p>즉, 평균임금이 높을수록, 그리고 재직 기간이 길수록 퇴직금도 커집니다.</p>
+
+  <h2>평균임금은 어떻게 잡나</h2>
+  <p>일반적으로 퇴직 직전 일정 기간 동안 받은 임금 총액을 그 기간의 총 일수로 나눠 계산합니다. 그래서 마지막 달 급여만 보는 방식과는 다릅니다.</p>
+
+  <h2>상여금은 왜 같이 보나</h2>
+  <p>상여금이나 정기적으로 지급되는 항목은 평균임금 산정에 영향을 줄 수 있습니다. 그래서 월 급여만 넣으면 실제보다 낮게 보일 수 있고, 반대로 일시적 수당을 과하게 넣으면 과대 추정될 수 있습니다.</p>
+
+  <h2>가장 먼저 확인해야 할 조건</h2>
+  <ul>
+    <li>1년 이상 근무했는가</li>
+    <li>주당 근로시간 기준을 충족하는가</li>
+    <li>퇴직연금 제도로 운영 중인지 별도 규정이 있는가</li>
+  </ul>
+
+  <h2>자주 헷갈리는 부분</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>오해</th>
+        <th>실제 확인 포인트</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>마지막 월급만 보면 된다</td>
+        <td>평균임금 산정 방식이 중요하다</td>
+      </tr>
+      <tr>
+        <td>상여금은 무조건 제외다</td>
+        <td>정기성 여부와 반영 기준을 확인해야 한다</td>
+      </tr>
+      <tr>
+        <td>퇴직금은 전액 그대로 받는다</td>
+        <td>수령 방식과 세금 구조를 같이 봐야 한다</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>왜 계산기가 필요한가</h2>
+  <p>퇴사 시점이 바뀌거나, 상여금 반영 여부가 달라지면 결과도 달라질 수 있기 때문입니다. 이직이나 퇴사 계획이 있다면 대략적인 금액을 미리 확인해보는 것이 좋습니다.</p>
+
+  <blockquote>
+    <p><strong>실무 팁:</strong> 퇴직금은 마지막 월급이 아니라 평균임금과 재직일수의 조합으로 보셔야 합니다.</p>
+    <p><a href="https://mycalcstool.com/severance">퇴직금 계산기에서 입사일, 퇴사일, 평균임금을 바로 넣어보세요.</a></p>
+  </blockquote>
+
+  <h2>마무리</h2>
+  <p>퇴직금은 계산 방식만 알아도 과소 추정이나 과대 추정을 많이 줄일 수 있습니다. 특히 평균임금과 상여금 반영 방식을 이해하면 숫자의 이유가 더 분명해집니다.</p>
+</BlogLayout>

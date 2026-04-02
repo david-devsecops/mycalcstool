@@ -112,6 +112,15 @@ const jsonLd = {
     </section>
     <AdSlot slot="result" format="rectangle" />
     <AdSlot slot="content" format="rectangle" />
+
+    <section id="severance-share-section" class="card mt-6 hidden" aria-labelledby="severance-share-title">
+      <h2 class="section-title" id="severance-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">입사일, 퇴사일, 평균임금, 상여금 조건을 포함한 링크를 복사할 수 있습니다.</p>
+        <button id="copy-severance-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="severance-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
   </div>
 
   <section class="card mb-6">
@@ -123,6 +132,21 @@ const jsonLd = {
   </section>
 
   <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/blog/severance-pay-guide', label: '퇴직금 계산 기준 정리', desc: '평균임금과 재직일수 중심으로 보는 방법' },
+        { href: '/blog/gross-vs-net-salary-guide', label: '세전과 세후 급여 차이', desc: '퇴직 전 급여 구조 이해에 도움' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
@@ -143,6 +167,51 @@ const jsonLd = {
 
 <script>
 function fmt(n: number): string { return Math.round(n).toLocaleString('ko-KR') + '원'; }
+
+function applySeveranceQueryParams() {
+  const params = new URLSearchParams(window.location.search);
+  const setValue = (id: string, key: string) => {
+    const value = params.get(key);
+    if (!value) return;
+    const el = document.getElementById(id) as HTMLInputElement | null;
+    if (el) el.value = value;
+  };
+
+  setValue('join-date', 'join');
+  setValue('leave-date', 'leave');
+  setValue('monthly-wage', 'wage');
+  setValue('bonus', 'bonus');
+}
+
+function updateSeveranceShareLink(join: string, leave: string, wage: number, bonus: number) {
+  const section = document.getElementById('severance-share-section');
+  const button = document.getElementById('copy-severance-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('severance-share-feedback');
+  const url = new URL(window.location.href);
+  url.search = '';
+  url.searchParams.set('join', join);
+  url.searchParams.set('leave', leave);
+  url.searchParams.set('wage', String(wage));
+  url.searchParams.set('bonus', String(bonus));
+
+  if (button) button.dataset.shareUrl = url.toString();
+  if (feedback) feedback.textContent = `${join} ~ ${leave} · 평균급여 ${wage.toLocaleString('ko-KR')}만원 · 상여금 ${bonus.toLocaleString('ko-KR')}만원`;
+  section?.classList.remove('hidden');
+}
+
+async function copySeveranceShareLink() {
+  const button = document.getElementById('copy-severance-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('severance-share-feedback');
+  const shareUrl = button?.dataset.shareUrl;
+  if (!shareUrl) return;
+
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
+}
 
 function calculate() {
   const joinEl = document.getElementById('join-date') as HTMLInputElement;
@@ -169,6 +238,7 @@ function calculate() {
   const threeMonthWage = monthlyWage * 3 + bonusMonthly * 3;
   const dailyAvgWage = threeMonthWage / 91;
   const severance = Math.round(dailyAvgWage * 30 * (totalDays / 365));
+  updateSeveranceShareLink(joinEl.value, leaveEl.value, monthlyWageWan, bonusWan);
 
   const years = Math.floor(totalDays / 365);
   const months = Math.floor((totalDays % 365) / 30);
@@ -186,17 +256,19 @@ function calculate() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  applySeveranceQueryParams();
   // 오늘 날짜 기본값
   const today = new Date();
   const leaveEl = document.getElementById('leave-date') as HTMLInputElement;
   const joinEl = document.getElementById('join-date') as HTMLInputElement;
-  if (leaveEl) leaveEl.value = today.toISOString().split('T')[0];
-  if (joinEl) {
+  if (leaveEl && !leaveEl.value) leaveEl.value = today.toISOString().split('T')[0];
+  if (joinEl && !joinEl.value) {
     const threeYearsAgo = new Date(today);
     threeYearsAgo.setFullYear(today.getFullYear() - 3);
     joinEl.value = threeYearsAgo.toISOString().split('T')[0];
   }
   document.getElementById('calc-severance-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-severance-share-link')?.addEventListener('click', () => copySeveranceShareLink());
   calculate();
 });
 </script>

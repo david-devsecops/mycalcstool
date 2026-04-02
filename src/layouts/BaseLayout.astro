@@ -16,6 +16,7 @@ interface Props {
   jsonLd?: object | object[];
   noIndex?: boolean;
   hreflangKo?: string;
+  hreflangEn?: string;
 }
 
 const {
@@ -28,6 +29,7 @@ const {
   jsonLd,
   noIndex = false,
   hreflangKo,
+  hreflangEn,
 } = Astro.props;
 ---
 
@@ -45,6 +47,7 @@ const {
     jsonLd={jsonLd}
     noIndex={noIndex}
     hreflangKo={hreflangKo}
+    hreflangEn={hreflangEn}
   />
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50">
