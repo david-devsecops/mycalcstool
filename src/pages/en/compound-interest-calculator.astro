@@ -151,6 +151,31 @@ const jsonLd = {
   <AdSlot slot="content" format="rectangle" />
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related investing guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/simple-vs-compound-interest-guide', label: 'Simple vs Compound Interest', desc: 'Compare flat interest with compounding over time.' },
+        { href: '/en/blog/percentage-increase-calculator-guide', label: 'Percentage Increase Guide', desc: 'Use percentage change correctly when tracking returns.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      <p>This calculator applies the selected compounding frequency to your starting balance and recurring contributions to estimate future value. Market returns are never guaranteed, so the result should be treated as a planning scenario rather than a forecast.</p>
+      <p>
+        Assumptions are documented on the <a href="/en/methodology" class="font-semibold text-primary-600 hover:underline">Methodology</a> page, and corrections can be sent through <a href="/en/contact" class="font-semibold text-primary-600 hover:underline">Contact</a>.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

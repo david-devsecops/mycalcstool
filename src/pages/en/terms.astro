@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteMeta } from '../../data/site-meta';
 
-const title = 'Terms of Use | mycalcstool';
+const title = 'Terms of Use';
 const description = 'Terms of Use for mycalcstool.com — please read before using our free online calculators.';
 
 const jsonLd = {
@@ -91,7 +92,7 @@ const jsonLd = {
 
     <h2 class="text-lg font-bold text-gray-800 mb-3">9. Contact</h2>
     <p class="text-gray-600">
-      If you have questions about these Terms of Use, please contact us through the feedback form on our website.
+      If you have questions about these Terms of Use, contact us at <a href={`mailto:${siteMeta.contactEmail}`} class="text-primary-600 hover:underline">{siteMeta.contactEmail}</a> or use the <a href="/en/contact" class="text-primary-600 hover:underline">Contact</a> page.
     </p>
   </section>
 </BaseLayout>

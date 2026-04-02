@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import { siteMeta } from '../../data/site-meta';
+
+const title = 'About';
+const description = 'Learn how mycalcstool works, what calculators we prioritize, and where to find our methodology and contact details.';
+---
+
+<BaseLayout title={title} description={description} lang="en" hreflangKo="/about">
+  <div class="space-y-6">
+    <section class="card">
+      <h1 class="text-2xl font-bold text-gray-800 mb-4">About mycalcstool</h1>
+      <p class="text-gray-600 leading-relaxed">
+        mycalcstool is a static calculator site built for fast decision support. We currently prioritize
+        <strong class="text-gray-800"> finance calculators such as mortgage, salary, compound growth, and tax-related tools</strong>,
+        while keeping health and utility tools as supporting calculators.
+      </p>
+      <p class="text-gray-600 leading-relaxed mt-3">
+        Every calculation runs in the browser. We do not require signups, and we do not store the numbers you enter into the calculators.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">What we optimize for</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-600">
+        <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+          <h3 class="font-semibold text-gray-800 mb-2">Fast answers</h3>
+          <p>Calculator pages are designed to reach a useful estimate quickly without account creation or setup friction.</p>
+        </div>
+        <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+          <h3 class="font-semibold text-gray-800 mb-2">Transparent assumptions</h3>
+          <p>We document formulas, tax assumptions, and update principles where they materially change the result.</p>
+        </div>
+        <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+          <h3 class="font-semibold text-gray-800 mb-2">Low-friction privacy</h3>
+          <p>Calculator inputs stay on your device because the tools run client-side.</p>
+        </div>
+        <div class="rounded-xl border border-gray-100 bg-gray-50 p-4">
+          <h3 class="font-semibold text-gray-800 mb-2">Supportive content</h3>
+          <p>Guides and FAQs are meant to help you interpret the result, not just produce a number.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Trust pages</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>Methodology and update principles: <a href="/en/methodology" class="text-primary-600 font-semibold hover:underline">Methodology</a></p>
+        <p>Corrections, policy questions, and partnerships: <a href="/en/contact" class="text-primary-600 font-semibold hover:underline">Contact</a></p>
+        <p>Direct email: <a href={`mailto:${siteMeta.contactEmail}`} class="text-primary-600 font-semibold hover:underline">{siteMeta.contactEmail}</a></p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

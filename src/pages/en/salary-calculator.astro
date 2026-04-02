@@ -158,6 +158,31 @@ const usStateTaxJson = JSON.stringify(usStateTax);
   </div>
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related salary guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/salary-calculator-guide-gross-vs-net-pay', label: 'Gross Pay vs Net Pay', desc: 'Understand what really changes take-home pay.' },
+        { href: '/en/blog/biweekly-vs-semi-monthly-pay-guide', label: 'Biweekly vs Semi-Monthly Pay', desc: 'See why paycheck amounts differ across pay schedules.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      <p>This calculator estimates take-home pay using 2026 federal tax brackets, standard deductions, FICA rules, and state tax tables stored in the project data files. Employer-specific deductions and local rules can change the exact paycheck amount.</p>
+      <p>
+        See <a href="/en/methodology" class="font-semibold text-primary-600 hover:underline">Methodology</a> for assumptions or use <a href="/en/contact" class="font-semibold text-primary-600 hover:underline">Contact</a> to report an outdated rule or table.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <script is:inline define:vars={{ usTaxJson, usStateTaxJson }}>

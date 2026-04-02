@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import siteConfig from '../data/site-config.json';
+import { siteMeta } from '../data/site-meta';
 
 const title = '무료 온라인 계산기 모음 - 대출, 연봉, BMI, 복리 계산';
 const description = '대출 이자, 연봉 실수령액, BMI, 복리, 퇴직금, 칼로리 등 생활에 꼭 필요한 계산기를 무료로 제공합니다. 빠르고 정확한 계산으로 현명한 결정을 도와드립니다.';
@@ -13,6 +14,11 @@ const categoryColors: Record<string, string> = {
   '건강': 'bg-green-50 text-green-700 border-green-200',
   '생활': 'bg-purple-50 text-purple-700 border-purple-200',
 };
+
+const featuredFinance = siteConfig.calculators
+  .filter((calculator) => calculator.category === '금융')
+  .sort((left, right) => right.priority - left.priority)
+  .slice(0, 5);
 
 const websiteSchema = {
   '@context': 'https://schema.org',
@@ -35,61 +41,102 @@ const websiteSchema = {
       무료 온라인 계산기 모음
     </h1>
     <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-      대출, 연봉, 세금, 건강, 생활 – 실생활에 꼭 필요한 계산기를<br class="hidden md:block" />
-      빠르고 정확하게 제공합니다.
+      대출, 연봉, 세금처럼 결정에 바로 쓰는 금융 계산기를 우선 강화하고<br class="hidden md:block" />
+      건강·생활 계산기는 보조 도구로 함께 제공합니다.
     </p>
   </section>
 
   <!-- 상단 광고 -->
   <AdSlot slot="top" format="horizontal" />
 
-  <!-- 카테고리별 계산기 목록 -->
-  {categories.map(category => {
-    const calcs = siteConfig.calculators.filter(c => c.category === category);
-    return (
-      <section class="mb-8" aria-labelledby={`category-${category}`}>
-        <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2" id={`category-${category}`}>
-          <span class={`text-xs px-2.5 py-1 rounded-full border font-medium ${categoryColors[category]}`}>
-            {category}
-          </span>
-        </h2>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {calcs.map(calc => (
-            <a
-              href={calc.path}
-              class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
-              aria-label={`${calc.name} 바로가기`}
-            >
-              <div class="flex items-start gap-3">
-                <span class="text-3xl" role="img" aria-label={calc.name}>{calc.icon}</span>
-                <div class="flex-1 min-w-0">
-                  <h3 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">
-                    {calc.name}
-                  </h3>
-                  <p class="text-sm text-gray-500 mt-1 leading-snug">
-                    {calc.description}
-                  </p>
-                </div>
+  <section class="mb-8" aria-labelledby="featured-finance">
+    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+      <h2 class="text-xl font-bold text-gray-700" id="featured-finance">우선 추천하는 금융 계산기</h2>
+      <a href="/methodology" class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">계산 기준 보기 →</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {featuredFinance.map(calc => (
+        <a
+          href={calc.path}
+          class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
+          aria-label={`${calc.name} 바로가기`}
+        >
+          <div class="flex items-start gap-3">
+            <span class="text-3xl" role="img" aria-label={calc.name}>{calc.icon}</span>
+            <div class="flex-1 min-w-0">
+              <div class="mb-2">
+                <span class={`text-xs px-2.5 py-1 rounded-full border font-medium ${categoryColors[calc.category]}`}>
+                  {calc.category}
+                </span>
               </div>
-              <div class="mt-3 text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-1">
-                계산하기
-                <span aria-hidden="true">→</span>
-              </div>
-            </a>
-          ))}
-        </div>
-      </section>
-    );
-  })}
+              <h3 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">
+                {calc.name}
+              </h3>
+              <p class="text-sm text-gray-500 mt-1 leading-snug">
+                {calc.description}
+              </p>
+            </div>
+          </div>
+          <div class="mt-3 text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-1">
+            계산하기
+            <span aria-hidden="true">→</span>
+          </div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="mb-8">
+    <h2 class="text-xl font-bold text-gray-700 mb-4">보조 계산기</h2>
+    <div class="space-y-8">
+      {categories.filter((category) => category !== '금융').map(category => {
+        const calcs = siteConfig.calculators.filter(c => c.category === category);
+        return (
+          <section aria-labelledby={`category-${category}`}>
+            <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2" id={`category-${category}`}>
+              <span class={`text-xs px-2.5 py-1 rounded-full border font-medium ${categoryColors[category]}`}>
+                {category}
+              </span>
+            </h3>
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+              {calcs.map(calc => (
+                <a
+                  href={calc.path}
+                  class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
+                  aria-label={`${calc.name} 바로가기`}
+                >
+                  <div class="flex items-start gap-3">
+                    <span class="text-3xl" role="img" aria-label={calc.name}>{calc.icon}</span>
+                    <div class="flex-1 min-w-0">
+                      <h4 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">
+                        {calc.name}
+                      </h4>
+                      <p class="text-sm text-gray-500 mt-1 leading-snug">
+                        {calc.description}
+                      </p>
+                    </div>
+                  </div>
+                  <div class="mt-3 text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-1">
+                    계산하기
+                    <span aria-hidden="true">→</span>
+                  </div>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+    </div>
+  </section>
 
   <!-- 사이트 소개 섹션 -->
   <section class="card bg-primary-50 border-primary-100 mt-8">
     <h2 class="text-lg font-bold text-primary-800 mb-3">mycalcstool 소개</h2>
     <p class="text-gray-700 leading-relaxed text-sm">
-      mycalcstool은 복잡한 계산을 쉽게 해결해드리는 무료 온라인 계산기 서비스입니다.
-      대출 이자, 연봉 실수령액, BMI, 복리 투자 등 실생활에 필요한 계산기를
-      누구나 쉽게 사용할 수 있도록 만들었습니다.
-      모든 계산은 브라우저에서 직접 처리되며, 개인정보를 수집하지 않습니다.
+      {siteMeta.name}은 금융 계산기를 중심으로 운영하는 무료 온라인 계산기 서비스입니다.
+      모든 계산은 브라우저에서 직접 처리되며, 계산 기준과 문의 경로는
+      <a href="/methodology" class="font-semibold text-primary-700 hover:underline"> 계산 기준</a>,
+      <a href="/contact" class="font-semibold text-primary-700 hover:underline"> 문의하기</a> 페이지에서 확인할 수 있습니다.
     </p>
   </section>
 </BaseLayout>

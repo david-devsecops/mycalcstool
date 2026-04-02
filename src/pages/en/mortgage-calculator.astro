@@ -173,6 +173,33 @@ const jsonLd = {
   </div>
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related mortgage guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/how-much-house-can-i-afford-guide', label: 'How Much House Can I Afford?', desc: 'Work backward from a safe monthly budget.' },
+        { href: '/en/blog/pmi-guide-how-private-mortgage-insurance-works', label: 'PMI Guide', desc: 'Understand what PMI adds and when it can end.' },
+        { href: '/en/blog/30-year-vs-15-year-mortgage-guide', label: '30-Year vs 15-Year Mortgage', desc: 'Compare payment flexibility against total interest.' },
+        { href: '/en/blog/extra-mortgage-payments-guide', label: 'Extra Mortgage Payments', desc: 'See how extra principal changes payoff time.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>
+    <div class="space-y-3 text-sm text-gray-700">
+      <p>This calculator uses standard amortization formulas and then adds property tax, insurance, PMI, and HOA costs when provided. Actual loan offers can differ by lender, credit profile, fees, and escrow rules.</p>
+      <p>
+        Review the <a href="/en/methodology" class="font-semibold text-primary-600 hover:underline">Methodology</a> page for assumptions or use <a href="/en/contact" class="font-semibold text-primary-600 hover:underline">Contact</a> to report a rate or formula issue.
+      </p>
+    </div>
+  </section>
 </BaseLayout>
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

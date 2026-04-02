@@ -2,6 +2,8 @@
 import SEOHead from '../components/SEOHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import MonetizationHead from '../components/MonetizationHead.astro';
+import MonetizationRuntime from '../components/MonetizationRuntime.astro';
 import '../styles/global.css';
 
 interface Props {
@@ -32,6 +34,7 @@ const {
 <!DOCTYPE html>
 <html lang={lang}>
 <head>
+  <MonetizationHead />
   <SEOHead
     title={title}
     description={description}
@@ -43,16 +46,6 @@ const {
     noIndex={noIndex}
     hreflangKo={hreflangKo}
   />
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWJ06N3894"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DWJ06N3894');
-  </script>
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2898972256894696" crossorigin="anonymous"></script>
 </head>
 <body class="min-h-screen flex flex-col bg-gray-50">
   <Header />
@@ -86,5 +79,6 @@ const {
       });
     });
   </script>
+  <MonetizationRuntime />
 </body>
 </html>

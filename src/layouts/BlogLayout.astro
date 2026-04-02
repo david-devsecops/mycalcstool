@@ -2,6 +2,10 @@
 import SEOHead from '../components/SEOHead.astro';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import AdSlot from '../components/AdSlot.astro';
+import MonetizationHead from '../components/MonetizationHead.astro';
+import MonetizationRuntime from '../components/MonetizationRuntime.astro';
+import { siteMeta } from '../data/site-meta';
 import '../styles/global.css';
 
 interface Props {
@@ -24,7 +28,7 @@ const {
   canonicalUrl,
   publishDate,
   modifiedDate,
-  author = 'mycalcstool',
+  author = siteMeta.editorLabel,
   category,
   readTime,
   jsonLd,
@@ -34,6 +38,7 @@ const {
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <MonetizationHead />
   <meta name="color-scheme" content="light" />
   <SEOHead
     title={title}
@@ -43,16 +48,6 @@ const {
     lang="en"
     jsonLd={jsonLd}
   />
-  <!-- Google Analytics -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-DWJ06N3894"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-DWJ06N3894');
-  </script>
-  <!-- Google AdSense -->
-  <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-2898972256894696" crossorigin="anonymous"></script>
   <style>
     /* Article content wrapper */
     .blog-article {
@@ -305,11 +300,16 @@ const {
         </div>
       </header>
 
+      <AdSlot slot="top" format="horizontal" />
+
       <article class="blog-content">
         <slot />
       </article>
+
+      <AdSlot slot="content" format="rectangle" />
     </div>
   </main>
   <Footer />
+  <MonetizationRuntime />
 </body>
 </html>

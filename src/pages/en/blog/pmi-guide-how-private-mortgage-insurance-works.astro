@@ -1,0 +1,92 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'PMI Guide: What Private Mortgage Insurance Costs and When It Ends';
+const description = 'Learn what PMI is, how private mortgage insurance affects your monthly payment, and when borrowers can usually remove it.';
+const keywords = 'PMI guide, private mortgage insurance, when does PMI end, mortgage PMI cost';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/pmi-guide-how-private-mortgage-insurance-works/';
+const publishDate = '2026-04-02';
+const modifiedDate = '2026-04-02';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout
+  title={title}
+  description={description}
+  keywords={keywords}
+  canonicalUrl={canonicalUrl}
+  publishDate={publishDate}
+  modifiedDate={modifiedDate}
+  category="Money & Finance"
+  readTime="8 min read"
+  jsonLd={jsonLd}
+>
+  <Fragment slot="headline">PMI Guide: What Private Mortgage Insurance Costs and When It Ends</Fragment>
+
+  <p>Private mortgage insurance, usually called <strong>PMI</strong>, is one of the most misunderstood parts of buying a home with a smaller down payment.</p>
+  <p>It can push your monthly housing cost noticeably higher, but many borrowers accept it because it allows them to buy sooner rather than waiting years to reach a 20% down payment.</p>
+
+  <h2>What PMI Actually Is</h2>
+  <p>PMI is insurance that protects the lender, not the borrower. It is commonly required on many conventional loans when the down payment is less than 20% of the home price.</p>
+  <p>That means PMI is different from homeowner&apos;s insurance. Homeowner&apos;s insurance protects the property and the owner. PMI protects the lender if the loan goes into default.</p>
+
+  <h2>When PMI Usually Applies</h2>
+  <ul>
+    <li>Conventional loan</li>
+    <li>Down payment below 20%</li>
+    <li>Higher loan-to-value ratio after closing</li>
+  </ul>
+  <p>If you are using an FHA loan, you may see <strong>mortgage insurance premium (MIP)</strong> instead of PMI. The rules are different, so do not assume the same cancellation timeline applies.</p>
+
+  <h2>How PMI Changes Your Monthly Payment</h2>
+  <p>PMI is often quoted as a percentage of the loan amount per year. The exact cost depends on factors such as your down payment, credit profile, occupancy type, and the loan program.</p>
+  <p>For example, if the annual PMI cost is 0.5% on a $350,000 loan balance, that is about <strong>$1,750 per year</strong>, or roughly <strong>$146 per month</strong>. That extra amount can materially change what home price still feels affordable.</p>
+
+  <h2>What Usually Affects PMI Cost</h2>
+  <ul>
+    <li>Size of the down payment</li>
+    <li>Credit score and overall borrower risk</li>
+    <li>Loan size</li>
+    <li>Primary residence vs other occupancy types</li>
+    <li>Type of conventional mortgage program</li>
+  </ul>
+
+  <h2>When PMI Can Usually End</h2>
+  <p>For many conventional mortgages, borrowers may be able to request PMI cancellation when the loan balance reaches 80% of the home&apos;s original value, subject to servicer conditions. Under federal rules, automatic termination usually occurs once the balance is scheduled to reach 78% of the original value if payments are current.</p>
+  <p>That is why it is useful to understand your amortization schedule. The date you can request cancellation and the date of automatic termination are not always the same.</p>
+
+  <h2>How Extra Payments Can Help</h2>
+  <p>Making extra principal payments may help you reach the relevant loan-to-value threshold sooner. But the savings are not always automatic. You may still need to contact the servicer and follow the lender&apos;s cancellation process.</p>
+
+  <h2>Common PMI Mistakes</h2>
+  <ul>
+    <li>Confusing PMI with homeowner&apos;s insurance</li>
+    <li>Ignoring PMI when setting a monthly housing budget</li>
+    <li>Assuming PMI disappears on its own immediately after hitting 20% equity</li>
+    <li>Making extra payments but never asking the servicer about cancellation rules</li>
+  </ul>
+
+  <h2>How to Use Our Mortgage Calculator</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/mortgage-calculator/"><strong>Mortgage Calculator</strong></a> to model different down payments, loan amounts, property taxes, insurance, and PMI assumptions. Then compare that monthly total with your real budget, not just a lender maximum.</p>
+
+  <blockquote>
+    <p><strong>Practical takeaway:</strong> a home may look affordable until PMI is added to the payment.</p>
+    <p><a href="https://mycalcstool.com/en/mortgage-calculator/">Run a mortgage scenario with PMI included.</a></p>
+  </blockquote>
+
+  <h2>Final Takeaway</h2>
+  <p>PMI is not always bad. It can be the tradeoff that lets you buy sooner. But it should be modeled clearly because it affects both monthly affordability and the point when your loan becomes cheaper to carry.</p>
+</BlogLayout>

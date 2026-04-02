@@ -4,9 +4,11 @@
   "version": "1.0.0",
   "scripts": {
     "dev": "astro dev",
+    "prebuild": "npm run update:ads-txt",
     "build": "astro build",
     "preview": "astro preview",
-    "astro": "astro"
+    "astro": "astro",
+    "update:ads-txt": "node ./scripts/update-ads-txt.mjs"
   },
   "dependencies": {
     "astro": "^5.6.1",

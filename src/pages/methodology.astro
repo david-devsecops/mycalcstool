@@ -1,0 +1,54 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const title = '계산 기준과 방법론 - mycalcstool';
+const description = 'mycalcstool 계산기 공식, 데이터 출처, 업데이트 원칙과 한계를 설명합니다.';
+---
+
+<BaseLayout title={title} description={description}>
+  <div class="space-y-6">
+    <section class="card">
+      <h1 class="text-2xl font-bold text-gray-800 mb-4">계산 기준과 방법론</h1>
+      <p class="text-gray-600 leading-relaxed">
+        mycalcstool은 계산기별 핵심 공식, 세율, 보험료율, 가정값을 명시하고 정적 페이지로 배포합니다.
+        계산은 기본적으로 사용자의 브라우저에서 실행되며 입력값을 서버에 저장하지 않습니다.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">금융 계산기</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p><strong class="text-gray-800">대출 계산기</strong>는 원리금균등, 원금균등, 만기일시 상환 공식을 사용해 월 상환액과 총 이자를 계산합니다.</p>
+        <p><strong class="text-gray-800">연봉 계산기</strong>는 2026년 기준 4대보험 요율, 근로소득공제, 소득세 누진세율을 반영합니다.</p>
+        <p><strong class="text-gray-800">연말정산 계산기</strong>는 기본적인 공제 규칙을 단순화해 예상 환급액을 보여주며, 실제 신고 금액과는 차이가 있을 수 있습니다.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">영문 계산기</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>미국 급여 계산기는 2026년 연방세 표준공제와 주별 세율 데이터를 기반으로 추정치를 계산합니다.</p>
+        <p>모기지 계산기는 원리금, 재산세, 보험, PMI, HOA를 합산한 월 비용을 보여줍니다.</p>
+        <p>복리 계산기는 복리 주기와 월 적립금을 반영해 미래 가치를 계산합니다.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">참고하는 공식 출처</h2>
+      <ul class="space-y-2 text-sm text-gray-600 list-disc pl-5">
+        <li>대한민국 국세청, 국민연금, 건강보험, 고용보험 공지 자료</li>
+        <li>미국 IRS, Social Security Administration, 주정부 세율 자료</li>
+        <li>BMI, TDEE 등 건강 계산에 쓰이는 공개 표준 공식</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">업데이트 원칙과 한계</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>세율과 제도는 바뀔 수 있으므로, 숫자가 변경되는 계산기는 연도 단위로 재검토합니다.</p>
+        <p>정확한 계약, 신고, 진단이 필요한 상황에서는 반드시 공식 기관 또는 전문가와 교차 검증해야 합니다.</p>
+        <p>오류 제보나 출처 정정 요청은 <a href="/contact" class="text-primary-600 font-semibold hover:underline">문의 페이지</a>에서 받을 수 있습니다.</p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

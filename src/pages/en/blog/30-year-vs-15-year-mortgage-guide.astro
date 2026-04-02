@@ -4,8 +4,9 @@ import BlogLayout from '../../../layouts/BlogLayout.astro';
 const title = '30-Year vs 15-Year Mortgage: Monthly Payment vs Total Interest';
 const description = 'Compare 30-year and 15-year mortgages, including monthly payment, total interest, and long-term tradeoffs, before choosing a loan term.';
 const keywords = '30 year vs 15 year mortgage, mortgage term comparison, total interest mortgage, mortgage payment guide';
-const canonicalUrl = 'https://mycalcstool.com/en/blog/30-year-vs-15-year-mortgage-guide';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/30-year-vs-15-year-mortgage-guide/';
 const publishDate = '2026-03-28';
+const modifiedDate = '2026-04-02';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -14,7 +15,7 @@ const jsonLd = {
   description,
   url: canonicalUrl,
   datePublished: publishDate,
-  dateModified: publishDate,
+  dateModified: modifiedDate,
   author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
   publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
   inLanguage: 'en',
@@ -22,14 +23,38 @@ const jsonLd = {
 };
 ---
 
-<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Money & Finance" readTime="6 min read" jsonLd={jsonLd}>
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="Money & Finance" readTime="7 min read" jsonLd={jsonLd}>
   <Fragment slot="headline">30-Year vs 15-Year Mortgage: Monthly Payment vs Total Interest</Fragment>
 
   <p>One of the biggest mortgage decisions is choosing the loan term. The most common choice is between a 30-year mortgage and a 15-year mortgage.</p>
   <p>The shorter term usually means a higher monthly payment but far less interest over time. The longer term usually means a lower payment but more total interest.</p>
 
+  <h2>Quick Comparison</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Loan Term</th>
+        <th>Main Advantage</th>
+        <th>Main Tradeoff</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>30-year mortgage</td>
+        <td>Lower required monthly payment</td>
+        <td>Higher total interest over the life of the loan</td>
+      </tr>
+      <tr>
+        <td>15-year mortgage</td>
+        <td>Lower total interest and faster equity growth</td>
+        <td>Higher monthly payment and less cash-flow flexibility</td>
+      </tr>
+    </tbody>
+  </table>
+
   <h2>30-Year Mortgage</h2>
   <p>A 30-year mortgage spreads payments over a longer period. That usually makes the monthly payment lower and improves cash flow.</p>
+  <p>That lower payment can be valuable if you want room for childcare, repairs, investing, or a variable income pattern.</p>
 
   <h2>15-Year Mortgage</h2>
   <p>A 15-year mortgage has larger required payments, but more of each payment goes to principal earlier. That usually means much lower total interest and faster equity growth.</p>
@@ -39,6 +64,7 @@ const jsonLd = {
     <li><strong>30-year:</strong> lower monthly payment, higher total interest</li>
     <li><strong>15-year:</strong> higher monthly payment, lower total interest</li>
   </ul>
+  <p>The payment gap matters more when rates are high. A household that can comfortably afford a 30-year payment may still feel stretched by the 15-year version of the same loan.</p>
 
   <h2>Who Might Prefer a 30-Year Loan?</h2>
   <ul>
@@ -55,10 +81,14 @@ const jsonLd = {
   </ul>
 
   <h2>A Middle Ground</h2>
-  <p>Some buyers choose a 30-year loan for flexibility and then make extra principal payments when possible.</p>
+  <p>Some buyers choose a 30-year loan for flexibility and then make extra principal payments when possible. That preserves the option to pay less during tighter months while still reducing interest when cash flow is strong.</p>
 
   <h2>Best Tool to Use</h2>
   <p>Run both scenarios in the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> and compare the payment and total cost side by side.</p>
+
+  <blockquote>
+    <p><strong>Useful test:</strong> if the 15-year payment would noticeably limit savings or emergency cash, the 30-year loan may be the safer choice even if it costs more over time.</p>
+  </blockquote>
 
   <h2>Final Takeaway</h2>
   <p>The best loan term is the one that fits your budget and long-term priorities without creating payment stress.</p>

@@ -1,7 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { adProviderLabel, siteMeta } from '../../data/site-meta';
 
-const title = 'Privacy Policy | mycalcstool';
+const title = 'Privacy Policy';
 const description = 'Privacy Policy for mycalcstool.com — learn how we handle your data when you use our free online calculators.';
 
 const jsonLd = {
@@ -43,7 +44,7 @@ const jsonLd = {
     </p>
     <h3 class="font-semibold text-gray-700 mb-2">Advertising (Google AdSense)</h3>
     <p class="text-gray-600 mb-4">
-      We display advertisements served by Google AdSense. Google may use cookies and similar technologies to serve personalized ads based on your browsing history. For more information, see <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">Google's Privacy Policy</a>. You can manage your ad personalization settings at <a href="https://adssettings.google.com" class="text-primary-600 hover:underline" target="_blank" rel="noopener">adssettings.google.com</a>.
+      We may display advertisements served by {adProviderLabel.en}. Advertising partners may use cookies and similar technologies to measure ad performance, control ad frequency, and personalize ad delivery where permitted. For Google-related settings, see <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">Google's Privacy Policy</a> and <a href="https://adssettings.google.com" class="text-primary-600 hover:underline" target="_blank" rel="noopener">adssettings.google.com</a>.
     </p>
 
     <h2 class="text-lg font-bold text-gray-800 mb-3">3. Cookies</h2>
@@ -63,7 +64,7 @@ const jsonLd = {
     </p>
     <ul class="list-disc list-inside text-gray-600 mb-4 space-y-1">
       <li>Google Analytics — <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
-      <li>Google AdSense — <a href="https://policies.google.com/privacy" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
+      <li>{adProviderLabel.en} — privacy and advertising disclosures managed by the relevant provider</li>
       <li>Chart.js (CDN by jsDelivr) — no personal data collected</li>
       <li>Cloudflare (hosting/CDN) — <a href="https://www.cloudflare.com/privacypolicy/" class="text-primary-600 hover:underline" target="_blank" rel="noopener">privacy policy</a></li>
     </ul>
@@ -85,7 +86,7 @@ const jsonLd = {
 
     <h2 class="text-lg font-bold text-gray-800 mb-3">8. Contact</h2>
     <p class="text-gray-600">
-      If you have questions about this Privacy Policy, please contact us via the feedback form on our website.
+      If you have questions about this Privacy Policy, contact us at <a href={`mailto:${siteMeta.contactEmail}`} class="text-primary-600 hover:underline">{siteMeta.contactEmail}</a> or use the <a href="/en/contact" class="text-primary-600 hover:underline">Contact</a> page.
     </p>
   </section>
 </BaseLayout>

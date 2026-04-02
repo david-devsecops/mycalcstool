@@ -1,0 +1,52 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = 'Methodology';
+const description = 'How mycalcstool calculators work, what formulas and source data they use, and where the results should be treated as estimates.';
+---
+
+<BaseLayout title={title} description={description} lang="en" hreflangKo="/methodology">
+  <div class="space-y-6">
+    <section class="card">
+      <h1 class="text-2xl font-bold text-gray-800 mb-4">Methodology</h1>
+      <p class="text-gray-600 leading-relaxed">
+        mycalcstool publishes browser-based calculators. We document the main formulas, tax assumptions, and reference sources that influence the output so users can understand what the estimate includes and what it leaves out.
+      </p>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Finance calculators</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p><strong class="text-gray-800">Mortgage Calculator</strong> uses standard amortization formulas and can add property tax, insurance, PMI, and HOA fees.</p>
+        <p><strong class="text-gray-800">Salary Calculator</strong> uses 2026 federal tax brackets, standard deductions, FICA rules, and state tax tables stored in the project data files.</p>
+        <p><strong class="text-gray-800">Compound Interest Calculator</strong> combines the selected compounding frequency with recurring contributions to estimate future value.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Health and utility calculators</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>Health calculators use public reference formulas such as BMI or TDEE equations and should be treated as educational estimates only.</p>
+        <p>Utility calculators use direct mathematical conversions and arithmetic, but input context still matters.</p>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Reference sources</h2>
+      <ul class="space-y-2 text-sm text-gray-600 list-disc pl-5">
+        <li>IRS, Social Security Administration, and state tax agencies for US payroll and tax rules</li>
+        <li>National Tax Service, National Pension Service, National Health Insurance Service, and Employment Insurance guidance for Korean calculators</li>
+        <li>Publicly available reference equations for BMI, TDEE, due date, and related health estimates</li>
+      </ul>
+    </section>
+
+    <section class="card">
+      <h2 class="text-xl font-bold text-gray-800 mb-4">Limits of the result</h2>
+      <div class="space-y-3 text-sm text-gray-600">
+        <p>Calculator outputs are estimates, not legal, medical, tax, or financial advice.</p>
+        <p>Rates, rules, and deduction limits can change. Important decisions should be verified with an official source or licensed professional.</p>
+        <p>If you spot an outdated rule or formula, send the source and page URL through the <a href="/en/contact" class="text-primary-600 font-semibold hover:underline">Contact</a> page.</p>
+      </div>
+    </section>
+  </div>
+</BaseLayout>

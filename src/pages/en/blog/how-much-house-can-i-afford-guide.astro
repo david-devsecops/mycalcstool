@@ -4,8 +4,9 @@ import BlogLayout from '../../../layouts/BlogLayout.astro';
 const title = 'How Much House Can I Afford? A Practical Mortgage Guide';
 const description = 'Learn how to estimate how much house you can afford based on income, debt, down payment, and monthly payment, then calculate it with a mortgage calculator.';
 const keywords = 'how much house can i afford, mortgage affordability guide, how much mortgage can i afford, house budget calculator';
-const canonicalUrl = 'https://mycalcstool.com/en/blog/how-much-house-can-i-afford-guide';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/how-much-house-can-i-afford-guide/';
 const publishDate = '2026-03-29';
+const modifiedDate = '2026-04-02';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -14,7 +15,7 @@ const jsonLd = {
   description,
   url: canonicalUrl,
   datePublished: publishDate,
-  dateModified: publishDate,
+  dateModified: modifiedDate,
   author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
   publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
   inLanguage: 'en',
@@ -22,39 +23,91 @@ const jsonLd = {
 };
 ---
 
-<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Money & Finance" readTime="7 min read" jsonLd={jsonLd}>
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="Money & Finance" readTime="9 min read" jsonLd={jsonLd}>
   <Fragment slot="headline">How Much House Can I Afford? A Practical Mortgage Guide</Fragment>
 
-  <p>Buying a home is not just about what a bank might approve. It is about what you can comfortably pay month after month.</p>
-  <p>The real answer depends on your income, current debts, down payment, loan term, taxes, insurance, and your own comfort level.</p>
+  <p>Buying a home is not just about the maximum loan a lender might approve. The better question is what monthly payment still leaves room for normal life, savings, and bad surprises.</p>
+  <p>Your affordable price range depends on income, existing debt, down payment, property tax, insurance, interest rate, and how conservative you want your budget to be.</p>
 
   <h2>Quick Answer</h2>
-  <p>A practical home budget starts with the monthly payment, not the listing price. Work backward from what you can safely afford each month, then estimate the house price that fits.</p>
+  <p>A practical home budget starts with the monthly payment, not the listing price. Work backward from what you can safely afford each month, then estimate the home price that fits.</p>
+  <p>Many buyers use housing costs around <strong>28% to 33%</strong> of gross income as a starting point and keep total monthly debt at roughly <strong>36% to 43%</strong> of gross income. Those are guidelines, not guarantees.</p>
 
-  <h2>The Main Factors</h2>
+  <h2>Start With Your Real Monthly Budget</h2>
+  <p>The most useful number is not your annual salary. It is the amount you can spend on housing every month <strong>without</strong> giving up emergency savings, retirement contributions, childcare, travel, or basic breathing room.</p>
+  <ol>
+    <li>Estimate your take-home pay, not just gross income.</li>
+    <li>Subtract recurring debt payments such as car loans, student loans, or credit cards.</li>
+    <li>Set a housing budget that still leaves room for savings and unexpected repairs.</li>
+    <li>Use that payment target to test different home prices and down payments.</li>
+  </ol>
+
+  <h2>The Main Factors That Change Affordability</h2>
   <ul>
-    <li>Household income</li>
-    <li>Existing monthly debt</li>
-    <li>Down payment amount</li>
-    <li>Interest rate</li>
-    <li>Property taxes and homeowners insurance</li>
-    <li>Loan term, usually 15 or 30 years</li>
+    <li><strong>Household income:</strong> more stable income usually supports a higher payment.</li>
+    <li><strong>Existing monthly debt:</strong> debt payments reduce what you can safely allocate to housing.</li>
+    <li><strong>Down payment amount:</strong> a larger down payment lowers the loan balance and may remove PMI.</li>
+    <li><strong>Interest rate:</strong> even a small rate change can move the monthly payment by hundreds of dollars.</li>
+    <li><strong>Property tax and homeowners insurance:</strong> these costs often make two similarly priced homes feel very different.</li>
+    <li><strong>Loan term:</strong> a 15-year term reduces total interest but raises the monthly payment compared with a 30-year loan.</li>
   </ul>
 
   <h2>Why Monthly Payment Matters More Than Purchase Price</h2>
-  <p>Two homes with the same price can lead to very different monthly costs if taxes, insurance, interest rate, or down payment are different.</p>
+  <p>Two homes with the same listing price can produce very different monthly costs if the taxes, insurance, interest rate, or down payment change. The monthly number is what decides whether the home feels manageable.</p>
 
-  <h2>How to Estimate Affordability</h2>
-  <ol>
-    <li>Estimate your monthly take-home pay.</li>
-    <li>Subtract debt, savings goals, and fixed living costs.</li>
-    <li>Choose a realistic monthly housing budget.</li>
-    <li>Use that payment to estimate the home price range.</li>
-  </ol>
+  <h2>Simple Budget Example</h2>
+  <table>
+    <thead>
+      <tr>
+        <th>Monthly Take-Home Pay</th>
+        <th>Existing Debt</th>
+        <th>Target Housing Budget</th>
+        <th>What It Means</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>$6,500</td>
+        <td>$400</td>
+        <td>$1,900</td>
+        <td>More conservative budget with room for repairs and savings</td>
+      </tr>
+      <tr>
+        <td>$6,500</td>
+        <td>$400</td>
+        <td>$2,200</td>
+        <td>Still workable for many buyers, but more rate-sensitive</td>
+      </tr>
+      <tr>
+        <td>$6,500</td>
+        <td>$400</td>
+        <td>$2,500</td>
+        <td>Possible on paper, but less room for maintenance or job changes</td>
+      </tr>
+    </tbody>
+  </table>
+  <p>The exact home price that matches each budget depends on rate, down payment, term, tax, and insurance. That is why affordability should be modeled with a mortgage calculator, not guessed from price alone.</p>
 
-  <h2>Best Tools to Use</h2>
-  <p>Use the <a href="https://mycalcstool.com/en/salary-calculator"><strong>Salary Calculator</strong></a> to estimate take-home pay, then use the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> to test different home prices, down payments, and loan terms.</p>
+  <h2>Common Mistakes Buyers Make</h2>
+  <ul>
+    <li>Using the lender maximum instead of a comfortable budget</li>
+    <li>Ignoring property tax, insurance, HOA, or PMI</li>
+    <li>Choosing a payment that leaves no room for repairs or cash reserves</li>
+    <li>Assuming a low teaser rate or perfect refinance scenario</li>
+    <li>Forgetting moving costs, furniture, closing costs, and maintenance</li>
+  </ul>
+
+  <h2>How to Use Our Calculators Together</h2>
+  <p>Use the <a href="https://mycalcstool.com/en/salary-calculator"><strong>Salary Calculator</strong></a> first to estimate take-home pay after taxes. Then use the <a href="https://mycalcstool.com/en/mortgage-calculator"><strong>Mortgage Calculator</strong></a> to test home prices, down payments, and loan terms until the monthly payment fits your budget.</p>
+
+  <blockquote>
+    <p><strong>Practical rule:</strong> if a home only works when everything goes perfectly, it is probably too expensive.</p>
+    <p><a href="https://mycalcstool.com/en/mortgage-calculator">Run your mortgage scenario here.</a></p>
+  </blockquote>
+
+  <h2>When a Lower Price May Still Be the Better Choice</h2>
+  <p>Buying below your technical maximum can reduce stress more than most buyers expect. A smaller payment may give you room to handle maintenance, invest regularly, or absorb a temporary income drop without panic.</p>
 
   <h2>Final Takeaway</h2>
-  <p>The best home budget is one that still leaves room for saving, emergencies, and normal life. A lender approval amount is not the same as a comfortable budget.</p>
+  <p>The best home budget is one that still leaves room for saving, emergencies, repairs, and ordinary life. A lender approval amount is not the same as a comfortable budget, and the monthly payment matters more than the listing price.</p>
 </BlogLayout>
