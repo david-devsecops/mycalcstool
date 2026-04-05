@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'first-time-homebuyer-guide';
+const title = "First-Time Homebuyer's Guide: How Much House Can You Afford in 2026?";
+const description = 'Everything first-time homebuyers need to know: down payment, mortgage math, credit score requirements, and how to estimate your buying power.';
+const date = '2026-04-05';
+const readTime = '10 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">First-Time Homebuyer Guide</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Money & Finance</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>Buying your first home is the largest financial decision most people will ever make. Mortgage rates, down payment size, credit scores, closing costs, PMI — there's a lot to understand before you sign anything. This guide walks through the essentials so you can approach the process with realistic expectations.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 1: Know Your Numbers Before You Shop</h2>
+
+    <h3 class="text-lg font-semibold text-gray-700">The 28/36 Rule</h3>
+    <p>Most lenders use this guideline to assess affordability:</p>
+    <ul class="list-disc pl-5 space-y-1">
+      <li><strong>28%:</strong> Monthly housing costs (mortgage + taxes + insurance + HOA) should not exceed 28% of gross monthly income</li>
+      <li><strong>36%:</strong> Total debt payments (housing + car + student loans + credit cards) should not exceed 36% of gross monthly income</li>
+    </ul>
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200 text-sm">
+      <p><strong>Example:</strong> $80,000 gross income = $6,667/month</p>
+      <p>Max housing payment: $6,667 × 28% = <strong>$1,867/month</strong></p>
+      <p>Max total debt: $6,667 × 36% = <strong>$2,400/month</strong></p>
+    </div>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">How Much House That Buys in 2026</h3>
+    <p>With the 30-year fixed rate averaging around 6.5–7.0% in 2026, a $1,867/month budget (excluding taxes and insurance) supports a loan of approximately $280,000–$295,000. Adding a 10% down payment gets you into a $310,000–$325,000 home.</p>
+    <p>Use our mortgage calculator to plug in your exact numbers and see the full monthly breakdown.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 2: Down Payment — How Much Do You Actually Need?</h2>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Loan Type</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Min. Down Payment</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Key Notes</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Conventional</td><td class="px-3 py-2 text-center">3%</td><td class="px-3 py-2 text-gray-500">PMI required until 20% equity; best rates at 20%+</td></tr>
+          <tr><td class="px-3 py-2">FHA Loan</td><td class="px-3 py-2 text-center">3.5%</td><td class="px-3 py-2 text-gray-500">Requires 580+ credit score; MIP for life of loan</td></tr>
+          <tr><td class="px-3 py-2">VA Loan</td><td class="px-3 py-2 text-center">0%</td><td class="px-3 py-2 text-gray-500">Military/veterans only; no PMI</td></tr>
+          <tr><td class="px-3 py-2">USDA Loan</td><td class="px-3 py-2 text-center">0%</td><td class="px-3 py-2 text-gray-500">Rural/suburban areas; income limits apply</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <p><strong>The 20% myth:</strong> You don't need 20% down. The advantage of 20% is avoiding PMI (private mortgage insurance, typically 0.5–1.5% of the loan per year). But tying up 20% of a home's value can leave you house-rich and cash-poor. Many financial advisors suggest 10% down if you have other financial priorities (emergency fund, retirement contributions).</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 3: Credit Score Requirements</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Credit Score</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Loan Options</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Rate Premium</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2 text-center font-semibold text-green-600">760+</td><td class="px-3 py-2">All loan types, best rates</td><td class="px-3 py-2 text-center">None</td></tr>
+          <tr><td class="px-3 py-2 text-center font-semibold text-yellow-600">700–759</td><td class="px-3 py-2">All conventional loans</td><td class="px-3 py-2 text-center">+0.1–0.3%</td></tr>
+          <tr><td class="px-3 py-2 text-center font-semibold text-orange-600">640–699</td><td class="px-3 py-2">Conventional, FHA</td><td class="px-3 py-2 text-center">+0.3–0.75%</td></tr>
+          <tr><td class="px-3 py-2 text-center font-semibold text-red-600">580–639</td><td class="px-3 py-2">FHA only (3.5% down)</td><td class="px-3 py-2 text-center">+0.75–1.5%</td></tr>
+          <tr><td class="px-3 py-2 text-center font-semibold text-red-800">Below 580</td><td class="px-3 py-2">Very limited options</td><td class="px-3 py-2 text-center">+2%+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>On a $300,000 loan, a 1% rate difference costs approximately $56,000 in extra interest over 30 years. Improving your score before applying is one of the highest-leverage moves a first-time buyer can make.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 4: Don't Forget Closing Costs</h2>
+    <p>Closing costs are the fees paid at settlement — typically <strong>2–5% of the loan amount</strong>. On a $300,000 purchase, that's $6,000–$15,000 due at closing in addition to your down payment.</p>
+    <p>Common closing costs:</p>
+    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+      <li>Loan origination fee: 0.5–1% of loan</li>
+      <li>Appraisal: $400–$700</li>
+      <li>Title insurance: $500–$1,500</li>
+      <li>Attorney fee (required in some states): $500–$1,500</li>
+      <li>Prepaid property tax and homeowner's insurance escrow: varies</li>
+    </ul>
+    <p>Some sellers will contribute to closing costs as part of negotiation. This is more common in buyer-friendly markets.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 5: Get Pre-Approved Before You Shop</h2>
+    <p>A pre-approval letter tells sellers you're serious and have verified financing. Without one, many listing agents won't take your offer seriously in competitive markets.</p>
+    <p>Pre-approval requires:</p>
+    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+      <li>2 years of tax returns (W-2s or 1099s)</li>
+      <li>2–3 months of bank statements</li>
+      <li>Recent pay stubs</li>
+      <li>Credit check (soft pull for estimates, hard pull for full approval)</li>
+    </ul>
+    <blockquote class="border-l-4 border-primary-300 pl-4 italic text-gray-600 bg-gray-50 py-2 rounded-r-xl">
+      Get pre-approved by 2–3 lenders. Compare the Loan Estimate forms they provide (lenders are required by law to give you these). Even a 0.25% difference in rate saves thousands over the life of the loan.
+    </blockquote>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Key Takeaways</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>Housing costs should stay under 28% of gross monthly income</li>
+      <li>You don't need 20% down — 3–10% is common for first-time buyers</li>
+      <li>Credit score of 700+ gets you the best conventional rates</li>
+      <li>Budget an extra 2–5% of the loan for closing costs</li>
+      <li>Get pre-approved by multiple lenders and compare Loan Estimates</li>
+    </ul>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/mortgage-calculator" class="btn-primary text-center">Calculate Your Mortgage →</a>
+      <a href="/en/salary-calculator" class="btn-secondary text-center">Estimate Take-Home Pay →</a>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

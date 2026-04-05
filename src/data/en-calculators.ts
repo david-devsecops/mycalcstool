@@ -1,7 +1,9 @@
 export type EnglishCalculatorSlug =
   | 'age-calculator'
   | 'bmi-calculator'
+  | 'calorie-calculator'
   | 'compound-interest-calculator'
+  | 'days-calculator'
   | 'due-date-calculator'
   | 'mortgage-calculator'
   | 'percentage-calculator'
@@ -20,6 +22,22 @@ export interface EnglishCalculatorMeta {
 }
 
 export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculatorMeta> = {
+  'calorie-calculator': {
+    slug: 'calorie-calculator',
+    href: '/en/calorie-calculator',
+    title: 'Calorie Calculator',
+    description: 'Calculate daily calorie needs, BMR, TDEE, and macro targets for your goal.',
+    icon: '🔥',
+    category: 'Health',
+  },
+  'days-calculator': {
+    slug: 'days-calculator',
+    href: '/en/days-calculator',
+    title: 'Days Between Dates',
+    description: 'Count days, weeks, and months between any two dates or until an event.',
+    icon: '📅',
+    category: 'Math & Utility',
+  },
   'age-calculator': {
     slug: 'age-calculator',
     href: '/en/age-calculator',
@@ -103,16 +121,18 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
 };
 
 const relatedCalculatorKeys: Record<EnglishCalculatorSlug, EnglishCalculatorSlug[]> = {
-  'age-calculator': ['due-date-calculator', 'percentage-calculator', 'unit-converter'],
-  'bmi-calculator': ['tdee-calculator', 'unit-converter', 'age-calculator'],
+  'age-calculator': ['due-date-calculator', 'days-calculator', 'percentage-calculator'],
+  'bmi-calculator': ['calorie-calculator', 'tdee-calculator', 'unit-converter'],
+  'calorie-calculator': ['tdee-calculator', 'bmi-calculator', 'unit-converter'],
   'compound-interest-calculator': ['mortgage-calculator', 'salary-calculator', 'percentage-calculator'],
-  'due-date-calculator': ['age-calculator', 'bmi-calculator', 'tdee-calculator'],
+  'days-calculator': ['age-calculator', 'due-date-calculator', 'percentage-calculator'],
+  'due-date-calculator': ['age-calculator', 'days-calculator', 'bmi-calculator'],
   'mortgage-calculator': ['salary-calculator', 'compound-interest-calculator', 'percentage-calculator'],
   'percentage-calculator': ['tip-calculator', 'compound-interest-calculator', 'salary-calculator'],
   'salary-calculator': ['mortgage-calculator', 'compound-interest-calculator', 'percentage-calculator'],
-  'tdee-calculator': ['bmi-calculator', 'unit-converter', 'age-calculator'],
+  'tdee-calculator': ['calorie-calculator', 'bmi-calculator', 'unit-converter'],
   'tip-calculator': ['percentage-calculator', 'salary-calculator', 'unit-converter'],
-  'unit-converter': ['bmi-calculator', 'tdee-calculator', 'percentage-calculator'],
+  'unit-converter': ['calorie-calculator', 'bmi-calculator', 'percentage-calculator'],
 };
 
 export function getRelatedEnglishCalculators(slug: EnglishCalculatorSlug): EnglishCalculatorMeta[] {

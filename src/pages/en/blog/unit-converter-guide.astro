@@ -1,0 +1,178 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'unit-converter-guide';
+const title = 'Unit Conversion Guide: Length, Weight, Temperature & More';
+const description = 'Master the most common unit conversions — miles to km, lbs to kg, Fahrenheit to Celsius, and more — with formulas and a free online converter.';
+const date = '2026-04-05';
+const readTime = '7 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Unit Converter Guide</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">Math & Utility</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>The United States uses the imperial system; most of the world uses metric. If you travel, follow international recipes, read scientific research, or buy products from abroad, unit conversion is a daily necessity.</p>
+    <p>This guide covers the conversions that come up most often — with exact formulas and quick mental shortcuts.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Length Conversions</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">From</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">To</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Multiply by</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Quick trick</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Miles</td><td class="px-3 py-2">Kilometers</td><td class="px-3 py-2 font-mono">× 1.60934</td><td class="px-3 py-2 text-gray-500">≈ ×1.6</td></tr>
+          <tr><td class="px-3 py-2">Kilometers</td><td class="px-3 py-2">Miles</td><td class="px-3 py-2 font-mono">× 0.62137</td><td class="px-3 py-2 text-gray-500">≈ ×0.6</td></tr>
+          <tr><td class="px-3 py-2">Feet</td><td class="px-3 py-2">Meters</td><td class="px-3 py-2 font-mono">× 0.3048</td><td class="px-3 py-2 text-gray-500">≈ ×0.3</td></tr>
+          <tr><td class="px-3 py-2">Meters</td><td class="px-3 py-2">Feet</td><td class="px-3 py-2 font-mono">× 3.28084</td><td class="px-3 py-2 text-gray-500">≈ ×3.28</td></tr>
+          <tr><td class="px-3 py-2">Inches</td><td class="px-3 py-2">Centimeters</td><td class="px-3 py-2 font-mono">× 2.54</td><td class="px-3 py-2 text-gray-500">Exact</td></tr>
+          <tr><td class="px-3 py-2">Centimeters</td><td class="px-3 py-2">Inches</td><td class="px-3 py-2 font-mono">× 0.39370</td><td class="px-3 py-2 text-gray-500">÷ 2.54</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Memory trick for miles → km: multiply by 8, divide by 5. Example: 50 mi × 8 = 400 ÷ 5 = 80 km.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Weight Conversions</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">From</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">To</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Multiply by</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Pounds (lbs)</td><td class="px-3 py-2">Kilograms (kg)</td><td class="px-3 py-2 font-mono">× 0.453592</td></tr>
+          <tr><td class="px-3 py-2">Kilograms (kg)</td><td class="px-3 py-2">Pounds (lbs)</td><td class="px-3 py-2 font-mono">× 2.20462</td></tr>
+          <tr><td class="px-3 py-2">Ounces (oz)</td><td class="px-3 py-2">Grams (g)</td><td class="px-3 py-2 font-mono">× 28.3495</td></tr>
+          <tr><td class="px-3 py-2">Grams (g)</td><td class="px-3 py-2">Ounces (oz)</td><td class="px-3 py-2 font-mono">× 0.035274</td></tr>
+          <tr><td class="px-3 py-2">Stone (st)</td><td class="px-3 py-2">Pounds (lbs)</td><td class="px-3 py-2 font-mono">× 14</td></tr>
+          <tr><td class="px-3 py-2">Metric Tons (t)</td><td class="px-3 py-2">Pounds (lbs)</td><td class="px-3 py-2 font-mono">× 2204.62</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Quick mental estimate for lbs → kg: divide by 2, then subtract 10%. Example: 150 lbs ÷ 2 = 75 − 7.5 = 67.5 kg (actual: 68 kg).</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Temperature Conversions</h2>
+    <p>Temperature is the trickiest conversion because it's not a simple multiplication — it has an offset.</p>
+    <div class="bg-gray-50 rounded-xl p-4 space-y-2 border border-gray-200">
+      <p class="font-mono text-sm"><strong>°F → °C:</strong> (°F − 32) × 5/9</p>
+      <p class="font-mono text-sm"><strong>°C → °F:</strong> (°C × 9/5) + 32</p>
+      <p class="font-mono text-sm"><strong>°C → K:</strong> °C + 273.15</p>
+    </div>
+    <div class="overflow-x-auto mt-3">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 font-semibold text-gray-600">Reference point</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">°F</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">°C</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Water freezes</td><td class="px-3 py-2 text-center">32°F</td><td class="px-3 py-2 text-center">0°C</td></tr>
+          <tr><td class="px-3 py-2">Room temperature</td><td class="px-3 py-2 text-center">72°F</td><td class="px-3 py-2 text-center">22°C</td></tr>
+          <tr><td class="px-3 py-2">Body temperature</td><td class="px-3 py-2 text-center">98.6°F</td><td class="px-3 py-2 text-center">37°C</td></tr>
+          <tr><td class="px-3 py-2">Water boils</td><td class="px-3 py-2 text-center">212°F</td><td class="px-3 py-2 text-center">100°C</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Quick trick: double the Celsius and add 30 to get an approximate Fahrenheit. Example: 20°C × 2 = 40 + 30 = 70°F (actual: 68°F). Close enough for weather forecasts.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Volume Conversions</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">From</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">To</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Result</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">1 gallon (US)</td><td class="px-3 py-2">Liters</td><td class="px-3 py-2 font-mono">3.785 L</td></tr>
+          <tr><td class="px-3 py-2">1 liter</td><td class="px-3 py-2">Fluid ounces (US)</td><td class="px-3 py-2 font-mono">33.814 fl oz</td></tr>
+          <tr><td class="px-3 py-2">1 cup (US)</td><td class="px-3 py-2">Milliliters</td><td class="px-3 py-2 font-mono">236.6 mL</td></tr>
+          <tr><td class="px-3 py-2">1 tablespoon (US)</td><td class="px-3 py-2">Milliliters</td><td class="px-3 py-2 font-mono">14.787 mL</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Speed Conversions</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>1 mph = 1.60934 km/h</li>
+      <li>1 km/h = 0.62137 mph</li>
+      <li>1 knot = 1.852 km/h = 1.15078 mph</li>
+      <li>1 m/s = 3.6 km/h = 2.237 mph</li>
+    </ul>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Why the US Still Uses Imperial</h2>
+    <p>The US is one of three countries (along with Liberia and Myanmar) that haven't officially adopted the metric system. The reasons are largely historical and economic: changing road signs, product labeling, manufacturing equipment, and consumer habits would cost hundreds of billions of dollars and decades of transition.</p>
+    <p>The result? Americans still need to convert regularly — for science, international trade, cooking with foreign recipes, and travel.</p>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/unit-converter" class="btn-primary text-center">Try the Unit Converter →</a>
+      <a href="/en/bmi-calculator" class="btn-secondary text-center">BMI Calculator (metric/imperial) →</a>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

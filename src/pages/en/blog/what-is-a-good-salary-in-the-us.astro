@@ -1,0 +1,176 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'what-is-a-good-salary-in-the-us';
+const title = 'What Is a Good Salary in the US? A State-by-State Breakdown';
+const description = 'Explore what counts as a good salary in the United States by state, household size, and cost of living — with take-home pay estimates.';
+const date = '2026-04-05';
+const readTime = '9 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Good Salary in the US</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-blue-700 bg-blue-100 px-2 py-0.5 rounded-full">Money & Finance</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>"Is $70,000 a good salary?" The honest answer: it depends entirely on where you live, how many people depend on your income, and what you consider comfortable. A $70K salary is very comfortable in rural Mississippi and barely sufficient for one person in San Francisco.</p>
+    <p>This guide breaks down what "good" means by state, household size, and financial goal.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">National Benchmarks</h2>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Benchmark</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Annual (2026)</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Monthly</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Federal minimum wage</td><td class="px-3 py-2 text-center">$15,080</td><td class="px-3 py-2 text-center">$1,257</td></tr>
+          <tr><td class="px-3 py-2">US median household income</td><td class="px-3 py-2 text-center">$80,610</td><td class="px-3 py-2 text-center">$6,718</td></tr>
+          <tr><td class="px-3 py-2">US median individual income</td><td class="px-3 py-2 text-center">$56,780</td><td class="px-3 py-2 text-center">$4,732</td></tr>
+          <tr><td class="px-3 py-2">Top 20% threshold</td><td class="px-3 py-2 text-center">$130,000+</td><td class="px-3 py-2 text-center">$10,833+</td></tr>
+          <tr><td class="px-3 py-2">Top 5% threshold</td><td class="px-3 py-2 text-center">$250,000+</td><td class="px-3 py-2 text-center">$20,833+</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Source: US Census Bureau and BLS estimates, 2026. Household income reflects all earners in the home; individual income is per earner.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">What's "Good" by State: Cost of Living Adjusted</h2>
+    <p>The same salary has very different purchasing power across states. Below is a simplified view of what you'd need to earn the equivalent of $60,000 in purchasing power in each region:</p>
+
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">State / Region</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Cost of Living Index</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Needed to match $60K purchasing power</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Hawaii</td><td class="px-3 py-2 text-center">193</td><td class="px-3 py-2 text-center font-semibold text-red-600">~$116,000</td></tr>
+          <tr><td class="px-3 py-2">California</td><td class="px-3 py-2 text-center">150</td><td class="px-3 py-2 text-center font-semibold text-orange-600">~$90,000</td></tr>
+          <tr><td class="px-3 py-2">New York</td><td class="px-3 py-2 text-center">148</td><td class="px-3 py-2 text-center font-semibold text-orange-600">~$89,000</td></tr>
+          <tr><td class="px-3 py-2">Texas</td><td class="px-3 py-2 text-center">93</td><td class="px-3 py-2 text-center font-semibold text-green-600">~$56,000</td></tr>
+          <tr><td class="px-3 py-2">Florida</td><td class="px-3 py-2 text-center">100</td><td class="px-3 py-2 text-center font-semibold text-green-600">~$60,000</td></tr>
+          <tr><td class="px-3 py-2">Mississippi</td><td class="px-3 py-2 text-center">83</td><td class="px-3 py-2 text-center font-semibold text-green-600">~$50,000</td></tr>
+          <tr><td class="px-3 py-2">Kansas</td><td class="px-3 py-2 text-center">86</td><td class="px-3 py-2 text-center font-semibold text-green-600">~$52,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Cost of Living Index: 100 = US average. Source: MERIC 2025–2026 data.</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Salary by Household Size</h2>
+    <p>The MIT Living Wage Calculator estimates minimum "living wages" — what's needed to cover basic expenses without government assistance — by household size:</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Household</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Living wage (national avg)</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Comfortable (2×)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">1 adult, no children</td><td class="px-3 py-2 text-center">~$38,000</td><td class="px-3 py-2 text-center">~$76,000</td></tr>
+          <tr><td class="px-3 py-2">1 adult, 1 child</td><td class="px-3 py-2 text-center">~$66,000</td><td class="px-3 py-2 text-center">~$132,000</td></tr>
+          <tr><td class="px-3 py-2">2 adults, no children</td><td class="px-3 py-2 text-center">~$56,000</td><td class="px-3 py-2 text-center">~$112,000</td></tr>
+          <tr><td class="px-3 py-2">2 adults, 2 children</td><td class="px-3 py-2 text-center">~$97,000</td><td class="px-3 py-2 text-center">~$194,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Gross vs. Take-Home Pay</h2>
+    <p>Your gross salary (what your employer pays) and your take-home pay (what hits your bank account) are very different numbers. For a single filer with no dependents:</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Gross Annual</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Approx. Take-Home (CA)</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Approx. Take-Home (TX)</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2 text-center">$50,000</td><td class="px-3 py-2 text-center">~$38,200</td><td class="px-3 py-2 text-center">~$40,500</td></tr>
+          <tr><td class="px-3 py-2 text-center">$75,000</td><td class="px-3 py-2 text-center">~$54,500</td><td class="px-3 py-2 text-center">~$58,300</td></tr>
+          <tr><td class="px-3 py-2 text-center">$100,000</td><td class="px-3 py-2 text-center">~$69,200</td><td class="px-3 py-2 text-center">~$75,000</td></tr>
+          <tr><td class="px-3 py-2 text-center">$150,000</td><td class="px-3 py-2 text-center">~$96,000</td><td class="px-3 py-2 text-center">~$106,000</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Estimates include federal income tax, FICA (Social Security + Medicare), and state income tax. Actual amounts vary by filing status, deductions, and benefits elections. Use our salary calculator for a detailed breakdown.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">The 50/30/20 Rule as a Benchmark</h2>
+    <p>A widely used budget guideline: 50% of take-home pay for needs, 30% for wants, 20% for savings and debt repayment. If your salary allows this split in your city, it's a solid financial position.</p>
+    <p>For San Francisco in 2026, housing alone can consume 40–50% of take-home pay for a single person on $100K. That makes the 50/30/20 rule difficult to achieve — which is why remote work and geographic arbitrage have become popular financial strategies.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Key Takeaways</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>The US median individual income is ~$57K; household median is ~$81K (2026)</li>
+      <li>Location adjusts these numbers dramatically — high-COL states need 50–100% more</li>
+      <li>Take-home pay is typically 70–80% of gross depending on state and tax bracket</li>
+      <li>A "comfortable" income is roughly 2× the local living wage for your household size</li>
+      <li>Savings rate and debt load matter as much as the salary number itself</li>
+    </ul>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/salary-calculator" class="btn-primary text-center">Calculate Your Take-Home Pay →</a>
+      <a href="/en/mortgage-calculator" class="btn-secondary text-center">Mortgage Affordability →</a>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

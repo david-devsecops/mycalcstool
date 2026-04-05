@@ -1,0 +1,161 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'calorie-calculator-guide';
+const title = 'Calorie Calculator Guide: How to Find Your Daily Calorie Target';
+const description = 'A step-by-step guide to using a calorie calculator to find your BMR, TDEE, and personalized calorie target for weight loss, maintenance, or muscle gain.';
+const date = '2026-04-05';
+const readTime = '8 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Calorie Calculator Guide</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Health</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>A calorie calculator estimates how much energy your body needs each day based on your height, weight, age, sex, and activity level. But knowing how to <strong>use</strong> that number is where most people get stuck.</p>
+    <p>This guide walks through exactly what the numbers mean, how to choose the right goal, and how to adjust when results stall.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 1: Understand BMR vs TDEE</h2>
+    <p>Every calorie calculator starts with two numbers:</p>
+    <ul class="list-disc pl-5 space-y-1">
+      <li><strong>BMR (Basal Metabolic Rate)</strong> — calories your body burns at complete rest, just to keep organs functioning.</li>
+      <li><strong>TDEE (Total Daily Energy Expenditure)</strong> — your actual daily burn, including movement and exercise.</li>
+    </ul>
+    <p>TDEE is always higher than BMR. For a sedentary 30-year-old woman at 5'5" and 140 lbs, BMR might be around 1,430 kcal, but TDEE could be 1,715 kcal with light activity.</p>
+    <p><strong>Always set your diet goals relative to TDEE, not BMR.</strong> Eating at BMR is already a severe deficit — it's the floor of survival, not a diet target.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 2: Choose the Right Activity Level</h2>
+    <p>The activity multiplier is where most people miscalculate. Most office workers dramatically overestimate their activity.</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Level</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Multiplier</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Who it fits</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Sedentary</td><td class="px-3 py-2 text-center">× 1.2</td><td class="px-3 py-2 text-gray-500">Desk job, no intentional exercise</td></tr>
+          <tr><td class="px-3 py-2">Lightly active</td><td class="px-3 py-2 text-center">× 1.375</td><td class="px-3 py-2 text-gray-500">1–3 days/week of light exercise</td></tr>
+          <tr><td class="px-3 py-2">Moderately active</td><td class="px-3 py-2 text-center">× 1.55</td><td class="px-3 py-2 text-gray-500">3–5 days/week moderate exercise</td></tr>
+          <tr><td class="px-3 py-2">Very active</td><td class="px-3 py-2 text-center">× 1.725</td><td class="px-3 py-2 text-gray-500">6–7 days/week hard training</td></tr>
+          <tr><td class="px-3 py-2">Extra active</td><td class="px-3 py-2 text-center">× 1.9</td><td class="px-3 py-2 text-gray-500">Physical job + daily training</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">When in doubt, pick one level <em>lower</em> than you think. It's easy to add calories back; harder to explain why you're not losing weight.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 3: Set Your Calorie Target by Goal</h2>
+
+    <h3 class="text-lg font-semibold text-gray-700">Weight Loss: TDEE − 500 kcal/day</h3>
+    <p>A 500 kcal daily deficit creates roughly a 1 lb (0.45 kg) weekly loss. This is the most sustainable rate for most people without significant muscle loss.</p>
+    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+      <li>Women: don't go below 1,200 kcal/day</li>
+      <li>Men: don't go below 1,500 kcal/day</li>
+      <li>If aggressive loss is needed, max deficit is 750–1,000 kcal/day with medical supervision</li>
+    </ul>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">Maintenance: Equal to TDEE</h3>
+    <p>Eat at your TDEE to maintain weight. This is the easiest goal to hit once you know your number. Track for 2–3 weeks and adjust if your weight moves up or down.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">Muscle Gain (Lean Bulk): TDEE + 250–300 kcal/day</h3>
+    <p>A modest surplus of 250–300 kcal minimizes fat gain while providing enough energy for muscle protein synthesis. Combined with progressive strength training, this is the evidence-based "lean bulk" approach.</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 4: Break Down Your Macros</h2>
+    <p>Calories tell you <em>how much</em> to eat. Macros tell you <em>what</em> to eat. A common starting split:</p>
+    <ul class="list-disc pl-5 space-y-1">
+      <li><strong>Protein:</strong> 0.7–1g per lb of body weight (or ~30% of calories) — preserves muscle during a deficit</li>
+      <li><strong>Fat:</strong> ~20% of calories — hormones, satiety, fat-soluble vitamins</li>
+      <li><strong>Carbs:</strong> remaining calories (~50%) — energy for training, brain function</li>
+    </ul>
+    <p>For weight loss, prioritize protein. For performance, keep carbs moderate. For satiety, don't drop fat too low.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Step 5: Track and Adjust</h2>
+    <p>Calorie calculators give you an <em>estimate</em> — not a guarantee. Metabolisms vary by ±10–15% from predicted values. Here's how to adjust:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li><strong>Losing too fast (&gt;1.5 lbs/week):</strong> Add 100–200 kcal. You risk muscle loss.</li>
+      <li><strong>Not losing:</strong> Check tracking accuracy first. If accurate, reduce by 100–200 kcal after 2 weeks.</li>
+      <li><strong>Gaining at maintenance:</strong> Reduce by 100–150 kcal. Your TDEE estimate was slightly high.</li>
+    </ul>
+    <blockquote class="border-l-4 border-primary-300 pl-4 italic text-gray-600 bg-gray-50 py-2 rounded-r-xl">
+      Real-world rule: weigh yourself 3× per week at the same time and average the readings. Weekly weight can swing 2–4 lbs from water, food timing, and hormones. The trend over 3 weeks is what matters.
+    </blockquote>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Common Mistakes to Avoid</h2>
+    <ul class="list-disc pl-5 space-y-2">
+      <li><strong>Eating at BMR:</strong> This is a severe deficit that triggers muscle loss and metabolic adaptation.</li>
+      <li><strong>Overestimating activity:</strong> Most people are sedentary or lightly active — not "moderately active."</li>
+      <li><strong>Not tracking liquids:</strong> Coffee drinks, juices, protein shakes add 200–600 hidden calories.</li>
+      <li><strong>Ignoring weekends:</strong> Studies show people undereat Mon–Fri and overeat Sat–Sun, erasing the deficit.</li>
+    </ul>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Key Takeaways</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>Use TDEE (not BMR) as your baseline</li>
+      <li>Subtract 500 kcal for weight loss, add 300 for lean bulking</li>
+      <li>Pick activity level conservatively — it's easy to adjust up</li>
+      <li>Prioritize protein regardless of your goal</li>
+      <li>Reassess every 3–4 weeks as your weight changes your TDEE</li>
+    </ul>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/calorie-calculator" class="btn-primary text-center">Try the Calorie Calculator →</a>
+      <a href="/en/tdee-calculator" class="btn-secondary text-center">TDEE Calculator →</a>
+    </div>
+  </article>
+
+  <!-- Related posts -->
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

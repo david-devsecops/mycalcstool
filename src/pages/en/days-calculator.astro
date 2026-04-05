@@ -1,0 +1,294 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import AdSlot from '../../components/AdSlot.astro';
+import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
+
+const title = 'Days Between Dates Calculator — Count Days, Weeks & Months';
+const description = 'Calculate the exact number of days between two dates. Find days until an event, days since a date, or how many weeks and months between any two dates.';
+const keywords = 'days between dates, date calculator, days until calculator, how many days between, date difference calculator, days countdown';
+
+const faqItems = [
+  {
+    question: 'How do I calculate the number of days between two dates?',
+    answer: 'Subtract the earlier date from the later date. This calculator does it automatically — just pick your start and end dates and click Calculate. It accounts for leap years and different month lengths.',
+  },
+  {
+    question: 'Does this calculator include the start and end date?',
+    answer: 'By default, the count excludes the start date and includes the end date. For example, January 1 to January 3 = 2 days. Toggle "Include both endpoints" to count 3 days if you need to include both.',
+  },
+  {
+    question: 'Can I calculate business days (excluding weekends)?',
+    answer: 'Yes — toggle the "Exclude weekends" option to see the approximate number of business days. Note that this does not exclude public holidays, as these vary by country and region.',
+  },
+  {
+    question: 'How do I find days until a future date?',
+    answer: 'Set today as the start date (the calculator defaults to today) and your target date as the end date. The result shows exactly how many days, weeks, and months until that date.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: 'Days Between Dates Calculator',
+  description,
+  url: 'https://mycalcstool.com/en/days-calculator',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
+  inLanguage: 'en',
+};
+
+const presets = [
+  { label: '🎄 Christmas 2026', date: '2026-12-25' },
+  { label: '🎆 New Year 2027', date: '2027-01-01' },
+  { label: '🇺🇸 Independence Day', date: '2026-07-04' },
+  { label: '🎃 Halloween 2026', date: '2026-10-31' },
+  { label: '💝 Valentine\'s Day 2027', date: '2027-02-14' },
+  { label: '🙏 Thanksgiving 2026', date: '2026-11-26' },
+];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd} hreflangKo="/dday">
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Days Calculator</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📅 Days Between Dates Calculator</h1>
+    <p class="text-gray-500 mt-2">Count days, weeks, months — and days until any event</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">📝</span> Enter Dates</h2>
+    <div class="space-y-5">
+
+      <!-- Quick presets -->
+      <div>
+        <p class="text-sm font-semibold text-gray-700 mb-2">Quick presets</p>
+        <div class="grid grid-cols-2 gap-2">
+          {presets.map(p => (
+            <button class="preset-btn text-left px-3 py-2 text-sm border border-gray-200 rounded-lg hover:border-primary-400 hover:bg-primary-50 transition-colors text-gray-700" data-date={p.date} type="button">{p.label}</button>
+          ))}
+        </div>
+      </div>
+
+      <hr class="border-gray-100" />
+
+      <!-- Start date -->
+      <div>
+        <label for="start-date" class="block text-sm font-semibold text-gray-700 mb-1">Start Date</label>
+        <input type="date" id="start-date" class="input-field" aria-label="Start date" />
+        <p class="text-xs text-gray-400 mt-1">Leave blank to use today</p>
+      </div>
+
+      <!-- End date -->
+      <div>
+        <label for="end-date" class="block text-sm font-semibold text-gray-700 mb-1">End Date</label>
+        <input type="date" id="end-date" class="input-field" aria-label="End date" />
+      </div>
+
+      <!-- Options -->
+      <div class="flex flex-col gap-2">
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="exclude-weekends" class="w-4 h-4 rounded text-primary-600 border-gray-300 focus:ring-primary-500" />
+          <span class="text-sm text-gray-700">Exclude weekends (business days only)</span>
+        </label>
+        <label class="flex items-center gap-2 cursor-pointer">
+          <input type="checkbox" id="include-both" class="w-4 h-4 rounded text-primary-600 border-gray-300 focus:ring-primary-500" />
+          <span class="text-sm text-gray-700">Include both start and end dates</span>
+        </label>
+      </div>
+
+      <button id="calc-days-btn" class="btn-primary" type="button">Calculate</button>
+    </div>
+  </section>
+
+  <!-- Results -->
+  <div id="days-results" class="hidden" aria-live="polite">
+    <section class="card mb-6">
+      <h2 class="section-title"><span aria-hidden="true">📊</span> Result</h2>
+
+      <!-- Main result -->
+      <div class="text-center py-6 bg-gray-50 rounded-xl mb-5">
+        <p class="text-sm text-gray-500 mb-1" id="direction-label">Days between dates</p>
+        <p class="text-6xl font-bold text-primary-700 tabular-nums" id="days-main">—</p>
+        <p class="text-lg text-gray-500 mt-1">days</p>
+      </div>
+
+      <!-- Breakdowns -->
+      <div class="grid grid-cols-3 gap-3 mb-4">
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Weeks</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="weeks-val">—</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Months</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="months-val">—</p>
+        </div>
+        <div class="bg-gray-50 rounded-xl p-4 text-center">
+          <p class="text-xs text-gray-500 mb-1">Years</p>
+          <p class="text-xl font-bold tabular-nums text-gray-700" id="years-val">—</p>
+        </div>
+      </div>
+
+      <div id="weekdays-row" class="hidden flex-col gap-2">
+        <div class="flex justify-between py-2 border-t border-gray-100">
+          <span class="text-gray-600 text-sm">Weekdays (Mon–Fri)</span>
+          <span class="font-semibold text-gray-800" id="weekdays-val">—</span>
+        </div>
+        <div class="flex justify-between py-2 border-t border-gray-100">
+          <span class="text-gray-600 text-sm">Weekend days (Sat–Sun)</span>
+          <span class="font-semibold text-gray-800" id="weekend-days-val">—</span>
+        </div>
+      </div>
+
+      <!-- Date info -->
+      <div class="mt-4 space-y-2 border-t border-gray-100 pt-4">
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">From</span>
+          <span class="font-medium text-gray-700" id="from-label">—</span>
+        </div>
+        <div class="flex justify-between text-sm">
+          <span class="text-gray-500">To</span>
+          <span class="font-medium text-gray-700" id="to-label">—</span>
+        </div>
+      </div>
+    </section>
+
+    <AdSlot slot="result" format="rectangle" />
+    <AdSlot slot="content" format="rectangle" />
+  </div>
+
+  <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/how-to-calculate-exact-age', label: 'How to Calculate Exact Age', desc: 'Calculate years, months, and days from a date of birth — similar date math explained.' },
+        { href: '/en/blog/due-date-guide', label: 'How to Calculate Your Due Date', desc: 'Pregnancy due date calculation uses the same 280-day counting from LMP.' },
+        { href: '/en/blog/days-between-dates-guide', label: 'How to Calculate Days Between Dates', desc: 'The complete guide to date difference math, weekday counting, and planning tools.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <RelatedCalculators current="days-calculator" />
+</BaseLayout>
+
+<script is:inline>
+const MONTHS_LONG = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+
+function toLocalIso(date) {
+  const y = date.getFullYear();
+  const m = String(date.getMonth() + 1).padStart(2, '0');
+  const d = String(date.getDate()).padStart(2, '0');
+  return y + '-' + m + '-' + d;
+}
+
+function formatDateLong(isoDate) {
+  const [y, m, d] = isoDate.split('-').map(Number);
+  const date = new Date(y, m - 1, d);
+  const days = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
+  return days[date.getDay()] + ', ' + MONTHS_LONG[m - 1] + ' ' + d + ', ' + y;
+}
+
+function countWeekdays(startIso, endIso, includeBoth) {
+  const [sy, sm, sd] = startIso.split('-').map(Number);
+  const [ey, em, ed] = endIso.split('-').map(Number);
+  let start = new Date(sy, sm - 1, sd);
+  let end = new Date(ey, em - 1, ed);
+  if (!includeBoth) start = new Date(start.getTime() + 86400000);
+  else end = new Date(end.getTime() + 86400000);
+
+  let weekdays = 0, weekends = 0;
+  let cur = new Date(start);
+  while (cur < end) {
+    const day = cur.getDay();
+    if (day === 0 || day === 6) weekends++;
+    else weekdays++;
+    cur = new Date(cur.getTime() + 86400000);
+  }
+  return { weekdays, weekends };
+}
+
+function calcDays() {
+  const startInput = document.getElementById('start-date');
+  const endInput = document.getElementById('end-date');
+  const excludeWeekends = document.getElementById('exclude-weekends').checked;
+  const includeBoth = document.getElementById('include-both').checked;
+
+  const today = toLocalIso(new Date());
+  const startIso = startInput.value || today;
+  const endIso = endInput.value;
+
+  if (!endIso) { alert('Please select an end date.'); return; }
+
+  const [sy, sm, sd] = startIso.split('-').map(Number);
+  const [ey, em, ed] = endIso.split('-').map(Number);
+  const start = new Date(sy, sm - 1, sd);
+  const end = new Date(ey, em - 1, ed);
+
+  const msPerDay = 86400000;
+  let totalDays = Math.round((end - start) / msPerDay);
+  if (includeBoth) totalDays += 1;
+
+  const isFuture = end >= start;
+  const absDays = Math.abs(totalDays);
+  const weeks = (absDays / 7).toFixed(1);
+  const months = (absDays / 30.44).toFixed(1);
+  const years = (absDays / 365.25).toFixed(2);
+
+  document.getElementById('direction-label').textContent = isFuture ? 'Days until' : 'Days since';
+  document.getElementById('days-main').textContent = absDays.toLocaleString('en-US');
+  document.getElementById('weeks-val').textContent = weeks;
+  document.getElementById('months-val').textContent = months;
+  document.getElementById('years-val').textContent = years;
+  document.getElementById('from-label').textContent = formatDateLong(startIso);
+  document.getElementById('to-label').textContent = formatDateLong(endIso);
+
+  // Weekday breakdown
+  const wdRow = document.getElementById('weekdays-row');
+  if (excludeWeekends || true) {
+    const { weekdays, weekends } = countWeekdays(startIso, endIso, includeBoth);
+    document.getElementById('weekdays-val').textContent = weekdays.toLocaleString('en-US') + ' days';
+    document.getElementById('weekend-days-val').textContent = weekends.toLocaleString('en-US') + ' days';
+    wdRow.classList.remove('hidden');
+    wdRow.classList.add('flex');
+    if (excludeWeekends) {
+      document.getElementById('days-main').textContent = weekdays.toLocaleString('en-US');
+      document.getElementById('direction-label').textContent = 'Business days';
+    }
+  }
+
+  const results = document.getElementById('days-results');
+  results.classList.remove('hidden');
+  results.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  const today = toLocalIso(new Date());
+  document.getElementById('start-date').value = today;
+
+  document.getElementById('calc-days-btn').addEventListener('click', calcDays);
+
+  // Preset buttons
+  document.querySelectorAll('.preset-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const date = btn.getAttribute('data-date');
+      document.getElementById('start-date').value = today;
+      document.getElementById('end-date').value = date;
+    });
+  });
+});
+</script>

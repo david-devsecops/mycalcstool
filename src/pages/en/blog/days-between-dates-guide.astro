@@ -1,0 +1,147 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'days-between-dates-guide';
+const title = 'How to Calculate Days Between Dates — Date Math Explained';
+const description = 'Learn how to calculate the exact number of days between two dates, count business days, and plan ahead with date difference tools.';
+const date = '2026-04-05';
+const readTime = '6 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Days Between Dates Guide</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-purple-700 bg-purple-100 px-2 py-0.5 rounded-full">Math & Utility</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>Whether you're planning a trip, tracking a project deadline, or counting down to a wedding, knowing the exact number of days between two dates is surprisingly useful — and surprisingly easy to get wrong without the right tools.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">The Basic Formula</h2>
+    <p>The simplest way to calculate days between dates:</p>
+    <div class="bg-gray-50 rounded-xl p-4 font-mono text-sm text-gray-700 border border-gray-200">
+      Days = End Date − Start Date
+    </div>
+    <p>In practice, this means converting both dates to a numeric representation (like a Unix timestamp or Julian Day Number) and dividing the difference by 86,400 seconds (or 1 day in milliseconds).</p>
+    <p>Most people don't need to do this manually — a calculator does it instantly. But knowing the logic helps you understand <strong>what counts and what doesn't</strong>.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Include or Exclude the Endpoints?</h2>
+    <p>This is the most common source of confusion. Should you count the start date, the end date, both, or neither?</p>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm border border-gray-200 rounded-xl overflow-hidden">
+        <thead class="bg-gray-50">
+          <tr>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Method</th>
+            <th class="px-3 py-2 text-center font-semibold text-gray-600">Jan 1 to Jan 5</th>
+            <th class="px-3 py-2 text-left font-semibold text-gray-600">Best for</th>
+          </tr>
+        </thead>
+        <tbody class="divide-y divide-gray-100">
+          <tr><td class="px-3 py-2">Exclude start, include end (default)</td><td class="px-3 py-2 text-center">4 days</td><td class="px-3 py-2 text-gray-500">Countdowns, deadlines</td></tr>
+          <tr><td class="px-3 py-2">Include both endpoints</td><td class="px-3 py-2 text-center">5 days</td><td class="px-3 py-2 text-gray-500">Event duration, hospital stays</td></tr>
+          <tr><td class="px-3 py-2">Exclude both endpoints</td><td class="px-3 py-2 text-center">3 days</td><td class="px-3 py-2 text-gray-500">Days strictly between dates</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p class="text-sm text-gray-500">Our days calculator defaults to "exclude start, include end" — the most common use case for countdowns and deadlines. You can toggle to include both endpoints.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Counting Business Days</h2>
+    <p>Business days (weekdays only, Mon–Fri) matter for contracts, shipping estimates, and project timelines. The rough formula:</p>
+    <div class="bg-gray-50 rounded-xl p-4 font-mono text-sm text-gray-700 border border-gray-200">
+      Weekdays ≈ Total Days × (5/7)
+    </div>
+    <p>But this approximation can be off by 1–2 days depending on which day of the week the dates fall. An exact weekday count loops through each calendar day and checks if it's Saturday or Sunday — which is what our calculator does automatically.</p>
+    <p><strong>Important:</strong> Business day calculators typically don't account for public holidays, which vary by country, state, and company. For legal contracts, always verify which holidays apply in your jurisdiction.</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Weeks, Months, and Years</h2>
+    <p>Once you have the raw day count, converting to other units is straightforward:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li><strong>Weeks:</strong> Days ÷ 7 (e.g., 100 days = 14.3 weeks)</li>
+      <li><strong>Months:</strong> Days ÷ 30.44 (average days per month) — gives an approximate figure</li>
+      <li><strong>Years:</strong> Days ÷ 365.25 (accounting for leap years)</li>
+    </ul>
+    <p>Note that "months" is inherently fuzzy — a month can be 28, 29, 30, or 31 days. For exact month counts, count calendar months directly (e.g., March 15 to June 15 = exactly 3 months).</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Practical Use Cases</h2>
+    <ul class="list-disc pl-5 space-y-2">
+      <li><strong>Project planning:</strong> "We have 47 business days until the launch. Is that enough?"</li>
+      <li><strong>Contracts &amp; leases:</strong> "My 12-month lease from April 1, 2026 ends March 31, 2027 — 365 days."</li>
+      <li><strong>Pregnancy:</strong> "40 weeks from my LMP of January 15 = October 22 due date."</li>
+      <li><strong>Age calculation:</strong> "I was born June 5, 1990 — that's 13,088 days ago."</li>
+      <li><strong>Event countdowns:</strong> "Christmas is 264 days away — 37 weeks and 5 days."</li>
+    </ul>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Leap Years and Edge Cases</h2>
+    <p>Leap years add one extra day (February 29) every 4 years — with century exceptions. This matters for long-range date calculations:</p>
+    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+      <li>Divisible by 4: leap year (2024, 2028…)</li>
+      <li>Divisible by 100: NOT a leap year (1900, 2100…)</li>
+      <li>Divisible by 400: IS a leap year (2000, 2400…)</li>
+    </ul>
+    <p>For spans of 1–2 years, this rarely matters. For spans of 10+ years, you might be off by 2–3 days if you use 365 per year instead of 365.25.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Key Takeaways</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>Days between dates = (End − Start) in calendar days</li>
+      <li>Clarify whether to include the start date, end date, or both</li>
+      <li>Business days ≈ 5/7 of calendar days, but exact counts require looping through each day</li>
+      <li>Months are approximate unless you count calendar months directly</li>
+      <li>Leap years matter for multi-year spans</li>
+    </ul>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/days-calculator" class="btn-primary text-center">Try the Days Calculator →</a>
+      <a href="/en/age-calculator" class="btn-secondary text-center">Age Calculator →</a>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>

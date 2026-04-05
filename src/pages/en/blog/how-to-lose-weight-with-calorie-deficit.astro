@@ -1,0 +1,151 @@
+---
+import BaseLayout from '../../../layouts/BaseLayout.astro';
+import AdSlot from '../../../components/AdSlot.astro';
+import { getRelatedEnglishBlogPosts } from '../../../data/en-blog-posts';
+
+const slug = 'how-to-lose-weight-with-calorie-deficit';
+const title = 'How to Lose Weight Safely Using a Calorie Deficit';
+const description = 'Understand how a calorie deficit causes weight loss, how large it should be, and practical tips to maintain it without feeling deprived.';
+const date = '2026-04-05';
+const readTime = '9 min read';
+const relatedPosts = getRelatedEnglishBlogPosts(slug);
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  datePublished: date,
+  dateModified: date,
+  author: { '@type': 'Organization', name: 'mycalcstool' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  url: `https://mycalcstool.com/en/blog/${slug}`,
+  inLanguage: 'en',
+};
+---
+
+<BaseLayout title={title} description={description} lang="en" jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/en/" class="hover:text-primary-600 transition-colors">Home</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/en/blog/" class="hover:text-primary-600 transition-colors">Blog</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">Calorie Deficit Guide</li>
+      </ol>
+    </nav>
+    <div class="flex items-center gap-2 mb-3">
+      <span class="text-xs font-semibold text-green-700 bg-green-100 px-2 py-0.5 rounded-full">Health</span>
+      <span class="text-xs text-gray-400">{readTime}</span>
+      <span class="text-xs text-gray-400">·</span>
+      <time class="text-xs text-gray-400" datetime={date}>April 5, 2026</time>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 leading-snug">{title}</h1>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <article class="prose-content card mb-6 space-y-5 text-gray-700 leading-relaxed">
+
+    <p>Weight loss comes down to one principle: consistently burn more calories than you consume. This energy gap is called a <strong>calorie deficit</strong>. While the concept is simple, applying it sustainably requires understanding your actual calorie needs and building habits that don't require willpower every day.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">How a Calorie Deficit Causes Weight Loss</h2>
+    <p>Your body stores excess energy as fat. When you eat less than your body burns (TDEE), it draws on fat reserves to make up the difference. One pound of body fat contains approximately 3,500 calories. Therefore:</p>
+    <div class="bg-gray-50 rounded-xl p-4 border border-gray-200">
+      <p class="font-mono text-sm"><strong>Daily deficit × 7 days = Weekly calorie deficit</strong></p>
+      <p class="font-mono text-sm mt-1"><strong>Weekly deficit ÷ 3,500 = Approximate pounds lost per week</strong></p>
+      <p class="text-xs text-gray-500 mt-2">Example: −500 kcal/day × 7 = −3,500 kcal/week ≈ 1 lb lost</p>
+    </div>
+    <p>This 3,500-calorie rule is an approximation. Real-world results vary because your TDEE drops as you lose weight, and your body adapts to lower intake.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Finding the Right Deficit Size</h2>
+
+    <h3 class="text-lg font-semibold text-gray-700">Moderate Deficit: −500 kcal/day (Recommended)</h3>
+    <p>A 500-calorie daily deficit is the standard recommendation for a reason: it produces ~1 lb/week loss at a pace that preserves muscle mass and doesn't trigger extreme hunger. Most people can sustain this without significant discomfort.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">Aggressive Deficit: −750 to −1,000 kcal/day</h3>
+    <p>Higher deficits produce faster results but come with tradeoffs:</p>
+    <ul class="list-disc pl-5 space-y-1 text-sm text-gray-600">
+      <li>Increased muscle loss, especially without strength training</li>
+      <li>Higher hunger and cravings, increasing binge risk</li>
+      <li>Metabolic adaptation — your TDEE drops more than expected</li>
+      <li>Fatigue, brain fog, and mood changes</li>
+    </ul>
+    <p>Aggressive deficits work short-term for people with significant weight to lose, but must be paired with high protein intake and ideally medical supervision.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">Minimum Calorie Floors</h3>
+    <ul class="list-disc pl-5 space-y-1">
+      <li><strong>Women:</strong> No less than 1,200 kcal/day</li>
+      <li><strong>Men:</strong> No less than 1,500 kcal/day</li>
+    </ul>
+    <p>Below these thresholds, it becomes nearly impossible to meet minimum micronutrient needs from whole foods alone.</p>
+
+    <AdSlot slot="content" format="rectangle" />
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Practical Ways to Create a Deficit</h2>
+
+    <h3 class="text-lg font-semibold text-gray-700">1. Reduce Calorie-Dense, Low-Satiety Foods</h3>
+    <p>Ultra-processed foods (chips, cookies, fast food) are engineered to override satiety signals. Replacing 500 calories of chips with 500 calories of chicken breast + vegetables leaves most people feeling significantly more full.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">2. Prioritize Protein (0.7–1g per lb of body weight)</h3>
+    <p>Protein is the most satiating macronutrient per calorie and it protects muscle mass during a deficit. Studies consistently show high-protein diets produce better body composition outcomes than low-protein diets at the same calorie level.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">3. Add Volume Without Calories</h3>
+    <p>Non-starchy vegetables (broccoli, spinach, cucumber, bell peppers) add mass, fiber, and nutrients for very few calories. A massive salad might have 100 calories; that same volume as chips would be 700+.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">4. Reduce Liquid Calories</h3>
+    <p>Sodas, juices, sweetened coffees, alcohol, and "healthy" smoothies can add 300–800 calories without any satiety effect. Swapping these for water, black coffee, or sparkling water is one of the highest-leverage changes most people can make.</p>
+
+    <h3 class="text-lg font-semibold text-gray-700 mt-4">5. Track Accurately (Even Temporarily)</h3>
+    <p>Research shows people systematically underestimate calorie intake by 20–40%. Tracking with a food scale for 2–4 weeks — even without any diet changes — often reveals where the extra calories are coming from.</p>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Dealing With Hunger</h2>
+    <p>Hunger is a signal, not an emergency. These evidence-based strategies reduce it:</p>
+    <ul class="list-disc pl-5 space-y-2">
+      <li><strong>Eat slowly:</strong> Satiety signals take 15–20 minutes to reach the brain.</li>
+      <li><strong>Sleep enough:</strong> Sleep deprivation increases ghrelin (hunger hormone) and reduces leptin (satiety hormone) by measurable amounts.</li>
+      <li><strong>Stay hydrated:</strong> Mild dehydration is often confused with hunger.</li>
+      <li><strong>Time meals strategically:</strong> If you're hungriest at night, skew calories toward the evening and eat lightly in the morning.</li>
+    </ul>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">When Results Stall</h2>
+    <p>Weight loss stalls for two main reasons:</p>
+    <ol class="list-decimal pl-5 space-y-2">
+      <li><strong>Actual TDEE dropped.</strong> As you lose weight, you burn fewer calories. Recalculate your calorie target every 10–15 lbs lost.</li>
+      <li><strong>Tracking drift.</strong> Portions expand subtly over time. A "1 cup" becomes "1.3 cups." Re-weigh food portions for a week to reset accuracy.</li>
+    </ol>
+    <blockquote class="border-l-4 border-primary-300 pl-4 italic text-gray-600 bg-gray-50 py-2 rounded-r-xl">
+      If you've been in a deficit for 8–12 weeks without a break, consider a 2-week "maintenance break" at TDEE. This partially reverses metabolic adaptation and makes the next deficit phase more effective.
+    </blockquote>
+
+    <h2 class="text-xl font-bold text-gray-800 mt-6">Key Takeaways</h2>
+    <ul class="list-disc pl-5 space-y-1">
+      <li>A 500 kcal/day deficit = ~1 lb/week loss — sustainable for most people</li>
+      <li>Never go below 1,200 kcal (women) or 1,500 kcal (men)</li>
+      <li>High protein protects muscle and reduces hunger</li>
+      <li>Recalculate your TDEE every 10–15 lbs to keep the deficit accurate</li>
+      <li>Consistency over 90 days beats perfection over 30 days</li>
+    </ul>
+
+    <div class="flex flex-col sm:flex-row gap-3 pt-4">
+      <a href="/en/calorie-calculator" class="btn-primary text-center">Calculate Your Calorie Target →</a>
+      <a href="/en/tdee-calculator" class="btn-secondary text-center">Find Your TDEE →</a>
+    </div>
+  </article>
+
+  {relatedPosts.length > 0 && (
+    <section class="card mt-6">
+      <h2 class="section-title"><span aria-hidden="true">📚</span> Related Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+        {relatedPosts.map(post => (
+          <a href={post.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <p class="font-semibold text-gray-800 mt-2">{post.title}</p>
+            <p class="text-xs text-gray-400 mt-1">{post.readTime}</p>
+          </a>
+        ))}
+      </div>
+    </section>
+  )}
+</BaseLayout>
