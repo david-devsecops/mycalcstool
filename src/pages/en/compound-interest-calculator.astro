@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Compound Interest Calculator — See How Your Money Grows';
 const description = 'Calculate compound interest with monthly contributions. Visualize your investment growth over time with interactive charts.';
@@ -166,6 +167,8 @@ const jsonLd = {
       ))}
     </div>
   </section>
+
+  <RelatedCalculators current="compound-interest-calculator" />
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>

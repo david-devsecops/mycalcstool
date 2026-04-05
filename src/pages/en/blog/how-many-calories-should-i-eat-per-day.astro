@@ -1,0 +1,172 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'How Many Calories Should I Eat Per Day? TDEE, Goals, and a Practical Starting Point';
+const description = 'Learn how many calories you should eat per day for maintenance, fat loss, or muscle gain using TDEE, activity level, and realistic adjustment rules.';
+const keywords = 'how many calories should i eat per day, tdee guide, calorie calculator guide, maintenance calories, calories for weight loss';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/how-many-calories-should-i-eat-per-day/';
+const publishDate = '2026-04-05';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: canonicalUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    inLanguage: 'en',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'How many calories should I eat to lose weight?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'A common starting point is 300 to 500 calories below your TDEE per day. This is large enough to create measurable fat loss for many people without being unnecessarily aggressive.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How many calories should I eat to maintain my weight?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Maintenance calories are usually close to your TDEE, which estimates how many calories you burn in a day based on body size, age, sex, and activity level.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What is the difference between BMR and TDEE?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'BMR is the calories your body uses at complete rest for basic functions. TDEE builds on BMR by adding movement, exercise, and daily activity.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Can a calorie calculator tell me my exact needs?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'No. A calorie calculator gives you a useful estimate, not an exact answer. The best way to refine your target is to compare the estimate against your real body-weight trend over two to three weeks.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Health" readTime="8 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">How Many Calories Should I Eat Per Day? TDEE, Goals, and a Practical Starting Point</Fragment>
+
+  <p>One of the most common nutrition questions is also one of the hardest to answer with a single number: how many calories should I eat per day?</p>
+  <p>The short answer is that it depends on your size, age, activity level, and goal. A person trying to maintain weight needs a different calorie target from someone trying to lose fat or gain muscle.</p>
+  <p>The good news is that you do not need a perfect answer on day one. You need a reasonable starting point. That is what a TDEE calculator is for.</p>
+
+  <blockquote>
+    <p><a href="https://mycalcstool.com/en/tdee-calculator"><strong>TDEE Calculator</strong></a> — estimate your maintenance calories, fat-loss target, and macro split in one place.</p>
+  </blockquote>
+
+  <h2>What TDEE Means</h2>
+  <p><strong>TDEE</strong> stands for total daily energy expenditure. It is an estimate of how many calories your body burns in a full day.</p>
+  <p>TDEE includes your resting calorie burn, daily movement, exercise, and the energy cost of digesting food. In other words, it is your best estimate of how many calories you use in real life, not just at rest.</p>
+
+  <h2>BMR vs TDEE</h2>
+  <p>People often confuse <strong>BMR</strong> and <strong>TDEE</strong>, but they are not the same.</p>
+  <p><strong>BMR</strong>, or basal metabolic rate, is the number of calories your body needs at complete rest to keep you alive. It covers things like breathing, circulation, temperature regulation, and organ function.</p>
+  <p><strong>TDEE</strong> starts with BMR and then adds activity. That is why TDEE is the better number to use when deciding how many calories to eat per day.</p>
+
+  <h2>How Many Calories Should You Eat for Maintenance?</h2>
+  <p>If your goal is to maintain your current weight, your calorie target will usually be close to your TDEE.</p>
+  <p>For example, if your estimated TDEE is 2,200 calories per day, eating around that amount should keep your weight relatively stable over time. Day-to-day scale changes are normal because of water, sodium, stress, and food volume. What matters is the trend across several weeks.</p>
+
+  <h2>How Many Calories Should You Eat to Lose Weight?</h2>
+  <p>If your goal is fat loss, you need to eat below your TDEE so that your body has to make up the difference from stored energy.</p>
+  <p>A practical starting point for many adults is a deficit of about <strong>300 to 500 calories per day</strong>. That is aggressive enough to produce visible progress while still being realistic to sustain.</p>
+  <p>A 500-calorie daily deficit is often described as roughly one pound of weight loss per week, but real-world results vary. Your body weight trend, appetite, training performance, and energy levels matter more than the textbook estimate.</p>
+  <p>If your estimated TDEE is 2,300 calories, a reasonable fat-loss target might be around 1,800 to 2,000 calories per day, then adjusted based on real progress.</p>
+
+  <h2>How Many Calories Should You Eat to Gain Muscle?</h2>
+  <p>If your goal is to gain muscle, the usual approach is to eat at maintenance or slightly above it.</p>
+  <p>A surplus of around <strong>150 to 300 calories per day</strong> is often enough to support training and recovery without adding more fat than necessary. People who are very new to lifting may gain muscle at maintenance. More advanced lifters often need a modest surplus.</p>
+
+  <h2>Why There Is No Universal Number</h2>
+  <p>There is no single calorie target that works for everyone because calorie needs move with body size and lifestyle.</p>
+  <p>A taller, heavier, highly active 28-year-old will burn much more than a shorter, sedentary 45-year-old. Two people of the same age can also have different calorie needs if one walks 12,000 steps per day and the other works at a desk and rarely trains.</p>
+  <p>This is why generic advice like "women should eat 2,000 calories" or "men should eat 2,500 calories" is only useful as a rough public-health reference, not as a personal target.</p>
+
+  <h2>How TDEE Calculators Estimate Your Calories</h2>
+  <p>Most calorie calculators begin with a BMR formula such as Mifflin-St Jeor. That formula uses your age, sex, height, and weight.</p>
+  <p>Then the calculator multiplies BMR by an activity factor to estimate your full daily calorie burn.</p>
+  <p>That means two inputs matter more than people expect:</p>
+  <ul>
+    <li>Your body size, because larger bodies generally burn more calories.</li>
+    <li>Your activity level, because movement can raise energy expenditure substantially.</li>
+  </ul>
+
+  <h2>Choosing the Right Activity Level</h2>
+  <p>The most common way people overshoot their calorie target is by selecting an activity level that is too high.</p>
+  <p>If you train hard for 45 minutes but sit the rest of the day, you may not be as active overall as you think. On the other hand, someone with a physically demanding job plus regular workouts may need a much higher target.</p>
+  <p>When in doubt, choose the more conservative activity level and adjust later based on your body-weight trend.</p>
+
+  <h2>A Practical Method That Actually Works</h2>
+  <p>If you want an answer you can use immediately, keep it simple.</p>
+  <ol>
+    <li>Estimate your TDEE with a calculator.</li>
+    <li>Pick a goal: maintenance, fat loss, or muscle gain.</li>
+    <li>Use a small adjustment from maintenance, not an extreme one.</li>
+    <li>Track body weight for two to three weeks under similar conditions.</li>
+    <li>Adjust calories up or down only if the trend does not match the goal.</li>
+  </ol>
+  <p>This method is more useful than searching for the perfect calorie number because it treats the calculator as a starting estimate and your real results as the feedback loop.</p>
+
+  <h2>Common Mistakes</h2>
+
+  <h3>Going too low too fast</h3>
+  <p>People often slash calories aggressively because they want faster fat loss. That can backfire through hunger, poor recovery, low adherence, and short-lived consistency.</p>
+
+  <h3>Ignoring activity changes</h3>
+  <p>Your calorie needs can change if your training volume, job activity, or daily step count changes. A target that worked last month may not fit next month.</p>
+
+  <h3>Assuming the calculator is exact</h3>
+  <p>TDEE calculators are useful, but they are not lab measurements. If the estimate says 2,180 calories, do not treat that as a precise biological truth. Treat it as a starting range.</p>
+
+  <h3>Judging progress too quickly</h3>
+  <p>Body weight can fluctuate several pounds over a few days. Give a new calorie target at least two weeks of consistent data before deciding whether it is working.</p>
+
+  <h2>How BMI Fits Into the Picture</h2>
+  <p>Calories answer the question of energy balance. BMI answers a different question about weight relative to height.</p>
+  <p>If you are trying to lose weight, both can be useful together. BMI helps you understand where your current weight falls in a common screening framework, while TDEE helps you decide how many calories to eat.</p>
+  <p>Use BMI for context and calories for action.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>How many calories should I eat to lose weight?</h3>
+  <p>A common starting point is 300 to 500 calories below your TDEE. That is usually more sustainable than a very large deficit.</p>
+
+  <h3>How many calories should I eat to maintain my weight?</h3>
+  <p>Usually close to your TDEE. If your weight trend is stable over a few weeks, you are likely near maintenance.</p>
+
+  <h3>What is the difference between BMR and TDEE?</h3>
+  <p>BMR is your resting calorie burn. TDEE is your total daily burn after activity is added.</p>
+
+  <h3>Can a calorie calculator tell me my exact needs?</h3>
+  <p>No. It gives you a useful estimate. Your real-world weight trend is what confirms whether the target is right for you.</p>
+
+  <h2>Key Takeaways</h2>
+  <p>The best answer to "how many calories should I eat per day" starts with your TDEE, not with a generic number. If you want to maintain weight, eat close to TDEE. If you want to lose fat, start with a moderate deficit. If you want to gain muscle, use maintenance or a small surplus.</p>
+  <p>Most importantly, treat the calculator as a starting point and then adjust from real results. That is how calorie targets become useful in practice.</p>
+
+  <blockquote>
+    <p><a href="https://mycalcstool.com/en/tdee-calculator"><strong>TDEE Calculator</strong></a> — estimate maintenance calories and fat-loss targets.</p>
+    <p><a href="https://mycalcstool.com/en/bmi-calculator"><strong>BMI Calculator</strong></a> — check where your current weight falls relative to common BMI categories.</p>
+  </blockquote>
+
+  <p><em>This article is for informational purposes only and does not replace medical or nutrition advice. If you have a medical condition, are pregnant, or have a history of disordered eating, use professional guidance.</em></p>
+</BlogLayout>

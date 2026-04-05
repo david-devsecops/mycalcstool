@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Unit Converter — Length, Weight, Temperature & More';
 const description = 'Convert between metric and imperial units instantly. Length, weight, temperature, area, volume, speed, and data size.';
@@ -132,6 +133,7 @@ const categories = ['Length','Weight','Temperature','Area','Volume','Speed','Dat
   </section>
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+  <RelatedCalculators current="unit-converter" />
 </BaseLayout>
 
 <script is:inline>

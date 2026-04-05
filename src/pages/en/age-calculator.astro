@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Age Calculator — How Old Am I? Calculate Your Exact Age';
 const description = 'Calculate your exact age in years, months, days, hours, minutes, and seconds. Find out what day you were born and your next birthday.';
@@ -114,6 +115,23 @@ const today = new Date().toISOString().split('T')[0];
   </div>
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/how-to-calculate-exact-age', label: 'How to Calculate Exact Age', desc: 'See how years, months, and days are calculated from a date of birth.' },
+        { href: '/en/blog/due-date-guide', label: 'How to Calculate Your Due Date', desc: 'Another practical date-based guide that uses exact calendar math.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <RelatedCalculators current="age-calculator" />
 </BaseLayout>
 
 <script is:inline>

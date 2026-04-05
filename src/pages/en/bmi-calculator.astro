@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'BMI Calculator — Check Your Body Mass Index (Free)';
 const description = 'Calculate your BMI instantly. Supports both Imperial (lbs, ft/in) and Metric (kg, cm) units. See your weight category and healthy weight range.';
@@ -189,6 +190,23 @@ const jsonLd = {
   </div>
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related guides</h2>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
+      {[
+        { href: '/en/blog/bmi-guide', label: 'What Is a Healthy BMI?', desc: 'Understand BMI categories, what your number means, and where BMI falls short.' },
+        { href: '/en/blog/how-many-calories-should-i-eat-per-day', label: 'How Many Calories Should I Eat Per Day?', desc: 'Use TDEE and practical calorie targets for maintenance or fat loss.' },
+      ].map((guide) => (
+        <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{guide.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{guide.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <RelatedCalculators current="bmi-calculator" />
 </BaseLayout>
 
 <script is:inline>

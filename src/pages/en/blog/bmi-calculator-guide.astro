@@ -1,52 +1,21 @@
 ---
-import BlogLayout from '../../../layouts/BlogLayout.astro';
-
-const title = 'BMI Calculator Guide: What Body Mass Index Means';
-const description = 'Learn what BMI means, how it is calculated, what the ranges mean, and when a BMI calculator is useful as a quick screening tool.';
-const keywords = 'bmi calculator guide, body mass index explained, what is bmi, bmi chart meaning';
-const canonicalUrl = 'https://mycalcstool.com/en/blog/bmi-calculator-guide/';
-const publishDate = '2026-03-22';
-
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'Article',
-  headline: title,
-  description,
-  url: canonicalUrl,
-  datePublished: publishDate,
-  dateModified: publishDate,
-  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
-  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
-  inLanguage: 'en',
-  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
-};
+const targetPath = '/en/blog/bmi-guide/';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/bmi-guide/';
 ---
 
-<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Health" readTime="6 min read" jsonLd={jsonLd}>
-  <Fragment slot="headline">BMI Calculator Guide: What Body Mass Index Means</Fragment>
-
-  <p>BMI stands for body mass index. It is a quick way to compare weight relative to height.</p>
-  <p>A BMI calculator is often used as a general screening tool, not as a complete picture of health.</p>
-
-  <h2>How BMI Is Calculated</h2>
-  <p>BMI uses height and weight in a formula that estimates weight relative to body size.</p>
-
-  <h2>Why People Use BMI</h2>
-  <ul>
-    <li>It is fast and simple</li>
-    <li>It gives a standard reference point</li>
-    <li>It is commonly used in general health discussions</li>
-  </ul>
-
-  <h2>What BMI Does Not Tell You</h2>
-  <p>BMI does not directly measure body fat, muscle mass, fitness, or overall health. It is a broad screening metric, not a diagnosis.</p>
-
-  <h2>How to Use It Properly</h2>
-  <p>Use BMI as one data point. If you want a quick height-and-weight reference, it is useful. If you want a complete health picture, it is not enough by itself.</p>
-
-  <h2>Best Tool to Use</h2>
-  <p>Use the <a href="https://mycalcstool.com/en/bmi-calculator"><strong>BMI Calculator</strong></a> to check your BMI and see the basic range instantly.</p>
-
-  <h2>Final Takeaway</h2>
-  <p>BMI is best used as a quick reference, not a final judgment about health. It is useful for screening, comparison, and general awareness.</p>
-</BlogLayout>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Redirecting to the BMI guide</title>
+  <meta name="robots" content="noindex" />
+  <link rel="canonical" href={canonicalUrl} />
+  <meta http-equiv="refresh" content={`0;url=${targetPath}`} />
+  <script is:inline>
+    window.location.replace('/en/blog/bmi-guide/');
+  </script>
+</head>
+<body>
+  <p>Redirecting to <a href={targetPath}>the latest BMI guide</a>.</p>
+</body>
+</html>

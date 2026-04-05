@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 import usTax from '../../data/us-tax-2026.json';
 import usStateTax from '../../data/us-state-tax.json';
 
@@ -173,6 +174,8 @@ const usStateTaxJson = JSON.stringify(usStateTax);
       ))}
     </div>
   </section>
+
+  <RelatedCalculators current="salary-calculator" />
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>

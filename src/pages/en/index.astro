@@ -68,24 +68,31 @@ const utilityCalcs = [
 
 const featuredPosts = [
   {
-    href: '/en/blog/due-date-guide',
-    title: 'How to Calculate Your Due Date',
-    desc: 'Naegele\'s Rule, ultrasound dating, IVF methods, and the 40-week timeline explained.',
+    href: '/en/blog/bmi-guide',
+    title: 'What Is a Healthy BMI?',
+    desc: 'What BMI means, how the categories work, and when body mass index needs extra context.',
     category: 'Health',
     readTime: '8 min',
   },
   {
-    href: '/en/blog/pmi-guide-how-private-mortgage-insurance-works',
-    title: 'PMI Guide: What It Costs and When It Ends',
-    desc: 'Understand what private mortgage insurance adds to your monthly payment.',
-    category: 'Finance',
+    href: '/en/blog/how-many-calories-should-i-eat-per-day',
+    title: 'How Many Calories Should I Eat Per Day?',
+    desc: 'Use TDEE to estimate maintenance calories, fat-loss targets, and a realistic starting point.',
+    category: 'Health',
     readTime: '8 min',
   },
   {
-    href: '/en/blog/salary-calculator-guide-gross-vs-net-pay',
-    title: 'Gross Pay vs Net Pay Explained',
-    desc: 'What gets deducted from your paycheck and how to estimate take-home income.',
-    category: 'Finance',
+    href: '/en/blog/how-to-calculate-exact-age',
+    title: 'How to Calculate Exact Age',
+    desc: 'Learn how years, months, and days are calculated from a birth date without manual guesswork.',
+    category: 'Math & Utility',
+    readTime: '7 min',
+  },
+  {
+    href: '/en/blog/due-date-guide',
+    title: 'How to Calculate Your Due Date',
+    desc: 'Naegele\'s Rule, ultrasound dating, IVF methods, and the 40-week timeline explained.',
+    category: 'Health',
     readTime: '8 min',
   },
 ];
@@ -194,7 +201,7 @@ const featuredPosts = [
       </h2>
       <a href="/en/blog/" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">All articles →</a>
     </div>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4">
       {featuredPosts.map(post => (
         <a href={post.href} class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-200 transition-all group flex flex-col gap-2 no-underline">
           <div class="flex items-center gap-2">

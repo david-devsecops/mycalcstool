@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Percentage Calculator — Free Online Percent Calculator';
 const description = 'Calculate percentages instantly. Find X% of Y, what percent X is of Y, and percentage increase or decrease.';
@@ -120,6 +121,7 @@ const jsonLd = {
   <AdSlot slot="result" format="rectangle" />
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+  <RelatedCalculators current="percentage-calculator" />
 </BaseLayout>
 
 <script is:inline>

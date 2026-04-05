@@ -5,6 +5,7 @@ import Footer from '../components/Footer.astro';
 import AdSlot from '../components/AdSlot.astro';
 import MonetizationHead from '../components/MonetizationHead.astro';
 import MonetizationRuntime from '../components/MonetizationRuntime.astro';
+import { getRelatedEnglishBlogPosts } from '../data/en-blog-posts';
 import { siteMeta } from '../data/site-meta';
 import '../styles/global.css';
 
@@ -49,6 +50,21 @@ const {
   hreflangKo,
   hreflangEn,
 } = Astro.props;
+
+const articlePath = (() => {
+  if (canonicalUrl) {
+    try {
+      return new URL(canonicalUrl).pathname;
+    } catch {
+      return Astro.url.pathname;
+    }
+  }
+
+  return Astro.url.pathname;
+})();
+const pathSegments = articlePath.split('/').filter(Boolean);
+const currentSlug = pathSegments[pathSegments.length - 1] ?? '';
+const relatedPosts = lang === 'en' ? getRelatedEnglishBlogPosts(currentSlug) : [];
 ---
 
 <!DOCTYPE html>
@@ -323,6 +339,30 @@ const {
       <article class="blog-content">
         <slot />
       </article>
+
+      {relatedPosts.length > 0 && (
+        <section class="mt-10 pt-8 border-t border-gray-200">
+          <div class="flex items-center justify-between gap-3 mb-4 flex-wrap px-6">
+            <h2 class="text-xl font-bold text-gray-900">You may also like</h2>
+            <a href="/en/blog/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">All articles →</a>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6">
+            {relatedPosts.map((post) => (
+              <a href={post.href} class="block rounded-2xl border border-gray-200 bg-white p-5 hover:border-blue-300 hover:shadow-sm transition-all no-underline">
+                <div class="flex items-center gap-2 mb-2 flex-wrap">
+                  <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{post.category}</span>
+                  <span class="text-xs text-gray-400">{post.readTime}</span>
+                </div>
+                <p class="font-semibold text-gray-900 leading-snug">{post.title}</p>
+                <p class="text-sm text-gray-500 mt-2 leading-relaxed">{post.description}</p>
+                <p class="text-xs text-gray-400 mt-3">
+                  {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
+                </p>
+              </a>
+            ))}
+          </div>
+        </section>
+      )}
 
       <AdSlot slot="content" format="rectangle" />
     </div>

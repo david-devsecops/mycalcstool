@@ -1,0 +1,32 @@
+---
+import { getRelatedEnglishCalculators, type EnglishCalculatorSlug } from '../data/en-calculators';
+
+interface Props {
+  current: EnglishCalculatorSlug;
+  title?: string;
+}
+
+const { current, title = 'Related Calculators' } = Astro.props;
+const calculators = getRelatedEnglishCalculators(current);
+---
+
+{calculators.length > 0 && (
+  <section class="card mt-6">
+    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+      <h2 class="section-title mb-0"><span aria-hidden="true">🧭</span> {title}</h2>
+      <a href="/en/" class="text-sm font-semibold text-primary-600 hover:underline">Browse all calculators →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {calculators.map((calculator) => (
+        <a href={calculator.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors no-underline">
+          <div class="flex items-center gap-2 mb-2">
+            <span class="text-2xl" aria-hidden="true">{calculator.icon}</span>
+            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{calculator.category}</span>
+          </div>
+          <p class="font-semibold text-gray-800">{calculator.title}</p>
+          <p class="text-sm text-gray-500 mt-1">{calculator.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+)}

@@ -1,0 +1,103 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'What Is a Healthy BMI? How to Check and What Your Number Actually Means';
+const description = 'Learn how BMI is calculated, what the categories mean, where body mass index is useful, and where it falls short as a health screening tool.';
+const keywords = 'healthy bmi, bmi guide, body mass index explained, bmi categories, what is bmi';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/bmi-guide/';
+const publishDate = '2026-04-05';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: publishDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'en',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Health" readTime="8 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">What Is a Healthy BMI? How to Check and What Your Number Actually Means</Fragment>
+
+  <p>You step on a scale, plug your height and weight into a calculator, and get a number. But what does that number actually tell you about your health and what does it not tell you?</p>
+  <p>BMI, or Body Mass Index, is one of the most widely used screening tools for weight categories worldwide. Doctors use it, insurers reference it, and health apps display it. It is also one of the most misunderstood numbers in health.</p>
+  <p>This guide explains how BMI is calculated, what the categories mean, where BMI falls short, and what to do with your result.</p>
+
+  <h2>Check Your BMI</h2>
+  <p>Before diving into the details, it helps to see where you stand.</p>
+  <blockquote>
+    <p><a href="https://mycalcstool.com/en/bmi-calculator"><strong>BMI Calculator</strong></a> — enter your height and weight, get your BMI, weight category, and healthy weight range instantly.</p>
+  </blockquote>
+
+  <h2>How BMI Is Calculated</h2>
+  <p>The formula is straightforward.</p>
+  <p>In metric units, BMI equals your weight in kilograms divided by your height in meters squared.</p>
+  <p>In imperial units, BMI equals your weight in pounds multiplied by 703, then divided by your height in inches squared.</p>
+  <p>For example, someone who is 5&apos;9&quot; (175 cm) and weighs 170 lbs (77 kg) has a BMI of about 25.1.</p>
+  <p>The number itself does not measure body fat directly. It is a ratio of weight to height that correlates with body fat levels across large populations. That correlation is why BMI is useful as a quick screening tool, but it is also why individual results need context.</p>
+
+  <h2>BMI Categories (WHO Standards)</h2>
+  <p>The World Health Organization defines these ranges for adults.</p>
+  <p><strong>Underweight</strong> is a BMI below 18.5. This range is associated with increased risk of nutrient deficiencies, weakened immune function, and bone loss. Some research suggests that being underweight can carry a higher mortality risk than being moderately overweight.</p>
+  <p><strong>Normal weight</strong> falls between 18.5 and 24.9. This range is associated with the lowest risk of weight-related health conditions for most people.</p>
+  <p><strong>Overweight</strong> is 25.0 to 29.9. This range indicates elevated risk for conditions like high blood pressure, type 2 diabetes, and cardiovascular disease, though actual risk depends heavily on factors like fitness level, waist circumference, and family history.</p>
+  <p><strong>Obesity Class I</strong> is 30.0 to 34.9, <strong>Class II</strong> is 35.0 to 39.9, and <strong>Class III</strong> is 40.0 and above. Risk of serious health complications rises substantially in these ranges.</p>
+
+  <h2>What BMI Gets Right</h2>
+  <p>BMI works well as a population-level screening tool. For the average person who does not do heavy strength training, it provides a reasonable estimate of whether body weight might be affecting health. It is free, requires no equipment beyond a scale and measuring tape, and can be calculated in seconds.</p>
+  <p>For public health researchers, BMI is valuable because it allows standardized comparisons across millions of people. The cutoff points are based on decades of epidemiological data showing where health risks start to climb.</p>
+  <p>Your doctor uses BMI as a starting point, not a diagnosis. A BMI of 28 does not mean you are unhealthy. It means your doctor should look more closely at blood pressure, blood sugar, cholesterol, and other markers.</p>
+
+  <h2>What BMI Gets Wrong</h2>
+  <p>BMI has well-known limitations that are worth understanding.</p>
+  <p>It cannot distinguish muscle from fat. Someone who lifts weights regularly might have a BMI of 27 with 15% body fat, while a sedentary person could have the same BMI with 30% body fat. Their health profiles would be very different, but BMI treats them the same.</p>
+  <p>It does not account for body fat distribution. Where you carry fat matters significantly. Visceral fat around the organs is generally more dangerous than subcutaneous fat under the skin. Two people with identical BMIs can have very different health risks based on fat distribution alone.</p>
+  <p>It becomes less reliable at the extremes of height. Because the formula uses height squared, it can overestimate fatness in very tall people and underestimate it in very short people.</p>
+  <p>Age and sex affect accuracy. Older adults tend to have less muscle and more fat at a given BMI compared with younger adults. Women also tend to carry more body fat than men at the same BMI.</p>
+
+  <h2>BMI by Age: What Changes?</h2>
+  <p>For adults 18 and older, the standard BMI categories apply regardless of age. However, the health implications shift.</p>
+  <p>In your 20s and 30s, a BMI in the normal range of 18.5 to 24.9 is most strongly associated with good health outcomes. This is where the standard categories are generally most accurate.</p>
+  <p>In your 40s and 50s, the relationship between BMI and health becomes more nuanced. Some research suggests that a BMI in the low-overweight range of 25 to 27 may not carry much additional risk for otherwise healthy adults in this group.</p>
+  <p>For adults over 65, multiple large studies have found that slightly higher BMIs, roughly 25 to 27, are associated with lower mortality than BMIs in the standard normal range. This does not mean weight gain is protective. It means the statistically optimal range may shift slightly higher with age.</p>
+  <p>For children and teenagers, BMI is interpreted differently using age-and-sex-specific percentile charts rather than fixed adult cutoffs.</p>
+
+  <h2>Better Measures to Use Alongside BMI</h2>
+  <p>If you want a fuller picture of health than BMI alone provides, pair it with other measurements.</p>
+  <p><strong>Waist circumference</strong> is one of the simplest and most useful additions. A waist above 40 inches (102 cm) for men or 35 inches (88 cm) for women suggests increased metabolic risk, regardless of BMI.</p>
+  <p><strong>Waist-to-height ratio</strong> is another useful supplement. If your waist circumference is more than half your height, it can indicate elevated risk.</p>
+  <p><strong>Body fat percentage</strong>, measured through methods like DEXA, bioelectrical impedance, or skinfold calipers, gives a more direct assessment of fat versus lean mass.</p>
+  <p><strong>Blood markers</strong> tell the most important story. Blood pressure, fasting glucose, HbA1c, cholesterol, and triglycerides show how body weight is affecting metabolic health. A person with a higher BMI and normal blood markers is in a very different situation from someone with the same BMI and abnormal markers.</p>
+
+  <h2>Frequently Asked Questions</h2>
+
+  <h3>Is a BMI of 25 really overweight?</h3>
+  <p>By WHO standards, yes. But context matters. If you exercise regularly, have good blood markers, and carry more muscle, a BMI of 25 to 27 may be perfectly healthy for you. The cutoff is a statistical threshold, not a diagnosis.</p>
+
+  <h3>Can I be &quot;normal weight&quot; but unhealthy?</h3>
+  <p>Yes. This is sometimes called normal weight obesity or skinny fat. If you have a normal BMI but high body fat, especially visceral fat, your metabolic health can still be poor. Waist circumference and blood tests help here.</p>
+
+  <h3>Should I try to reach a BMI of exactly 22?</h3>
+  <p>Not necessarily. The healthy range is 18.5 to 24.9, and anywhere within that range is generally fine. Focusing on sustainable habits is usually more productive than chasing one specific BMI value.</p>
+
+  <h3>How often should I check my BMI?</h3>
+  <p>Once or twice a year is enough for most people, ideally as part of a broader health check. Daily or weekly BMI tracking is not very useful because body weight naturally fluctuates.</p>
+
+  <h2>Key Takeaways</h2>
+  <p>BMI is calculated as weight divided by height squared, and it is a useful starting point for understanding where your weight falls relative to common risk thresholds. The WHO defines normal weight as 18.5 to 24.9, but these cutoffs work best for average body compositions and become less reliable for athletes, very tall or short people, and older adults.</p>
+  <p>BMI does not measure body fat directly and cannot distinguish muscle from fat. Waist circumference, body fat percentage, and blood markers give a more complete picture. For most people, regular movement, balanced eating, and periodic health checks matter more than optimizing one number.</p>
+
+  <blockquote>
+    <p><a href="https://mycalcstool.com/en/bmi-calculator"><strong>BMI Calculator</strong></a> — check your BMI, see your weight category, and find your healthy weight range.</p>
+    <p><a href="https://mycalcstool.com/en/tdee-calculator"><strong>TDEE Calculator</strong></a> — find out how many calories you burn per day based on your activity level.</p>
+    <p><a href="https://mycalcstool.com/en/due-date-calculator"><strong>Due Date Calculator</strong></a> — if you&apos;re pregnant, tracking BMI changes starts with knowing your timeline.</p>
+  </blockquote>
+
+  <p><em>This article is for informational purposes only. BMI is a screening tool, not a diagnostic measure. Consult a healthcare provider for personalized medical advice.</em></p>
+</BlogLayout>

@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Tip Calculator — Split Bills & Calculate Gratuity Instantly';
 const description = 'Calculate tips for any bill amount. Split between multiple people with custom tip percentages. Free and instant.';
@@ -141,6 +142,7 @@ const jsonLd = {
   <AdSlot slot="result" format="rectangle" />
 
   <FAQ items={faqItems} title="Frequently Asked Questions" />
+  <RelatedCalculators current="tip-calculator" />
 </BaseLayout>
 
 <script is:inline>

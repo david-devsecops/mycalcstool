@@ -2,6 +2,7 @@
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import FAQ from '../../components/FAQ.astro';
+import RelatedCalculators from '../../components/RelatedCalculators.astro';
 
 const title = 'Mortgage Calculator 2026 — Estimate Monthly Payments with PMI & Taxes';
 const description = 'Calculate your monthly mortgage payment including principal, interest, taxes, insurance, and PMI. Compare 15-year vs 30-year options.';
@@ -190,6 +191,8 @@ const jsonLd = {
       ))}
     </div>
   </section>
+
+  <RelatedCalculators current="mortgage-calculator" />
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">🛡️</span> How we calculate</h2>
