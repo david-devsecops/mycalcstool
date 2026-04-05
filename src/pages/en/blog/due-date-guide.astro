@@ -1,0 +1,167 @@
+---
+import BlogLayout from '../../../layouts/BlogLayout.astro';
+
+const title = 'How to Calculate Your Due Date — Pregnancy Due Date Methods Explained';
+const description = 'Learn how pregnancy due dates are calculated using Naegele\'s Rule, ultrasound dating, and IVF methods. Understand the 40-week timeline and why only 5% of babies arrive on the exact due date.';
+const keywords = 'how to calculate due date, pregnancy due date, naegele rule, due date calculator, LMP due date, ultrasound dating pregnancy, IVF due date';
+const canonicalUrl = 'https://mycalcstool.com/en/blog/due-date-guide/';
+const publishDate = '2026-04-05';
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    url: canonicalUrl,
+    datePublished: publishDate,
+    dateModified: publishDate,
+    author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+    inLanguage: 'en',
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: 'Can my due date change?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Yes. If an early ultrasound shows the baby measuring significantly different from the LMP-based estimate (more than 7 days off), your provider will adjust the due date. Once set in the first trimester, it typically stays fixed.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'What happens if I go past my due date?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Going past 40 weeks is common, especially for first pregnancies. Your provider will increase monitoring and discuss induction options. Most providers recommend induction between 41 and 42 weeks.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'Is the due date based on conception or my last period?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Your last menstrual period. This is the standard medical convention because most women can pinpoint their last period date more accurately than their conception date.',
+        },
+      },
+      {
+        '@type': 'Question',
+        name: 'How accurate are due date calculator apps?',
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: 'Apps that use Naegele\'s Rule (LMP + 280 days) give the same estimate your doctor starts with. They are a good starting point, but an early ultrasound will refine the date.',
+        },
+      },
+    ],
+  },
+];
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} category="Health" readTime="8 min read" jsonLd={jsonLd}>
+  <Fragment slot="headline">How to Calculate Your Due Date — Pregnancy Due Date Methods Explained</Fragment>
+
+  <p>Finding out you're pregnant comes with one immediate question: when is the baby coming?</p>
+
+  <p>Your due date is one of the first things your doctor calculates, and it shapes everything from prenatal checkups to maternity leave planning. But here's what most people don't realize: <strong>only about 5% of babies arrive on their exact due date.</strong> The rest come within a 5-week window that's considered perfectly normal.</p>
+
+  <p>So how is your due date calculated, and how accurate is it really? Let's break it down.</p>
+
+  <h2>The Fastest Way to Calculate Your Due Date</h2>
+
+  <p>If you know the first day of your last menstrual period (LMP), you can estimate your due date right now:</p>
+
+  <blockquote>
+    <strong>Last period start date + 280 days (40 weeks) = estimated due date</strong>
+  </blockquote>
+
+  <p>Or use the shortcut doctors have used for over 200 years:</p>
+
+  <blockquote>
+    <strong>LMP + 7 days − 3 months + 1 year = due date</strong>
+  </blockquote>
+
+  <p>For example, if your last period started on January 15, 2026: January 15 + 7 = January 22, minus 3 months = October 22, plus 1 year = <strong>October 22, 2026</strong>.</p>
+
+  <p>Don't want to do the math? Use a calculator instead: <a href="https://mycalcstool.com/en/due-date-calculator"><strong>Due Date Calculator</strong></a> — enter your last period date, get your due date and current pregnancy week instantly.</p>
+
+  <h2>Method 1: Naegele's Rule (LMP-Based)</h2>
+
+  <p>This is the standard method, named after German obstetrician Franz Naegele who popularized it in the early 1800s. It assumes a 28-day menstrual cycle with ovulation occurring on day 14.</p>
+
+  <p>The formula works because pregnancy is dated from the first day of your last period, not from conception. This means that in the first two weeks of "pregnancy," you weren't actually pregnant yet — the egg hadn't even been fertilized. It's a quirk of medical convention, but every doctor worldwide uses this system.</p>
+
+  <p>This method is most accurate when your menstrual cycle is regular and close to 28 days. If your cycle is significantly longer or shorter, the estimate shifts accordingly. A 35-day cycle means ovulation likely occurred about a week later than assumed, which would push the due date back by roughly a week.</p>
+
+  <h2>Method 2: Ultrasound Dating (Most Accurate)</h2>
+
+  <p>An early ultrasound between weeks 7 and 12 is the gold standard for due date accuracy. During this window, the doctor measures the crown-rump length (CRL) — the distance from the top of the baby's head to the bottom of the torso.</p>
+
+  <p>The reason early ultrasounds are so precise is that all embryos grow at virtually the same rate during the first trimester. There's almost no individual variation. The margin of error is just 3 to 5 days.</p>
+
+  <p>After the first trimester, growth rates start varying between babies (genetics, nutrition, and other factors kick in), which is why later ultrasounds are less reliable for dating. If your ultrasound-based due date differs from your LMP-based due date by more than a week, your doctor will typically go with the ultrasound.</p>
+
+  <h2>Method 3: IVF/Fertility Treatment Dating</h2>
+
+  <p>If you conceived through IVF, your due date calculation is actually more precise than natural conception because the exact date of embryo transfer is recorded.</p>
+
+  <p>For a Day 5 embryo (blastocyst) transfer, the formula is: transfer date minus 19 days equals the theoretical LMP, then add 280 days for the due date. Your fertility clinic will calculate this for you, and it tends to be very accurate.</p>
+
+  <h2>Pregnancy Timeline: Week by Week Milestones</h2>
+
+  <p>Once you know your due date, you can map out the key milestones ahead.</p>
+
+  <p>During <strong>weeks 4 to 5</strong>, pregnancy can first be confirmed with a home test. By <strong>weeks 6 to 7</strong>, an ultrasound can detect the heartbeat. The first major screening tests happen between <strong>weeks 11 and 13</strong>, including the NT scan and blood work.</p>
+
+  <p>The anatomy scan, where the baby's organs and development are thoroughly checked, typically happens around <strong>weeks 20 to 22</strong>. This is also when many parents find out the sex of the baby.</p>
+
+  <p>Gestational diabetes screening falls between <strong>weeks 24 and 28</strong>. After week 28, prenatal visits increase to every two weeks. From week 36 onward, you'll see your provider weekly. <strong>Week 37</strong> marks full term — the baby could safely arrive any time from here.</p>
+
+  <p>Week 40 is the official due date, but if you reach week 41 without labor, your doctor will discuss induction options to prevent complications from post-term pregnancy.</p>
+
+  <h2>Why Your Due Date Is Often Wrong</h2>
+
+  <p>Calling it an "estimated" due date is more accurate than calling it a "due date." Here's why the actual birth date varies so much.</p>
+
+  <p><strong>First-time mothers</strong> tend to deliver later than their due date, sometimes by a week or more. This is completely normal and doesn't indicate a problem.</p>
+
+  <p><strong>Menstrual cycle variation</strong> is a major factor. Naegele's Rule assumes a 28-day cycle, but normal cycles range from 21 to 35 days. If your cycle is 35 days, your true ovulation date was likely a week later than the formula assumes.</p>
+
+  <p><strong>Multiple pregnancies</strong> (twins, triplets) typically deliver earlier, often around 36 to 37 weeks. This is expected and planned for.</p>
+
+  <p>The normal range for a full-term delivery spans from week 37 to week 42 — a five-week window. Within this range, every outcome is considered healthy.</p>
+
+  <h2>Due Date FAQs</h2>
+
+  <h3>Can my due date change?</h3>
+  <p>Yes. If an early ultrasound shows the baby measuring significantly different from the LMP-based estimate (more than 7 days off), your provider will adjust the due date. However, once a due date is set in the first trimester, it typically stays fixed for the rest of the pregnancy.</p>
+
+  <h3>What happens if I go past my due date?</h3>
+  <p>Going past 40 weeks is common, especially for first pregnancies. Your provider will increase monitoring (non-stress tests, fluid checks) and discuss induction options. Most providers recommend induction between 41 and 42 weeks to reduce the risk of complications.</p>
+
+  <h3>Is the due date based on conception or my last period?</h3>
+  <p>Your last menstrual period. This seems counterintuitive since you weren't pregnant during your period, but it's the standard medical convention because most women can pinpoint their last period date more accurately than their conception date.</p>
+
+  <h3>How accurate are due date calculator apps?</h3>
+  <p>Apps that use Naegele's Rule (LMP + 280 days) give the same estimate your doctor starts with. They're a good starting point, but an early ultrasound will refine the date. Use the calculator for planning, then confirm with your healthcare provider.</p>
+
+  <h2>Key Takeaways</h2>
+
+  <ul>
+    <li>Your due date is calculated by adding 280 days (40 weeks) to the first day of your last period.</li>
+    <li>An early ultrasound between weeks 7 and 12 gives the most accurate estimate, with just a 3 to 5 day margin of error.</li>
+    <li>Only about 5% of babies are born on their exact due date.</li>
+    <li>The normal delivery window spans 37 to 42 weeks.</li>
+    <li>First-time mothers often deliver later than their due date.</li>
+  </ul>
+
+  <p>Ready to find out your estimated due date? Use the <a href="https://mycalcstool.com/en/due-date-calculator"><strong>Due Date Calculator</strong></a> — enter your last period date and get your due date, current week, and trimester instantly.</p>
+
+  <p>Also useful: <a href="https://mycalcstool.com/en/age-calculator"><strong>Age Calculator</strong></a> — curious how old your baby will be at a certain date? Calculate the exact age in years, months, and days.</p>
+
+  <p><em>This article is for informational purposes only and does not replace professional medical advice. Always consult your healthcare provider for personalized guidance about your pregnancy.</em></p>
+</BlogLayout>
