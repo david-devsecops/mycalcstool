@@ -16,146 +16,206 @@ const jsonLd = {
   inLanguage: 'en',
 };
 
-const categories = [
+const popular = [
   {
-    name: 'Finance',
-    icon: '💰',
-    calculators: [
-      { icon: '🏠', title: 'Mortgage Calculator', desc: 'Estimate your monthly mortgage payment with taxes and insurance.', href: '/en/mortgage-calculator' },
-      { icon: '💵', title: 'Salary Calculator', desc: 'Calculate your take-home pay after federal and state taxes.', href: '/en/salary-calculator' },
-      { icon: '📈', title: 'Compound Interest Calculator', desc: 'See how your savings and investments grow over time.', href: '/en/compound-interest-calculator' },
-    ],
+    icon: '🏠',
+    title: 'Mortgage Calculator',
+    desc: 'Monthly payment, total interest, amortization schedule.',
+    href: '/en/mortgage-calculator',
+    badge: 'Most Popular',
   },
   {
-    name: 'Health',
-    icon: '❤️',
-    calculators: [
-      { icon: '⚖️', title: 'BMI Calculator', desc: 'Check your body mass index and healthy weight range.', href: '/en/bmi-calculator' },
-      { icon: '🔥', title: 'TDEE / Calorie Calculator', desc: 'Find your total daily energy expenditure and calorie needs.', href: '/en/tdee-calculator' },
-      { icon: '👶', title: 'Due Date Calculator', desc: 'Calculate your estimated pregnancy due date and milestones.', href: '/en/due-date-calculator' },
-    ],
+    icon: '💵',
+    title: 'Salary Calculator',
+    desc: 'Take-home pay after federal and state taxes.',
+    href: '/en/salary-calculator',
+    badge: 'Finance',
   },
   {
-    name: 'Math & Utility',
-    icon: '🧮',
-    calculators: [
-      { icon: '💯', title: 'Percentage Calculator', desc: 'Find percentages, percentage change, and percent of a number.', href: '/en/percentage-calculator' },
-      { icon: '🎂', title: 'Age Calculator', desc: 'Calculate your exact age in years, months, days, and more.', href: '/en/age-calculator' },
-      { icon: '🍽️', title: 'Tip Calculator', desc: 'Calculate gratuity and split the bill between multiple people.', href: '/en/tip-calculator' },
-      { icon: '📐', title: 'Unit Converter', desc: 'Convert length, weight, temperature, volume, speed, and more.', href: '/en/unit-converter' },
-    ],
+    icon: '⚖️',
+    title: 'BMI Calculator',
+    desc: 'Body mass index and healthy weight range.',
+    href: '/en/bmi-calculator',
+    badge: 'Health',
+  },
+  {
+    icon: '👶',
+    title: 'Due Date Calculator',
+    desc: 'Estimated pregnancy due date and week-by-week milestones.',
+    href: '/en/due-date-calculator',
+    badge: 'Health',
   },
 ];
 
-const financeCategory = categories.find((category) => category.name === 'Finance');
-const supportingCategories = categories.filter((category) => category.name !== 'Finance');
+const financeCalcs = [
+  { icon: '🏠', title: 'Mortgage Calculator', desc: 'Monthly payment, interest, amortization.', href: '/en/mortgage-calculator' },
+  { icon: '💵', title: 'Salary Calculator', desc: 'Take-home pay after federal and state taxes.', href: '/en/salary-calculator' },
+  { icon: '📈', title: 'Compound Interest', desc: 'See how savings grow over time.', href: '/en/compound-interest-calculator' },
+];
+
+const healthCalcs = [
+  { icon: '⚖️', title: 'BMI Calculator', desc: 'Body mass index and healthy weight range.', href: '/en/bmi-calculator' },
+  { icon: '🔥', title: 'TDEE / Calorie Calculator', desc: 'Daily energy expenditure and calorie needs.', href: '/en/tdee-calculator' },
+  { icon: '👶', title: 'Due Date Calculator', desc: 'Pregnancy due date and milestones.', href: '/en/due-date-calculator' },
+];
+
+const utilityCalcs = [
+  { icon: '💯', title: 'Percentage Calculator', desc: 'Percentages, change, and percent of a number.', href: '/en/percentage-calculator' },
+  { icon: '🎂', title: 'Age Calculator', desc: 'Exact age in years, months, days, and more.', href: '/en/age-calculator' },
+  { icon: '🍽️', title: 'Tip Calculator', desc: 'Gratuity and split the bill between people.', href: '/en/tip-calculator' },
+  { icon: '📐', title: 'Unit Converter', desc: 'Length, weight, temperature, volume, speed.', href: '/en/unit-converter' },
+];
+
+const featuredPosts = [
+  {
+    href: '/en/blog/due-date-guide',
+    title: 'How to Calculate Your Due Date',
+    desc: 'Naegele\'s Rule, ultrasound dating, IVF methods, and the 40-week timeline explained.',
+    category: 'Health',
+    readTime: '8 min',
+  },
+  {
+    href: '/en/blog/pmi-guide-how-private-mortgage-insurance-works',
+    title: 'PMI Guide: What It Costs and When It Ends',
+    desc: 'Understand what private mortgage insurance adds to your monthly payment.',
+    category: 'Finance',
+    readTime: '8 min',
+  },
+  {
+    href: '/en/blog/salary-calculator-guide-gross-vs-net-pay',
+    title: 'Gross Pay vs Net Pay Explained',
+    desc: 'What gets deducted from your paycheck and how to estimate take-home income.',
+    category: 'Finance',
+    readTime: '8 min',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd} hreflangKo="/">
-  <div class="mb-8 text-center">
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-3">Free Online Calculators</h1>
-    <p class="text-gray-500 text-lg max-w-2xl mx-auto">Fast, accurate, and free. We prioritize finance calculators first, with health and utility tools as supporting calculators.</p>
+
+  <!-- Hero -->
+  <div class="text-center mb-8">
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Free Online Calculators</h1>
+    <p class="text-gray-500 text-base max-w-xl mx-auto">No signup. No ads blocking your results. Just fast, accurate tools.</p>
   </div>
 
   <AdSlot slot="top" format="horizontal" />
 
-  {financeCategory && (
-    <section class="mb-10">
-      <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-        <h2 class="text-xl font-bold text-gray-700 flex items-center gap-2">
-          <span aria-hidden="true">{financeCategory.icon}</span> Featured Finance Calculators
-        </h2>
-        <a href="/en/methodology" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Methodology →</a>
-      </div>
-      <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-        {financeCategory.calculators.map(calc => (
-          <a href={calc.href} class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
-            <div class="text-3xl">{calc.icon}</div>
-            <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">{calc.title}</div>
-            <div class="text-sm text-gray-500">{calc.desc}</div>
-          </a>
-        ))}
-      </div>
-    </section>
-  )}
-
+  <!-- Most Popular -->
   <section class="mb-10">
-    <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
-      <span aria-hidden="true">🧰</span> Supporting Calculators
-    </h2>
-    <div class="space-y-8">
-      {supportingCategories.map(cat => (
-        <section>
-          <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2">
-            <span aria-hidden="true">{cat.icon}</span> {cat.name}
-          </h3>
-          <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
-            {cat.calculators.map(calc => (
-              <a href={calc.href} class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
-                <div class="text-3xl">{calc.icon}</div>
-                <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">{calc.title}</div>
-                <div class="text-sm text-gray-500">{calc.desc}</div>
-              </a>
-            ))}
+    <h2 class="text-lg font-bold text-gray-700 mb-4">Most Popular Right Now</h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      {popular.map(calc => (
+        <a href={calc.href} class="group bg-white rounded-2xl border border-gray-200 shadow-sm hover:shadow-md hover:border-blue-300 transition-all p-5 flex flex-col gap-3 no-underline">
+          <div class="flex items-start justify-between gap-2">
+            <div class="text-4xl leading-none">{calc.icon}</div>
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full shrink-0">{calc.badge}</span>
           </div>
-        </section>
+          <div>
+            <div class="font-bold text-gray-900 text-base group-hover:text-blue-600 transition-colors mb-1">{calc.title}</div>
+            <div class="text-sm text-gray-500 leading-relaxed">{calc.desc}</div>
+          </div>
+          <div class="mt-auto pt-1">
+            <span class="inline-flex items-center gap-1 text-sm font-semibold text-blue-600 group-hover:gap-2 transition-all">
+              Use Calculator <span aria-hidden="true">→</span>
+            </span>
+          </div>
+        </a>
       ))}
     </div>
   </section>
 
-  <section class="card mt-4 bg-primary-50 border-primary-100">
-    <h2 class="text-lg font-bold text-primary-800 mb-2">Why mycalcstool?</h2>
-    <ul class="space-y-1 text-primary-700 text-sm list-disc list-inside">
-      <li>100% free — no account, no fees</li>
-      <li>All calculations happen in your browser — your data never leaves your device</li>
-      <li>Updated for 2026 tax rates and rules</li>
-      <li>Methodology and contact pages are published for correction requests</li>
-      <li>Mobile-friendly and fast</li>
-    </ul>
+  <!-- Finance Calculators -->
+  <section class="mb-8">
+    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span aria-hidden="true">💰</span> Finance Calculators
+      </h2>
+      <a href="/en/methodology" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">Methodology →</a>
+    </div>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {financeCalcs.map(calc => (
+        <a href={calc.href} class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-blue-200 transition-all group flex flex-col gap-1 no-underline">
+          <div class="text-2xl mb-1">{calc.icon}</div>
+          <div class="font-semibold text-sm text-gray-800 group-hover:text-blue-600 transition-colors">{calc.title}</div>
+          <div class="text-xs text-gray-500">{calc.desc}</div>
+        </a>
+      ))}
+    </div>
   </section>
 
-  <section class="mt-10">
-    <h2 class="text-xl font-bold text-gray-700 mb-4 flex items-center gap-2">
-      <span aria-hidden="true">📝</span> Featured Finance Guides
+  <!-- Health Calculators -->
+  <section class="mb-8">
+    <h2 class="text-base font-bold text-gray-700 mb-4 flex items-center gap-2">
+      <span aria-hidden="true">❤️</span> Health Calculators
     </h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      <a href="/en/blog/pmi-guide-how-private-mortgage-insurance-works" class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Money & Finance</span>
-          <span class="text-xs text-gray-400">8 min read</span>
-        </div>
-        <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">PMI Guide: What Private Mortgage Insurance Costs and When It Ends</div>
-        <div class="text-sm text-gray-500">Understand what PMI really adds to a mortgage payment and when borrowers can usually get rid of it.</div>
-      </a>
-      <a href="/en/blog/biweekly-vs-semi-monthly-pay-guide" class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Money & Finance</span>
-          <span class="text-xs text-gray-400">7 min read</span>
-        </div>
-        <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">Biweekly vs Semi-Monthly Pay: Why Your Paycheck Amount Changes</div>
-        <div class="text-sm text-gray-500">A practical guide to paycheck frequency, why the amount changes, and what that means for budgeting.</div>
-      </a>
-      <a href="/en/blog/simple-vs-compound-interest-guide" class="card hover:shadow-md hover:border-primary-200 transition-all group flex flex-col gap-2 no-underline">
-        <div class="flex items-center gap-2 mb-1">
-          <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">Money & Finance</span>
-          <span class="text-xs text-gray-400">7 min read</span>
-        </div>
-        <div class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">Simple vs Compound Interest: Why Time Changes the Outcome</div>
-        <div class="text-sm text-gray-500">See how compounding changes long-run results and why flat interest assumptions often understate growth.</div>
-      </a>
-    </div>
-    <div class="mt-3 text-right">
-      <a href="/en/blog/" class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">View all articles →</a>
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3">
+      {healthCalcs.map(calc => (
+        <a href={calc.href} class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-blue-200 transition-all group flex flex-col gap-1 no-underline">
+          <div class="text-2xl mb-1">{calc.icon}</div>
+          <div class="font-semibold text-sm text-gray-800 group-hover:text-blue-600 transition-colors">{calc.title}</div>
+          <div class="text-xs text-gray-500">{calc.desc}</div>
+        </a>
+      ))}
     </div>
   </section>
 
-  <section class="card mt-10">
-    <h2 class="text-lg font-bold text-gray-800 mb-3">Trust and contact</h2>
-    <p class="text-sm text-gray-600 leading-relaxed">
-      mycalcstool publishes methodology notes, policy pages, and a direct contact email for correction requests.
-      Visit <a href="/en/about" class="font-semibold text-primary-600 hover:underline">About</a>,
-      <a href="/en/methodology" class="font-semibold text-primary-600 hover:underline"> Methodology</a>, or
-      <a href={`mailto:${siteMeta.contactEmail}`} class="font-semibold text-primary-600 hover:underline"> {siteMeta.contactEmail}</a>.
+  <!-- Math & Utility Calculators -->
+  <section class="mb-10">
+    <h2 class="text-base font-bold text-gray-700 mb-4 flex items-center gap-2">
+      <span aria-hidden="true">🧮</span> Math &amp; Utility
+    </h2>
+    <div class="grid grid-cols-2 sm:grid-cols-4 gap-3">
+      {utilityCalcs.map(calc => (
+        <a href={calc.href} class="bg-white rounded-xl border border-gray-200 p-4 hover:shadow-md hover:border-blue-200 transition-all group flex flex-col gap-1 no-underline">
+          <div class="text-2xl mb-1">{calc.icon}</div>
+          <div class="font-semibold text-sm text-gray-800 group-hover:text-blue-600 transition-colors">{calc.title}</div>
+          <div class="text-xs text-gray-500 hidden sm:block">{calc.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Trust bar -->
+  <section class="bg-gray-50 rounded-2xl border border-gray-100 px-6 py-4 mb-10">
+    <div class="flex flex-wrap gap-x-6 gap-y-2 justify-center text-sm text-gray-600">
+      <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> 100% free, no account needed</span>
+      <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> Calculations run in your browser</span>
+      <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> Updated for 2026 tax rates</span>
+      <span class="flex items-center gap-1.5"><span class="text-green-500 font-bold">✓</span> Mobile-friendly</span>
+    </div>
+  </section>
+
+  <!-- Featured Blog Posts -->
+  <section class="mb-10">
+    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+      <h2 class="text-base font-bold text-gray-700 flex items-center gap-2">
+        <span aria-hidden="true">📝</span> Featured Guides
+      </h2>
+      <a href="/en/blog/" class="text-xs font-semibold text-blue-600 hover:text-blue-700 transition-colors">All articles →</a>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {featuredPosts.map(post => (
+        <a href={post.href} class="bg-white rounded-xl border border-gray-200 p-5 hover:shadow-md hover:border-blue-200 transition-all group flex flex-col gap-2 no-underline">
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{post.category}</span>
+            <span class="text-xs text-gray-400">{post.readTime} read</span>
+          </div>
+          <div class="font-semibold text-sm text-gray-800 group-hover:text-blue-600 transition-colors leading-snug">{post.title}</div>
+          <div class="text-xs text-gray-500 leading-relaxed">{post.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Contact / Trust footer -->
+  <section class="bg-white rounded-2xl border border-gray-100 shadow-sm px-6 py-4">
+    <p class="text-sm text-gray-600 leading-relaxed text-center">
+      Questions or corrections?
+      <a href="/en/about" class="font-semibold text-blue-600 hover:underline mx-1">About</a>·
+      <a href="/en/methodology" class="font-semibold text-blue-600 hover:underline mx-1">Methodology</a>·
+      <a href={`mailto:${siteMeta.contactEmail}`} class="font-semibold text-blue-600 hover:underline mx-1">{siteMeta.contactEmail}</a>
     </p>
   </section>
+
 </BaseLayout>
