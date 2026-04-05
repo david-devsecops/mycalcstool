@@ -34,8 +34,6 @@ const jsonLd = {
   offers: { '@type': 'Offer', price: '0', priceCurrency: 'USD' },
   inLanguage: 'en',
 };
-
-const today = new Date().toISOString().split('T')[0];
 ---
 
 <BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd}>
@@ -57,12 +55,20 @@ const today = new Date().toISOString().split('T')[0];
     <h2 class="section-title"><span aria-hidden="true">📅</span> Enter Your Details</h2>
     <div class="space-y-4">
       <div>
-        <label for="dob" class="block text-sm font-semibold text-gray-700 mb-1">Date of Birth</label>
-        <input type="date" id="dob" class="input-field" max={today} />
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Date of Birth</label>
+        <div class="grid grid-cols-3 gap-3">
+          <select id="dob-month" class="input-field" aria-label="Birth month"></select>
+          <select id="dob-day" class="input-field" aria-label="Birth day"></select>
+          <select id="dob-year" class="input-field" aria-label="Birth year"></select>
+        </div>
       </div>
       <div>
-        <label for="calc-date" class="block text-sm font-semibold text-gray-700 mb-1">Calculate as of</label>
-        <input type="date" id="calc-date" class="input-field" value={today} />
+        <label class="block text-sm font-semibold text-gray-700 mb-1">Calculate as of</label>
+        <div class="grid grid-cols-3 gap-3">
+          <select id="calc-date-month" class="input-field" aria-label="Calculation month"></select>
+          <select id="calc-date-day" class="input-field" aria-label="Calculation day"></select>
+          <select id="calc-date-year" class="input-field" aria-label="Calculation year"></select>
+        </div>
       </div>
       <button id="calc-age-btn" class="btn-primary" type="button">Calculate Age</button>
     </div>
@@ -137,6 +143,95 @@ const today = new Date().toISOString().split('T')[0];
 <script is:inline>
 const DAYS = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
 const MONTHS = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+const TODAY = new Date();
+
+function pad2(value) {
+  return String(value).padStart(2, '0');
+}
+
+function formatIsoDate(date) {
+  return date.getFullYear() + '-' + pad2(date.getMonth() + 1) + '-' + pad2(date.getDate());
+}
+
+function parseIsoDateLocal(isoDate) {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  return new Date(year, month - 1, day);
+}
+
+function buildPlaceholderOption(label) {
+  return '<option value="">' + label + '</option>';
+}
+
+function populateMonthOptions(selectId) {
+  const select = document.getElementById(selectId);
+  select.innerHTML = buildPlaceholderOption('Month') + MONTHS.map((month, index) =>
+    '<option value="' + (index + 1) + '">' + month + '</option>'
+  ).join('');
+}
+
+function populateYearOptions(selectId, startYear, endYear) {
+  const select = document.getElementById(selectId);
+  const years = [];
+  for (let year = endYear; year >= startYear; year--) {
+    years.push('<option value="' + year + '">' + year + '</option>');
+  }
+  select.innerHTML = buildPlaceholderOption('Year') + years.join('');
+}
+
+function syncDayOptions(prefix) {
+  const year = parseInt(document.getElementById(prefix + '-year').value, 10);
+  const month = parseInt(document.getElementById(prefix + '-month').value, 10);
+  const daySelect = document.getElementById(prefix + '-day');
+  const currentDay = daySelect.value;
+  const daysInMonth = year && month ? new Date(year, month, 0).getDate() : 31;
+  const days = [];
+
+  for (let day = 1; day <= daysInMonth; day++) {
+    days.push('<option value="' + day + '">' + day + '</option>');
+  }
+
+  daySelect.innerHTML = buildPlaceholderOption('Day') + days.join('');
+  if (currentDay && parseInt(currentDay, 10) <= daysInMonth) {
+    daySelect.value = currentDay;
+  }
+}
+
+function setDateFields(prefix, isoDate) {
+  const [year, month, day] = isoDate.split('-').map(Number);
+  document.getElementById(prefix + '-year').value = String(year);
+  document.getElementById(prefix + '-month').value = String(month);
+  syncDayOptions(prefix);
+  document.getElementById(prefix + '-day').value = String(day);
+}
+
+function getSelectedDate(prefix) {
+  const year = document.getElementById(prefix + '-year').value;
+  const month = document.getElementById(prefix + '-month').value;
+  const day = document.getElementById(prefix + '-day').value;
+
+  if (!year || !month || !day) {
+    return '';
+  }
+
+  return year + '-' + pad2(month) + '-' + pad2(day);
+}
+
+function setupDatePicker(prefix, options = {}) {
+  const currentYear = TODAY.getFullYear();
+  const startYear = options.startYear ?? currentYear - 120;
+  const endYear = options.endYear ?? currentYear + 50;
+
+  populateMonthOptions(prefix + '-month');
+  populateYearOptions(prefix + '-year', startYear, endYear);
+  syncDayOptions(prefix);
+
+  document.getElementById(prefix + '-month').addEventListener('change', () => syncDayOptions(prefix));
+  document.getElementById(prefix + '-year').addEventListener('change', () => syncDayOptions(prefix));
+
+  if (options.defaultDate) {
+    setDateFields(prefix, options.defaultDate);
+  }
+}
 
 function getZodiac(month, day) {
   if ((month === 3 && day >= 21) || (month === 4 && day <= 19)) return '♈ Aries';
@@ -154,12 +249,12 @@ function getZodiac(month, day) {
 }
 
 function calcAge() {
-  const dobVal = document.getElementById('dob').value;
-  const calcVal = document.getElementById('calc-date').value;
+  const dobVal = getSelectedDate('dob');
+  const calcVal = getSelectedDate('calc-date');
   if (!dobVal || !calcVal) { alert('Please enter a date of birth.'); return; }
 
-  const dob = new Date(dobVal);
-  const calc = new Date(calcVal);
+  const dob = parseIsoDateLocal(dobVal);
+  const calc = parseIsoDateLocal(calcVal);
   if (dob > calc) { alert('Date of birth must be before the calculation date.'); return; }
 
   let years = calc.getFullYear() - dob.getFullYear();
@@ -199,7 +294,8 @@ function calcAge() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  setupDatePicker('dob', { endYear: TODAY.getFullYear() });
+  setupDatePicker('calc-date', { defaultDate: formatIsoDate(TODAY) });
   document.getElementById('calc-age-btn').addEventListener('click', calcAge);
-  document.getElementById('dob').addEventListener('keydown', e => { if (e.key === 'Enter') calcAge(); });
 });
 </script>
