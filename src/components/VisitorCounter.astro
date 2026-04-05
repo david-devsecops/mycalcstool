@@ -1,0 +1,75 @@
+---
+interface Props {
+  isEnglish?: boolean;
+}
+const { isEnglish = false } = Astro.props;
+---
+
+<div id="visitor-counter" class="flex items-center justify-center gap-4 text-xs text-gray-400 mt-3 opacity-0 transition-opacity duration-500">
+  <span class="flex items-center gap-1.5">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
+      <circle cx="9" cy="7" r="4"/>
+      <path d="M23 21v-2a4 4 0 0 0-3-3.87"/>
+      <path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+    </svg>
+    <span>
+      {isEnglish ? "Today's visitors:" : "오늘 방문자:"}
+      <strong id="daily-count" class="text-gray-500 ml-0.5">—</strong>
+    </span>
+  </span>
+  <span class="text-gray-300">|</span>
+  <span class="flex items-center gap-1.5">
+    <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
+      <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+    </svg>
+    <span>
+      {isEnglish ? 'Total:' : '누적:'}
+      <strong id="total-count" class="text-gray-500 ml-0.5">—</strong>
+    </span>
+  </span>
+</div>
+
+<script>
+  (async () => {
+    const NS = 'mycalcstool-com';
+    const BASE = 'https://api.counterapi.dev/v1';
+    const SESSION_KEY = 'mct_visited';
+
+    // 오늘 날짜 키 (YYYYMMDD)
+    const today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+    const dailyKey = `daily-${today}`;
+    const totalKey = 'total';
+
+    const counterEl = document.getElementById('visitor-counter');
+    const dailyEl = document.getElementById('daily-count');
+    const totalEl = document.getElementById('total-count');
+    if (!counterEl || !dailyEl || !totalEl) return;
+
+    try {
+      // 같은 세션에서 이미 카운트했으면 GET만, 아니면 UP(+1)
+      const alreadyCounted = sessionStorage.getItem(SESSION_KEY) === today;
+      const method = alreadyCounted ? 'GET' : 'UP';
+
+      const [dailyRes, totalRes] = await Promise.all([
+        fetch(`${BASE}/${NS}/${dailyKey}/${alreadyCounted ? '' : 'up'}`.replace(/\/$/, ''), { signal: AbortSignal.timeout(4000) }),
+        fetch(`${BASE}/${NS}/${totalKey}/${alreadyCounted ? '' : 'up'}`.replace(/\/$/, ''), { signal: AbortSignal.timeout(4000) }),
+      ]);
+
+      if (!dailyRes.ok || !totalRes.ok) throw new Error('API error');
+
+      const [dailyData, totalData] = await Promise.all([dailyRes.json(), totalRes.json()]);
+
+      if (!alreadyCounted) sessionStorage.setItem(SESSION_KEY, today);
+
+      const fmt = (n: number) => n.toLocaleString();
+      dailyEl.textContent = fmt(dailyData.count ?? dailyData.value ?? 0);
+      totalEl.textContent = fmt(totalData.count ?? totalData.value ?? 0);
+
+      counterEl.classList.remove('opacity-0');
+    } catch {
+      // API 실패 시 조용히 숨김
+      counterEl.style.display = 'none';
+    }
+  })();
+</script>
