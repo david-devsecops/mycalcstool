@@ -156,4 +156,12 @@ const categories = isEnglish ? ['Finance', 'Health', 'Math & Utility'] : ['금�
       btn.setAttribute('aria-expanded', String(!isOpen));
     });
   }
+
+  // 언어 전환 버튼 클릭 시 선호 언어 localStorage에 저장
+  document.querySelectorAll<HTMLAnchorElement>('a[aria-label="Switch to Korean"], a[aria-label="Switch to English"]').forEach((langBtn) => {
+    langBtn.addEventListener('click', () => {
+      const goingToKo = langBtn.getAttribute('aria-label') === 'Switch to Korean';
+      localStorage.setItem('preferred-lang', goingToKo ? 'ko' : 'en');
+    });
+  });
 </script>

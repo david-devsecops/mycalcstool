@@ -1,0 +1,39 @@
+# Trailing slash redirects (301 Permanent)
+# Korean calculator pages
+/loan /loan/ 301
+/salary /salary/ 301
+/tax-refund /tax-refund/ 301
+/compound /compound/ 301
+/severance /severance/ 301
+/bmi /bmi/ 301
+/calorie /calorie/ 301
+/tdee /tdee/ 301
+/due-date /due-date/ 301
+/dday /dday/ 301
+/blog /blog/ 301
+/about /about/ 301
+/contact /contact/ 301
+/methodology /methodology/ 301
+/privacy /privacy/ 301
+/terms /terms/ 301
+
+# English calculator pages
+/en /en/ 301
+/en/mortgage-calculator /en/mortgage-calculator/ 301
+/en/salary-calculator /en/salary-calculator/ 301
+/en/compound-interest-calculator /en/compound-interest-calculator/ 301
+/en/bmi-calculator /en/bmi-calculator/ 301
+/en/calorie-calculator /en/calorie-calculator/ 301
+/en/tdee-calculator /en/tdee-calculator/ 301
+/en/age-calculator /en/age-calculator/ 301
+/en/days-calculator /en/days-calculator/ 301
+/en/due-date-calculator /en/due-date-calculator/ 301
+/en/percentage-calculator /en/percentage-calculator/ 301
+/en/tip-calculator /en/tip-calculator/ 301
+/en/unit-converter /en/unit-converter/ 301
+/en/blog /en/blog/ 301
+/en/about /en/about/ 301
+/en/contact /en/contact/ 301
+/en/methodology /en/methodology/ 301
+/en/privacy /en/privacy/ 301
+/en/terms /en/terms/ 301

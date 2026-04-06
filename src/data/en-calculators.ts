@@ -121,18 +121,18 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
 };
 
 const relatedCalculatorKeys: Record<EnglishCalculatorSlug, EnglishCalculatorSlug[]> = {
-  'age-calculator': ['due-date-calculator', 'days-calculator', 'percentage-calculator'],
-  'bmi-calculator': ['calorie-calculator', 'tdee-calculator', 'unit-converter'],
-  'calorie-calculator': ['tdee-calculator', 'bmi-calculator', 'unit-converter'],
+  'age-calculator': ['due-date-calculator', 'bmi-calculator', 'percentage-calculator'],
+  'bmi-calculator': ['tdee-calculator', 'due-date-calculator', 'age-calculator'],
+  'calorie-calculator': ['tdee-calculator', 'bmi-calculator', 'days-calculator'],
   'compound-interest-calculator': ['mortgage-calculator', 'salary-calculator', 'percentage-calculator'],
   'days-calculator': ['age-calculator', 'due-date-calculator', 'percentage-calculator'],
-  'due-date-calculator': ['age-calculator', 'days-calculator', 'bmi-calculator'],
+  'due-date-calculator': ['age-calculator', 'bmi-calculator', 'tdee-calculator'],
   'mortgage-calculator': ['salary-calculator', 'compound-interest-calculator', 'percentage-calculator'],
-  'percentage-calculator': ['tip-calculator', 'compound-interest-calculator', 'salary-calculator'],
+  'percentage-calculator': ['tip-calculator', 'age-calculator', 'compound-interest-calculator'],
   'salary-calculator': ['mortgage-calculator', 'compound-interest-calculator', 'percentage-calculator'],
-  'tdee-calculator': ['calorie-calculator', 'bmi-calculator', 'unit-converter'],
-  'tip-calculator': ['percentage-calculator', 'salary-calculator', 'unit-converter'],
-  'unit-converter': ['calorie-calculator', 'bmi-calculator', 'percentage-calculator'],
+  'tdee-calculator': ['bmi-calculator', 'calorie-calculator', 'due-date-calculator'],
+  'tip-calculator': ['percentage-calculator', 'salary-calculator', 'age-calculator'],
+  'unit-converter': ['percentage-calculator', 'bmi-calculator', 'age-calculator'],
 };
 
 export function getRelatedEnglishCalculators(slug: EnglishCalculatorSlug): EnglishCalculatorMeta[] {

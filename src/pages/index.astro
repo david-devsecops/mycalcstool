@@ -38,6 +38,23 @@ const websiteSchema = {
 ---
 
 <BaseLayout title={title} description={description} keywords={keywords} jsonLd={websiteSchema} hreflangEn="/en/">
+  <!-- 언어 자동 리다이렉트 (클라이언트 사이드, SEO 무영향) -->
+  <script>
+    (function () {
+      // 크롤러는 리다이렉트하지 않음
+      if (/bot|crawler|spider|googlebot|bingbot|slurp|duckduckbot|baidu|yandex/i.test(navigator.userAgent)) return;
+      // 이미 /en/ 경로면 리다이렉트 불필요
+      if (location.pathname.startsWith('/en')) return;
+      // 사용자가 수동으로 한국어를 선택한 경우 리다이렉트하지 않음
+      if (localStorage.getItem('preferred-lang') === 'ko') return;
+      // 브라우저 언어가 한국어가 아니면 /en/으로 이동
+      const lang = navigator.language || '';
+      if (!lang.startsWith('ko')) {
+        location.replace('/en/');
+      }
+    })();
+  </script>
+
   <!-- 히어로 섹션 -->
   <section class="text-center mb-10">
     <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">

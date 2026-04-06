@@ -28,8 +28,13 @@ const {
 } = Astro.props;
 
 const siteUrl = siteMeta.url;
-const pageUrl = canonicalUrl || siteUrl + Astro.url.pathname;
+const rawPageUrl = canonicalUrl || siteUrl + Astro.url.pathname;
+const pageUrl = rawPageUrl.endsWith('/') ? rawPageUrl : rawPageUrl + '/';
 const fullTitle = `${title} | ${siteMeta.name}`;
+
+function withSlash(path: string): string {
+  return path.endsWith('/') ? path : path + '/';
+}
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
 
 const organizationSchema = {
@@ -85,11 +90,11 @@ const jsonLdArray = [organizationSchema, ...(jsonLd ? (Array.isArray(jsonLd) ? j
 
 <!-- hreflang -->
 {lang === 'ko' && <link rel="alternate" hreflang="ko" href={pageUrl} />}
-{lang === 'ko' && hreflangEn && <link rel="alternate" hreflang="en" href={siteUrl + hreflangEn} />}
+{lang === 'ko' && hreflangEn && <link rel="alternate" hreflang="en" href={siteUrl + withSlash(hreflangEn)} />}
 {lang === 'en' && <link rel="alternate" hreflang="en" href={pageUrl} />}
-{lang === 'en' && hreflangKo && <link rel="alternate" hreflang="ko" href={siteUrl + hreflangKo} />}
+{lang === 'en' && hreflangKo && <link rel="alternate" hreflang="ko" href={siteUrl + withSlash(hreflangKo)} />}
 {lang === 'en' && <link rel="alternate" hreflang="x-default" href={pageUrl} />}
-{lang === 'ko' && <link rel="alternate" hreflang="x-default" href={siteUrl} />}
+{lang === 'ko' && <link rel="alternate" hreflang="x-default" href={siteUrl + '/'} />}
 
 <!-- Favicon -->
 <link rel="icon" type="image/svg+xml" href="/favicon.svg" />

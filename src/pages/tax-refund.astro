@@ -213,8 +213,8 @@ const jsonLd = {
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
       {[
         { href: '/salary', label: '💰 연봉 계산기', desc: '월 실수령액 계산' },
+        { href: '/severance', label: '📝 퇴직금 계산기', desc: '퇴직금 예상액 계산' },
         { href: '/loan', label: '🏦 대출 이자', desc: '대출 상환 계획' },
-        { href: '/compound', label: '📈 복리 계산기', desc: '투자 수익 계산' },
       ].map(l => (
         <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
           <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>

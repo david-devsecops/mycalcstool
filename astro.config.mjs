@@ -4,6 +4,7 @@ import tailwind from '@astrojs/tailwind';
 
 export default defineConfig({
   site: 'https://mycalcstool.com',
+  trailingSlash: 'always',
   integrations: [
     sitemap({
       changefreq: 'weekly',
