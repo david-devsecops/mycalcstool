@@ -145,9 +145,9 @@ const jsonLd = {
     <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
     <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
       {[
-        { href: '/loan', label: '🏦 대출 이자', desc: '이자율 계산' },
-        { href: '/compound', label: '📈 복리 계산기', desc: '수익률 계산' },
-        { href: '/salary', label: '💰 연봉 계산기', desc: '세금 공제율 확인' },
+        { href: '/loan/', label: '🏦 대출 이자', desc: '이자율 계산' },
+        { href: '/compound/', label: '📈 복리 계산기', desc: '수익률 계산' },
+        { href: '/salary/', label: '💰 연봉 계산기', desc: '세금 공제율 확인' },
       ].map(l => (
         <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
           <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>

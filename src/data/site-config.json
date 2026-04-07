@@ -16,7 +16,7 @@
   "calculators": [
     {
       "id": "loan",
-      "path": "/loan",
+      "path": "/loan/",
       "name": "대출 이자 계산기",
       "description": "원리금균등·원금균등·만기일시 3가지 상환 방식 비교",
       "icon": "🏦",
@@ -25,7 +25,7 @@
     },
     {
       "id": "salary",
-      "path": "/salary",
+      "path": "/salary/",
       "name": "연봉 실수령액 계산기",
       "description": "4대보험, 소득세 공제 후 실수령액 계산",
       "icon": "💰",
@@ -34,7 +34,7 @@
     },
     {
       "id": "tax-refund",
-      "path": "/tax-refund",
+      "path": "/tax-refund/",
       "name": "연말정산 환급 계산기",
       "description": "2026 연말정산 예상 환급액 계산",
       "icon": "📋",
@@ -43,7 +43,7 @@
     },
     {
       "id": "bmi",
-      "path": "/bmi",
+      "path": "/bmi/",
       "name": "BMI 계산기",
       "description": "체질량지수(BMI) 및 표준체중 계산",
       "icon": "⚖️",
@@ -52,7 +52,7 @@
     },
     {
       "id": "compound",
-      "path": "/compound",
+      "path": "/compound/",
       "name": "복리 계산기",
       "description": "복리 이자로 미래 자산 가치 계산",
       "icon": "📈",
@@ -61,7 +61,7 @@
     },
     {
       "id": "calorie",
-      "path": "/calorie",
+      "path": "/calorie/",
       "name": "칼로리 계산기",
       "description": "음식별 칼로리 및 하루 권장 섭취량",
       "icon": "🍎",
@@ -70,7 +70,7 @@
     },
     {
       "id": "severance",
-      "path": "/severance",
+      "path": "/severance/",
       "name": "퇴직금 계산기",
       "description": "근무 기간, 평균 임금으로 퇴직금 계산",
       "icon": "📝",
@@ -79,7 +79,7 @@
     },
     {
       "id": "due-date",
-      "path": "/due-date",
+      "path": "/due-date/",
       "name": "출산 예정일 계산기",
       "description": "마지막 생리일 기준 출산 예정일 계산",
       "icon": "👶",
@@ -88,7 +88,7 @@
     },
     {
       "id": "tdee",
-      "path": "/tdee",
+      "path": "/tdee/",
       "name": "기초대사량(TDEE) 계산기",
       "description": "나이·성별·활동량 기반 하루 칼로리 소비량",
       "icon": "🔥",
@@ -97,7 +97,7 @@
     },
     {
       "id": "dday",
-      "path": "/dday",
+      "path": "/dday/",
       "name": "D-day 날짜 계산기",
       "description": "두 날짜 사이의 일수 및 D-day 계산",
       "icon": "📅",
@@ -106,7 +106,7 @@
     },
     {
       "id": "age-calculator",
-      "path": "/age-calculator",
+      "path": "/age-calculator/",
       "name": "나이 계산기",
       "description": "만 나이·한국식 나이·연 나이 한번에 계산",
       "icon": "🎂",
@@ -115,7 +115,7 @@
     },
     {
       "id": "percentage-calculator",
-      "path": "/percentage-calculator",
+      "path": "/percentage-calculator/",
       "name": "퍼센트 계산기",
       "description": "비율·증감률·할인율 3가지 모드 계산",
       "icon": "💯",
@@ -124,7 +124,7 @@
     },
     {
       "id": "unit-converter",
-      "path": "/unit-converter",
+      "path": "/unit-converter/",
       "name": "단위 변환기",
       "description": "길이·무게·온도·넓이·평 단위 즉시 변환",
       "icon": "📐",
@@ -133,7 +133,7 @@
     },
     {
       "id": "tip-calculator",
-      "path": "/tip-calculator",
+      "path": "/tip-calculator/",
       "name": "더치페이 계산기",
       "description": "회식·모임 비용 인원 나누기 계산",
       "icon": "🍽️",
