@@ -45,7 +45,7 @@ const { isEnglish = false } = Astro.props;
   if (!counterEl || !dailyEl || !totalEl) return;
 
   var alreadyCounted = sessionStorage.getItem(SESSION_KEY) === today;
-  var suffix = alreadyCounted ? '/' : '/up/';
+  var suffix = alreadyCounted ? '/' : '/up';
 
   function fmt(n) {
     return (n || 0).toLocaleString();
