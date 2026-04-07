@@ -1,0 +1,103 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '단위 변환 핵심 정리 — 평·m², 인치·cm, 섭씨·화씨 바로 계산';
+const description = '부동산 평수 계산, 키 단위 변환, 온도 변환 공식을 자주 쓰는 단위 중심으로 한번에 정리합니다.';
+const keywords = '단위 변환, 평 m2 변환, 인치 cm 변환, 섭씨 화씨 변환, 단위 계산기, 평수 계산';
+const canonicalUrl = 'https://mycalcstool.com/blog/unit-converter-guide/';
+const publishDate = '2026-04-07';
+const modifiedDate = '2026-04-07';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="생활" readTime="5분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="생활 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">단위 변환 핵심 정리 — 평·m², 인치·cm, 섭씨·화씨 바로 계산</Fragment>
+
+  <p>일상에서 단위 변환이 필요한 순간은 생각보다 자주 옵니다. 아파트 평수를 m²로 바꾸거나, 해외 쇼핑몰에서 사이즈를 확인하거나, 날씨 앱에서 화씨를 섭씨로 이해해야 할 때 등 다양합니다. 자주 쓰는 변환 공식을 정리했습니다.</p>
+
+  <h2>넓이: 평 ↔ m² 변환</h2>
+  <p>부동산에서 가장 자주 쓰이는 단위 변환입니다.</p>
+  <ul>
+    <li><strong>1평 = 3.3058m²</strong> (정확히는 3.30579m²)</li>
+    <li><strong>1m² = 약 0.3025평</strong></li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>평수</th><th>약 m²</th><th>실생활 규모</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>10평</td><td>33.1 m²</td><td>원룸, 소형 오피스텔</td></tr>
+      <tr><td>20평</td><td>66.1 m²</td><td>소형 아파트</td></tr>
+      <tr><td>30평</td><td>99.2 m²</td><td>중형 아파트 (국민 평형)</td></tr>
+      <tr><td>40평</td><td>132.2 m²</td><td>대형 아파트</td></tr>
+      <tr><td>50평</td><td>165.3 m²</td><td>초대형 아파트</td></tr>
+    </tbody>
+  </table>
+
+  <p>분양 면적과 공급 면적이 다를 수 있으니, 실제 계약 시 전용면적 기준인지 확인하세요.</p>
+
+  <h2>길이: 인치·피트 ↔ cm·m 변환</h2>
+  <p>해외 제품 구매나 키 표기 확인 시 필요합니다.</p>
+  <ul>
+    <li><strong>1인치(inch) = 2.54cm</strong></li>
+    <li><strong>1피트(foot) = 30.48cm</strong></li>
+    <li><strong>1야드(yard) = 91.44cm</strong></li>
+    <li><strong>1마일(mile) = 1.609km</strong></li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>피트·인치</th><th>cm</th><th>키 환산 예시</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>5'0"</td><td>152.4 cm</td><td></td></tr>
+      <tr><td>5'5"</td><td>165.1 cm</td><td>한국 여성 평균</td></tr>
+      <tr><td>5'9"</td><td>175.3 cm</td><td>한국 남성 평균</td></tr>
+      <tr><td>6'0"</td><td>182.9 cm</td><td></td></tr>
+    </tbody>
+  </table>
+
+  <h2>온도: 섭씨 ↔ 화씨 변환</h2>
+  <p>해외 날씨 앱이나 오븐 레시피에서 화씨를 섭씨로 변환할 때 사용합니다.</p>
+  <ul>
+    <li><strong>화씨(°F) → 섭씨(°C): (°F − 32) × 5/9</strong></li>
+    <li><strong>섭씨(°C) → 화씨(°F): °C × 9/5 + 32</strong></li>
+  </ul>
+
+  <table>
+    <thead>
+      <tr><th>섭씨 (°C)</th><th>화씨 (°F)</th><th>상황</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>0°C</td><td>32°F</td><td>물의 어는점</td></tr>
+      <tr><td>20°C</td><td>68°F</td><td>실내 적정 온도</td></tr>
+      <tr><td>37°C</td><td>98.6°F</td><td>정상 체온</td></tr>
+      <tr><td>100°C</td><td>212°F</td><td>물의 끓는점</td></tr>
+    </tbody>
+  </table>
+
+  <h2>무게: 파운드·온스 ↔ kg·g 변환</h2>
+  <ul>
+    <li><strong>1파운드(lb) = 약 453.6g</strong></li>
+    <li><strong>1온스(oz) = 약 28.35g</strong></li>
+    <li><strong>1kg = 약 2.205파운드</strong></li>
+  </ul>
+  <p>한국 전통 단위인 <strong>1근은 600g</strong>입니다(축산물 기준). 채소·과일 거래에서는 한 근을 400g으로 보는 경우도 있으니 주의하세요.</p>
+
+  <h2>단위 변환기 활용하기</h2>
+  <p>다양한 단위를 빠르게 변환하려면 <a href="/unit-converter">단위 변환기</a>를 사용하세요. 길이·무게·온도·넓이·부피·속도·데이터 7가지 카테고리를 지원하며, 한국 전통 단위(평, 근)도 포함되어 있습니다.</p>
+</BlogLayout>

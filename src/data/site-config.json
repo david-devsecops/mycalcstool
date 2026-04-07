@@ -103,6 +103,42 @@
       "icon": "📅",
       "category": "생활",
       "priority": 0.8
+    },
+    {
+      "id": "age-calculator",
+      "path": "/age-calculator",
+      "name": "나이 계산기",
+      "description": "만 나이·한국식 나이·연 나이 한번에 계산",
+      "icon": "🎂",
+      "category": "생활",
+      "priority": 0.85
+    },
+    {
+      "id": "percentage-calculator",
+      "path": "/percentage-calculator",
+      "name": "퍼센트 계산기",
+      "description": "비율·증감률·할인율 3가지 모드 계산",
+      "icon": "💯",
+      "category": "생활",
+      "priority": 0.82
+    },
+    {
+      "id": "unit-converter",
+      "path": "/unit-converter",
+      "name": "단위 변환기",
+      "description": "길이·무게·온도·넓이·평 단위 즉시 변환",
+      "icon": "📐",
+      "category": "생활",
+      "priority": 0.80
+    },
+    {
+      "id": "tip-calculator",
+      "path": "/tip-calculator",
+      "name": "더치페이 계산기",
+      "description": "회식·모임 비용 인원 나누기 계산",
+      "icon": "🍽️",
+      "category": "생활",
+      "priority": 0.78
     }
   ]
 }

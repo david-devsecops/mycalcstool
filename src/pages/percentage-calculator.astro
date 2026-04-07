@@ -1,0 +1,217 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '퍼센트 계산기 - 비율·증감률·퍼센트 계산 무료';
+const description = 'Y의 X%는 얼마인지, X가 Y의 몇 %인지, 퍼센트 증가율·감소율을 즉시 계산합니다. 할인율, 세율, 이자율 계산에도 활용하세요.';
+const keywords = '퍼센트 계산기, 비율 계산기, 퍼센트 계산, 할인율 계산, 증가율 계산, 감소율 계산, 이자율 계산, % 계산기';
+
+const faqItems = [
+  {
+    question: '퍼센트 계산은 어떻게 하나요?',
+    answer: '퍼센트는 100을 분모로 하는 비율입니다. "Y의 X%"를 구하려면 Y × (X ÷ 100)으로 계산합니다. 예를 들어 50,000원의 15%는 50,000 × 0.15 = 7,500원입니다.',
+  },
+  {
+    question: '퍼센트 증가율은 어떻게 계산하나요?',
+    answer: '증가율(%) = (새 값 − 이전 값) ÷ |이전 값| × 100입니다. 예를 들어 월급이 300만원에서 330만원으로 오르면 (330−300)÷300×100 = 10% 인상입니다.',
+  },
+  {
+    question: '할인 후 가격은 어떻게 계산하나요?',
+    answer: '할인 후 가격 = 원래 가격 × (1 − 할인율÷100)입니다. 예를 들어 80,000원짜리 물건이 20% 할인되면 80,000 × 0.8 = 64,000원입니다. "Y의 X%" 모드에서 할인율을 입력한 뒤 원가에서 결과를 빼면 됩니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '퍼센트 계산기',
+  description,
+  url: 'https://mycalcstool.com/percentage-calculator',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/percentage-calculator">
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">퍼센트 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">💯 퍼센트 계산기</h1>
+    <p class="text-gray-500 mt-2">비율·증감률·퍼센트 계산 — 3가지 모드</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- 모드 탭 -->
+  <div class="flex gap-2 mb-4 overflow-x-auto pb-1">
+    <button id="tab-a" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-primary-500 bg-primary-50 text-primary-700 whitespace-nowrap" type="button" onclick="showMode('a')">Y의 X%는?</button>
+    <button id="tab-b" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-gray-200 text-gray-500 whitespace-nowrap" type="button" onclick="showMode('b')">X는 Y의 몇 %?</button>
+    <button id="tab-c" class="tab-btn px-4 py-2 rounded-lg font-semibold text-sm border-2 border-gray-200 text-gray-500 whitespace-nowrap" type="button" onclick="showMode('c')">증가/감소율</button>
+  </div>
+
+  <!-- 모드 A: Y의 X% -->
+  <section id="mode-a" class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">🔢</span> Y의 X%는 얼마인가?</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="a-x" class="block text-sm font-semibold text-gray-700 mb-1">X (%)</label>
+        <input type="number" id="a-x" class="input-field" placeholder="예: 15" min="0" step="any" oninput="calcA()" inputmode="decimal" />
+      </div>
+      <div>
+        <label for="a-y" class="block text-sm font-semibold text-gray-700 mb-1">Y (숫자)</label>
+        <input type="number" id="a-y" class="input-field" placeholder="예: 50000" step="any" oninput="calcA()" inputmode="decimal" />
+      </div>
+    </div>
+    <div id="result-a" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">결과</p>
+      <p class="text-3xl font-bold tabular-nums text-primary-700" id="result-a-val">—</p>
+      <p class="text-sm text-gray-500 mt-2" id="result-a-desc"></p>
+    </div>
+  </section>
+
+  <!-- 모드 B: X는 Y의 몇 % -->
+  <section id="mode-b" class="card mb-6 hidden">
+    <h2 class="section-title"><span aria-hidden="true">🔢</span> X는 Y의 몇 퍼센트인가?</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="b-x" class="block text-sm font-semibold text-gray-700 mb-1">X (부분)</label>
+        <input type="number" id="b-x" class="input-field" placeholder="예: 7500" step="any" oninput="calcB()" inputmode="decimal" />
+      </div>
+      <div>
+        <label for="b-y" class="block text-sm font-semibold text-gray-700 mb-1">Y (전체)</label>
+        <input type="number" id="b-y" class="input-field" placeholder="예: 50000" step="any" oninput="calcB()" inputmode="decimal" />
+      </div>
+    </div>
+    <div id="result-b" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">결과</p>
+      <p class="text-3xl font-bold tabular-nums text-primary-700" id="result-b-val">—</p>
+      <p class="text-sm text-gray-500 mt-2" id="result-b-desc"></p>
+    </div>
+  </section>
+
+  <!-- 모드 C: 증가/감소율 -->
+  <section id="mode-c" class="card mb-6 hidden">
+    <h2 class="section-title"><span aria-hidden="true">📊</span> X에서 Y로 변화율</h2>
+    <div class="grid grid-cols-2 gap-4 mb-4">
+      <div>
+        <label for="c-x" class="block text-sm font-semibold text-gray-700 mb-1">이전 값 (X)</label>
+        <input type="number" id="c-x" class="input-field" placeholder="예: 300" step="any" oninput="calcC()" inputmode="decimal" />
+      </div>
+      <div>
+        <label for="c-y" class="block text-sm font-semibold text-gray-700 mb-1">새 값 (Y)</label>
+        <input type="number" id="c-y" class="input-field" placeholder="예: 330" step="any" oninput="calcC()" inputmode="decimal" />
+      </div>
+    </div>
+    <div id="result-c" class="hidden bg-primary-50 rounded-xl p-5 text-center">
+      <p class="text-sm text-gray-500 mb-1">변화율</p>
+      <p class="text-3xl font-bold tabular-nums" id="result-c-val">—</p>
+      <p class="text-sm text-gray-500 mt-2" id="result-c-desc"></p>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <!-- 자주 쓰는 퍼센트 참고표 -->
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">⚡</span> 자주 쓰는 퍼센트 계산</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+      {[
+        ['10% 할인', '× 0.9'],
+        ['20% 할인', '× 0.8'],
+        ['30% 할인', '× 0.7'],
+        ['부가가치세 10%', '× 1.1'],
+        ['이자 연 3%', '× 1.03'],
+        ['소득세 6%', '× 0.94'],
+      ].map(([label, formula]) => (
+        <div class="p-3 bg-gray-50 rounded-lg">
+          <p class="font-semibold text-gray-700 text-xs">{label}</p>
+          <p class="text-primary-600 font-bold mt-0.5">{formula}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/loan', label: '🏦 대출 이자', desc: '이자율 계산' },
+        { href: '/compound', label: '📈 복리 계산기', desc: '수익률 계산' },
+        { href: '/salary', label: '💰 연봉 계산기', desc: '세금 공제율 확인' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+function showMode(mode) {
+  ['a','b','c'].forEach(m => {
+    const section = document.getElementById('mode-' + m);
+    const tab = document.getElementById('tab-' + m);
+    if (!section || !tab) return;
+    const active = m === mode;
+    section.classList.toggle('hidden', !active);
+    tab.classList.toggle('border-primary-500', active);
+    tab.classList.toggle('bg-primary-50', active);
+    tab.classList.toggle('text-primary-700', active);
+    tab.classList.toggle('border-gray-200', !active);
+    tab.classList.toggle('text-gray-500', !active);
+  });
+}
+
+function fmt(n) {
+  return parseFloat(n.toFixed(4)).toLocaleString('ko-KR', { maximumFractionDigits: 4 });
+}
+
+function calcA() {
+  const x = parseFloat(document.getElementById('a-x').value);
+  const y = parseFloat(document.getElementById('a-y').value);
+  const res = document.getElementById('result-a');
+  if (isNaN(x) || isNaN(y)) { res.classList.add('hidden'); return; }
+  const result = y * (x / 100);
+  document.getElementById('result-a-val').textContent = fmt(result);
+  document.getElementById('result-a-desc').textContent = `${fmt(y)}의 ${fmt(x)}% = ${fmt(result)}`;
+  res.classList.remove('hidden');
+}
+
+function calcB() {
+  const x = parseFloat(document.getElementById('b-x').value);
+  const y = parseFloat(document.getElementById('b-y').value);
+  const res = document.getElementById('result-b');
+  if (isNaN(x) || isNaN(y) || y === 0) { res.classList.add('hidden'); return; }
+  const result = (x / y) * 100;
+  document.getElementById('result-b-val').textContent = fmt(result) + '%';
+  document.getElementById('result-b-desc').textContent = `${fmt(x)}은(는) ${fmt(y)}의 ${fmt(result)}%`;
+  res.classList.remove('hidden');
+}
+
+function calcC() {
+  const x = parseFloat(document.getElementById('c-x').value);
+  const y = parseFloat(document.getElementById('c-y').value);
+  const res = document.getElementById('result-c');
+  if (isNaN(x) || isNaN(y) || x === 0) { res.classList.add('hidden'); return; }
+  const result = ((y - x) / Math.abs(x)) * 100;
+  const isIncrease = result >= 0;
+  const val = document.getElementById('result-c-val');
+  val.textContent = (isIncrease ? '+' : '') + fmt(result) + '%';
+  val.style.color = isIncrease ? '#10B981' : '#EF4444';
+  document.getElementById('result-c-desc').textContent =
+    `${fmt(x)} → ${fmt(y)}: ${fmt(Math.abs(result))}% ${isIncrease ? '증가' : '감소'}`;
+  res.classList.remove('hidden');
+}
+</script>

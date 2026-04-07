@@ -131,6 +131,14 @@ const presets = [
     </section>
 
     <AdSlot slot="result" format="rectangle" />
+    <section id="dday-share-section" class="card mt-6 hidden" aria-labelledby="dday-share-title">
+      <h2 class="section-title" id="dday-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+      <div class="flex flex-col md:flex-row md:items-center gap-3">
+        <p class="text-sm text-gray-600 flex-1">기준일과 목표일을 포함한 링크를 복사할 수 있습니다.</p>
+        <button id="copy-dday-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+      </div>
+      <p id="dday-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+    </section>
     <AdSlot slot="content" format="rectangle" />
   </div>
 
@@ -198,6 +206,32 @@ function calculate() {
 
   const results = document.getElementById('dday-results');
   if (results) { results.classList.remove('hidden'); results.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+
+  // 공유 링크
+  const shareSection = document.getElementById('dday-share-section');
+  const shareBtn = document.getElementById('copy-dday-share-link') as HTMLButtonElement | null;
+  const shareFeedback = document.getElementById('dday-share-feedback');
+  const shareUrl = new URL(window.location.href);
+  shareUrl.search = '';
+  shareUrl.searchParams.set('start', startEl?.value || '');
+  shareUrl.searchParams.set('target', targetEl?.value || '');
+  if (nameEl?.value) shareUrl.searchParams.set('name', nameEl.value.substring(0, 50));
+  if (shareBtn) shareBtn.dataset.shareUrl = shareUrl.toString();
+  if (shareFeedback) shareFeedback.textContent = `목표일: ${formatDate(targetDate)}`;
+  shareSection?.classList.remove('hidden');
+}
+
+async function copyDdayShareLink(): Promise<void> {
+  const btn = document.getElementById('copy-dday-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('dday-share-feedback');
+  const shareUrl = btn?.dataset.shareUrl;
+  if (!shareUrl) return;
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
 }
 
 document.addEventListener('DOMContentLoaded', () => {
@@ -219,6 +253,14 @@ document.addEventListener('DOMContentLoaded', () => {
   });
 
   document.getElementById('calc-dday-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-dday-share-link')?.addEventListener('click', () => copyDdayShareLink());
+
+  // URL 파라미터 복원
+  const params = new URLSearchParams(window.location.search);
+  if (params.get('start') && startEl) startEl.value = params.get('start')!;
+  if (params.get('target') && targetEl) targetEl.value = params.get('target')!;
+  if (params.get('name') && nameEl) nameEl.value = params.get('name')!.substring(0, 50);
+
   calculate();
 });
 </script>

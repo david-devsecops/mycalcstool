@@ -1,0 +1,252 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '단위 변환기 - 길이·무게·온도·넓이·부피·속도 변환';
+const description = '미터·인치·피트, 킬로그램·파운드, 섭씨·화씨, 평·제곱미터 등 7가지 카테고리 단위를 즉시 변환합니다. 한국 전통 단위(평, 근)도 지원합니다.';
+const keywords = '단위 변환기, 단위 변환, cm to inch, kg to lbs, 섭씨 화씨 변환, 평 m2 변환, 단위 계산기, 길이 변환, 무게 변환, 온도 변환';
+
+const faqItems = [
+  {
+    question: '1평은 몇 m²인가요?',
+    answer: '1평은 약 3.3058m²입니다. 역으로 1m²는 약 0.3025평입니다. 부동산 면적 표시에서 자주 사용하는 단위이며, 아파트 분양 면적 계산 시 활용하세요.',
+  },
+  {
+    question: '1인치는 몇 cm인가요?',
+    answer: '1인치(inch)는 정확히 2.54cm입니다. 1피트(foot)는 12인치 = 30.48cm, 1야드(yard)는 3피트 = 91.44cm입니다.',
+  },
+  {
+    question: '섭씨를 화씨로 변환하는 방법은?',
+    answer: '화씨(°F) = 섭씨(°C) × 9/5 + 32입니다. 예를 들어 체온 37°C는 37 × 1.8 + 32 = 98.6°F입니다. 역으로 섭씨(°C) = (화씨 − 32) × 5/9입니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '단위 변환기',
+  description,
+  url: 'https://mycalcstool.com/unit-converter',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+
+const categories = ['길이','무게','온도','넓이','부피','속도','데이터'];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/unit-converter">
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">단위 변환기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">📐 단위 변환기</h1>
+    <p class="text-gray-500 mt-2">7가지 카테고리 · 즉시 양방향 변환 · 한국 단위 지원</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <!-- 카테고리 탭 -->
+  <div class="flex gap-2 overflow-x-auto pb-2 mb-4">
+    {categories.map((cat, i) => (
+      <button
+        class={`cat-tab px-4 py-2 rounded-lg font-semibold text-sm whitespace-nowrap border-2 transition-all ${i === 0 ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-gray-200 text-gray-500'}`}
+        type="button"
+        data-cat={['length','weight','temperature','area','volume','speed','data'][i]}
+        onclick={`showCat('${['length','weight','temperature','area','volume','speed','data'][i]}')`}
+      >{cat}</button>
+    ))}
+  </div>
+
+  <section class="card mb-6">
+    <div id="cat-length" class="converter-panel">
+      <h2 class="section-title"><span aria-hidden="true">📏</span> 길이 변환</h2>
+      <div id="length-ui"></div>
+    </div>
+    <div id="cat-weight" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">⚖️</span> 무게 변환</h2>
+      <div id="weight-ui"></div>
+    </div>
+    <div id="cat-temperature" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🌡️</span> 온도 변환</h2>
+      <div id="temperature-ui"></div>
+    </div>
+    <div id="cat-area" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🗺️</span> 넓이 변환 <span class="text-sm text-gray-400 font-normal">(평 지원)</span></h2>
+      <div id="area-ui"></div>
+    </div>
+    <div id="cat-volume" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">🥛</span> 부피 변환</h2>
+      <div id="volume-ui"></div>
+    </div>
+    <div id="cat-speed" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">💨</span> 속도 변환</h2>
+      <div id="speed-ui"></div>
+    </div>
+    <div id="cat-data" class="converter-panel hidden">
+      <h2 class="section-title"><span aria-hidden="true">💾</span> 데이터 크기 변환</h2>
+      <div id="data-ui"></div>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <!-- 자주 찾는 변환 -->
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">⚡</span> 자주 쓰는 변환</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-2 text-sm">
+      {[
+        ['1인치', '2.54 cm'],
+        ['1피트', '30.48 cm'],
+        ['1마일', '1.609 km'],
+        ['1 kg', '2.205 파운드'],
+        ['1 근', '600 g'],
+        ['0°C', '32°F'],
+        ['100°C', '212°F'],
+        ['1평', '3.306 m²'],
+        ['1갤런', '3.785 L'],
+        ['1 mph', '1.609 km/h'],
+        ['1 GB', '1,024 MB'],
+        ['1에이커', '4,047 m²'],
+      ].map(([from, to]) => (
+        <div class="p-2 bg-gray-50 rounded-lg text-center">
+          <span class="font-semibold text-gray-700">{from}</span>
+          <span class="text-gray-400 mx-1">=</span>
+          <span class="font-semibold text-primary-600">{to}</span>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/percentage-calculator', label: '💯 퍼센트 계산기', desc: '비율·증감률 계산' },
+        { href: '/bmi', label: '⚖️ BMI 계산기', desc: '체중 건강 확인' },
+        { href: '/age-calculator', label: '🎂 나이 계산기', desc: '만 나이 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+const UNITS = {
+  length: { '미터 (m)': 1, '센티미터 (cm)': 0.01, '밀리미터 (mm)': 0.001, '킬로미터 (km)': 1000, '인치 (inch)': 0.0254, '피트 (foot)': 0.3048, '야드 (yard)': 0.9144, '마일 (mile)': 1609.344 },
+  weight: { '킬로그램 (kg)': 1, '그램 (g)': 0.001, '밀리그램 (mg)': 0.000001, '파운드 (lb)': 0.453592, '온스 (oz)': 0.0283495, '근 (600g)': 0.6, '돈 (3.75g)': 0.00375 },
+  temperature: null,
+  area: { '제곱미터 (m²)': 1, '평 (坪)': 3.30579, '제곱킬로미터 (km²)': 1000000, '헥타르 (ha)': 10000, '제곱피트 (ft²)': 0.092903, '에이커 (acre)': 4046.86, '제곱마일 (mile²)': 2589988 },
+  volume: { '리터 (L)': 1, '밀리리터 (mL)': 0.001, '세제곱미터 (m³)': 1000, '갤런 (gallon)': 3.78541, '쿼트 (quart)': 0.946353, '컵 (cup)': 0.236588 },
+  speed: { 'km/h': 1, 'm/s': 3.6, 'mph': 1.60934, '노트 (knot)': 1.852 },
+  data: { '바이트 (B)': 1, '킬로바이트 (KB)': 1024, '메가바이트 (MB)': 1048576, '기가바이트 (GB)': 1073741824, '테라바이트 (TB)': 1099511627776 },
+};
+
+const TEMP_UNITS = ['섭씨 (°C)', '화씨 (°F)', '켈빈 (K)'];
+
+function convertTemp(val, from, to) {
+  let c;
+  if (from === '섭씨 (°C)') c = val;
+  else if (from === '화씨 (°F)') c = (val - 32) * 5/9;
+  else c = val - 273.15;
+  if (to === '섭씨 (°C)') return c;
+  if (to === '화씨 (°F)') return c * 9/5 + 32;
+  return c + 273.15;
+}
+
+function buildUI(catId, units) {
+  const el = document.getElementById(catId + '-ui');
+  const isTemp = catId === 'temperature';
+  const unitNames = isTemp ? TEMP_UNITS : Object.keys(units);
+  const opts = unitNames.map(u => `<option value="${u}">${u}</option>`).join('');
+  el.innerHTML = `
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">변환 전</label>
+        <select id="${catId}-from-unit" class="input-field mb-2" onchange="convert('${catId}')">${opts}</select>
+        <input type="number" id="${catId}-from-val" class="input-field" placeholder="값 입력" step="any" oninput="convert('${catId}')" inputmode="decimal" />
+      </div>
+      <div>
+        <label class="block text-sm font-semibold text-gray-700 mb-1">변환 후</label>
+        <select id="${catId}-to-unit" class="input-field mb-2" onchange="convert('${catId}')">${opts}</select>
+        <input type="number" id="${catId}-to-val" class="input-field" placeholder="결과" step="any" oninput="convertReverse('${catId}')" inputmode="decimal" />
+      </div>
+    </div>
+  `;
+  const fromSel = document.getElementById(catId + '-from-unit');
+  const toSel = document.getElementById(catId + '-to-unit');
+  if (isTemp) {
+    fromSel.value = '섭씨 (°C)';
+    toSel.value = '화씨 (°F)';
+  } else {
+    const keys = Object.keys(units);
+    if (keys.length >= 2) { fromSel.value = keys[0]; toSel.value = keys[1]; }
+  }
+}
+
+function fmtResult(n) {
+  if (Math.abs(n) < 0.0001 && n !== 0) return n.toExponential(6);
+  return parseFloat(n.toPrecision(8)).toLocaleString('ko-KR', { maximumFractionDigits: 8 });
+}
+
+function convert(catId) {
+  const fromUnit = document.getElementById(catId + '-from-unit').value;
+  const toUnit = document.getElementById(catId + '-to-unit').value;
+  const val = parseFloat(document.getElementById(catId + '-from-val').value);
+  if (isNaN(val)) { document.getElementById(catId + '-to-val').value = ''; return; }
+  let result;
+  if (catId === 'temperature') {
+    result = convertTemp(val, fromUnit, toUnit);
+  } else {
+    const units = UNITS[catId];
+    result = (val * units[fromUnit]) / units[toUnit];
+  }
+  document.getElementById(catId + '-to-val').value = fmtResult(result);
+}
+
+function convertReverse(catId) {
+  const fromUnit = document.getElementById(catId + '-from-unit').value;
+  const toUnit = document.getElementById(catId + '-to-unit').value;
+  const val = parseFloat(document.getElementById(catId + '-to-val').value);
+  if (isNaN(val)) { document.getElementById(catId + '-from-val').value = ''; return; }
+  let result;
+  if (catId === 'temperature') {
+    result = convertTemp(val, toUnit, fromUnit);
+  } else {
+    const units = UNITS[catId];
+    result = (val * units[toUnit]) / units[fromUnit];
+  }
+  document.getElementById(catId + '-from-val').value = fmtResult(result);
+}
+
+function showCat(cat) {
+  document.querySelectorAll('.converter-panel').forEach(p => p.classList.add('hidden'));
+  document.getElementById('cat-' + cat).classList.remove('hidden');
+  document.querySelectorAll('.cat-tab').forEach(t => {
+    const active = t.dataset.cat === cat;
+    t.classList.toggle('border-primary-500', active);
+    t.classList.toggle('bg-primary-50', active);
+    t.classList.toggle('text-primary-700', active);
+    t.classList.toggle('border-gray-200', !active);
+    t.classList.toggle('text-gray-500', !active);
+  });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  Object.keys(UNITS).forEach(cat => buildUI(cat, UNITS[cat]));
+  const inp = document.getElementById('length-from-val');
+  if (inp) { inp.value = '1'; convert('length'); }
+});
+</script>

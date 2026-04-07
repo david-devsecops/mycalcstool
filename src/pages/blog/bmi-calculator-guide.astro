@@ -1,0 +1,78 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = 'BMI 계산기 결과 보는 법 — WHO 기준과 한국인 기준 차이';
+const description = 'BMI 수치의 의미, WHO 기준과 한국비만학회 기준의 차이, 표준체중 계산 방법을 실용적으로 설명합니다.';
+const keywords = 'BMI 계산기, 체질량지수, BMI 정상 범위, 한국인 BMI 기준, 표준체중 계산';
+const canonicalUrl = 'https://mycalcstool.com/blog/bmi-calculator-guide/';
+const publishDate = '2026-04-07';
+const modifiedDate = '2026-04-07';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="건강" readTime="6분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="건강 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">BMI 계산기 결과 보는 법 — WHO 기준과 한국인 기준 차이</Fragment>
+
+  <p>BMI(Body Mass Index, 체질량지수)는 체중(kg)을 키(m)의 제곱으로 나눈 값입니다. 비만도를 간단히 확인하는 지표로 전 세계적으로 널리 사용되지만, 한국인은 서양인 대비 같은 BMI에서 체지방률이 더 높아 별도의 기준이 적용됩니다.</p>
+
+  <h2>BMI 계산 공식</h2>
+  <p><strong>BMI = 체중(kg) ÷ (키(m) × 키(m))</strong></p>
+  <p>예시: 키 170cm, 몸무게 70kg인 경우 → BMI = 70 ÷ (1.7 × 1.7) = <strong>24.2</strong></p>
+
+  <h2>WHO 기준 vs 한국비만학회 기준</h2>
+  <p>한국인은 같은 BMI에서 서양인보다 체지방률이 높아 비만으로 인한 대사 질환 위험이 더 높습니다. 이 때문에 한국비만학회는 WHO 기준보다 엄격한 기준을 적용합니다.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>분류</th>
+        <th>WHO 기준</th>
+        <th>한국비만학회 기준</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>저체중</td><td>18.5 미만</td><td>18.5 미만</td></tr>
+      <tr><td>정상</td><td>18.5 ~ 24.9</td><td>18.5 ~ 22.9</td></tr>
+      <tr><td>과체중</td><td>25 ~ 29.9</td><td>23 ~ 24.9</td></tr>
+      <tr><td>비만 1단계</td><td>30 ~ 34.9</td><td>25 ~ 29.9</td></tr>
+      <tr><td>비만 2단계</td><td>35 이상</td><td>30 이상</td></tr>
+    </tbody>
+  </table>
+
+  <p>즉, WHO 기준으로 '정상'인 BMI 23~24.9라도 한국비만학회 기준으로는 '과체중'으로 분류됩니다. 한국인은 한국비만학회 기준을 더 적극적으로 참고하는 것이 좋습니다.</p>
+
+  <h2>표준체중 계산 방법</h2>
+  <p>표준체중은 BMI 22를 기준으로 계산합니다.</p>
+  <p><strong>표준체중(kg) = 22 × 키(m)²</strong></p>
+  <p>키 170cm라면: 22 × 1.7² = 22 × 2.89 = <strong>63.6kg</strong></p>
+  <p>정상 체중 범위는 BMI 18.5~22.9를 기준으로 계산됩니다:</p>
+  <ul>
+    <li>최소 정상체중: 18.5 × 키(m)²</li>
+    <li>최대 정상체중: 22.9 × 키(m)²</li>
+  </ul>
+
+  <h2>BMI의 한계</h2>
+  <p>BMI는 간단하고 유용한 지표이지만 다음과 같은 한계가 있습니다:</p>
+  <ul>
+    <li><strong>근육량 미반영</strong>: 근육이 많은 운동선수는 BMI가 높아도 체지방률이 낮을 수 있음</li>
+    <li><strong>체지방 분포 미반영</strong>: 같은 BMI라도 복부 비만 여부에 따라 건강 위험이 다름</li>
+    <li><strong>노인·여성</strong>: 근육 감소로 BMI가 정상이어도 체지방률이 높을 수 있음</li>
+  </ul>
+  <p>따라서 BMI는 참고 지표로 활용하되, 허리둘레, 체성분 검사 등을 병행해 종합적으로 판단하는 것이 좋습니다.</p>
+
+  <h2>BMI 계산기 활용하기</h2>
+  <p><a href="/bmi">BMI 계산기</a>에 키와 몸무게를 입력하면 BMI 수치, 표준체중, 정상 체중 범위, 한국인 기준 비만도 판정을 즉시 확인할 수 있습니다. 함께 <a href="/calorie">칼로리 계산기</a>나 <a href="/tdee">기초대사량 계산기</a>를 활용하면 체중 관리 목표를 더 구체적으로 설정할 수 있습니다.</p>
+</BlogLayout>

@@ -1,0 +1,191 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '더치페이 계산기 - 식비 n분의 1, 금액 나누기 계산';
+const description = '인원수와 금액을 입력하면 1인당 금액을 즉시 계산합니다. 서비스 요금·세금 포함 설정, 비율별 비교표 제공. 회식·모임 더치페이 계산에 활용하세요.';
+const keywords = '더치페이 계산기, 식비 나누기, n분의 1 계산기, 회식 계산기, 모임 비용 계산, 인당 금액 계산, 더치페이';
+
+const faqItems = [
+  {
+    question: '더치페이가 무엇인가요?',
+    answer: '더치페이(Dutch pay)는 식사나 모임 비용을 참가자 수대로 똑같이 나눠 내는 방식입니다. 한국에서는 "n빵"이라고도 부릅니다. 가장 간단한 비용 분담 방식으로 직장 회식, 친구 모임 등에서 널리 쓰입니다.',
+  },
+  {
+    question: '서비스 요금(봉사료)이 별도로 붙는 경우는?',
+    answer: '호텔 레스토랑이나 일부 고급 식당에서는 음식 가격에 10% 서비스 요금을 추가로 받습니다. 이 경우 "서비스 요금 포함" 옵션을 켜고 요금률을 설정하면 총액과 1인당 금액을 정확히 계산할 수 있습니다.',
+  },
+  {
+    question: '금액이 정확히 나눠지지 않을 때는?',
+    answer: '1원 단위까지 나누면 잔돈이 생길 수 있습니다. 이 계산기는 1인당 금액을 원(원화) 단위로 반올림해 표시하며, 총액과의 오차는 인원 수 범위 내에서 발생합니다. 실제로는 한 사람이 나머지를 부담하거나 십 원 단위로 반올림하는 경우가 많습니다.',
+  },
+];
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'WebApplication',
+  name: '더치페이 계산기',
+  description,
+  url: 'https://mycalcstool.com/tip-calculator',
+  applicationCategory: 'UtilitiesApplication',
+  operatingSystem: 'All',
+  offers: { '@type': 'Offer', price: '0', priceCurrency: 'KRW' },
+  inLanguage: 'ko',
+};
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd} hreflangEn="/en/tip-calculator">
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">더치페이 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">🍽️ 더치페이 계산기</h1>
+    <p class="text-gray-500 mt-2">회식·모임 비용을 인원수로 나눠 1인당 금액을 계산합니다</p>
+  </div>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6">
+    <h2 class="section-title"><span aria-hidden="true">💵</span> 비용 입력</h2>
+    <div class="space-y-5">
+      <!-- 총 금액 -->
+      <div>
+        <label for="bill-amount" class="block text-sm font-semibold text-gray-700 mb-1">총 금액 (원)</label>
+        <div class="flex items-center gap-2">
+          <input type="number" id="bill-amount" class="input-field flex-1" value="80000" min="0" step="100" inputmode="numeric" oninput="updateSplit()" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">원</span>
+        </div>
+      </div>
+
+      <!-- 서비스 요금 -->
+      <div class="flex items-center gap-3">
+        <label class="relative inline-flex items-center cursor-pointer">
+          <input type="checkbox" id="service-charge" class="sr-only peer" onchange="toggleService()" />
+          <div class="w-11 h-6 bg-gray-200 rounded-full peer peer-checked:bg-primary-600 after:content-[''] after:absolute after:top-0.5 after:left-0.5 after:bg-white after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:after:translate-x-5"></div>
+        </label>
+        <span class="text-sm font-medium text-gray-700">서비스 요금(봉사료) 별도</span>
+      </div>
+      <div id="service-field" class="hidden">
+        <label for="service-pct" class="block text-sm font-semibold text-gray-700 mb-1">서비스 요금률 (%)</label>
+        <input type="number" id="service-pct" class="input-field" value="10" min="0" max="30" step="0.5" inputmode="decimal" oninput="updateSplit()" />
+      </div>
+
+      <!-- 인원 -->
+      <div>
+        <label for="split-count" class="block text-sm font-semibold text-gray-700 mb-1">인원 수</label>
+        <div class="flex items-center gap-3">
+          <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(-1)" aria-label="인원 감소">−</button>
+          <input type="number" id="split-count" class="input-field text-center max-w-20" value="4" min="1" max="100" step="1" inputmode="numeric" oninput="updateSplit()" />
+          <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(1)" aria-label="인원 증가">+</button>
+          <span class="text-gray-600 font-medium">명</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 결과 -->
+  <section class="card mb-6" aria-live="polite">
+    <h2 class="section-title"><span aria-hidden="true">🧾</span> 계산 결과</h2>
+    <div class="grid grid-cols-3 gap-3 mb-4">
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">서비스 요금</p>
+        <p class="text-xl font-bold tabular-nums text-gray-700" id="res-service">0원</p>
+      </div>
+      <div class="bg-gray-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">총 합계</p>
+        <p class="text-xl font-bold tabular-nums text-gray-800" id="res-total">0원</p>
+      </div>
+      <div class="bg-primary-50 rounded-xl p-4 text-center">
+        <p class="text-xs text-gray-500 mb-1">1인당</p>
+        <p class="text-xl font-bold tabular-nums text-primary-700" id="res-per">0원</p>
+      </div>
+    </div>
+
+    <!-- 인원별 비교 -->
+    <h3 class="font-semibold text-gray-700 mb-2 text-sm">인원별 1인당 금액</h3>
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm">
+        <thead>
+          <tr class="bg-gray-50 text-gray-600">
+            <th class="px-2 py-2 text-center font-semibold">인원</th>
+            <th class="px-2 py-2 text-center font-semibold">총액</th>
+            <th class="px-2 py-2 text-center font-semibold">1인당</th>
+          </tr>
+        </thead>
+        <tbody id="comparison-table" class="divide-y divide-gray-100"></tbody>
+      </table>
+    </div>
+  </section>
+
+  <AdSlot slot="result" format="rectangle" />
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title"><span aria-hidden="true">🔗</span> 관련 계산기</h2>
+    <div class="grid grid-cols-2 md:grid-cols-3 gap-3">
+      {[
+        { href: '/percentage-calculator', label: '💯 퍼센트 계산기', desc: '할인율·세율 계산' },
+        { href: '/calorie', label: '🍎 칼로리 계산기', desc: '음식 칼로리 확인' },
+        { href: '/salary', label: '💰 연봉 계산기', desc: '실수령액 계산' },
+      ].map(l => (
+        <a href={l.href} class="p-3 border border-gray-200 rounded-lg hover:border-primary-300 hover:bg-primary-50 transition-colors group">
+          <div class="font-medium text-sm text-gray-700 group-hover:text-primary-600">{l.label}</div>
+          <div class="text-xs text-gray-400 mt-0.5">{l.desc}</div>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+function fmt(n) {
+  return Math.round(n).toLocaleString('ko-KR') + '원';
+}
+
+function toggleService() {
+  const checked = document.getElementById('service-charge').checked;
+  document.getElementById('service-field').classList.toggle('hidden', !checked);
+  updateSplit();
+}
+
+function adjustSplit(delta) {
+  const el = document.getElementById('split-count');
+  el.value = Math.max(1, (parseInt(el.value) || 1) + delta);
+  updateSplit();
+}
+
+function updateSplit() {
+  const bill = parseFloat(document.getElementById('bill-amount').value) || 0;
+  const split = Math.max(1, parseInt(document.getElementById('split-count').value) || 1);
+  const serviceOn = document.getElementById('service-charge').checked;
+  const servicePct = serviceOn ? (parseFloat(document.getElementById('service-pct').value) || 0) : 0;
+
+  const serviceAmt = bill * (servicePct / 100);
+  const total = bill + serviceAmt;
+  const perPerson = total / split;
+
+  document.getElementById('res-service').textContent = fmt(serviceAmt);
+  document.getElementById('res-total').textContent = fmt(total);
+  document.getElementById('res-per').textContent = fmt(perPerson);
+
+  const tbody = document.getElementById('comparison-table');
+  const counts = [2, 3, 4, 5, 6, 8, 10];
+  tbody.innerHTML = counts.map(n => {
+    const tot = total;
+    const pp = tot / n;
+    const isCur = n === split;
+    const cls = isCur ? 'bg-primary-50 font-semibold' : '';
+    return `<tr class="${cls}"><td class="px-2 py-2 text-center">${n}명</td><td class="px-2 py-2 text-center">${fmt(tot)}</td><td class="px-2 py-2 text-center">${fmt(pp)}</td></tr>`;
+  }).join('');
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  updateSplit();
+});
+</script>

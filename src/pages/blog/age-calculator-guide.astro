@@ -1,0 +1,100 @@
+---
+import BlogLayout from '../../layouts/BlogLayout.astro';
+
+const title = '만 나이 계산법 완전 정리 — 한국식·연 나이 차이와 활용';
+const description = '2023년 6월부터 공식화된 만 나이의 계산 방법, 한국식 나이·연 나이와의 차이, 법적 적용 기준을 정리합니다.';
+const keywords = '만 나이 계산법, 한국식 나이, 연 나이, 만 나이 제도, 나이 계산기';
+const canonicalUrl = 'https://mycalcstool.com/blog/age-calculator-guide/';
+const publishDate = '2026-04-07';
+const modifiedDate = '2026-04-07';
+
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: title,
+  description,
+  url: canonicalUrl,
+  datePublished: publishDate,
+  dateModified: modifiedDate,
+  author: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  publisher: { '@type': 'Organization', name: 'mycalcstool', url: 'https://mycalcstool.com' },
+  inLanguage: 'ko',
+  mainEntityOfPage: { '@type': 'WebPage', '@id': canonicalUrl },
+};
+---
+
+<BlogLayout title={title} description={description} keywords={keywords} canonicalUrl={canonicalUrl} publishDate={publishDate} modifiedDate={modifiedDate} category="생활" readTime="5분" jsonLd={jsonLd} lang="ko" homeHref="/" blogHref="/blog/" blogLabel="생활 가이드" updatedLabel="업데이트" authorPrefix="작성">
+  <Fragment slot="headline">만 나이 계산법 완전 정리 — 한국식·연 나이 차이와 활용</Fragment>
+
+  <p>2023년 6월 28일부터 한국의 공식 나이는 <strong>만 나이</strong>로 통일되었습니다. 법률, 행정, 의료, 계약 등 공공 영역에서는 이제 만 나이를 기준으로 적용합니다. 그러나 일상에서는 여전히 세 가지 나이 표현이 혼용되고 있어 혼란이 생기기도 합니다.</p>
+
+  <h2>세 가지 나이의 차이</h2>
+  <p>한국에서 사용하는 나이 계산 방식은 크게 세 가지입니다.</p>
+
+  <table>
+    <thead>
+      <tr>
+        <th>구분</th>
+        <th>계산 방법</th>
+        <th>사용 분야</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>만 나이</strong></td>
+        <td>생일 기준으로 정확하게 계산. 생일이 지났으면 현재 연도 − 출생 연도, 지나지 않았으면 −1 추가</td>
+        <td>공식 문서, 법령, 의료, 계약</td>
+      </tr>
+      <tr>
+        <td><strong>한국식 나이</strong></td>
+        <td>태어난 해를 1살로 보고, 매년 1월 1일마다 1살 추가</td>
+        <td>일상 대화, 사회적 관계</td>
+      </tr>
+      <tr>
+        <td><strong>연 나이</strong></td>
+        <td>현재 연도 − 출생 연도 (생일 무관)</td>
+        <td>병역법, 청소년보호법 일부</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h2>만 나이 계산 방법</h2>
+  <p>만 나이는 생일을 기준으로 정확히 계산합니다.</p>
+  <ul>
+    <li>올해 생일이 이미 지난 경우: <strong>현재 연도 − 출생 연도</strong></li>
+    <li>아직 생일이 지나지 않은 경우: <strong>현재 연도 − 출생 연도 − 1</strong></li>
+  </ul>
+  <p>예를 들어 1990년 8월생이라면:</p>
+  <ul>
+    <li>2026년 9월 기준(생일 이후): 2026 − 1990 = <strong>만 36세</strong></li>
+    <li>2026년 7월 기준(생일 이전): 2026 − 1990 − 1 = <strong>만 35세</strong></li>
+  </ul>
+
+  <h2>한국식 나이는 왜 만 나이보다 높은가</h2>
+  <p>한국식 나이는 태어난 순간을 1살로 계산하기 때문에 만 나이보다 항상 1~2살 더 많습니다. 생일이 지난 경우 1살, 생일이 지나지 않은 경우 2살 차이가 납니다.</p>
+  <p>특히 12월 말에 태어난 경우, 태어난 날 1살이 되고 이틀 후인 1월 1일에 바로 2살이 됩니다. 이 때문에 12월생은 한국식 나이와 만 나이의 차이가 가장 크게 느껴집니다.</p>
+
+  <h2>만 나이 통일 이후 달라진 점</h2>
+  <ul>
+    <li>행정 서비스(주민등록, 보험, 복지 수급 등)는 모두 만 나이 적용</li>
+    <li>의료 기관의 나이 기재 기준도 만 나이로 통일</li>
+    <li>계약서, 약관에 '나이' 표기 시 별도 명시가 없으면 만 나이 적용</li>
+    <li>다만 학교 입학 기준(초·중·고)은 기존 연 나이 방식 유지</li>
+  </ul>
+
+  <h2>만 나이를 빠르게 계산하는 방법</h2>
+  <p>간단한 암산 방법:</p>
+  <ol>
+    <li>현재 연도에서 출생 연도를 뺀다</li>
+    <li>아직 올해 생일이 지나지 않았다면 1을 뺀다</li>
+  </ol>
+  <p>정확한 계산이 필요하다면 <a href="/age-calculator">나이 계산기</a>를 활용하면 만 나이, 한국식 나이, 연 나이를 한번에 확인할 수 있습니다.</p>
+
+  <h2>요약</h2>
+  <ul>
+    <li>공식 상황(서류, 의료, 계약)에서는 <strong>만 나이</strong>를 사용</li>
+    <li>일상 대화에서는 여전히 한국식 나이가 통용될 수 있음</li>
+    <li>병역·청소년 관련 법령에서는 연 나이(연도 차이)를 기준으로 하는 경우 있음</li>
+    <li>불확실한 경우 "만 몇 세"라고 명시하면 혼란을 피할 수 있음</li>
+  </ul>
+</BlogLayout>

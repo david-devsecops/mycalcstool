@@ -257,6 +257,15 @@ const jsonLd = {
     </div>
   </section>
 
+  <section id="calorie-share-section" class="card mb-6 hidden" aria-labelledby="calorie-share-title">
+    <h2 class="section-title" id="calorie-share-title"><span aria-hidden="true">🔗</span> 계산 결과 공유</h2>
+    <div class="flex flex-col md:flex-row md:items-center gap-3">
+      <p class="text-sm text-gray-600 flex-1">현재 신체 정보와 활동량을 포함한 링크를 복사할 수 있습니다.</p>
+      <button id="copy-calorie-share-link" class="btn-primary md:w-auto" type="button">링크 복사</button>
+    </div>
+    <p id="calorie-share-feedback" class="text-xs text-gray-400 mt-2"></p>
+  </section>
+
   <AdSlot slot="content" format="rectangle" />
 
   <!-- SEO 콘텐츠 -->
@@ -379,6 +388,35 @@ function calculate() {
     section.classList.remove('hidden');
     section.scrollIntoView({ behavior: 'smooth', block: 'start' });
   }
+
+  // 공유 링크 업데이트
+  const shareSection = document.getElementById('calorie-share-section');
+  const shareBtn = document.getElementById('copy-calorie-share-link') as HTMLButtonElement | null;
+  const shareFeedback = document.getElementById('calorie-share-feedback');
+  const shareUrl = new URL(window.location.href);
+  shareUrl.search = '';
+  shareUrl.searchParams.set('gender', gender);
+  shareUrl.searchParams.set('age', String(age));
+  shareUrl.searchParams.set('height', String(height));
+  shareUrl.searchParams.set('weight', String(weight));
+  shareUrl.searchParams.set('activity', String(activity));
+  shareUrl.searchParams.set('goal', goal);
+  if (shareBtn) shareBtn.dataset.shareUrl = shareUrl.toString();
+  if (shareFeedback) shareFeedback.textContent = `${gender === 'male' ? '남성' : '여성'} · ${age}세 · ${height}cm · ${weight}kg`;
+  shareSection?.classList.remove('hidden');
+}
+
+async function copyCalorieShareLink(): Promise<void> {
+  const btn = document.getElementById('copy-calorie-share-link') as HTMLButtonElement | null;
+  const feedback = document.getElementById('calorie-share-feedback');
+  const shareUrl = btn?.dataset.shareUrl;
+  if (!shareUrl) return;
+  try {
+    await navigator.clipboard.writeText(shareUrl);
+    if (feedback) feedback.textContent = '공유 링크를 복사했습니다.';
+  } catch {
+    if (feedback) feedback.textContent = shareUrl;
+  }
 }
 
 function setText(id: string, value: string) {
@@ -433,6 +471,7 @@ document.addEventListener('DOMContentLoaded', () => {
   syncPair('weight', 'weight-range');
 
   document.getElementById('calc-btn')?.addEventListener('click', calculate);
+  document.getElementById('copy-calorie-share-link')?.addEventListener('click', () => copyCalorieShareLink());
 
   // 라디오 변경 시 결과가 표시된 상태면 자동 재계산
   document.querySelectorAll('input[name="gender"], input[name="goal"]').forEach(el => {

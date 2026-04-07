@@ -7,7 +7,19 @@
       "Bash(git commit -m ':*)",
       "Bash(git push:*)",
       "Bash(grep -E \"\\(^src/pages/[^/]+\\\\.astro$|^src/pages/en/[^/]+\\\\.astro$\\)\")",
-      "Bash(grep -E \"\\(^[^/]*\\\\.astro$|/en/[^/]+\\\\.astro$\\)\")"
+      "Bash(grep -E \"\\(^[^/]*\\\\.astro$|/en/[^/]+\\\\.astro$\\)\")",
+      "Bash(xargs grep:*)",
+      "Bash(curl:*)",
+      "Bash(git commit -m 'fix: add trailing slash to counterapi.dev URLs to prevent 301 redirect failure:*)",
+      "WebFetch(domain:api.counterapi.dev)",
+      "WebFetch(domain:mycalcstool.com)",
+      "WebFetch(domain:counterapi.dev)",
+      "WebFetch(domain:docs.counterapi.dev)",
+      "Bash(grep -E \"sm:|md:|lg:\" /d/website/mycalcstool/src/layouts/*.astro /d/website/mycalcstool/src/components/*.astro)",
+      "Bash(grep -n \"text-.*lg\\\\|text-.*md\\\\|text-.*sm\" /d/website/mycalcstool/src/pages/en/*.astro)",
+      "Bash(git commit:*)",
+      "Bash(grep -E \"\\\\.astro$\")",
+      "Bash(wc -l /d/website/mycalcstool/src/pages/*.astro /d/website/mycalcstool/src/pages/blog/*.astro /d/website/mycalcstool/src/pages/en/*.astro)"
     ]
   }
 }
