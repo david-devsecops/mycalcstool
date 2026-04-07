@@ -124,13 +124,18 @@ const relatedPosts = lang === 'en' ? getRelatedEnglishBlogPosts(currentSlug) : [
 
     /* H2 - 섹션 제목 */
     .blog-content h2 {
-      font-size: 1.625rem;
+      font-size: 1.25rem;
       font-weight: 700;
       margin-top: 3.5rem;
       margin-bottom: 1rem;
       padding-bottom: 0.75rem;
       border-bottom: 2px solid #e5e7eb;
       color: #111827 !important;
+    }
+    @media (min-width: 640px) {
+      .blog-content h2 {
+        font-size: 1.625rem;
+      }
     }
 
     /* H3 - 서브 제목 */

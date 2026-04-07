@@ -95,7 +95,7 @@ const jsonLd = {
         <label for="split-count" class="block text-sm font-semibold text-gray-700 mb-1">Split between</label>
         <div class="flex items-center gap-3">
           <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(-1)">−</button>
-          <input type="number" id="split-count" class="input-field text-center" value="2" min="1" max="50" step="1" inputmode="numeric" oninput="updateTip()" style="max-width:80px" />
+          <input type="number" id="split-count" class="input-field text-center max-w-20" value="2" min="1" max="50" step="1" inputmode="numeric" oninput="updateTip()" />
           <button class="w-10 h-10 rounded-lg border-2 border-gray-200 text-xl font-bold text-gray-600 hover:border-primary-400 transition-all" type="button" onclick="adjustSplit(1)">+</button>
           <span class="text-gray-600 font-medium">people</span>
         </div>
