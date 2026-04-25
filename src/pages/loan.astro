@@ -425,10 +425,16 @@ const jsonLd = [
     </h2>
     <div class="space-y-3 text-sm text-gray-700">
       <p>이 계산기는 표준 상환 공식으로 월 상환액과 총 이자를 추정합니다. 금리 유형, 우대 조건, 중도상환수수료, 실제 약정 조건은 금융기관별로 다를 수 있습니다.</p>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>원리금균등상환: 월 납입액을 일정하게 맞추는 표준 현재가치 공식을 사용합니다.</li>
+        <li>원금균등상환: 매월 같은 원금을 갚고 남은 잔액에 월 이자를 적용합니다.</li>
+        <li>만기일시상환: 대출 기간에는 이자만 계산하고 만기 원금 상환을 별도로 표시합니다.</li>
+      </ul>
       <p>
         계산 가정과 업데이트 원칙은 <a href="/methodology" class="font-semibold text-primary-600 hover:underline">계산 기준</a>에서,
         오류 제보는 <a href="/contact" class="font-semibold text-primary-600 hover:underline">문의하기</a>에서 확인할 수 있습니다.
       </p>
+      <p class="text-xs text-gray-500">마지막 계산 기준 점검: 2026년 4월 25일</p>
     </div>
   </section>
 
