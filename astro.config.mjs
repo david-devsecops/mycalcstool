@@ -2,6 +2,8 @@ import { defineConfig } from 'astro/config';
 import sitemap from '@astrojs/sitemap';
 import tailwind from '@astrojs/tailwind';
 
+import cloudflare from "@astrojs/cloudflare";
+
 const excludedSitemapPaths = new Set([
   '/en/blog/age-calculator-guide-how-old-am-i/',
   '/en/blog/bmi-calculator-guide/',
@@ -11,6 +13,7 @@ const excludedSitemapPaths = new Set([
 export default defineConfig({
   site: 'https://mycalcstool.com',
   trailingSlash: 'always',
+
   integrations: [
     sitemap({
       changefreq: 'weekly',
@@ -23,8 +26,12 @@ export default defineConfig({
     }),
     tailwind(),
   ],
+
   output: 'static',
+
   build: {
     format: 'directory',
   },
+
+  adapter: cloudflare()
 });

@@ -6,14 +6,19 @@
     "dev": "astro dev",
     "prebuild": "npm run update:ads-txt",
     "build": "astro build",
-    "preview": "astro preview",
+    "preview": "npm run build && wrangler dev",
     "astro": "astro",
-    "update:ads-txt": "node ./scripts/update-ads-txt.mjs"
+    "update:ads-txt": "node ./scripts/update-ads-txt.mjs",
+    "deploy": "npm run build && wrangler deploy"
   },
   "dependencies": {
-    "astro": "^5.6.1",
+    "@astrojs/cloudflare": "12",
     "@astrojs/sitemap": "^3.2.1",
     "@astrojs/tailwind": "^5.1.4",
+    "astro": "^5.6.1",
     "tailwindcss": "^3.4.17"
+  },
+  "devDependencies": {
+    "wrangler": "^4.85.0"
   }
 }
