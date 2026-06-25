@@ -5,7 +5,7 @@ interface Props {
 const { isEnglish = false } = Astro.props;
 ---
 
-<div id="visitor-counter" class="flex items-center justify-center gap-4 text-xs text-gray-400 mt-3">
+<div id="visitor-counter" class="flex items-center justify-center gap-4 text-xs text-gray-400 mt-3" data-nosnippet aria-live="polite">
   <span class="flex items-center gap-1.5">
     <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
       <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/>
@@ -34,46 +34,141 @@ const { isEnglish = false } = Astro.props;
 (function () {
   var NS = 'mycalcstool-com';
   var BASE = 'https://api.counterapi.dev/v1';
-  var today = new Date().toISOString().slice(0, 10).replace(/-/g, '');
+  var KST_OFFSET_MS = 9 * 60 * 60 * 1000;
+  var today = new Date(Date.now() + KST_OFFSET_MS).toISOString().slice(0, 10).replace(/-/g, '');
   var dailyKey = 'daily-' + today;
   var totalKey = 'total';
-  var SESSION_KEY = 'mct_visited';
+  var SESSION_KEY = 'mct_visit_state';
+  var LEGACY_SESSION_KEY = 'mct_visited';
+  var CACHE_KEY = 'mct_counter_cache';
 
   var counterEl = document.getElementById('visitor-counter');
   var dailyEl = document.getElementById('daily-count');
   var totalEl = document.getElementById('total-count');
   if (!counterEl || !dailyEl || !totalEl) return;
 
-  var alreadyCounted = sessionStorage.getItem(SESSION_KEY) === today;
-  var suffix = alreadyCounted ? '/' : '/up';
+  var visitState = readVisitState();
+  var countedDaily = visitState.date === today && visitState.daily === true;
+  var countedTotal = visitState.date === today && visitState.total === true;
+  var cachedCounts = readCachedCounts();
+
+  if (cachedCounts) {
+    updateText(cachedCounts.daily, cachedCounts.total);
+  }
 
   function fmt(n) {
-    return (n || 0).toLocaleString();
+    return Number.isFinite(n) ? n.toLocaleString() : '—';
+  }
+
+  function updateText(daily, total) {
+    if (Number.isFinite(daily)) dailyEl.textContent = fmt(daily);
+    if (Number.isFinite(total)) totalEl.textContent = fmt(total);
+  }
+
+  function readVisitState() {
+    try {
+      var raw = sessionStorage.getItem(SESSION_KEY);
+      if (raw) {
+        return JSON.parse(raw);
+      }
+
+      if (sessionStorage.getItem(LEGACY_SESSION_KEY) === today) {
+        return { date: today, daily: true, total: true };
+      }
+    } catch (error) {
+      return {};
+    }
+
+    return {};
+  }
+
+  function writeVisitState(nextState) {
+    try {
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(nextState));
+      sessionStorage.setItem(LEGACY_SESSION_KEY, today);
+    } catch (error) {
+      // Some privacy modes block sessionStorage. Counting should still render.
+    }
+  }
+
+  function readCachedCounts() {
+    try {
+      var raw = localStorage.getItem(CACHE_KEY);
+      if (!raw) return null;
+      var parsed = JSON.parse(raw);
+      if (!Number.isFinite(parsed.daily) && !Number.isFinite(parsed.total)) return null;
+      return parsed;
+    } catch (error) {
+      return null;
+    }
+  }
+
+  function writeCachedCounts(daily, total) {
+    try {
+      localStorage.setItem(CACHE_KEY, JSON.stringify({
+        date: today,
+        daily: daily,
+        total: total,
+        updatedAt: new Date().toISOString(),
+      }));
+    } catch (error) {
+      // Cache is only a display fallback.
+    }
+  }
+
+  function countFromPayload(payload) {
+    var value = payload && payload.count !== undefined ? payload.count : payload && payload.value;
+    var count = Number(value);
+    return Number.isFinite(count) ? count : null;
   }
 
   function fetchWithTimeout(url, ms) {
     return new Promise(function (resolve, reject) {
+      var controller = typeof AbortController !== 'undefined' ? new AbortController() : null;
       var timer = setTimeout(function () { reject(new Error('timeout')); }, ms);
-      fetch(url)
-        .then(function (r) { clearTimeout(timer); resolve(r); })
+      fetch(url, controller ? { signal: controller.signal } : undefined)
+        .then(function (r) {
+          clearTimeout(timer);
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function (json) { resolve(countFromPayload(json)); })
         .catch(function (e) { clearTimeout(timer); reject(e); });
+      if (controller) {
+        setTimeout(function () { controller.abort(); }, ms + 100);
+      }
     });
   }
 
+  function settle(promise) {
+    return promise
+      .then(function (value) { return { ok: Number.isFinite(value), value: value }; })
+      .catch(function () { return { ok: false, value: null }; });
+  }
+
   Promise.all([
-    fetchWithTimeout(BASE + '/' + NS + '/' + dailyKey + suffix, 5000),
-    fetchWithTimeout(BASE + '/' + NS + '/' + totalKey + suffix, 5000),
-  ])
-    .then(function (responses) {
-      return Promise.all(responses.map(function (r) { return r.json(); }));
-    })
-    .then(function (data) {
-      if (!alreadyCounted) sessionStorage.setItem(SESSION_KEY, today);
-      dailyEl.textContent = fmt(data[0].count !== undefined ? data[0].count : data[0].value);
-      totalEl.textContent = fmt(data[1].count !== undefined ? data[1].count : data[1].value);
-    })
-    .catch(function () {
-      counterEl.style.display = 'none';
-    });
+    settle(fetchWithTimeout(BASE + '/' + NS + '/' + dailyKey + (countedDaily ? '/' : '/up'), 7000)),
+    settle(fetchWithTimeout(BASE + '/' + NS + '/' + totalKey + (countedTotal ? '/' : '/up'), 7000)),
+  ]).then(function (results) {
+    var dailyResult = results[0];
+    var totalResult = results[1];
+    var nextDaily = dailyResult.ok ? dailyResult.value : cachedCounts && cachedCounts.daily;
+    var nextTotal = totalResult.ok ? totalResult.value : cachedCounts && cachedCounts.total;
+
+    updateText(nextDaily, nextTotal);
+
+    if (dailyResult.ok || totalResult.ok) {
+      writeCachedCounts(nextDaily, nextTotal);
+      writeVisitState({
+        date: today,
+        daily: countedDaily || dailyResult.ok,
+        total: countedTotal || totalResult.ok,
+      });
+      counterEl.dataset.counterStatus = 'ready';
+      return;
+    }
+
+    counterEl.dataset.counterStatus = cachedCounts ? 'cached' : 'unavailable';
+  });
 })();
 </script>
