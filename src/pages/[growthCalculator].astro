@@ -1,0 +1,15 @@
+---
+import GrowthCalculatorPage from '../components/GrowthCalculatorPage.astro';
+import { getGrowthPagesByLang } from '../data/growth-calculators';
+
+export function getStaticPaths() {
+  return getGrowthPagesByLang('ko').map((page) => ({
+    params: { growthCalculator: page.slug },
+    props: { page },
+  }));
+}
+
+const { page } = Astro.props;
+---
+
+<GrowthCalculatorPage page={page} />

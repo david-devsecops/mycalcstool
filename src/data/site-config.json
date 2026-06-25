@@ -60,6 +60,96 @@
       "priority": 0.9
     },
     {
+      "id": "stock-average-calculator",
+      "path": "/stock-average-calculator/",
+      "name": "주식 평단가 계산기",
+      "description": "추가 매수 후 평균 매입 단가 계산",
+      "icon": "📊",
+      "category": "금융",
+      "priority": 0.74
+    },
+    {
+      "id": "stock-averaging-down-calculator",
+      "path": "/stock-averaging-down-calculator/",
+      "name": "주식 물타기 계산기",
+      "description": "새 평단가와 손익분기 상승률 계산",
+      "icon": "📉",
+      "category": "금융",
+      "priority": 0.73
+    },
+    {
+      "id": "stock-return-calculator",
+      "path": "/stock-return-calculator/",
+      "name": "주식 수익률 계산기",
+      "description": "매수·매도 기준 순손익과 수익률 계산",
+      "icon": "💹",
+      "category": "금융",
+      "priority": 0.72
+    },
+    {
+      "id": "dividend-calculator",
+      "path": "/dividend-calculator/",
+      "name": "배당금 계산기",
+      "description": "보유 수량 기준 예상 배당금 계산",
+      "icon": "💵",
+      "category": "금융",
+      "priority": 0.71
+    },
+    {
+      "id": "dividend-yield-calculator",
+      "path": "/dividend-yield-calculator/",
+      "name": "배당수익률 계산기",
+      "description": "주가 대비 연 배당수익률 계산",
+      "icon": "🏦",
+      "category": "금융",
+      "priority": 0.7
+    },
+    {
+      "id": "foreign-stock-return-calculator",
+      "path": "/foreign-stock-return-calculator/",
+      "name": "해외주식 환율 수익률 계산기",
+      "description": "주가와 환율을 반영한 원화 손익 계산",
+      "icon": "🌎",
+      "category": "금융",
+      "priority": 0.69
+    },
+    {
+      "id": "etf-investment-calculator",
+      "path": "/etf-investment-calculator/",
+      "name": "ETF 적립식 투자 계산기",
+      "description": "월 적립 투자 미래가치 계산",
+      "icon": "📈",
+      "category": "금융",
+      "priority": 0.68
+    },
+    {
+      "id": "ai-token-calculator",
+      "path": "/ai-token-calculator/",
+      "name": "AI 토큰 계산기",
+      "description": "텍스트 길이로 입력 토큰 수 추정",
+      "icon": "🤖",
+      "category": "AI",
+      "priority": 0.67
+    },
+    {
+      "id": "chatgpt-api-cost-calculator",
+      "path": "/chatgpt-api-cost-calculator/",
+      "name": "ChatGPT API 비용 계산기",
+      "description": "토큰과 요청 수 기준 API 비용 계산",
+      "icon": "💬",
+      "category": "AI",
+      "priority": 0.66
+    },
+    {
+      "id": "ai-model-cost-comparison",
+      "path": "/ai-model-cost-comparison/",
+      "name": "AI 모델 비용 비교 계산기",
+      "description": "GPT·Claude·Gemini API 비용 비교",
+      "icon": "⚖️",
+      "category": "AI",
+      "priority": 0.65
+    },
+    {
       "id": "calorie",
       "path": "/calorie/",
       "name": "칼로리 계산기",

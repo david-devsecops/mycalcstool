@@ -1,13 +1,23 @@
 export type EnglishCalculatorSlug =
   | 'age-calculator'
+  | 'ai-model-cost-comparison'
+  | 'ai-token-calculator'
   | 'bmi-calculator'
   | 'calorie-calculator'
+  | 'chatgpt-api-cost-calculator'
   | 'compound-interest-calculator'
   | 'days-calculator'
+  | 'dividend-calculator'
+  | 'dividend-yield-calculator'
   | 'due-date-calculator'
+  | 'etf-investment-calculator'
+  | 'foreign-stock-return-calculator'
   | 'mortgage-calculator'
   | 'percentage-calculator'
   | 'salary-calculator'
+  | 'stock-average-calculator'
+  | 'stock-averaging-down-calculator'
+  | 'stock-return-calculator'
   | 'tdee-calculator'
   | 'tip-calculator'
   | 'unit-converter';
@@ -18,10 +28,26 @@ export interface EnglishCalculatorMeta {
   title: string;
   description: string;
   icon: string;
-  category: 'Finance' | 'Health' | 'Math & Utility';
+  category: 'Finance' | 'Health' | 'Math & Utility' | 'AI';
 }
 
 export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculatorMeta> = {
+  'ai-model-cost-comparison': {
+    slug: 'ai-model-cost-comparison',
+    href: '/en/ai-model-cost-comparison',
+    title: 'AI Model Cost Comparison',
+    description: 'Compare GPT, Claude, and Gemini API costs for the same token workload.',
+    icon: '⚖️',
+    category: 'AI',
+  },
+  'ai-token-calculator': {
+    slug: 'ai-token-calculator',
+    href: '/en/ai-token-calculator',
+    title: 'AI Token Calculator',
+    description: 'Estimate AI input and output tokens before calculating API costs.',
+    icon: '🤖',
+    category: 'AI',
+  },
   'calorie-calculator': {
     slug: 'calorie-calculator',
     href: '/en/calorie-calculator',
@@ -29,6 +55,14 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
     description: 'Calculate daily calorie needs, BMR, TDEE, and macro targets for your goal.',
     icon: '🔥',
     category: 'Health',
+  },
+  'chatgpt-api-cost-calculator': {
+    slug: 'chatgpt-api-cost-calculator',
+    href: '/en/chatgpt-api-cost-calculator',
+    title: 'ChatGPT API Cost Calculator',
+    description: 'Estimate API cost from input tokens, output tokens, calls, and pricing.',
+    icon: '💬',
+    category: 'AI',
   },
   'days-calculator': {
     slug: 'days-calculator',
@@ -62,6 +96,22 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
     icon: '📈',
     category: 'Finance',
   },
+  'dividend-calculator': {
+    slug: 'dividend-calculator',
+    href: '/en/dividend-calculator',
+    title: 'Dividend Calculator',
+    description: 'Estimate annual, after-tax, and monthly average dividend income.',
+    icon: '💵',
+    category: 'Finance',
+  },
+  'dividend-yield-calculator': {
+    slug: 'dividend-yield-calculator',
+    href: '/en/dividend-yield-calculator',
+    title: 'Dividend Yield Calculator',
+    description: 'Calculate dividend yield from share price and annual dividend.',
+    icon: '🏦',
+    category: 'Finance',
+  },
   'due-date-calculator': {
     slug: 'due-date-calculator',
     href: '/en/due-date-calculator',
@@ -69,6 +119,22 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
     description: 'Estimate pregnancy due date and track milestones by week.',
     icon: '👶',
     category: 'Health',
+  },
+  'etf-investment-calculator': {
+    slug: 'etf-investment-calculator',
+    href: '/en/etf-investment-calculator',
+    title: 'ETF Recurring Investment',
+    description: 'Estimate ETF future value from monthly contributions and return assumptions.',
+    icon: '📈',
+    category: 'Finance',
+  },
+  'foreign-stock-return-calculator': {
+    slug: 'foreign-stock-return-calculator',
+    href: '/en/foreign-stock-return-calculator',
+    title: 'Foreign Stock FX Return',
+    description: 'Calculate local-currency stock return including exchange rate changes.',
+    icon: '🌎',
+    category: 'Finance',
   },
   'mortgage-calculator': {
     slug: 'mortgage-calculator',
@@ -92,6 +158,30 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
     title: 'Salary Calculator',
     description: 'Estimate take-home pay after federal, state, and payroll taxes.',
     icon: '💵',
+    category: 'Finance',
+  },
+  'stock-average-calculator': {
+    slug: 'stock-average-calculator',
+    href: '/en/stock-average-calculator',
+    title: 'Stock Average Cost',
+    description: 'Calculate new average share cost after buying more stock.',
+    icon: '📊',
+    category: 'Finance',
+  },
+  'stock-averaging-down-calculator': {
+    slug: 'stock-averaging-down-calculator',
+    href: '/en/stock-averaging-down-calculator',
+    title: 'Stock Averaging Down',
+    description: 'Estimate new average cost and rebound needed to break even.',
+    icon: '📉',
+    category: 'Finance',
+  },
+  'stock-return-calculator': {
+    slug: 'stock-return-calculator',
+    href: '/en/stock-return-calculator',
+    title: 'Stock Return Calculator',
+    description: 'Calculate stock profit, loss, and percentage return after costs.',
+    icon: '💹',
     category: 'Finance',
   },
   'tdee-calculator': {
@@ -122,14 +212,24 @@ export const englishCalculators: Record<EnglishCalculatorSlug, EnglishCalculator
 
 const relatedCalculatorKeys: Record<EnglishCalculatorSlug, EnglishCalculatorSlug[]> = {
   'age-calculator': ['due-date-calculator', 'bmi-calculator', 'percentage-calculator'],
+  'ai-model-cost-comparison': ['chatgpt-api-cost-calculator', 'ai-token-calculator', 'compound-interest-calculator'],
+  'ai-token-calculator': ['chatgpt-api-cost-calculator', 'ai-model-cost-comparison', 'percentage-calculator'],
   'bmi-calculator': ['tdee-calculator', 'due-date-calculator', 'age-calculator'],
   'calorie-calculator': ['tdee-calculator', 'bmi-calculator', 'days-calculator'],
+  'chatgpt-api-cost-calculator': ['ai-token-calculator', 'ai-model-cost-comparison', 'percentage-calculator'],
   'compound-interest-calculator': ['mortgage-calculator', 'salary-calculator', 'percentage-calculator'],
   'days-calculator': ['age-calculator', 'due-date-calculator', 'percentage-calculator'],
+  'dividend-calculator': ['dividend-yield-calculator', 'stock-average-calculator', 'stock-return-calculator'],
+  'dividend-yield-calculator': ['dividend-calculator', 'stock-return-calculator', 'etf-investment-calculator'],
   'due-date-calculator': ['age-calculator', 'bmi-calculator', 'tdee-calculator'],
+  'etf-investment-calculator': ['compound-interest-calculator', 'dividend-yield-calculator', 'stock-return-calculator'],
+  'foreign-stock-return-calculator': ['stock-return-calculator', 'stock-average-calculator', 'dividend-calculator'],
   'mortgage-calculator': ['salary-calculator', 'compound-interest-calculator', 'percentage-calculator'],
   'percentage-calculator': ['tip-calculator', 'age-calculator', 'compound-interest-calculator'],
   'salary-calculator': ['mortgage-calculator', 'compound-interest-calculator', 'percentage-calculator'],
+  'stock-average-calculator': ['stock-averaging-down-calculator', 'stock-return-calculator', 'dividend-yield-calculator'],
+  'stock-averaging-down-calculator': ['stock-average-calculator', 'stock-return-calculator', 'foreign-stock-return-calculator'],
+  'stock-return-calculator': ['stock-average-calculator', 'dividend-calculator', 'foreign-stock-return-calculator'],
   'tdee-calculator': ['bmi-calculator', 'calorie-calculator', 'due-date-calculator'],
   'tip-calculator': ['percentage-calculator', 'salary-calculator', 'age-calculator'],
   'unit-converter': ['percentage-calculator', 'bmi-calculator', 'age-calculator'],

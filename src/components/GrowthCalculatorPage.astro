@@ -1,0 +1,391 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from './AdSlot.astro';
+import FAQ from './FAQ.astro';
+import type { GrowthCalculatorPageData } from '../data/growth-calculators';
+
+interface Props {
+  page: GrowthCalculatorPageData;
+}
+
+const { page } = Astro.props;
+const siteUrl = 'https://mycalcstool.com';
+const path = page.lang === 'ko' ? `/${page.slug}/` : `/en/${page.slug}/`;
+const canonicalUrl = `${siteUrl}${path}`;
+const koPath = `/${page.slug}/`;
+const enPath = `/en/${page.slug}/`;
+const relatedItems = page.related.filter((item) => item.href !== path);
+const langLabel = page.lang === 'ko' ? {
+  home: '홈',
+  calculate: '계산하기',
+  inputs: '입력값',
+  results: '계산 결과',
+  answerTitle: '바로 계산하면 무엇을 알 수 있나요?',
+  formulaTitle: '계산 공식',
+  exampleTitle: '예시',
+  mistakesTitle: '자주 하는 실수',
+  sourcesTitle: '가격·기준 확인',
+  disclaimerTitle: '주의사항',
+  relatedTitle: '관련 계산기',
+  sourceIntro: '가격과 정책은 바뀔 수 있으므로 실제 사용 전 공식 자료를 확인하세요.',
+} : {
+  home: 'Home',
+  calculate: 'Calculate',
+  inputs: 'Inputs',
+  results: 'Results',
+  answerTitle: 'What does this calculator answer?',
+  formulaTitle: 'Formula',
+  exampleTitle: 'Example',
+  mistakesTitle: 'Common mistakes',
+  sourcesTitle: 'Sources and pricing',
+  disclaimerTitle: 'Important note',
+  relatedTitle: 'Related calculators',
+  sourceIntro: 'Prices and policies can change. Confirm official sources before budgeting.',
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: page.h1,
+    description: page.description,
+    url: canonicalUrl,
+    applicationCategory: page.category === 'AI' ? 'DeveloperApplication' : 'FinanceApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: page.lang === 'ko' ? 'KRW' : 'USD',
+    },
+    inLanguage: page.lang,
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: langLabel.home,
+        item: `${siteUrl}${page.lang === 'ko' ? '/' : '/en/'}`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: page.h1,
+        item: canonicalUrl,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title={page.title}
+  description={page.description}
+  keywords={page.keywords}
+  canonicalUrl={canonicalUrl}
+  lang={page.lang}
+  jsonLd={jsonLd}
+  hreflangKo={page.lang === 'en' ? koPath : undefined}
+  hreflangEn={page.lang === 'ko' ? enPath : undefined}
+>
+  <nav class="text-sm text-gray-500 mb-3" aria-label="breadcrumb">
+    <ol class="flex items-center gap-1 list-none p-0 flex-wrap">
+      <li><a href={page.lang === 'ko' ? '/' : '/en/'} class="hover:text-primary-600 transition-colors">{langLabel.home}</a></li>
+      <li aria-hidden="true" class="text-gray-300">/</li>
+      <li class="text-gray-700 font-medium" aria-current="page">{page.h1}</li>
+    </ol>
+  </nav>
+
+  <header class="mb-6">
+    <div class="flex items-center gap-3 mb-3 flex-wrap">
+      <span class="text-4xl" aria-hidden="true">{page.icon}</span>
+      <span class="text-xs px-2.5 py-1 rounded-full border font-semibold bg-blue-50 text-blue-700 border-blue-200">{page.category}</span>
+    </div>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-900 leading-tight">{page.h1}</h1>
+    <p class="text-gray-600 mt-3 leading-relaxed">{page.description}</p>
+  </header>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6 border-primary-100 bg-primary-50" aria-labelledby="answer-title">
+    <h2 id="answer-title" class="section-title">
+      <span aria-hidden="true">⚡</span>
+      {langLabel.answerTitle}
+    </h2>
+    <p class="text-gray-700 leading-relaxed">{page.answer}</p>
+  </section>
+
+  <section
+    class="card mb-6"
+    data-growth-calculator
+    data-calculator-id={page.id}
+    data-lang={page.lang}
+    aria-labelledby="calculator-title"
+  >
+    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
+      <h2 id="calculator-title" class="section-title mb-0">
+        <span aria-hidden="true">🧮</span>
+        {langLabel.inputs}
+      </h2>
+      <button type="button" class="btn-primary md:w-auto" data-calculate>{langLabel.calculate}</button>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-6">
+      {page.fields.map((field) => (
+        <label class={field.type === 'textarea' ? 'md:col-span-2 block' : 'block'}>
+          <span class="block text-sm font-semibold text-gray-700 mb-2">{field.label}</span>
+          {field.type === 'textarea' ? (
+            <textarea
+              data-field={field.id}
+              class="input-field min-h-28 resize-y"
+              rows="5"
+            >{field.value}</textarea>
+          ) : (
+            <div class="flex items-center gap-3">
+              <input
+                data-field={field.id}
+                type="number"
+                class="input-field flex-1"
+                value={field.value}
+                min={field.min}
+                max={field.max}
+                step={field.step}
+                inputmode="decimal"
+              />
+              {field.suffix && <span class="text-sm text-gray-500 font-medium whitespace-nowrap">{field.suffix}</span>}
+            </div>
+          )}
+        </label>
+      ))}
+    </div>
+
+    <section aria-labelledby="results-title">
+      <h3 id="results-title" class="text-lg font-bold text-gray-800 mb-3">{langLabel.results}</h3>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+        {page.resultLabels.map((label, index) => (
+          <div class="rounded-xl border border-gray-200 bg-white p-4">
+            <p class="text-sm text-gray-500">{label}</p>
+            <p class="mt-2 text-2xl font-bold text-primary-700 tabular-nums" data-result={index}>-</p>
+          </div>
+        ))}
+      </div>
+    </section>
+  </section>
+
+  <section class="card mb-6" aria-labelledby="formula-title">
+    <h2 id="formula-title" class="section-title">
+      <span aria-hidden="true">📌</span>
+      {langLabel.formulaTitle}
+    </h2>
+    <p class="rounded-xl bg-gray-50 border border-gray-100 p-4 text-gray-800 font-medium leading-relaxed">{page.formula}</p>
+  </section>
+
+  <section class="card mb-6" aria-labelledby="example-title">
+    <h2 id="example-title" class="section-title">
+      <span aria-hidden="true">📝</span>
+      {langLabel.exampleTitle}
+    </h2>
+    <p class="text-gray-700 leading-relaxed">{page.example}</p>
+  </section>
+
+  <section class="card mb-6" aria-labelledby="mistakes-title">
+    <h2 id="mistakes-title" class="section-title">
+      <span aria-hidden="true">⚠️</span>
+      {langLabel.mistakesTitle}
+    </h2>
+    <ul class="list-disc pl-5 space-y-2 text-gray-700 leading-relaxed">
+      {page.mistakes.map((mistake) => <li>{mistake}</li>)}
+    </ul>
+  </section>
+
+  {page.sourceLinks && page.sourceLinks.length > 0 && (
+    <section class="card mb-6" aria-labelledby="sources-title">
+      <h2 id="sources-title" class="section-title">
+        <span aria-hidden="true">🔎</span>
+        {langLabel.sourcesTitle}
+      </h2>
+      <p class="text-gray-700 leading-relaxed mb-3">{langLabel.sourceIntro}</p>
+      <ul class="list-disc pl-5 space-y-2">
+        {page.sourceLinks.map((source) => (
+          <li>
+            <a href={source.href} class="font-semibold text-primary-600 hover:underline" target="_blank" rel="noopener noreferrer">{source.label}</a>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  <section class="card mb-6 bg-amber-50 border-amber-100" aria-labelledby="disclaimer-title">
+    <h2 id="disclaimer-title" class="section-title">
+      <span aria-hidden="true">🛡️</span>
+      {langLabel.disclaimerTitle}
+    </h2>
+    <p class="text-sm text-amber-900 leading-relaxed">{page.disclaimer}</p>
+  </section>
+
+  <FAQ items={page.faqs} title={page.lang === 'ko' ? '자주 묻는 질문' : 'Frequently Asked Questions'} />
+
+  <section class="card mt-6" aria-labelledby="related-title">
+    <h2 id="related-title" class="section-title">
+      <span aria-hidden="true">🔗</span>
+      {langLabel.relatedTitle}
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {relatedItems.map((item) => (
+        <a href={item.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors no-underline">
+          <p class="font-semibold text-gray-800">{item.label}</p>
+          <p class="text-sm text-gray-500 mt-1 leading-relaxed">{item.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var root = document.querySelector('[data-growth-calculator]');
+      if (!root) return;
+
+      var calculatorId = root.getAttribute('data-calculator-id') || '';
+      var lang = root.getAttribute('data-lang') || 'ko';
+      var locale = lang === 'ko' ? 'ko-KR' : 'en-US';
+
+      function number(value, digits) {
+        var safe = Number.isFinite(value) ? value : 0;
+        return new Intl.NumberFormat(locale, {
+          maximumFractionDigits: digits === undefined ? 2 : digits,
+        }).format(safe);
+      }
+
+      function money(value) {
+        var safe = Number.isFinite(value) ? value : 0;
+        var currency = lang === 'ko' ? 'KRW' : 'USD';
+        return new Intl.NumberFormat(locale, {
+          style: 'currency',
+          currency: currency,
+          maximumFractionDigits: lang === 'ko' ? 0 : 2,
+        }).format(safe);
+      }
+
+      function percent(value) {
+        return number(value, 2) + '%';
+      }
+
+      function values() {
+        var output = {};
+        root.querySelectorAll('[data-field]').forEach(function (field) {
+          var key = field.getAttribute('data-field');
+          if (!key) return;
+          if (field instanceof HTMLTextAreaElement) {
+            output[key] = field.value || '';
+            return;
+          }
+          if (field instanceof HTMLInputElement) {
+            var parsed = Number(field.value);
+            output[key] = Number.isFinite(parsed) ? parsed : 0;
+          }
+        });
+        return output;
+      }
+
+      function cost(inputTokens, outputTokens, requests, inputPrice, outputPrice) {
+        var inputCost = inputTokens * requests / 1000000 * inputPrice;
+        var outputCost = outputTokens * requests / 1000000 * outputPrice;
+        return { inputCost: inputCost, outputCost: outputCost, total: inputCost + outputCost };
+      }
+
+      function formatCost(value) {
+        return '$' + number(value, 4);
+      }
+
+      var calculators = {
+        'stock-average': function (v) {
+          var totalShares = v.currentShares + v.buyShares;
+          var totalCost = v.currentShares * v.currentPrice + v.buyShares * v.buyPrice;
+          var average = totalShares > 0 ? totalCost / totalShares : 0;
+          return [money(average), number(totalShares, 4), money(totalCost)];
+        },
+        'stock-averaging-down': function (v) {
+          var totalShares = v.currentShares + v.buyShares;
+          var totalCost = v.currentShares * v.currentPrice + v.buyShares * v.buyPrice;
+          var average = totalShares > 0 ? totalCost / totalShares : 0;
+          var rebound = v.buyPrice > 0 ? (average - v.buyPrice) / v.buyPrice * 100 : 0;
+          return [money(average), money(totalCost), percent(rebound)];
+        },
+        'stock-return': function (v) {
+          var purchase = v.buyPrice * v.shares;
+          var sale = v.sellPrice * v.shares;
+          var profit = sale - purchase - v.costs;
+          var returnRate = purchase > 0 ? profit / purchase * 100 : 0;
+          return [money(profit), percent(returnRate), money(sale)];
+        },
+        'dividend': function (v) {
+          var annual = v.shares * v.dividendPerShare;
+          var afterTax = annual * (1 - v.taxRate / 100);
+          return [money(annual), money(afterTax), money(afterTax / 12)];
+        },
+        'dividend-yield': function (v) {
+          var yieldRate = v.stockPrice > 0 ? v.annualDividend / v.stockPrice * 100 : 0;
+          var shares = v.stockPrice > 0 ? Math.floor(v.investment / v.stockPrice) : 0;
+          return [percent(yieldRate), number(shares, 0), money(shares * v.annualDividend)];
+        },
+        'foreign-stock-return': function (v) {
+          var buyLocal = v.buyPrice * v.shares * v.buyFx;
+          var sellLocal = v.sellPrice * v.shares * v.sellFx;
+          var profit = sellLocal - buyLocal;
+          var returnRate = buyLocal > 0 ? profit / buyLocal * 100 : 0;
+          var fxOnly = v.buyPrice * v.shares * (v.sellFx - v.buyFx);
+          var localUnit = lang === 'ko' ? '' : ' local';
+          return [lang === 'ko' ? money(profit) : number(profit, 2) + localUnit, percent(returnRate), lang === 'ko' ? money(fxOnly) : number(fxOnly, 2) + localUnit];
+        },
+        'etf-investment': function (v) {
+          var months = Math.max(0, Math.round(v.years * 12));
+          var monthlyRate = Math.pow(1 + v.annualReturn / 100, 1 / 12) - 1;
+          var initialFuture = v.initialAmount * Math.pow(1 + monthlyRate, months);
+          var contributionFuture = monthlyRate === 0
+            ? v.monthlyContribution * months
+            : v.monthlyContribution * ((Math.pow(1 + monthlyRate, months) - 1) / monthlyRate);
+          var future = initialFuture + contributionFuture;
+          var contributed = v.initialAmount + v.monthlyContribution * months;
+          return [money(future), money(contributed), money(future - contributed)];
+        },
+        'ai-token': function (v) {
+          var text = String(v.promptText || '');
+          var chars = text.length;
+          var words = text.trim() ? text.trim().split(/\s+/).length : 0;
+          var hasKorean = /[ㄱ-ㅎㅏ-ㅣ가-힣]/.test(text);
+          var inputTokens = Math.ceil(hasKorean ? chars / 2 : chars / 4);
+          var totalTokens = inputTokens + v.outputTokens;
+          return [number(inputTokens, 0), number(totalTokens, 0), number(words, 0)];
+        },
+        'chatgpt-api-cost': function (v) {
+          var c = cost(v.inputTokens, v.outputTokens, v.requests, v.inputPrice, v.outputPrice);
+          return [formatCost(c.total), formatCost(c.inputCost), formatCost(c.outputCost)];
+        },
+        'ai-model-cost-comparison': function (v) {
+          var gpt = cost(v.inputTokens, v.outputTokens, v.requests, v.gptInputPrice, v.gptOutputPrice);
+          var claude = cost(v.inputTokens, v.outputTokens, v.requests, v.claudeInputPrice, v.claudeOutputPrice);
+          var gemini = cost(v.inputTokens, v.outputTokens, v.requests, v.geminiInputPrice, v.geminiOutputPrice);
+          return [formatCost(gpt.total), formatCost(claude.total), formatCost(gemini.total)];
+        },
+      };
+
+      function calculate() {
+        var fn = calculators[calculatorId];
+        if (!fn) return;
+        var results = fn(values());
+        root.querySelectorAll('[data-result]').forEach(function (resultEl) {
+          var index = Number(resultEl.getAttribute('data-result'));
+          resultEl.textContent = results[index] || '-';
+        });
+      }
+
+      root.querySelector('[data-calculate]')?.addEventListener('click', calculate);
+      root.querySelectorAll('[data-field]').forEach(function (field) {
+        field.addEventListener('input', calculate);
+      });
+      calculate();
+    })();
+  </script>
+</BaseLayout>
