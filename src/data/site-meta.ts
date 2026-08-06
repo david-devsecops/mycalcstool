@@ -7,7 +7,7 @@ const contactEmailValue = (import.meta.env.PUBLIC_CONTACT_EMAIL ?? 'golreas@gmai
 const ownerNameValue = (import.meta.env.PUBLIC_SITE_OWNER ?? 'mycalcstool Editorial Team').trim();
 
 export const adProvider: AdProvider =
-  rawAdProvider === 'none' ? 'none' : adsenseClientValue ? 'adsense' : 'none';
+  rawAdProvider === 'adsense' && adsenseClientValue ? 'adsense' : 'none';
 
 export const adsenseClient = adsenseClientValue;
 export const gaMeasurementId = gaMeasurementIdValue;

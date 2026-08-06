@@ -3,9 +3,9 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import AdSlot from '../../components/AdSlot.astro';
 import { siteMeta } from '../../data/site-meta';
 
-const title = 'Free Online Calculators — Finance, Health, Math & More';
-const description = 'Free online calculators for mortgage, salary, BMI, compound interest, and more. Fast, accurate, and no signup required.';
-const keywords = 'free online calculator, mortgage calculator, salary calculator, BMI calculator, compound interest calculator, percentage calculator';
+const title = 'Finance Calculator Hub - Mortgage, Salary, Investing, and AI Costs';
+const description = 'Free finance-first calculators for mortgage, salary, compound growth, investing, dividends, and AI API costs, with formulas, examples, and clear limits.';
+const keywords = 'finance calculator, mortgage calculator, salary calculator, investment calculator, dividend calculator, AI cost calculator, compound interest calculator';
 
 const jsonLd = {
   '@context': 'https://schema.org',
@@ -114,15 +114,51 @@ const featuredPosts = [
     readTime: '8 min',
   },
 ];
+
+const focusCards = [
+  {
+    title: 'Finance-first calculators',
+    desc: 'The primary site path focuses on mortgage, salary, compound growth, investing, dividend, and AI cost decisions rather than a generic tool directory.',
+    href: '/en/methodology',
+    link: 'Read methodology',
+  },
+  {
+    title: 'Formulas and limits included',
+    desc: 'Calculator pages explain the input units, formula, examples, common mistakes, and when the result should be checked against an official source.',
+    href: '/en/blog/',
+    link: 'Read guides',
+  },
+  {
+    title: 'Corrections are welcome',
+    desc: 'Rates, rules, and model prices change. If you find an outdated assumption, send the page URL and source so we can review it.',
+    href: '/en/contact',
+    link: 'Send correction',
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} keywords={keywords} lang="en" jsonLd={jsonLd} hreflangKo="/">
 
   <!-- Hero -->
   <div class="text-center mb-8">
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Free Online Calculators</h1>
-    <p class="text-gray-500 text-base max-w-xl mx-auto">No signup. Fast browser-based results with clear formulas and examples.</p>
+    <h1 class="text-3xl md:text-4xl font-bold text-gray-900 mb-2">Finance Calculator Hub</h1>
+    <p class="text-gray-500 text-base max-w-2xl mx-auto">
+      Browser-based calculators for money decisions, investing scenarios, and AI API cost planning, with formulas and assumptions shown on the page.
+    </p>
   </div>
+
+  <section class="mb-8" aria-labelledby="site-focus">
+    <h2 id="site-focus" class="sr-only">mycalcstool editorial focus</h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+      {focusCards.map((card) => (
+        <article class="card border-primary-100 bg-white">
+          <h3 class="font-bold text-gray-800 mb-2">{card.title}</h3>
+          <p class="text-sm text-gray-600 leading-relaxed mb-3">{card.desc}</p>
+          <a href={card.href} class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">{card.link} →</a>
+        </article>
+      ))}
+    </div>
+  </section>
 
   <AdSlot slot="top" format="horizontal" />
 
