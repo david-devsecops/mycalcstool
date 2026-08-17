@@ -3,18 +3,24 @@ import BaseLayout from '../../../layouts/BaseLayout.astro';
 import AdSlot from '../../../components/AdSlot.astro';
 import { englishBlogPosts } from '../../../data/en-blog-posts';
 
-const title = 'Blog — Money, Health & Life Calculators Guide';
-const description = 'Practical guides on tipping, budgeting, health metrics, and more. Learn how to use our free calculators to make smarter everyday decisions.';
-const keywords = 'calculator guides, tipping guide, money tips, health calculator guide';
-const posts = englishBlogPosts;
+const title = 'Finance Calculator Guides - Mortgage, Salary, Home Buying';
+const description = 'Finance-first guides for mortgage payments, PMI, salary take-home pay, home affordability, and first-time homebuyer planning.';
+const keywords = 'finance calculator guides, mortgage guide, salary calculator guide, PMI guide, home affordability guide';
+const approvedFinanceSlugs = new Set([
+  'pmi-guide-how-private-mortgage-insurance-works',
+  'salary-calculator-guide-gross-vs-net-pay',
+  'how-much-house-can-i-afford-guide',
+  'first-time-homebuyer-guide',
+  'tipping-guide',
+]);
+const posts = englishBlogPosts.filter((post) => approvedFinanceSlugs.has(post.slug));
 
-const featuredFinancePosts = posts.filter((post) => post.category === 'Money & Finance').slice(0, 6);
-const supportingPosts = posts.filter((post) => post.category !== 'Money & Finance');
+const featuredFinancePosts = posts.slice(0, 6);
 
 const jsonLd = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: 'mycalcstool Blog',
+  name: 'mycalcstool Finance Guides',
   description,
   url: 'https://mycalcstool.com/en/blog/',
   inLanguage: 'en',
@@ -30,8 +36,8 @@ const jsonLd = {
         <li class="text-gray-700 font-medium" aria-current="page">Blog</li>
       </ol>
     </nav>
-    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Blog</h1>
-    <p class="text-gray-500 mt-2">Practical guides that support our calculators across health, money, and everyday math.</p>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">Finance Guides</h1>
+    <p class="text-gray-500 mt-2">Money-focused explainers that support the mortgage, salary, and home-buying calculators.</p>
   </div>
 
   <AdSlot slot="top" format="horizontal" />
@@ -63,27 +69,11 @@ const jsonLd = {
     </div>
   </section>
 
-  <section>
-    <h2 class="text-xl font-bold text-gray-800 mb-4">Supporting Guides</h2>
-    <div class="space-y-4">
-      {supportingPosts.map(post => (
-        <article class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 hover:shadow-md transition-shadow">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-xs font-semibold text-blue-600 bg-blue-50 px-2 py-0.5 rounded-full">{post.category}</span>
-            <span class="text-xs text-gray-400">{post.readTime}</span>
-          </div>
-          <a href={post.href} class="block group">
-            <h3 class="text-lg font-bold text-gray-900 group-hover:text-blue-600 transition-colors mb-2">{post.title}</h3>
-            <p class="text-gray-500 text-sm leading-relaxed">{post.description}</p>
-          </a>
-          <div class="mt-3 flex items-center justify-between">
-            <time class="text-xs text-gray-400" datetime={post.date}>
-              {new Date(post.date).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })}
-            </time>
-            <a href={post.href} class="text-sm font-semibold text-blue-600 hover:text-blue-700 transition-colors">Read more →</a>
-          </div>
-        </article>
-      ))}
-    </div>
+  <section class="bg-slate-50 rounded-2xl border border-slate-100 px-6 py-5">
+    <h2 class="text-lg font-bold text-gray-800 mb-2">How these guides are selected</h2>
+    <p class="text-sm text-gray-600 leading-relaxed">
+      This index intentionally highlights finance guides that connect directly to active calculators.
+      Broader health, date, and utility articles are kept off the main blog index during review so the site has a clearer editorial scope.
+    </p>
   </section>
 </BaseLayout>

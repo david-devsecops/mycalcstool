@@ -1,8 +1,8 @@
 {
   "siteName": "mycalcstool",
   "domain": "https://mycalcstool.com",
-  "description": "무료 온라인 계산기 모음 - 대출 이자, 연봉 실수령액, BMI, 복리, 퇴직금, 칼로리 등 실생활 유용한 계산기를 제공합니다.",
-  "keywords": "계산기, 대출계산기, 연봉계산기, BMI계산기, 복리계산기, 퇴직금계산기, 무료계산기",
+  "description": "무료 금융 계산기 허브 - 대출 이자, 연봉 실수령액, 연말정산, 복리, 퇴직금, 주식, ETF, AI 비용 계산기를 제공합니다.",
+  "keywords": "금융계산기, 대출계산기, 연봉계산기, 연말정산계산기, 복리계산기, 퇴직금계산기, 주식계산기, AI비용계산기",
   "author": "mycalcstool",
   "year": 2026,
   "adsense": {

@@ -154,11 +154,12 @@ const jsonLd = {
   <FAQ items={faqItems} title="Frequently Asked Questions" />
 
   <section class="card mt-6">
-    <h2 class="section-title"><span aria-hidden="true">📚</span> Related investing guides</h2>
+    <h2 class="section-title"><span aria-hidden="true">📚</span> Related investing resources</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       {[
-        { href: '/en/blog/simple-vs-compound-interest-guide', label: 'Simple vs Compound Interest', desc: 'Compare flat interest with compounding over time.' },
-        { href: '/en/blog/percentage-increase-calculator-guide', label: 'Percentage Increase Guide', desc: 'Use percentage change correctly when tracking returns.' },
+        { href: '/en/etf-investment-calculator/', label: 'ETF Recurring Investment', desc: 'Model monthly contributions and long-term growth.' },
+        { href: '/en/dividend-yield-calculator/', label: 'Dividend Yield Calculator', desc: 'Compare dividend income with growth assumptions.' },
+        { href: '/en/methodology/', label: 'Methodology', desc: 'Review compounding assumptions and limitations.' },
       ].map((guide) => (
         <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
           <p class="font-semibold text-gray-800">{guide.label}</p>

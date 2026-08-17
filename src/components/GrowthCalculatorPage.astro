@@ -34,6 +34,8 @@ const langLabel = page.lang === 'ko' ? {
   reviewDate: '2026년 8월 6일',
   primaryResultPrefix: '가장 먼저 볼 값은',
   secondaryResultPrefix: '함께 확인할 보조 값은',
+  useCasesTitle: '이 계산기를 쓰기 좋은 상황',
+  notIncludedTitle: '포함하지 않는 항목',
 } : {
   home: 'Home',
   calculate: 'Calculate',
@@ -53,6 +55,8 @@ const langLabel = page.lang === 'ko' ? {
   reviewDate: 'August 6, 2026',
   primaryResultPrefix: 'Start with',
   secondaryResultPrefix: 'Then compare',
+  useCasesTitle: 'Good use cases',
+  notIncludedTitle: 'What is not included',
 };
 
 const fieldChecklist = page.fields.map((field) => {
@@ -79,6 +83,58 @@ const resultGuide = page.resultLabels.map((label, index) => {
     ? `${langLabel.primaryResultPrefix} '${label}'. This is the main output for the current assumptions.`
     : `${langLabel.secondaryResultPrefix} '${label}' so you do not judge the scenario from one number alone.`;
 });
+
+const scopeNotes = page.lang === 'ko'
+  ? page.category === 'AI'
+    ? {
+      useCases: [
+        '제품 출시 전 예상 요청 수와 평균 토큰 길이로 월 API 예산 범위를 잡을 때 유용합니다.',
+        '프롬프트 길이, 출력 길이, 모델 단가를 바꿨을 때 비용 변화가 얼마나 큰지 비교할 수 있습니다.',
+        '팀별 사용량을 같은 단가 기준으로 환산해 내부 예산 검토 자료를 만들 때 참고할 수 있습니다.',
+      ],
+      notIncluded: [
+        '실시간 공식 가격 자동 반영, 캐시·배치 할인, 이미지·음성·검색·도구 호출 비용은 포함하지 않습니다.',
+        '계정별 약정, 무료 크레딧, 세금, 환율, 결제 수수료는 별도로 확인해야 합니다.',
+        '모델 품질, 지연시간, 실패율처럼 실제 운영 성능을 평가하지 않습니다.',
+      ],
+    }
+    : {
+      useCases: [
+        '매수·매도 전후 평균 단가, 손익, 배당 현금흐름을 같은 입력 기준으로 비교할 때 유용합니다.',
+        '가격, 수량, 기간, 수익률 가정을 바꿔 여러 투자 시나리오를 빠르게 검산할 수 있습니다.',
+        '증권사 화면이나 개인 투자 기록에 나온 숫자가 대략 맞는지 확인하는 보조 도구로 쓸 수 있습니다.',
+      ],
+      notIncluded: [
+        '실시간 시세, 호가, 증권사별 수수료, 세금, 환전 스프레드는 자동 반영하지 않습니다.',
+        '종목 추천, 기업 가치평가, 미래 수익률 예측을 제공하지 않습니다.',
+        '배당 변경, 거래 정지, 유동성, 환율 급변 같은 투자 위험을 계산하지 않습니다.',
+      ],
+    }
+  : page.category === 'AI'
+    ? {
+      useCases: [
+        'Estimate a monthly API budget before launch from expected calls, token length, and editable model prices.',
+        'Compare how prompt length, output length, and provider pricing change the same workload cost.',
+        'Translate team or product usage assumptions into a simple budget discussion before deeper testing.',
+      ],
+      notIncluded: [
+        'Live provider pricing, caching discounts, batch discounts, image, audio, search, and tool-call charges are not included.',
+        'Account-specific credits, negotiated pricing, taxes, currency conversion, and payment fees must be checked separately.',
+        'Model quality, latency, retries, and failure rates are operational factors outside this calculator.',
+      ],
+    }
+    : {
+      useCases: [
+        'Compare average cost, return, dividend income, or recurring investment scenarios before updating a spreadsheet.',
+        'Change price, quantity, period, or return assumptions quickly and see which input drives the result.',
+        'Use the output as a second check against broker statements or your own investment notes.',
+      ],
+      notIncluded: [
+        'Live quotes, bid-ask spreads, broker fees, taxes, and currency conversion costs are not pulled automatically.',
+        'The calculator does not recommend securities, value a business, or forecast future returns.',
+        'Dividend cuts, trading halts, liquidity, FX shocks, and other investment risks are not modeled.',
+      ],
+    };
 
 const jsonLd = [
   {
@@ -231,6 +287,16 @@ const jsonLd = [
     </ol>
   </section>
 
+  <section class="card mb-6" aria-labelledby="use-cases-title">
+    <h2 id="use-cases-title" class="section-title">
+      <span aria-hidden="true">🧭</span>
+      {langLabel.useCasesTitle}
+    </h2>
+    <ul class="list-disc pl-5 space-y-2 text-gray-700 leading-relaxed">
+      {scopeNotes.useCases.map((item) => <li>{item}</li>)}
+    </ul>
+  </section>
+
   <section class="card mb-6" aria-labelledby="formula-title">
     <h2 id="formula-title" class="section-title">
       <span aria-hidden="true">📌</span>
@@ -245,6 +311,16 @@ const jsonLd = [
       {langLabel.exampleTitle}
     </h2>
     <p class="text-gray-700 leading-relaxed">{page.example}</p>
+  </section>
+
+  <section class="card mb-6" aria-labelledby="not-included-title">
+    <h2 id="not-included-title" class="section-title">
+      <span aria-hidden="true">🚫</span>
+      {langLabel.notIncludedTitle}
+    </h2>
+    <ul class="list-disc pl-5 space-y-2 text-gray-700 leading-relaxed">
+      {scopeNotes.notIncluded.map((item) => <li>{item}</li>)}
+    </ul>
   </section>
 
   <section class="card mb-6" aria-labelledby="mistakes-title">

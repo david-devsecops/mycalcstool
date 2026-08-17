@@ -2,14 +2,12 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import siteConfig from '../data/site-config.json';
-import { koFinanceGuides } from '../data/ko-finance-guides';
 import { siteMeta } from '../data/site-meta';
 
 const title = '금융 계산기 허브 - 대출, 연봉, 세금, 투자 계산 | mycalcstool';
 const description = '대출 이자, 연봉 실수령액, 세금, 복리, 퇴직금, 주식·ETF 계산을 중심으로 공식과 가정을 함께 설명하는 무료 금융 계산기 허브입니다.';
 const keywords = '금융계산기, 대출계산기, 연봉계산기, 세금계산기, 복리계산기, 퇴직금계산기, 주식계산기, ETF계산기';
 
-const categories = ['금융', 'AI', '건강', '생활'];
 const categoryColors: Record<string, string> = {
   '금융': 'bg-blue-50 text-blue-700 border-blue-200',
   'AI': 'bg-slate-50 text-slate-700 border-slate-200',
@@ -36,8 +34,6 @@ const stockCalculators = siteConfig.calculators.filter((calculator) =>
 
 const aiCalculators = siteConfig.calculators.filter((calculator) => calculator.category === 'AI');
 
-const featuredGuidePosts = koFinanceGuides.slice(0, 6);
-
 const focusCards = [
   {
     title: '금융 계산 우선',
@@ -48,8 +44,8 @@ const focusCards = [
   {
     title: '공식과 한계 공개',
     desc: '계산 결과만 보여주지 않고 입력 단위, 공식, 예시, 자주 하는 실수, 실제 판단 전 확인해야 할 한계를 함께 적습니다.',
-    href: '/blog/',
-    link: '해설 글 보기',
+    href: '/loan/',
+    link: '계산 예시 보기',
   },
   {
     title: '오류 제보 가능',
@@ -206,64 +202,17 @@ const websiteSchema = {
     </div>
   </section>
 
-  <section class="mb-8">
-    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-      <h2 class="text-xl font-bold text-gray-700">금융 가이드</h2>
-      <a href="/blog/" class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">전체 글 보기 →</a>
-    </div>
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-8">
-      {featuredGuidePosts.map((post) => (
-        <a href={post.href} class="card hover:shadow-md hover:border-primary-200 transition-all group no-underline">
-          <div class="flex items-center gap-2 mb-2">
-            <span class="text-xs font-semibold text-primary-600 bg-primary-50 px-2 py-0.5 rounded-full">{post.category}</span>
-            <span class="text-xs text-gray-400">{post.readTime}</span>
-          </div>
-          <h3 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">{post.title}</h3>
-          <p class="text-sm text-gray-500 mt-2 leading-relaxed">{post.description}</p>
-        </a>
-      ))}
-    </div>
-
-    <h2 class="text-xl font-bold text-gray-700 mb-4">보조 계산기</h2>
-    <div class="space-y-8">
-      {categories.filter((category) => category !== '금융' && category !== 'AI').map(category => {
-        const calcs = siteConfig.calculators.filter(c => c.category === category);
-        return (
-          <section aria-labelledby={`category-${category}`}>
-            <h3 class="text-lg font-bold text-gray-700 mb-4 flex items-center gap-2" id={`category-${category}`}>
-              <span class={`text-xs px-2.5 py-1 rounded-full border font-medium ${categoryColors[category]}`}>
-                {category}
-              </span>
-            </h3>
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-              {calcs.map(calc => (
-                <a
-                  href={calc.path}
-                  class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
-                  aria-label={`${calc.name} 바로가기`}
-                >
-                  <div class="flex items-start gap-3">
-                    <span class="text-3xl" role="img" aria-label={calc.name}>{calc.icon}</span>
-                    <div class="flex-1 min-w-0">
-                      <h4 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">
-                        {calc.name}
-                      </h4>
-                      <p class="text-sm text-gray-500 mt-1 leading-snug">
-                        {calc.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div class="mt-3 text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-1">
-                    계산하기
-                    <span aria-hidden="true">→</span>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </section>
-        );
-      })}
-    </div>
+  <section class="card mb-8 bg-slate-50 border-slate-100" aria-labelledby="current-scope">
+    <h2 id="current-scope" class="text-xl font-bold text-gray-800 mb-3">현재 집중 운영 범위</h2>
+    <p class="text-sm text-gray-700 leading-relaxed mb-3">
+      mycalcstool은 승인 심사 기간 동안 금융 의사결정과 AI 비용 추정에 직접 연결되는 계산기를 우선 운영합니다.
+      건강, 날짜, 단위 변환처럼 범용성이 강한 보조 계산기는 계속 사용할 수 있지만, 홈과 주요 탐색에서는 제외해 사이트 주제를 명확히 했습니다.
+    </p>
+    <ul class="list-disc pl-5 text-sm text-gray-700 leading-relaxed space-y-1">
+      <li>대출, 연봉, 세금, 복리, 퇴직금은 한국 사용자의 실제 현금흐름 계산에 맞춰 제공합니다.</li>
+      <li>주식·ETF 계산기는 종목 추천 없이 매수 단가, 수익률, 배당, 환율, 적립식 가정을 계산합니다.</li>
+      <li>AI 비용 계산기는 토큰 수, 요청 수, 모델별 단가처럼 예산 산정에 필요한 입력값을 분리해 보여줍니다.</li>
+    </ul>
   </section>
 
   <!-- 사이트 소개 섹션 -->
@@ -273,7 +222,7 @@ const websiteSchema = {
       {siteMeta.name}은 금융 계산기를 중심으로 운영하는 무료 온라인 계산기 서비스입니다.
       모든 계산은 브라우저에서 직접 처리되며, 계산 기준과 문의 경로는
       <a href="/methodology" class="font-semibold text-primary-700 hover:underline"> 계산 기준</a>,
-      <a href="/blog/" class="font-semibold text-primary-700 hover:underline"> 금융 가이드</a>,
+      <a href="/stock-average-calculator/" class="font-semibold text-primary-700 hover:underline"> 주식·ETF 계산기</a>,
       <a href="/contact" class="font-semibold text-primary-700 hover:underline"> 문의하기</a> 페이지에서 확인할 수 있습니다.
     </p>
   </section>

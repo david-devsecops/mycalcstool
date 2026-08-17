@@ -21,8 +21,8 @@ export const siteMeta = {
   editorLabel: ownerNameValue,
   contactEmail: contactEmailValue,
   focusSummary: {
-    ko: '금융 계산기를 우선 강화하고, 건강 및 생활 계산기는 보조 도구로 운영합니다.',
-    en: 'We prioritize finance calculators first and keep health and utility tools as supporting calculators.',
+    ko: '금융, 투자, AI 비용 계산기를 우선 운영합니다.',
+    en: 'We prioritize finance, investing, and AI cost calculators.',
   },
 };
 

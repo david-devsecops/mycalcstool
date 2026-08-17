@@ -182,12 +182,12 @@ const jsonLd = {
   <FAQ items={faqItems} />
 
   <section class="card mt-6">
-    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 함께 볼 계산 기준</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       {[
-        { href: '/blog/year-end-tax-refund-guide', label: '연말정산 환급액 핵심 항목', desc: '환급액 차이를 만드는 공제 구조 정리' },
-        { href: '/blog/card-deduction-guide', label: '체크카드 vs 신용카드', desc: '카드 사용 전략과 공제율 차이' },
-        { href: '/blog/salary-take-home-pay-guide', label: '연봉 실수령액과 연결해서 보기', desc: '월급과 환급의 연결 구조 이해' },
+        { href: '/salary/', label: '연봉 실수령액 계산기', desc: '월급 공제액과 환급액을 함께 보기' },
+        { href: '/severance/', label: '퇴직금 계산기', desc: '연말정산 외 장기 현금흐름 점검' },
+        { href: '/methodology/', label: '계산 기준', desc: '공제 항목과 단순화한 가정 확인' },
       ].map((guide) => (
         <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
           <p class="font-semibold text-gray-800">{guide.label}</p>

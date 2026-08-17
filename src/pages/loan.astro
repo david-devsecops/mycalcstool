@@ -442,13 +442,13 @@ const jsonLd = [
   <section class="card mt-6">
     <h2 class="section-title">
       <span aria-hidden="true">📚</span>
-      관련 가이드
+      함께 볼 계산 기준
     </h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       {[
-        { href: '/blog/loan-repayment-method-guide', label: '상환 방식 비교', desc: '원리금균등, 원금균등, 만기일시 차이 정리' },
-        { href: '/blog/fixed-vs-variable-rate-guide', label: '고정금리 vs 변동금리', desc: '금리 구조 선택 기준 정리' },
-        { href: '/blog/prepayment-fee-break-even-guide', label: '중도상환수수료 손익분기점', desc: '갈아타기 전 꼭 봐야 할 계산' },
+        { href: '/methodology/', label: '계산 기준', desc: '대출 상환 공식과 업데이트 원칙' },
+        { href: '/salary/', label: '연봉 실수령액', desc: '대출 한도 검토 전 세후 현금흐름 확인' },
+        { href: '/compound/', label: '복리 계산기', desc: '저축·투자 시나리오와 대출 이자 비교' },
       ].map((guide) => (
         <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
           <p class="font-semibold text-gray-800">{guide.label}</p>

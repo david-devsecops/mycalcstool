@@ -266,6 +266,14 @@ export function getEnglishBlogPostBySlug(slug: string): EnglishBlogPostMeta | un
   return englishBlogPosts.find((post) => post.slug === slug);
 }
 
+const approvedRelatedFinanceSlugs = new Set([
+  'pmi-guide-how-private-mortgage-insurance-works',
+  'salary-calculator-guide-gross-vs-net-pay',
+  'how-much-house-can-i-afford-guide',
+  'first-time-homebuyer-guide',
+  'tipping-guide',
+]);
+
 export function getRelatedEnglishBlogPosts(slug: string, limit = 3): EnglishBlogPostMeta[] {
   const current = getEnglishBlogPostBySlug(slug);
   if (!current) {
@@ -273,7 +281,7 @@ export function getRelatedEnglishBlogPosts(slug: string, limit = 3): EnglishBlog
   }
 
   return englishBlogPosts
-    .filter((post) => post.slug !== slug)
+    .filter((post) => post.slug !== slug && approvedRelatedFinanceSlugs.has(post.slug))
     .map((post) => {
       const overlap = post.tags.filter((tag) => current.tags.includes(tag)).length;
       const score = overlap * 10 + (post.category === current.category ? 4 : 0);

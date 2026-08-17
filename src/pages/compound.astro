@@ -163,11 +163,12 @@ const jsonLd = {
   <FAQ items={faqItems} />
 
   <section class="card mt-6">
-    <h2 class="section-title"><span aria-hidden="true">📚</span> 관련 가이드</h2>
+    <h2 class="section-title"><span aria-hidden="true">📚</span> 함께 볼 계산 기준</h2>
     <div class="grid grid-cols-1 md:grid-cols-2 gap-3">
       {[
-        { href: '/blog/compound-interest-guide', label: '복리 계산기 보는 법', desc: '복리와 장기 투자에서 봐야 할 핵심 변수 정리' },
-        { href: '/blog/salary-take-home-pay-guide', label: '월 실수령액과 투자 여력', desc: '투자 원금을 세후 기준으로 잡는 방법' },
+        { href: '/etf-investment-calculator/', label: 'ETF 적립식 투자 계산기', desc: '월 적립금과 투자 기간 기준 미래가치 계산' },
+        { href: '/dividend-yield-calculator/', label: '배당수익률 계산기', desc: '배당 현금흐름과 장기 수익 가정 비교' },
+        { href: '/methodology/', label: '계산 기준', desc: '복리 공식과 입력값 한계 확인' },
       ].map((guide) => (
         <a href={guide.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
           <p class="font-semibold text-gray-800">{guide.label}</p>

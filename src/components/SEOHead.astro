@@ -1,5 +1,6 @@
 ---
 import { siteMeta } from '../data/site-meta';
+import { approvalNoIndexPathSet, withTrailingSlash } from '../data/approval-noindex-paths.mjs';
 
 interface Props {
   title: string;
@@ -36,6 +37,7 @@ function withSlash(path: string): string {
   return path.endsWith('/') ? path : path + '/';
 }
 const ogImageUrl = ogImage.startsWith('http') ? ogImage : siteUrl + ogImage;
+const shouldNoIndex = noIndex || approvalNoIndexPathSet.has(withTrailingSlash(Astro.url.pathname));
 const xDefaultUrl = lang === 'en'
   ? pageUrl
   : hreflangEn
@@ -70,8 +72,8 @@ const jsonLdArray = [organizationSchema, ...(jsonLd ? (Array.isArray(jsonLd) ? j
 <meta name="description" content={description} />
 {keywords && <meta name="keywords" content={keywords} />}
 <meta name="author" content={siteMeta.author} />
-{noIndex && <meta name="robots" content="noindex, nofollow" />}
-{!noIndex && <meta name="robots" content="index, follow" />}
+{shouldNoIndex && <meta name="robots" content="noindex, follow" />}
+{!shouldNoIndex && <meta name="robots" content="index, follow" />}
 
 <!-- Canonical -->
 <link rel="canonical" href={pageUrl} />
