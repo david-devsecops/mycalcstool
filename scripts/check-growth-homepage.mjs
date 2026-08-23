@@ -10,6 +10,7 @@ const checks = [
   ['home headline frames the site as a money and cost decision hub', files.home.includes('생활비·금융·AI 비용 계산기 허브')],
   ['home prioritizes moving-cost calculator above long-tail utility lists', files.home.indexOf('/moving-cost-calculator/') < files.home.indexOf('주식·ETF 계산기')],
   ['home keeps weak health/general utility categories out of the front page data model', !files.home.includes("'건강'")],
+  ['home does not expose operator-only monetization strategy copy', !/AdSense|애드센스|승인|수익화|수익형|검색 신호|CTA|유입|운영 초점|밀어야|전략|측정/.test(files.home)],
   ['home has a primary moving CTA event', files.home.includes('data-ga-event="home_primary_moving_click"')],
   ['home has a primary finance CTA event', files.home.includes('data-ga-event="home_primary_finance_click"')],
   ['home has a primary AI CTA event', files.home.includes('data-ga-event="home_primary_ai_click"')],
