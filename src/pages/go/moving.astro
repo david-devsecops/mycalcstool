@@ -1,0 +1,59 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const title = '이사 견적 비교 제휴 안내';
+const description = 'mycalcstool 이사비용 계산기에서 외부 이사 견적 비교 페이지로 이동하기 전 확인하는 제휴 안내 페이지입니다.';
+const affiliateUrl = 'https://appu.kr/?i=12537659';
+const disclosure = '이 페이지에는 제휴 링크가 포함되어 있으며, 상담 신청 등 일정 조건이 충족되면 mycalcstool이 애드릭스 포인트 또는 커미션을 받을 수 있습니다.';
+---
+
+<BaseLayout title={title} description={description} noIndex={true}>
+  <section class="card">
+    <nav class="text-sm text-gray-500 mb-4" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/moving-cost-calculator/" class="hover:text-primary-600 transition-colors">이사비용 계산기</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">제휴 이동 안내</li>
+      </ol>
+    </nav>
+
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800 mb-3">외부 이사 견적 비교 페이지로 이동합니다</h1>
+    <p class="text-gray-600 leading-relaxed">
+      mycalcstool은 이사비용을 추정하는 계산 도구를 제공하며, 이사 상담 신청이나 견적 접수는 외부 제휴 페이지에서 진행됩니다.
+    </p>
+
+    <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+      <h2 class="font-bold text-amber-950 mb-2">제휴 고지</h2>
+      <p class="text-sm text-amber-900 leading-relaxed">{disclosure}</p>
+    </div>
+
+    <div class="mt-5 rounded-2xl border border-gray-200 bg-gray-50 p-4">
+      <h2 class="font-bold text-gray-800 mb-2">이동 전 확인하세요</h2>
+      <ul class="list-disc pl-5 text-sm text-gray-600 leading-relaxed space-y-1">
+        <li>외부 페이지에서 이름, 휴대폰 번호, 출발지·도착지 주소 등을 입력할 수 있습니다.</li>
+        <li>개인정보 수집 및 이용 동의 내용은 외부 페이지에서 직접 확인해야 합니다.</li>
+        <li>계산기 결과는 참고용이며 실제 견적, 서비스 가능 지역, 상담 가능 여부를 보장하지 않습니다.</li>
+      </ul>
+    </div>
+
+    <div class="mt-6 flex flex-col sm:flex-row gap-3">
+      <a
+        href={affiliateUrl}
+        target="_blank"
+        rel="sponsored noopener noreferrer"
+        class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 transition-colors"
+      >
+        외부 견적 비교 페이지 열기
+        <span aria-hidden="true" class="ml-1">→</span>
+      </a>
+      <a
+        href="/moving-cost-calculator/"
+        class="inline-flex items-center justify-center rounded-xl border border-gray-300 px-5 py-3 text-sm font-semibold text-gray-700 hover:bg-gray-50 transition-colors"
+      >
+        계산기로 돌아가기
+      </a>
+    </div>
+  </section>
+</BaseLayout>

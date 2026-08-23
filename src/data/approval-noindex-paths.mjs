@@ -9,6 +9,7 @@ export const approvalNoIndexPaths = [
   '/tdee/',
   '/tip-calculator/',
   '/unit-converter/',
+  '/go/moving/',
   '/blog/',
   '/blog/age-calculator-guide/',
   '/blog/bmi-calculator-guide/',

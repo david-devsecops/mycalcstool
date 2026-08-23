@@ -1,0 +1,329 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import AdSlot from '../components/AdSlot.astro';
+import FAQ from '../components/FAQ.astro';
+
+const title = '이사비용 계산기 - 원룸·아파트 포장이사 예상 견적';
+const description = '이사 유형, 평수, 거리, 층수, 포장 방식, 날짜 조건을 입력해 원룸·아파트 이사비용 예상 범위를 계산합니다. 실제 견적이 달라지는 이유와 비교 견적 체크포인트도 함께 확인하세요.';
+const keywords = '이사비용 계산기, 포장이사 비용, 원룸 이사 비용, 아파트 이사 견적, 이사 견적 비교, 이사비용 예상';
+
+const disclosure = '이 페이지에는 제휴 링크가 포함되어 있으며, 상담 신청 등 일정 조건이 충족되면 mycalcstool이 애드릭스 포인트 또는 커미션을 받을 수 있습니다.';
+
+const faqItems = [
+  {
+    question: '이사비용 계산 결과가 실제 견적과 다른 이유는 무엇인가요?',
+    answer: '실제 견적은 짐의 양, 사다리차 필요 여부, 주차 가능 여부, 날짜, 지역, 작업 인원, 업체 정책에 따라 달라집니다. 이 계산기는 상담 전 대략적인 범위를 잡는 참고용입니다.',
+  },
+  {
+    question: '포장이사와 반포장이사는 얼마나 차이가 나나요?',
+    answer: '일반적으로 포장이사는 작업 범위와 인력이 늘어나 반포장이나 셀프 포장보다 비용이 높습니다. 대신 포장·운반·정리 부담이 줄어 시간이 부족한 경우 유리할 수 있습니다.',
+  },
+  {
+    question: '이사 견적은 몇 곳을 비교하는 것이 좋나요?',
+    answer: '같은 조건이라도 업체별 산정 방식이 다르므로 최소 2~3곳을 비교하는 편이 좋습니다. 방문 견적이나 상세 상담 시 추가 비용 조건을 함께 확인하세요.',
+  },
+  {
+    question: '이 계산기에서 개인정보를 입력하나요?',
+    answer: '아니요. mycalcstool은 이름, 전화번호, 출발지·도착지 주소를 받지 않습니다. 상담 신청은 외부 제휴 페이지에서 별도로 진행됩니다.',
+  },
+];
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'WebApplication',
+    name: '이사비용 계산기',
+    description,
+    url: 'https://mycalcstool.com/moving-cost-calculator/',
+    applicationCategory: 'UtilitiesApplication',
+    operatingSystem: 'All',
+    offers: {
+      '@type': 'Offer',
+      price: '0',
+      priceCurrency: 'KRW',
+    },
+    inLanguage: 'ko',
+  },
+];
+---
+
+<BaseLayout title={title} description={description} keywords={keywords} jsonLd={jsonLd}>
+  <div class="mb-6">
+    <nav class="text-sm text-gray-500 mb-2" aria-label="breadcrumb">
+      <ol class="flex items-center gap-1 list-none p-0">
+        <li><a href="/" class="hover:text-primary-600 transition-colors">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="text-gray-700 font-medium" aria-current="page">이사비용 계산기</li>
+      </ol>
+    </nav>
+    <h1 class="text-2xl md:text-3xl font-bold text-gray-800">이사비용 계산기</h1>
+    <p class="text-gray-500 mt-2">
+      원룸, 소형 이사, 가족 이사의 예상 비용 범위를 빠르게 계산하세요.
+    </p>
+  </div>
+
+  <section class="rounded-2xl border border-amber-200 bg-amber-50 p-4 mb-6" aria-label="제휴 고지">
+    <p class="text-sm text-amber-900 leading-relaxed">
+      <strong>제휴 고지:</strong> {disclosure}
+    </p>
+  </section>
+
+  <AdSlot slot="top" format="horizontal" />
+
+  <section class="card mb-6" aria-labelledby="moving-inputs">
+    <h2 class="section-title" id="moving-inputs">
+      <span aria-hidden="true">🚚</span>
+      이사 조건 입력
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+      <div>
+        <label for="move-type" class="block text-sm font-semibold text-gray-700 mb-2">이사 유형</label>
+        <select id="move-type" class="input-field">
+          <option value="small">소형 이사</option>
+          <option value="oneroom" selected>원룸·오피스텔</option>
+          <option value="family">아파트·가족 이사</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="home-size" class="block text-sm font-semibold text-gray-700 mb-2">집 크기</label>
+        <div class="flex items-center gap-3">
+          <input id="home-size" class="input-field flex-1" type="number" value="18" min="3" max="80" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">평</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="distance-km" class="block text-sm font-semibold text-gray-700 mb-2">이동 거리</label>
+        <div class="flex items-center gap-3">
+          <input id="distance-km" class="input-field flex-1" type="number" value="20" min="1" max="400" step="1" inputmode="numeric" />
+          <span class="text-gray-600 font-medium whitespace-nowrap">km</span>
+        </div>
+      </div>
+
+      <div>
+        <label for="floor-condition" class="block text-sm font-semibold text-gray-700 mb-2">층수·엘리베이터</label>
+        <select id="floor-condition" class="input-field">
+          <option value="elevator" selected>엘리베이터 사용 가능</option>
+          <option value="stairsLow">저층 계단 작업</option>
+          <option value="stairsHigh">고층 계단·사다리차 가능성</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="packing-level" class="block text-sm font-semibold text-gray-700 mb-2">포장 방식</label>
+        <select id="packing-level" class="input-field">
+          <option value="self">셀프 포장</option>
+          <option value="half" selected>반포장</option>
+          <option value="full">포장이사</option>
+        </select>
+      </div>
+
+      <div>
+        <label for="timing-level" class="block text-sm font-semibold text-gray-700 mb-2">이사 날짜 조건</label>
+        <select id="timing-level" class="input-field">
+          <option value="weekday" selected>평일·비성수기</option>
+          <option value="weekend">주말·월말</option>
+          <option value="peak">손없는날·성수기</option>
+        </select>
+      </div>
+    </div>
+
+    <button id="calculate-moving" class="btn-primary mt-6" type="button">예상 비용 계산하기</button>
+  </section>
+
+  <section id="moving-results" class="card mb-6 hidden" aria-live="polite" aria-labelledby="moving-results-title">
+    <h2 class="section-title" id="moving-results-title">
+      <span aria-hidden="true">📦</span>
+      예상 이사비용 범위
+    </h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div class="rounded-xl border border-blue-200 bg-blue-50 p-5">
+        <p class="text-sm font-semibold text-blue-700">낮은 견적 기준</p>
+        <p id="estimate-low" class="mt-2 text-3xl font-bold tabular-nums text-blue-800">-</p>
+      </div>
+      <div class="rounded-xl border border-indigo-200 bg-indigo-50 p-5">
+        <p class="text-sm font-semibold text-indigo-700">높은 견적 기준</p>
+        <p id="estimate-high" class="mt-2 text-3xl font-bold tabular-nums text-indigo-800">-</p>
+      </div>
+    </div>
+
+    <p id="estimate-summary" class="mt-4 text-sm text-gray-700 leading-relaxed"></p>
+
+    <div class="mt-5 rounded-xl bg-gray-50 border border-gray-200 p-4">
+      <h3 class="font-bold text-gray-800 mb-2">이번 계산에서 비용에 영향을 준 항목</h3>
+      <ul id="factor-list" class="list-disc pl-5 text-sm text-gray-600 space-y-1"></ul>
+    </div>
+
+    <div class="mt-5 rounded-2xl border border-amber-200 bg-amber-50 p-4">
+      <p class="text-sm text-amber-900 leading-relaxed mb-3">
+        <strong>제휴 고지:</strong> {disclosure}
+      </p>
+      <a href="/go/moving/" class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 transition-colors">
+        무료 이사 견적 비교하기
+        <span aria-hidden="true" class="ml-1">→</span>
+      </a>
+    </div>
+  </section>
+
+  <section class="card mb-6">
+    <h2 class="section-title">
+      <span aria-hidden="true">📖</span>
+      계산 기준
+    </h2>
+    <div class="prose prose-sm max-w-none text-gray-700 leading-relaxed space-y-4">
+      <p>
+        이사비용은 기본 운반비에 집 크기, 이동 거리, 작업 난이도, 포장 범위, 날짜 조건이 더해져 결정됩니다.
+        이 계산기는 상담 전 예산 범위를 잡기 위한 참고용 도구이며, 실제 계약 견적을 보장하지 않습니다.
+      </p>
+      <p>
+        기본값은 원룸·오피스텔 이사를 기준으로 시작합니다. 평수가 커질수록 짐의 양이 늘어나는 것으로 보고,
+        10km를 넘는 이동 거리에는 추가 이동비를 반영합니다. 계단 작업, 고층 작업, 포장이사, 성수기 일정은
+        작업 인력과 시간이 늘어나는 조건으로 보아 비용 범위를 넓게 잡습니다.
+      </p>
+      <h3 class="text-lg font-bold text-gray-800">실제 견적이 달라지는 주요 이유</h3>
+      <ul class="list-disc pl-5 space-y-1">
+        <li>책장, 침대, 냉장고, 세탁기처럼 부피가 큰 짐의 개수</li>
+        <li>엘리베이터 예약 가능 여부와 사다리차 필요 여부</li>
+        <li>출발지와 도착지의 주차 가능 거리</li>
+        <li>손없는날, 월말, 주말, 봄·가을 성수기 여부</li>
+        <li>폐기물 처리, 에어컨 분리·설치, 청소 같은 추가 서비스</li>
+      </ul>
+      <h3 class="text-lg font-bold text-gray-800">비교 견적을 받을 때 확인할 것</h3>
+      <p>
+        견적을 비교할 때는 최종 금액만 보지 말고 포함 항목을 함께 확인해야 합니다.
+        포장 범위, 작업 인원, 차량 톤수, 사다리차 포함 여부, 추가 비용 조건이 다르면 같은 금액처럼 보여도 실제 부담이 달라질 수 있습니다.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot slot="content" format="rectangle" />
+
+  <FAQ items={faqItems} />
+
+  <section class="card mt-6">
+    <h2 class="section-title">
+      <span aria-hidden="true">🔗</span>
+      함께 확인할 계산기
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
+      {[
+        { href: '/salary/', label: '연봉 실수령액', desc: '이사 후 월 고정비를 보기 전 세후 소득 확인' },
+        { href: '/loan/', label: '대출 이자', desc: '전세·주담대 상환 부담 비교' },
+        { href: '/compound/', label: '복리 계산기', desc: '이사 비용을 쓰지 않았을 때의 저축 시나리오' },
+      ].map((link) => (
+        <a href={link.href} class="rounded-xl border border-gray-200 p-4 hover:border-primary-300 hover:bg-primary-50 transition-colors">
+          <p class="font-semibold text-gray-800">{link.label}</p>
+          <p class="text-sm text-gray-500 mt-1">{link.desc}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+type MoveType = 'small' | 'oneroom' | 'family';
+type FloorCondition = 'elevator' | 'stairsLow' | 'stairsHigh';
+type PackingLevel = 'self' | 'half' | 'full';
+type TimingLevel = 'weekday' | 'weekend' | 'peak';
+
+const labels = {
+  moveType: {
+    small: '소형 이사',
+    oneroom: '원룸·오피스텔',
+    family: '아파트·가족 이사',
+  },
+  floor: {
+    elevator: '엘리베이터 사용 가능',
+    stairsLow: '저층 계단 작업',
+    stairsHigh: '고층 계단·사다리차 가능성',
+  },
+  packing: {
+    self: '셀프 포장',
+    half: '반포장',
+    full: '포장이사',
+  },
+  timing: {
+    weekday: '평일·비성수기',
+    weekend: '주말·월말',
+    peak: '손없는날·성수기',
+  },
+};
+
+function won(value: number): string {
+  return `${value.toLocaleString('ko-KR')}원`;
+}
+
+function getSelectValue<T extends string>(id: string): T {
+  const el = document.getElementById(id) as HTMLSelectElement | null;
+  return (el?.value || '') as T;
+}
+
+function getNumberValue(id: string, fallback: number, min: number, max: number): number {
+  const el = document.getElementById(id) as HTMLInputElement | null;
+  const value = Number(el?.value);
+  if (!Number.isFinite(value)) return fallback;
+  return Math.min(max, Math.max(min, value));
+}
+
+function calculateMovingCost(): void {
+  const type = getSelectValue<MoveType>('move-type');
+  const pyeong = getNumberValue('home-size', 18, 3, 80);
+  const distanceKm = getNumberValue('distance-km', 20, 1, 400);
+  const floor = getSelectValue<FloorCondition>('floor-condition');
+  const packing = getSelectValue<PackingLevel>('packing-level');
+  const timing = getSelectValue<TimingLevel>('timing-level');
+
+  const moveTypeBase: Record<MoveType, number> = { small: 120000, oneroom: 250000, family: 550000 };
+  const floorExtra: Record<FloorCondition, number> = { elevator: 0, stairsLow: 70000, stairsHigh: 150000 };
+  const packingMultiplier: Record<PackingLevel, number> = { self: 1, half: 1.18, full: 1.35 };
+  const timingMultiplier: Record<TimingLevel, number> = { weekday: 1, weekend: 1.12, peak: 1.25 };
+
+  const sizeCost = pyeong * 12000;
+  const distanceCost = Math.max(0, distanceKm - 10) * 2500;
+  const base = (moveTypeBase[type] + sizeCost + distanceCost + floorExtra[floor]) * packingMultiplier[packing] * timingMultiplier[timing];
+  const low = Math.round((base * 0.85) / 10000) * 10000;
+  const high = Math.round((base * 1.2) / 10000) * 10000;
+
+  const setText = (id: string, text: string) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = text;
+  };
+
+  setText('estimate-low', won(low));
+  setText('estimate-high', won(high));
+  setText(
+    'estimate-summary',
+    `${labels.moveType[type]} ${pyeong}평, ${distanceKm}km 이동 기준의 참고 범위입니다. 실제 견적은 짐의 양, 사다리차, 주차, 날짜, 지역 조건에 따라 달라질 수 있습니다.`
+  );
+
+  const factors = [
+    `${labels.moveType[type]} 기본 작업비`,
+    `${pyeong}평 규모에 따른 짐량 가정`,
+    `${distanceKm}km 이동 거리`,
+    labels.floor[floor],
+    labels.packing[packing],
+    labels.timing[timing],
+  ];
+
+  const list = document.getElementById('factor-list');
+  if (list) {
+    list.innerHTML = '';
+    factors.forEach((factor) => {
+      const li = document.createElement('li');
+      li.textContent = factor;
+      list.appendChild(li);
+    });
+  }
+
+  const result = document.getElementById('moving-results');
+  result?.classList.remove('hidden');
+  result?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+document.addEventListener('DOMContentLoaded', () => {
+  document.getElementById('calculate-moving')?.addEventListener('click', calculateMovingCost);
+});
+</script>
