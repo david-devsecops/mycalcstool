@@ -130,7 +130,16 @@ const jsonLd = [
       </div>
     </div>
 
-    <button id="calculate-moving" class="btn-primary mt-6" type="button">예상 비용 계산하기</button>
+    <button
+      id="calculate-moving"
+      class="btn-primary mt-6"
+      type="button"
+      data-ga-event="moving_estimate_calculated"
+      data-ga-category="moving"
+      data-ga-label="moving calculator estimate"
+    >
+      예상 비용 계산하기
+    </button>
   </section>
 
   <section id="moving-results" class="card mb-6 hidden" aria-live="polite" aria-labelledby="moving-results-title">
@@ -161,7 +170,13 @@ const jsonLd = [
       <p class="text-sm text-amber-900 leading-relaxed mb-3">
         <strong>제휴 고지:</strong> {disclosure}
       </p>
-      <a href="/go/moving/" class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 transition-colors">
+      <a
+        href="/go/moving/"
+        class="inline-flex items-center justify-center rounded-xl bg-primary-600 px-5 py-3 text-sm font-semibold text-white hover:bg-primary-700 transition-colors"
+        data-ga-event="moving_affiliate_click"
+        data-ga-category="affiliate"
+        data-ga-label="moving estimate result cta"
+      >
         무료 이사 견적 비교하기
         <span aria-hidden="true" class="ml-1">→</span>
       </a>

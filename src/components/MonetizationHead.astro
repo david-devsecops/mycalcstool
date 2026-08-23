@@ -12,6 +12,21 @@ const loadAdsense = adProvider === 'adsense' && adsenseClient;
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
       gtag('config', gaMeasurementId);
+
+      document.addEventListener('click', function (event) {
+        const target = event.target instanceof Element
+          ? event.target.closest('[data-ga-event]')
+          : null;
+        if (!target) return;
+
+        const eventName = target.getAttribute('data-ga-event');
+        if (!eventName) return;
+
+        gtag('event', eventName, {
+          event_category: target.getAttribute('data-ga-category') || 'engagement',
+          event_label: target.getAttribute('data-ga-label') || target.getAttribute('href') || undefined,
+        });
+      });
     </script>
   </>
 )}

@@ -4,21 +4,19 @@ import AdSlot from '../components/AdSlot.astro';
 import siteConfig from '../data/site-config.json';
 import { siteMeta } from '../data/site-meta';
 
-const title = '금융 계산기 허브 - 대출, 연봉, 세금, 투자 계산 | mycalcstool';
-const description = '대출 이자, 연봉 실수령액, 세금, 복리, 퇴직금, 주식·ETF 계산을 중심으로 공식과 가정을 함께 설명하는 무료 금융 계산기 허브입니다.';
-const keywords = '금융계산기, 대출계산기, 연봉계산기, 세금계산기, 복리계산기, 퇴직금계산기, 주식계산기, ETF계산기';
+const title = '생활비·금융·AI 비용 계산기 허브';
+const description = '이사비용, 대출, 연봉, 세금, 복리, 주식·ETF, AI API 비용처럼 실제 지출과 예산 판단에 쓰는 계산기를 공식과 한계까지 함께 제공합니다.';
+const keywords = '생활비 계산기, 금융계산기, 이사비용 계산기, 대출계산기, 연봉계산기, 복리계산기, 주식계산기, AI비용계산기';
 
 const categoryColors: Record<string, string> = {
   '금융': 'bg-blue-50 text-blue-700 border-blue-200',
   'AI': 'bg-slate-50 text-slate-700 border-slate-200',
-  '건강': 'bg-green-50 text-green-700 border-green-200',
-  '생활': 'bg-purple-50 text-purple-700 border-purple-200',
 };
 
 const featuredFinance = siteConfig.calculators
   .filter((calculator) => calculator.category === '금융')
   .sort((left, right) => right.priority - left.priority)
-  .slice(0, 5);
+  .slice(0, 4);
 
 const stockCalculators = siteConfig.calculators.filter((calculator) =>
   [
@@ -30,29 +28,44 @@ const stockCalculators = siteConfig.calculators.filter((calculator) =>
     'foreign-stock-return-calculator',
     'etf-investment-calculator',
   ].includes(calculator.id)
-);
+).slice(0, 4);
 
 const aiCalculators = siteConfig.calculators.filter((calculator) => calculator.category === 'AI');
 
-const focusCards = [
+const decisionLanes = [
   {
-    title: '금융 계산 우선',
-    desc: '홈과 주요 동선을 대출, 연봉, 세금, 복리, 투자 계산처럼 의사결정에 바로 쓰이는 도구 중심으로 구성합니다.',
-    href: '/methodology',
-    link: '계산 기준 보기',
+    title: '이사비용 먼저 잡기',
+    desc: '원룸·아파트 이사 조건을 넣고 견적 상담 전 예산 범위를 확인합니다.',
+    href: '/moving-cost-calculator/',
+    event: 'home_primary_moving_click',
+    label: 'moving cost calculator',
+    cta: '이사비용 계산',
+    accent: 'border-amber-200 bg-amber-50 text-amber-900',
   },
   {
-    title: '공식과 한계 공개',
-    desc: '계산 결과만 보여주지 않고 입력 단위, 공식, 예시, 자주 하는 실수, 실제 판단 전 확인해야 할 한계를 함께 적습니다.',
+    title: '대출·소득 계산',
+    desc: '대출 이자, 연봉 실수령액, 세금처럼 매달 현금흐름에 영향을 주는 값을 계산합니다.',
     href: '/loan/',
-    link: '계산 예시 보기',
+    event: 'home_primary_finance_click',
+    label: 'finance calculator',
+    cta: '금융 계산 시작',
+    accent: 'border-blue-200 bg-blue-50 text-blue-900',
   },
   {
-    title: '오류 제보 가능',
-    desc: '세율, 요율, AI 모델 가격처럼 바뀔 수 있는 값은 정기 점검하고, 사용자가 근거 자료와 함께 정정을 요청할 수 있습니다.',
-    href: '/contact',
-    link: '정정 요청하기',
+    title: 'AI 사용료 추정',
+    desc: '토큰 수, 요청량, 모델 단가를 나눠 API 비용과 월 예산을 빠르게 추정합니다.',
+    href: '/chatgpt-api-cost-calculator/',
+    event: 'home_primary_ai_click',
+    label: 'ai cost calculator',
+    cta: 'AI 비용 계산',
+    accent: 'border-slate-200 bg-slate-50 text-slate-900',
   },
+];
+
+const operatingPrinciples = [
+  '계산 결과만 보여주지 않고 입력 기준, 공식, 예외 조건을 함께 적습니다.',
+  '바뀔 수 있는 세율, 요율, AI 단가는 정기 점검과 정정 요청 경로를 둡니다.',
+  '검색 유입과 수익화는 실제 비용 판단에 가까운 페이지부터 검증합니다.',
 ];
 
 const websiteSchema = {
@@ -82,26 +95,95 @@ const websiteSchema = {
     })();
   </script>
 
-  <!-- 히어로 섹션 -->
-  <section class="text-center mb-10">
-    <h1 class="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
-      금융 계산기 허브
-    </h1>
-    <p class="text-lg text-gray-600 max-w-2xl mx-auto leading-relaxed">
-      대출, 연봉, 세금, 복리, 퇴직금, 주식·ETF처럼 결정에 바로 쓰는 계산기를 중심으로<br class="hidden md:block" />
-      공식, 입력 기준, 예시, 한계를 함께 설명합니다.
-    </p>
+  <section class="mb-8 overflow-hidden rounded-3xl border border-slate-200 bg-white shadow-sm">
+    <div class="grid gap-0 md:grid-cols-[1.08fr_0.92fr]">
+      <div class="p-6 md:p-8">
+        <p class="mb-3 inline-flex rounded-full border border-slate-200 bg-slate-50 px-3 py-1 text-sm font-semibold text-slate-700">
+          비용 판단을 먼저 끝내는 계산기
+        </p>
+        <h1 class="text-3xl font-black tracking-tight text-slate-950 md:text-5xl">
+          생활비·금융·AI 비용 계산기 허브
+        </h1>
+        <p class="mt-4 max-w-2xl text-base leading-relaxed text-slate-600 md:text-lg">
+          이사비용, 대출, 연봉, 투자, AI API 비용처럼 실제 돈이 움직이는 결정을 계산합니다.
+          결과값만 던지지 않고 공식, 가정, 한계까지 같이 보여줍니다.
+        </p>
+        <div class="mt-6 flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+          <a
+            href="/moving-cost-calculator/"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-2xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition-colors hover:bg-slate-800 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-ga-event="home_primary_moving_click"
+            data-ga-category="homepage"
+            data-ga-label="hero moving calculator"
+          >
+            이사비용부터 계산하기
+            <span aria-hidden="true" class="ml-1">→</span>
+          </a>
+          <a
+            href="/loan/"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-ga-event="home_primary_finance_click"
+            data-ga-category="homepage"
+            data-ga-label="hero loan calculator"
+          >
+            금융 계산
+          </a>
+          <a
+            href="/chatgpt-api-cost-calculator/"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+            data-ga-event="home_primary_ai_click"
+            data-ga-category="homepage"
+            data-ga-label="hero ai cost calculator"
+          >
+            AI 비용
+          </a>
+          <a
+            href="/methodology"
+            class="inline-flex items-center justify-center whitespace-nowrap rounded-2xl border border-slate-300 bg-white px-5 py-3 text-sm font-bold text-slate-800 transition-colors hover:border-slate-400 hover:bg-slate-50 focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2"
+          >
+            계산 기준 보기
+          </a>
+        </div>
+      </div>
+      <aside class="border-t border-slate-200 bg-slate-950 p-6 text-white md:border-l md:border-t-0 md:p-8" aria-label="현재 성장 지표">
+        <p class="text-sm font-semibold text-slate-300">현재 운영 초점</p>
+        <div class="mt-5 space-y-4">
+          <div>
+            <p class="text-4xl font-black tabular-nums">3</p>
+            <p class="mt-1 text-sm leading-relaxed text-slate-300">생활 비용, 금융, AI 비용만 홈 전면에서 밀어 검색 신호를 집중합니다.</p>
+          </div>
+          <div class="rounded-2xl border border-white/10 bg-white/5 p-4">
+            <p class="text-sm font-bold text-amber-200">AdSense 승인 전 전략</p>
+            <p class="mt-2 text-sm leading-relaxed text-slate-300">
+              광고보다 색인, 유입, CTA 클릭을 먼저 측정합니다. 수익형 링크는 결과 이후에만 노출합니다.
+            </p>
+          </div>
+        </div>
+      </aside>
+    </div>
   </section>
 
-  <section class="mb-8" aria-labelledby="site-focus">
-    <h2 id="site-focus" class="sr-only">mycalcstool 운영 방향</h2>
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-      {focusCards.map((card) => (
-        <article class="card border-primary-100 bg-white">
-          <h3 class="font-bold text-gray-800 mb-2">{card.title}</h3>
-          <p class="text-sm text-gray-600 leading-relaxed mb-3">{card.desc}</p>
-          <a href={card.href} class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">{card.link} →</a>
-        </article>
+  <section class="mb-8" aria-labelledby="decision-lanes">
+    <div class="mb-4 flex flex-wrap items-end justify-between gap-3">
+      <div>
+        <h2 id="decision-lanes" class="text-2xl font-black text-slate-900">지금 밀어야 할 3개 계산 축</h2>
+        <p class="mt-1 text-sm text-slate-500">검색 노출이 쌓일 때까지 홈 내부링크를 이 축에 집중합니다.</p>
+      </div>
+      <a href="/contact" class="text-sm font-semibold text-primary-600 hover:text-primary-700">오류·정정 요청 →</a>
+    </div>
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-3">
+      {decisionLanes.map((lane) => (
+        <a
+          href={lane.href}
+          class={`block rounded-3xl border p-5 no-underline transition-shadow duration-200 hover:shadow-md ${lane.accent}`}
+          data-ga-event={lane.event}
+          data-ga-category="homepage"
+          data-ga-label={lane.label}
+        >
+          <h3 class="text-lg font-black">{lane.title}</h3>
+          <p class="mt-2 min-h-[4.5rem] text-sm leading-relaxed opacity-80">{lane.desc}</p>
+          <p class="mt-4 text-sm font-black">{lane.cta} →</p>
+        </a>
       ))}
     </div>
   </section>
@@ -109,16 +191,47 @@ const websiteSchema = {
   <!-- 상단 광고 -->
   <AdSlot slot="top" format="horizontal" />
 
+  <section class="mb-8" aria-labelledby="life-cost-tools">
+    <div class="mb-4 flex flex-wrap items-center justify-between gap-3">
+      <h2 class="text-xl font-black text-slate-900" id="life-cost-tools">생활 비용 계산</h2>
+      <p class="text-sm text-slate-500">첫 수익 실험은 실제 상담 의도가 있는 비용 주제부터 봅니다.</p>
+    </div>
+    <a
+      href="/moving-cost-calculator/"
+      class="block rounded-3xl border border-amber-200 bg-gradient-to-br from-amber-50 to-white p-6 no-underline transition-colors duration-200 hover:border-amber-300"
+      aria-label="이사비용 계산기 바로가기"
+      data-ga-event="home_primary_moving_click"
+      data-ga-category="homepage"
+      data-ga-label="life cost moving card"
+    >
+      <div class="flex flex-col gap-5 md:flex-row md:items-center md:justify-between">
+        <div>
+          <p class="mb-3 inline-flex rounded-full border border-amber-200 bg-white px-3 py-1 text-xs font-bold text-amber-800">
+            견적 상담 전 예산 확인
+          </p>
+          <h3 class="text-2xl font-black text-slate-900">이사비용 계산기</h3>
+          <p class="mt-2 max-w-2xl text-sm leading-relaxed text-slate-600">
+            원룸·아파트 이사 유형, 평수, 거리, 층수, 포장 방식, 날짜 조건을 입력해 예상 비용 범위를 봅니다.
+            개인정보는 받지 않고, 실제 상담은 외부 페이지에서만 진행합니다.
+          </p>
+        </div>
+        <div class="rounded-2xl bg-slate-950 px-5 py-3 text-center text-sm font-black text-white">
+          예상 비용 계산 →
+        </div>
+      </div>
+    </a>
+  </section>
+
   <section class="mb-8" aria-labelledby="featured-finance">
     <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-      <h2 class="text-xl font-bold text-gray-700" id="featured-finance">우선 추천하는 금융 계산기</h2>
+      <h2 class="text-xl font-black text-slate-900" id="featured-finance">현금흐름 금융 계산</h2>
       <a href="/methodology" class="text-sm font-semibold text-primary-600 hover:text-primary-700 transition-colors">계산 기준 보기 →</a>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {featuredFinance.map(calc => (
         <a
           href={calc.path}
-          class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
+          class="card hover:border-primary-200 transition-colors duration-200 group cursor-pointer no-underline"
           aria-label={`${calc.name} 바로가기`}
         >
           <div class="flex items-start gap-3">
@@ -148,14 +261,14 @@ const websiteSchema = {
 
   <section class="mb-8" aria-labelledby="stock-tools">
     <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-      <h2 class="text-xl font-bold text-gray-700" id="stock-tools">주식·ETF 계산기</h2>
+      <h2 class="text-xl font-black text-slate-900" id="stock-tools">주식·ETF 계산기</h2>
       <p class="text-sm text-gray-500">종목 추천 없이 입력값 기준으로만 계산합니다.</p>
     </div>
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
       {stockCalculators.map(calc => (
         <a
           href={calc.path}
-          class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
+          class="card hover:border-primary-200 transition-colors duration-200 group cursor-pointer no-underline"
           aria-label={`${calc.name} 바로가기`}
         >
           <div class="flex items-start gap-3">
@@ -176,15 +289,18 @@ const websiteSchema = {
 
   <section class="mb-8" aria-labelledby="ai-tools">
     <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-      <h2 class="text-xl font-bold text-gray-700" id="ai-tools">AI 비용 계산기</h2>
+      <h2 class="text-xl font-black text-slate-900" id="ai-tools">AI 비용 계산기</h2>
       <p class="text-sm text-gray-500">토큰·요청 수·모델 단가 기준으로 비용을 추정합니다.</p>
     </div>
     <div class="grid grid-cols-1 sm:grid-cols-3 gap-4">
       {aiCalculators.map(calc => (
         <a
           href={calc.path}
-          class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline"
+          class="card hover:border-primary-200 transition-colors duration-200 group cursor-pointer no-underline"
           aria-label={`${calc.name} 바로가기`}
+          data-ga-event={calc.id === 'chatgpt-api-cost-calculator' ? 'home_primary_ai_click' : 'home_ai_card_click'}
+          data-ga-category="homepage"
+          data-ga-label={calc.id}
         >
           <div class="flex items-start gap-3">
             <span class="text-3xl" role="img" aria-label={calc.name}>{calc.icon}</span>
@@ -202,47 +318,16 @@ const websiteSchema = {
     </div>
   </section>
 
-  <section class="mb-8" aria-labelledby="life-cost-tools">
-    <div class="flex items-center justify-between gap-3 mb-4 flex-wrap">
-      <h2 class="text-xl font-bold text-gray-700" id="life-cost-tools">생활 비용 계산</h2>
-      <p class="text-sm text-gray-500">홈의 중심축은 금융·투자·AI 계산기이며, 생활 비용 도구는 보조로 제공합니다.</p>
-    </div>
-    <a
-      href="/moving-cost-calculator/"
-      class="card hover:shadow-md hover:border-primary-200 transition-all duration-200 group cursor-pointer no-underline block"
-      aria-label="이사비용 계산기 바로가기"
-    >
-      <div class="flex items-start gap-3">
-        <span class="text-3xl" role="img" aria-label="이사비용 계산기">🚚</span>
-        <div class="flex-1 min-w-0">
-          <div class="mb-2">
-            <span class="text-xs px-2.5 py-1 rounded-full border font-medium bg-slate-50 text-slate-700 border-slate-200">
-              생활 비용
-            </span>
-          </div>
-          <h3 class="font-semibold text-gray-800 group-hover:text-primary-600 transition-colors">이사비용 계산기</h3>
-          <p class="text-sm text-gray-500 mt-1 leading-snug">
-            원룸·아파트 이사 조건을 입력해 예상 비용 범위와 견적 비교 체크포인트를 확인합니다.
-          </p>
-        </div>
-      </div>
-      <div class="mt-3 text-sm font-medium text-primary-600 group-hover:text-primary-700 flex items-center gap-1">
-        예상 비용 계산하기
-        <span aria-hidden="true">→</span>
-      </div>
-    </a>
-  </section>
-
   <section class="card mb-8 bg-slate-50 border-slate-100" aria-labelledby="current-scope">
-    <h2 id="current-scope" class="text-xl font-bold text-gray-800 mb-3">현재 집중 운영 범위</h2>
+    <h2 id="current-scope" class="text-xl font-black text-slate-900 mb-3">운영 원칙</h2>
     <p class="text-sm text-gray-700 leading-relaxed mb-3">
-      mycalcstool은 승인 심사 기간 동안 금융 의사결정과 AI 비용 추정에 직접 연결되는 계산기를 우선 운영합니다.
-      이사비용처럼 실제 비용 판단에 연결되는 생활 비용 도구는 보조로만 추가하고, 건강, 날짜, 단위 변환처럼 범용성이 강한 보조 계산기는 계속 홈과 주요 탐색에서 제외해 사이트 주제를 명확히 했습니다.
+      mycalcstool은 승인 심사와 초기 검색 유입 확보 기간 동안 실제 비용 판단에 가까운 계산기만 홈 전면에 둡니다.
+      범용 보조 도구는 내부 페이지로 유지하되, 홈의 검색 신호는 생활 비용, 금융, AI 비용에 집중합니다.
     </p>
     <ul class="list-disc pl-5 text-sm text-gray-700 leading-relaxed space-y-1">
-      <li>대출, 연봉, 세금, 복리, 퇴직금은 한국 사용자의 실제 현금흐름 계산에 맞춰 제공합니다.</li>
-      <li>주식·ETF 계산기는 종목 추천 없이 매수 단가, 수익률, 배당, 환율, 적립식 가정을 계산합니다.</li>
-      <li>AI 비용 계산기는 토큰 수, 요청 수, 모델별 단가처럼 예산 산정에 필요한 입력값을 분리해 보여줍니다.</li>
+      {operatingPrinciples.map((principle) => (
+        <li>{principle}</li>
+      ))}
     </ul>
   </section>
 
