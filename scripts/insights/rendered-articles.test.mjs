@@ -13,6 +13,9 @@ const publicCopyBanPattern = /AdSense review window|애드센스|승인 전 전�
 test('rendered article pages expose article metadata and calculator CTA', () => {
   assert.match(articleHtml, /<meta property="og:type" content="article">/);
   assert.match(articleHtml, /"@type":"Article"/);
+  assert.match(articleHtml, /"image":\["https:\/\/mycalcstool\.com\/og-default\.png"\]/);
+  assert.match(articleHtml, /"publisher":\{"@type":"Organization","name":"mycalcstool","logo":\{"@type":"ImageObject","url":"https:\/\/mycalcstool\.com\/og-default\.png"\}\}/);
+  assert.match(articleHtml, /"mainEntityOfPage":\{"@type":"WebPage","@id":"https:\/\/mycalcstool\.com\/articles\/base-rate-loan-interest-impact\/"\}/);
   assert.match(articleHtml, /rel="canonical" href="https:\/\/mycalcstool\.com\/articles\/base-rate-loan-interest-impact\/"/);
   assert.match(articleHtml, /data-ga-event="article_calculator_click"/);
 });
@@ -47,6 +50,8 @@ test('every rendered article exposes trust elements and calculator links', () =>
 
     assert.match(html, /"@type":"Article"/, `${article.slug} missing Article schema`);
     assert.match(html, /"@type":"BreadcrumbList"/, `${article.slug} missing breadcrumb schema`);
+    assert.match(html, /"image":\["https:\/\/mycalcstool\.com\/og-default\.png"\]/, `${article.slug} missing Article image`);
+    assert.match(html, /"mainEntityOfPage":\{"@type":"WebPage","@id":"https:\/\/mycalcstool\.com\/articles\//, `${article.slug} missing Article WebPage entity`);
     assert.match(html, /id="sources"/, `${article.slug} missing source section`);
     assert.match(html, /id="disclaimer"/, `${article.slug} missing disclaimer`);
     assert.doesNotMatch(html, publicCopyBanPattern, `${article.slug} contains internal public copy`);

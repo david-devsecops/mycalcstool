@@ -13,6 +13,7 @@ export function getStaticPaths() {
 
 const { article } = Astro.props;
 const url = `${siteMeta.url}/articles/${article.slug}/`;
+const schemaImageUrl = `${siteMeta.url}/og-default.png`;
 const related = getRelatedArticles(article.slug, article.categoryKey);
 
 const disclaimerByType = {
@@ -29,6 +30,7 @@ const jsonLd = [
     '@type': 'Article',
     headline: article.title,
     description: article.description,
+    image: [schemaImageUrl],
     datePublished: article.publishedDate,
     dateModified: article.updatedDate,
     author: {
@@ -38,8 +40,15 @@ const jsonLd = [
     publisher: {
       '@type': 'Organization',
       name: siteMeta.organizationName,
+      logo: {
+        '@type': 'ImageObject',
+        url: schemaImageUrl,
+      },
     },
-    mainEntityOfPage: url,
+    mainEntityOfPage: {
+      '@type': 'WebPage',
+      '@id': url,
+    },
     inLanguage: 'ko',
   },
   {
