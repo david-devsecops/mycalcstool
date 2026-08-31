@@ -14,6 +14,8 @@ const checks = [
   ['home has a primary moving CTA event', files.home.includes('data-ga-event="home_primary_moving_click"')],
   ['home has a primary finance CTA event', files.home.includes('data-ga-event="home_primary_finance_click"')],
   ['home has a primary AI CTA event', files.home.includes('data-ga-event="home_primary_ai_click"')],
+  ['home links to the issue-based article index', files.home.includes('href="/articles/"')],
+  ['home promotes issue articles as visitor-facing calculator guides', files.home.includes('금융·생활 이슈 계산 가이드')],
   ['global GA click listener sends data-ga-event clicks', files.monetizationHead.includes('data-ga-event') && files.monetizationHead.includes("gtag('event'")],
   ['moving calculator tracks estimate clicks', files.moving.includes('data-ga-event="moving_estimate_calculated"')],
   ['moving affiliate CTA tracks sponsored handoff clicks', files.moving.includes('data-ga-event="moving_affiliate_click"')],

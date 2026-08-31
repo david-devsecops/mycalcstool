@@ -1,0 +1,35 @@
+---
+interface Cta {
+  href: string;
+  label: string;
+  description: string;
+  calculatorId: string;
+}
+
+interface Props {
+  ctas: Cta[];
+}
+
+const { ctas } = Astro.props;
+---
+
+{ctas.length > 0 && (
+  <section class="my-8 rounded-2xl border border-primary-100 bg-primary-50 p-5" aria-labelledby="article-calculator-cta">
+    <h2 id="article-calculator-cta" class="text-lg font-black text-primary-900">내 조건으로 직접 계산하기</h2>
+    <div class="mt-4 grid grid-cols-1 gap-3 md:grid-cols-2">
+      {ctas.map((cta) => (
+        <a
+          href={cta.href}
+          class="block rounded-xl border border-primary-200 bg-white p-4 no-underline transition-colors hover:border-primary-300 hover:bg-white/80"
+          data-ga-event="article_calculator_click"
+          data-ga-category="article"
+          data-ga-label={cta.calculatorId}
+        >
+          <p class="font-bold text-primary-800">{cta.label} →</p>
+          <p class="mt-1 text-sm leading-relaxed text-gray-600">{cta.description}</p>
+        </a>
+      ))}
+    </div>
+  </section>
+)}
+

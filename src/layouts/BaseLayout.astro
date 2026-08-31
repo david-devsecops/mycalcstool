@@ -13,6 +13,7 @@ interface Props {
   ogImage?: string;
   canonicalUrl?: string;
   lang?: string;
+  ogType?: 'website' | 'article';
   jsonLd?: object | object[];
   noIndex?: boolean;
   hreflangKo?: string;
@@ -26,6 +27,7 @@ const {
   ogImage,
   canonicalUrl,
   lang = 'ko',
+  ogType = 'website',
   jsonLd,
   noIndex = false,
   hreflangKo,
@@ -44,6 +46,7 @@ const {
     ogImage={ogImage}
     canonicalUrl={canonicalUrl}
     lang={lang}
+    ogType={ogType}
     jsonLd={jsonLd}
     noIndex={noIndex}
     hreflangKo={hreflangKo}

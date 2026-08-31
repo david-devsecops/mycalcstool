@@ -9,6 +9,7 @@ interface Props {
   ogImage?: string;
   canonicalUrl?: string;
   lang?: string;
+  ogType?: 'website' | 'article';
   jsonLd?: object | object[];
   noIndex?: boolean;
   hreflangKo?: string;
@@ -22,6 +23,7 @@ const {
   ogImage = '/og-default.png',
   canonicalUrl,
   lang = 'ko',
+  ogType = 'website',
   jsonLd,
   noIndex = false,
   hreflangKo,
@@ -79,7 +81,7 @@ const jsonLdArray = [organizationSchema, ...(jsonLd ? (Array.isArray(jsonLd) ? j
 <link rel="canonical" href={pageUrl} />
 
 <!-- Open Graph -->
-<meta property="og:type" content="website" />
+<meta property="og:type" content={ogType} />
 <meta property="og:url" content={pageUrl} />
 <meta property="og:title" content={fullTitle} />
 <meta property="og:description" content={description} />

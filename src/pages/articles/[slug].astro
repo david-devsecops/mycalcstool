@@ -1,0 +1,148 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import ArticleCta from '../../components/ArticleCta.astro';
+import { getPublishedArticles, getRelatedArticles } from '../../data/articles.mjs';
+import { siteMeta } from '../../data/site-meta';
+
+export function getStaticPaths() {
+  return getPublishedArticles('ko').map((article) => ({
+    params: { slug: article.slug },
+    props: { article },
+  }));
+}
+
+const { article } = Astro.props;
+const url = `${siteMeta.url}/articles/${article.slug}/`;
+const related = getRelatedArticles(article.slug, article.categoryKey);
+
+const disclaimerByType = {
+  finance: '본 콘텐츠는 일반적인 정보 제공을 목적으로 작성되었습니다. 실제 금융상품의 금리와 적용 조건은 개인 상황과 금융기관 정책에 따라 달라질 수 있습니다.',
+  tax: '본 콘텐츠는 일반적인 세금 정보 제공을 목적으로 작성되었습니다. 실제 적용 여부와 금액은 개인 소득, 공제 항목, 최신 세법에 따라 달라질 수 있습니다.',
+  investing: '본 콘텐츠는 투자 권유가 아니며 투자 결과에 대한 책임은 투자자 본인에게 있습니다.',
+  ai: 'AI API 가격과 과금 구조는 제공자 정책에 따라 달라질 수 있습니다. 실제 예산 결정 전 공식 가격표를 확인하세요.',
+  general: '계산 결과와 예시는 참고용이며 실제 조건에 따라 달라질 수 있습니다.',
+};
+
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: article.title,
+    description: article.description,
+    datePublished: article.publishedDate,
+    dateModified: article.updatedDate,
+    author: {
+      '@type': 'Organization',
+      name: siteMeta.organizationName,
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: siteMeta.organizationName,
+    },
+    mainEntityOfPage: url,
+    inLanguage: 'ko',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: '홈',
+        item: siteMeta.url,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: '이슈 계산 가이드',
+        item: `${siteMeta.url}/articles/`,
+      },
+      {
+        '@type': 'ListItem',
+        position: 3,
+        name: article.title,
+        item: url,
+      },
+    ],
+  },
+];
+---
+
+<BaseLayout title={article.title} description={article.description} keywords={`${article.category}, 계산기, 금융정보`} canonicalUrl={url} ogType="article" jsonLd={jsonLd}>
+  <article class="mx-auto max-w-3xl">
+    <nav class="mb-4 text-sm text-gray-500" aria-label="breadcrumb">
+      <ol class="flex list-none flex-wrap items-center gap-1 p-0">
+        <li><a href="/" class="transition-colors hover:text-primary-600">홈</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li><a href="/articles/" class="transition-colors hover:text-primary-600">이슈 계산 가이드</a></li>
+        <li aria-hidden="true" class="text-gray-300">/</li>
+        <li class="font-medium text-gray-700" aria-current="page">{article.category}</li>
+      </ol>
+    </nav>
+
+    <header class="mb-8">
+      <div class="mb-3 flex flex-wrap items-center gap-2">
+        <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-bold text-primary-700">{article.category}</span>
+        <span class="text-xs text-gray-400">{article.readTime}</span>
+      </div>
+      <h1 class="text-3xl font-black leading-tight text-slate-950 md:text-4xl">{article.title}</h1>
+      <p class="mt-4 text-base leading-relaxed text-gray-600">{article.description}</p>
+      <div class="mt-4 flex flex-wrap gap-3 text-sm text-gray-500">
+        <time datetime={article.publishedDate}>발행 {article.publishedDate}</time>
+        <span aria-hidden="true">·</span>
+        <time datetime={article.updatedDate}>업데이트 {article.updatedDate}</time>
+      </div>
+    </header>
+
+    <section class="mb-8 rounded-2xl border border-slate-200 bg-slate-50 p-5" aria-labelledby="summary">
+      <h2 id="summary" class="mb-3 text-lg font-black text-slate-900">핵심 요약</h2>
+      <ul class="list-disc space-y-2 pl-5 text-sm leading-relaxed text-gray-700">
+        {article.summary.map((item) => <li>{item}</li>)}
+      </ul>
+    </section>
+
+    <div class="space-y-8 text-base leading-8 text-gray-700">
+      {article.sections.map((section) => (
+        <section>
+          <h2 class="mb-3 border-b border-gray-200 pb-2 text-2xl font-black text-gray-950">{section.heading}</h2>
+          {section.paragraphs.map((paragraph) => <p class="mb-4">{paragraph}</p>)}
+        </section>
+      ))}
+    </div>
+
+    <ArticleCta ctas={article.calculatorCtas} />
+
+    <section class="my-8 rounded-2xl border border-amber-100 bg-amber-50 p-5" aria-labelledby="disclaimer">
+      <h2 id="disclaimer" class="text-lg font-black text-amber-950">알아둘 사항</h2>
+      <p class="mt-2 text-sm leading-relaxed text-amber-900">{disclaimerByType[article.disclaimerType] || disclaimerByType.general}</p>
+    </section>
+
+    <section class="my-8 rounded-2xl border border-gray-200 bg-white p-5" aria-labelledby="sources">
+      <h2 id="sources" class="text-lg font-black text-gray-900">공식 출처</h2>
+      <ul class="mt-3 list-disc space-y-2 pl-5 text-sm leading-relaxed">
+        {article.officialSources.map((source) => (
+          <li>
+            <a href={source.url} class="font-semibold text-primary-700 underline underline-offset-2" target="_blank" rel="noopener noreferrer">
+              {source.name}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </section>
+
+    {related.length > 0 && (
+      <section class="my-8" aria-labelledby="related-articles">
+        <h2 id="related-articles" class="mb-4 text-xl font-black text-gray-900">관련 글</h2>
+        <div class="grid grid-cols-1 gap-3">
+          {related.map((item) => (
+            <a href={`/articles/${item.slug}/`} class="rounded-xl border border-gray-200 bg-white p-4 no-underline transition-colors hover:border-primary-200 hover:bg-primary-50">
+              <p class="font-bold text-gray-900">{item.title}</p>
+              <p class="mt-1 text-sm leading-relaxed text-gray-600">{item.description}</p>
+            </a>
+          ))}
+        </div>
+      </section>
+    )}
+  </article>
+</BaseLayout>
