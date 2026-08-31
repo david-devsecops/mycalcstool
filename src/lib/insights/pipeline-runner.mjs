@@ -16,6 +16,7 @@ export function runInsightPipeline({
   maxPerDay = 1,
   alreadyPublishedToday = 0,
   contentMetrics = [],
+  publishedArticles = [],
   now = new Date().toISOString(),
 } = {}) {
   const analyzedIssueCandidates = issueCandidates || buildIssueCandidates(rawIssues, { enableCalculatorMatching });
@@ -36,6 +37,7 @@ export function runInsightPipeline({
     articleCandidates,
     calculatorBacklog,
     contentMetrics,
+    publishedArticles,
     generatedAt: now,
   });
 

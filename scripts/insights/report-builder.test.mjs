@@ -42,6 +42,15 @@ test('builds a queue report with status counts and review items', () => {
       { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, ctr: 0.05, averagePosition: 8.2 },
       { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, ctr: 0.03, averagePosition: 14.7 },
     ],
+    publishedArticles: [
+      {
+        slug: 'base-rate-loan-interest-impact',
+        title: '기준금리가 바뀌면 내 대출 이자는 얼마나 달라질까?',
+        updatedDate: '2026-08-31',
+        officialSources: [{ name: '한국은행', url: 'https://www.bok.or.kr/', checkedAt: '2026-08-31' }],
+        calculatorCtas: [{ calculatorId: 'loan', href: '/loan/' }],
+      },
+    ],
     generatedAt: '2026-08-31T09:00:00.000Z',
   });
 
@@ -59,4 +68,7 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Total clicks: 15/);
   assert.match(report, /base-rate-loan-interest-impact: 12 clicks/);
   assert.match(report, /auto_publish_disabled/);
+  assert.match(report, /Published Article Audit/);
+  assert.match(report, /\/articles\/base-rate-loan-interest-impact\//);
+  assert.match(report, /sources 1 \/ CTAs 1 \/ updated 2026-08-31/);
 });

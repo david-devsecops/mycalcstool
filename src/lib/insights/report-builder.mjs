@@ -66,12 +66,28 @@ function renderContentMetrics(rows) {
   ].join('\n');
 }
 
+function renderPublishedArticleAudit(articles) {
+  if (articles.length === 0) return '## Published Article Audit\n\nNo published articles.\n';
+
+  return [
+    '## Published Article Audit',
+    '',
+    ...articles.map((article) => {
+      const sourceCount = article.officialSources?.length || 0;
+      const ctaCount = article.calculatorCtas?.length || 0;
+      return `- /articles/${article.slug}/: sources ${sourceCount} / CTAs ${ctaCount} / updated ${article.updatedDate}`;
+    }),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
   articleCandidates = [],
   calculatorBacklog = [],
   contentMetrics = [],
+  publishedArticles = [],
   generatedAt = new Date().toISOString(),
 } = {}) {
   return [
@@ -86,5 +102,6 @@ export function buildInsightReport({
     renderReviewItems(articleCandidates),
     renderBacklogItems(calculatorBacklog),
     renderContentMetrics(contentMetrics),
+    renderPublishedArticleAudit(publishedArticles),
   ].join('\n');
 }

@@ -15,6 +15,7 @@ await runAutomationJob({
     const result = runInsightPipeline({
       rawIssues,
       contentMetrics,
+      publishedArticles: articles,
       existingSlugs: articles.map((article) => article.slug),
       existingCanonicalTopics: getPublishedCanonicalTopics(),
       autoPublish: process.env.ENABLE_AUTO_PUBLISH === 'true',

@@ -1,13 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
-import { articles, getPublishedCanonicalTopics } from '../../src/data/articles.mjs';
+import { articles, getPublishedArticles, getPublishedCanonicalTopics } from '../../src/data/articles.mjs';
 
 const articleHtml = readFileSync('dist/articles/base-rate-loan-interest-impact/index.html', 'utf8');
 const loanHtml = readFileSync('dist/loan/index.html', 'utf8');
 const taxRefundHtml = readFileSync('dist/tax-refund/index.html', 'utf8');
 const aiCostHtml = readFileSync('dist/chatgpt-api-cost-calculator/index.html', 'utf8');
 const sitemap = readFileSync('dist/sitemap-0.xml', 'utf8');
+const publicCopyBanPattern = /AdSense review window|애드센스|승인 전 전략|수익화|수익형|검색 신호|운영 초점|밀어야|수익 측정/;
 
 test('rendered article pages expose article metadata and calculator CTA', () => {
   assert.match(articleHtml, /<meta property="og:type" content="article">/);
@@ -38,4 +39,26 @@ test('published article records expose audit fields for duplicate and source gat
   }
 
   assert.ok(getPublishedCanonicalTopics().includes('기준금리 변화와 대출 이자 영향'));
+});
+
+test('every rendered article exposes trust elements and calculator links', () => {
+  for (const article of getPublishedArticles()) {
+    const html = readFileSync(`dist/articles/${article.slug}/index.html`, 'utf8');
+
+    assert.match(html, /"@type":"Article"/, `${article.slug} missing Article schema`);
+    assert.match(html, /"@type":"BreadcrumbList"/, `${article.slug} missing breadcrumb schema`);
+    assert.match(html, /id="sources"/, `${article.slug} missing source section`);
+    assert.match(html, /id="disclaimer"/, `${article.slug} missing disclaimer`);
+    assert.doesNotMatch(html, publicCopyBanPattern, `${article.slug} contains internal public copy`);
+
+    for (const source of article.officialSources) {
+      assert.match(html, new RegExp(source.url.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')), `${article.slug} missing source URL`);
+      assert.match(html, new RegExp(`확인일\\s*${source.checkedAt}`), `${article.slug} missing source checked date`);
+    }
+
+    for (const cta of article.calculatorCtas) {
+      assert.match(html, new RegExp(`href="${cta.href}"`), `${article.slug} missing CTA href ${cta.href}`);
+      assert.match(html, new RegExp(`data-ga-label="${cta.calculatorId}"`), `${article.slug} missing CTA tracking label`);
+    }
+  }
 });

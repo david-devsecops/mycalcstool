@@ -126,6 +126,7 @@ const jsonLd = [
             <a href={source.url} class="font-semibold text-primary-700 underline underline-offset-2" target="_blank" rel="noopener noreferrer">
               {source.name}
             </a>
+            {source.checkedAt && <span class="ml-2 text-gray-500">확인일 {source.checkedAt}</span>}
           </li>
         ))}
       </ul>
