@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSlot from '../components/AdSlot.astro';
 import FAQ from '../components/FAQ.astro';
+import RelatedIssueArticles from '../components/RelatedIssueArticles.astro';
 
 const title = '2026 연말정산 환급 계산기 - 예상 환급액 미리 계산';
 const description = '2026년 연말정산 예상 환급액을 미리 계산하세요. 연봉, 각종 공제 항목(신용카드, 의료비, 교육비, 기부금 등)을 입력하면 예상 환급액 또는 추가 납부액을 확인할 수 있습니다.';
@@ -180,6 +181,8 @@ const jsonLd = {
   </section>
 
   <FAQ items={faqItems} />
+
+  <RelatedIssueArticles calculatorId="tax-refund" />
 
   <section class="card mt-6">
     <h2 class="section-title"><span aria-hidden="true">📚</span> 함께 볼 계산 기준</h2>

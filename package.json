@@ -12,6 +12,8 @@
     "insights:test": "node --test scripts/insights/*.test.mjs",
     "insights:collect:naver": "node scripts/insights/collect-naver.mjs",
     "insights:analyze": "node scripts/insights/analyze-issues.mjs",
+    "insights:generate:articles": "node scripts/insights/generate-article-candidates.mjs",
+    "insights:publish:plan": "node scripts/insights/publish-candidates.mjs",
     "insights:report": "node scripts/insights/report.mjs"
   },
   "dependencies": {

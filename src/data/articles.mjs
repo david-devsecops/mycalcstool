@@ -200,3 +200,8 @@ export function getRelatedArticles(currentSlug, categoryKey, limit = 3) {
     .slice(0, limit);
 }
 
+export function getArticlesForCalculator(calculatorId, language = 'ko', limit = 3) {
+  return getPublishedArticles(language)
+    .filter((article) => article.calculatorCtas?.some((cta) => cta.calculatorId === calculatorId))
+    .slice(0, limit);
+}

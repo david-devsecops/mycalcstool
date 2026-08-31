@@ -2,6 +2,7 @@
 import BaseLayout from '../layouts/BaseLayout.astro';
 import AdSlot from './AdSlot.astro';
 import FAQ from './FAQ.astro';
+import RelatedIssueArticles from './RelatedIssueArticles.astro';
 import type { GrowthCalculatorPageData } from '../data/growth-calculators';
 
 interface Props {
@@ -388,6 +389,8 @@ const jsonLd = [
   </section>
 
   <FAQ items={page.faqs} title={page.lang === 'ko' ? '자주 묻는 질문' : 'Frequently Asked Questions'} />
+
+  <RelatedIssueArticles calculatorId={page.slug} language={page.lang} />
 
   <section class="card mt-6" aria-labelledby="related-title">
     <h2 id="related-title" class="section-title">

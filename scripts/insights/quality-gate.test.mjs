@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { articles, getPublishedArticles } from '../../src/data/articles.mjs';
+import { articles, getArticlesForCalculator, getPublishedArticles } from '../../src/data/articles.mjs';
 import { evaluateArticleCandidate } from '../../src/lib/insights/quality-gate.mjs';
 
 const validCandidate = {
@@ -35,6 +35,14 @@ test('published article registry exposes only published indexable articles', () 
 
   assert.equal(Array.isArray(articles), true);
   assert.equal(published.every((article) => article.status === 'published' && article.noIndex !== true), true);
+});
+
+test('article registry maps published articles back to calculator pages', () => {
+  const loanArticles = getArticlesForCalculator('loan');
+  const taxArticles = getArticlesForCalculator('tax-refund');
+
+  assert.equal(loanArticles.some((article) => article.slug === 'base-rate-loan-interest-impact'), true);
+  assert.equal(taxArticles.some((article) => article.slug === 'year-end-tax-refund-paycheck-impact'), true);
 });
 
 test('quality gate approves source-backed finance candidates with calculator CTA', () => {
