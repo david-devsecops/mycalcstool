@@ -38,11 +38,11 @@ export function parseSearchConsoleCsv(csv) {
     const row = Object.fromEntries(headers.map((header, index) => [header, cells[index] || '']));
 
     return {
-      page: row['top pages'] || row.page || row.pages,
-      clicks: parseNumber(row.clicks),
-      impressions: parseNumber(row.impressions),
+      page: row['top pages'] || row['상위 페이지'] || row.page || row.pages,
+      clicks: parseNumber(row.clicks || row['클릭수']),
+      impressions: parseNumber(row.impressions || row['노출수']),
       ctr: parseCtr(row.ctr),
-      averagePosition: parseNumber(row.position || row['average position']),
+      averagePosition: parseNumber(row.position || row['average position'] || row['게재순위']),
     };
   });
 }
@@ -74,7 +74,8 @@ export function summarizeImportedMetrics(rows, options = {}) {
       averagePosition: row.impressions > 0 ? row.weightedPosition / row.impressions : 0,
     }));
 
-  const topArticles = articleMetrics.sort((left, right) => right.clicks - left.clicks).slice(0, options.limit ?? 5);
+  const sortedArticleMetrics = articleMetrics.sort((left, right) => right.clicks - left.clicks);
+  const topArticles = sortedArticleMetrics.slice(0, options.limit ?? 5);
   const totalClicks = articleMetrics.reduce((sum, row) => sum + row.clicks, 0);
   const totalImpressions = articleMetrics.reduce((sum, row) => sum + row.impressions, 0);
 
@@ -82,6 +83,42 @@ export function summarizeImportedMetrics(rows, options = {}) {
     totalClicks,
     totalImpressions,
     ctr: totalImpressions > 0 ? totalClicks / totalImpressions : 0,
+    articles: sortedArticleMetrics,
     topArticles,
   };
+}
+
+function daysBetween(left, right) {
+  const start = new Date(left);
+  const end = new Date(right);
+  if (Number.isNaN(start.getTime()) || Number.isNaN(end.getTime())) return 0;
+  return Math.floor((end.getTime() - start.getTime()) / 86400000);
+}
+
+function classifyMetric(row, article, options) {
+  const ageDays = daysBetween(article?.publishedDate, options.now || new Date().toISOString());
+  const ctr = row.impressions > 0 ? row.clicks / row.impressions : 0;
+
+  if (ageDays <= (options.newDays ?? 14)) return 'NEW';
+  if ((row.impressions || 0) === 0 && ageDays >= (options.deadAfterDays ?? 45)) return 'DEAD';
+  if ((row.clicks || 0) >= 10 && (row.impressions || 0) >= 100 && (row.averagePosition || 99) <= 10) return 'WINNER';
+  if ((row.impressions || 0) >= 100 && (row.clicks === 0 || ctr < 0.01 || (row.averagePosition || 0) > 20)) return 'UNDERPERFORM';
+  if ((row.impressions || 0) >= 50 && (row.clicks || 0) > 0) return 'GROWING';
+  return 'NORMAL';
+}
+
+export function classifyArticlePerformance(rows, publishedArticles = [], options = {}) {
+  const metrics = summarizeImportedMetrics(rows, { limit: Number.MAX_SAFE_INTEGER }).articles;
+  const metricsBySlug = new Map(metrics.map((row) => [row.slug, row]));
+  const slugs = new Set([...publishedArticles.map((article) => article.slug), ...metrics.map((row) => row.slug)]);
+
+  return [...slugs].map((slug) => {
+    const article = publishedArticles.find((item) => item.slug === slug) || { slug };
+    const metric = metricsBySlug.get(slug) || { slug, clicks: 0, impressions: 0, ctr: 0, averagePosition: 0 };
+
+    return {
+      ...metric,
+      status: classifyMetric(metric, article, options),
+    };
+  });
 }

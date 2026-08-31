@@ -46,6 +46,7 @@ test('builds a queue report with status counts and review items', () => {
       {
         slug: 'base-rate-loan-interest-impact',
         title: '기준금리가 바뀌면 내 대출 이자는 얼마나 달라질까?',
+        publishedDate: '2026-07-01',
         updatedDate: '2026-08-31',
         officialSources: [{ name: '한국은행', url: 'https://www.bok.or.kr/', checkedAt: '2026-08-31' }],
         calculatorCtas: [{ calculatorId: 'loan', href: '/loan/' }],
@@ -71,4 +72,7 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Published Article Audit/);
   assert.match(report, /\/articles\/base-rate-loan-interest-impact\//);
   assert.match(report, /sources 1 \/ CTAs 1 \/ updated 2026-08-31/);
+  assert.match(report, /Performance Classification/);
+  assert.match(report, /WINNER: 1/);
+  assert.match(report, /base-rate-loan-interest-impact: WINNER/);
 });

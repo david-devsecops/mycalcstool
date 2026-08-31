@@ -1,6 +1,6 @@
 # Google Search Console URL 제출 목록
 
-기준일: 2026-04-25
+기준일: 2026-08-31
 
 ## 1. Sitemap 제출
 
@@ -8,7 +8,7 @@ Search Console의 `Sitemaps` 메뉴에는 아래 1개만 제출합니다.
 
 - `https://mycalcstool.com/sitemap-index.xml`
 
-빌드 검증 기준 sitemap에는 76개 URL이 포함됩니다. 아래 legacy redirect URL은 sitemap에서 제외했습니다.
+빌드 검증 기준 sitemap에는 51개 indexable URL이 포함됩니다. 아래 legacy redirect URL은 sitemap에서 제외했습니다.
 
 - `https://mycalcstool.com/en/blog/age-calculator-guide-how-old-am-i/`
 - `https://mycalcstool.com/en/blog/bmi-calculator-guide/`
@@ -37,6 +37,10 @@ Search Console의 `URL 검사`에서 아래 URL을 먼저 검사하고 색인 �
 
 ### 한국어 금융 가이드
 
+- `https://mycalcstool.com/articles/`
+- `https://mycalcstool.com/articles/base-rate-loan-interest-impact/`
+- `https://mycalcstool.com/articles/year-end-tax-refund-paycheck-impact/`
+- `https://mycalcstool.com/articles/openai-api-price-change-cost-planning/`
 - `https://mycalcstool.com/blog/`
 - `https://mycalcstool.com/blog/loan-repayment-method-guide/`
 - `https://mycalcstool.com/blog/fixed-vs-variable-rate-guide/`
@@ -88,3 +92,28 @@ Search Console의 `URL 검사`에서 아래 URL을 먼저 검사하고 색인 �
 - `https://mycalcstool.com/en/blog/age-calculator-guide-how-old-am-i/`
 - `https://mycalcstool.com/en/blog/bmi-calculator-guide/`
 - `https://mycalcstool.com/en/blog/calorie-deficit-guide-using-tdee/`
+
+## 5. Search Console CSV 성과 수집
+
+Search Console의 `실적` 메뉴에서 페이지 기준 CSV를 내려받은 뒤 로컬에서 아래 명령으로 가져옵니다.
+
+```powershell
+npm run insights:metrics:import -- path\to\search-console-pages.csv
+npm run insights:report
+```
+
+CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이후 `data/insights/reports/latest.md`의 `Content Metrics`, `Performance Classification`, `Published Article Audit` 섹션을 확인합니다.
+
+지원 CSV 헤더:
+
+- 영어: `Top pages`, `Clicks`, `Impressions`, `CTR`, `Position`
+- 한국어: `상위 페이지`, `클릭수`, `노출수`, `CTR`, `게재순위`
+
+성과 분류 기준:
+
+- `NEW`: 발행 14일 이내라 판단 보류
+- `WINNER`: 클릭 10 이상, 노출 100 이상, 평균 순위 10위 이내
+- `GROWING`: 노출 50 이상이고 클릭이 발생한 성장 후보
+- `UNDERPERFORM`: 노출은 있으나 클릭률 또는 평균 순위가 약한 개선 후보
+- `DEAD`: 발행 후 45일 이상 지났고 노출이 없는 통합/개선 검토 후보
+- `NORMAL`: 위 조건에 해당하지 않는 일반 관찰 대상

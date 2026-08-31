@@ -1,4 +1,4 @@
-import { summarizeImportedMetrics } from './search-console-metrics.mjs';
+import { classifyArticlePerformance, summarizeImportedMetrics } from './search-console-metrics.mjs';
 
 function countByStatus(records) {
   return records.reduce((counts, record) => {
@@ -81,6 +81,22 @@ function renderPublishedArticleAudit(articles) {
   ].join('\n');
 }
 
+function renderPerformanceClassification(rows, publishedArticles, generatedAt) {
+  const classifications = classifyArticlePerformance(rows, publishedArticles, { now: generatedAt });
+  if (classifications.length === 0) return '## Performance Classification\n\nNo article performance data.\n';
+
+  const counts = countByStatus(classifications);
+
+  return [
+    '## Performance Classification',
+    '',
+    ...Object.entries(counts).sort(([left], [right]) => left.localeCompare(right)).map(([status, count]) => `- ${status}: ${count}`),
+    '',
+    ...classifications.map((article) => `- ${article.slug}: ${article.status}`),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
@@ -103,5 +119,6 @@ export function buildInsightReport({
     renderBacklogItems(calculatorBacklog),
     renderContentMetrics(contentMetrics),
     renderPublishedArticleAudit(publishedArticles),
+    renderPerformanceClassification(contentMetrics, publishedArticles, generatedAt),
   ].join('\n');
 }
