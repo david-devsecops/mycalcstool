@@ -64,6 +64,24 @@ test('quality gate rejects finance candidates without official sources', () => {
   assert.equal(result.errors.includes('official_source_required'), true);
 });
 
+test('quality gate rejects source-required candidates with numeric text but no numeric claims', () => {
+  const result = evaluateArticleCandidate(
+    {
+      ...validCandidate,
+      slug: 'numeric-text-without-claims',
+      numericClaims: [],
+      sections: [
+        ...validCandidate.sections,
+        { heading: '예시', body: '대출 1억원에서 금리 0.25%p가 바뀌면 이자 차이가 발생합니다.' },
+      ],
+    },
+    { existingSlugs: [] },
+  );
+
+  assert.equal(result.status, 'rejected');
+  assert.equal(result.errors.includes('numeric_claim_source_required'), true);
+});
+
 test('quality gate rejects source-required candidates when official source check dates are missing', () => {
   const result = evaluateArticleCandidate(
     {

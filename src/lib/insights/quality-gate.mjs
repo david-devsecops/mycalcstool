@@ -1,5 +1,6 @@
 const sourceRequiredCategories = new Set(['finance', 'tax', 'salary', 'support', 'investing', 'ai']);
 const bannedClaimPattern = /(수익\s*보장|원금\s*보장|대출\s*승인\s*보장|무조건\s*(오른|내린|받|가능|수익)|확정\s*수익|매수\s*추천|매도\s*추천|guaranteed\s+return|principal\s+guarantee|buy\s+recommendation|sell\s+recommendation)/i;
+const numericFactPattern = /\d[\d,.]*(?:\s?(?:원|만원|억원|조원|%|%p|bp|달러|원화|토큰|token|건|회|년|개월|일))?/i;
 
 function sourceUrls(candidate) {
   return new Set((candidate.officialSources || []).map((source) => source.url));
@@ -48,6 +49,10 @@ export function evaluateArticleCandidate(candidate, options = {}) {
 
   if (sourceRequiredCategories.has(candidate.category) && (candidate.officialSources || []).some((source) => !hasSourceCheckDate(source))) {
     errors.push('official_source_checked_at_required');
+  }
+
+  if (sourceRequiredCategories.has(candidate.category) && numericFactPattern.test(combinedText(candidate)) && (candidate.numericClaims || []).length === 0) {
+    errors.push('numeric_claim_source_required');
   }
 
   for (const numericClaim of candidate.numericClaims || []) {
