@@ -8,7 +8,9 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "update:ads-txt": "node ./scripts/update-ads-txt.mjs"
+    "update:ads-txt": "node ./scripts/update-ads-txt.mjs",
+    "insights:test": "node --test scripts/insights/*.test.mjs",
+    "insights:report": "node scripts/insights/report.mjs"
   },
   "dependencies": {
     "astro": "^5.6.1",
