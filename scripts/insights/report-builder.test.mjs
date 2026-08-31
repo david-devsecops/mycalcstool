@@ -65,6 +65,24 @@ test('builds a queue report with status counts and review items', () => {
         officialSources: [{ name: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/', checkedAt: '2026-08-31' }],
         calculatorCtas: [{ calculatorId: 'chatgpt-api-cost-calculator', href: '/chatgpt-api-cost-calculator/' }],
       },
+      {
+        slug: 'stale-ai-pricing-impact',
+        title: 'AI API 단가가 바뀌면 월 비용은 얼마나 달라질까?',
+        publishedDate: '2026-06-01',
+        updatedDate: '2026-06-01',
+        categoryKey: 'ai',
+        officialSources: [{ name: 'AI Pricing', url: 'https://example.com/pricing', checkedAt: '2026-06-01' }],
+        calculatorCtas: [{ calculatorId: 'chatgpt-api-cost-calculator', href: '/chatgpt-api-cost-calculator/' }],
+      },
+      {
+        slug: 'unchecked-loan-policy-impact',
+        title: '대출 제도가 바뀌면 이자는 어떻게 달라질까?',
+        publishedDate: '2026-08-01',
+        updatedDate: '2026-08-01',
+        categoryKey: 'finance',
+        officialSources: [{ name: '금융기관 공지', url: 'https://example.com/loan-policy' }],
+        calculatorCtas: [{ calculatorId: 'loan', href: '/loan/' }],
+      },
     ],
     generatedAt: '2026-08-31T09:00:00.000Z',
   });
@@ -96,6 +114,9 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Topic Cluster Decisions/);
   assert.match(report, /finance \/ loan: EXPAND/);
   assert.match(report, /ai \/ chatgpt-api-cost-calculator: WAIT/);
+  assert.match(report, /Source Freshness Review/);
+  assert.match(report, /stale-ai-pricing-impact: recheck official sources \(91 days since source check, limit 30\)/);
+  assert.match(report, /unchecked-loan-policy-impact: missing official source checkedAt/);
   assert.match(report, /Article Manual Review Checklist/);
   assert.match(report, /openai-api-price-change-cost-planning: open every official source URL and confirm it supports the exact topic/);
   assert.match(report, /openai-api-price-change-cost-planning: verify every numeric claim has an official source URL/);

@@ -110,6 +110,35 @@ function renderPublishedArticleAudit(articles) {
   ].join('\n');
 }
 
+function daysSince(dateValue, generatedAt) {
+  const checked = new Date(`${dateValue}T00:00:00.000Z`);
+  const generated = new Date(generatedAt);
+  return Math.floor((generated - checked) / 86_400_000);
+}
+
+function sourceFreshnessLimit(categoryKey) {
+  return categoryKey === 'ai' ? 30 : 90;
+}
+
+function renderSourceFreshnessReview(articles, generatedAt) {
+  const reviewItems = articles.flatMap((article) => {
+    const sources = article.officialSources || [];
+    if (sources.length === 0 || sources.some((source) => !source.checkedAt)) {
+      return [`- ${article.slug}: missing official source checkedAt`];
+    }
+
+    const oldestCheckAge = Math.max(...sources.map((source) => daysSince(source.checkedAt, generatedAt)));
+    const limit = sourceFreshnessLimit(article.categoryKey);
+    if (oldestCheckAge <= limit) return [];
+
+    return [`- ${article.slug}: recheck official sources (${oldestCheckAge} days since source check, limit ${limit})`];
+  });
+
+  if (reviewItems.length === 0) return '## Source Freshness Review\n\nNo stale source checks.\n';
+
+  return ['## Source Freshness Review', '', ...reviewItems, ''].join('\n');
+}
+
 function renderPerformanceClassification(rows, publishedArticles, generatedAt) {
   const classifications = classifyArticlePerformance(rows, publishedArticles, { now: generatedAt });
   if (classifications.length === 0) return '## Performance Classification\n\nNo article performance data.\n';
@@ -208,6 +237,7 @@ export function buildInsightReport({
     renderBacklogItems(calculatorBacklog),
     renderContentMetrics(contentMetrics),
     renderPublishedArticleAudit(publishedArticles),
+    renderSourceFreshnessReview(publishedArticles, generatedAt),
     renderPerformanceClassification(contentMetrics, publishedArticles, generatedAt),
     renderRecommendedActions(contentMetrics, publishedArticles, generatedAt),
     renderTopicClusterDecisions(contentMetrics, publishedArticles, generatedAt),
