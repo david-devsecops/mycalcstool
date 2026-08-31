@@ -4,6 +4,12 @@ function withQueueStatus(candidate, reason, status = 'review_required') {
   return { ...candidate, status, reason };
 }
 
+export function countPublishedOnDate(articles, date) {
+  return (articles || []).filter((article) => {
+    return article.status === 'published' && article.noIndex !== true && article.publishedDate === date;
+  }).length;
+}
+
 export function planArticlePublication(candidates, options = {}) {
   const autoPublish = options.autoPublish === true;
   const existingSlugs = new Set(options.existingSlugs || []);

@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
+import { countPublishedOnDate, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
 
 const candidate = {
   id: 'article-base-rate',
@@ -52,4 +52,18 @@ test('rejects slug collisions before publishing', () => {
 
   assert.equal(result.toPublish.length, 0);
   assert.equal(result.rejected[0].reason, 'duplicate_slug');
+});
+
+test('counts already published articles for the same date', () => {
+  const count = countPublishedOnDate(
+    [
+      { slug: 'today-1', status: 'published', publishedDate: '2026-08-31' },
+      { slug: 'today-2', status: 'published', publishedDate: '2026-08-31' },
+      { slug: 'draft-today', status: 'draft', publishedDate: '2026-08-31' },
+      { slug: 'yesterday', status: 'published', publishedDate: '2026-08-30' },
+    ],
+    '2026-08-31',
+  );
+
+  assert.equal(count, 2);
 });

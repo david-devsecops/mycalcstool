@@ -345,6 +345,13 @@ Implemented article writer safeguards:
 - Published entries preserve `canonicalTopic`.
 - Published official sources always include `checkedAt`.
 
+Implemented publishing safeguards:
+
+- Publish planning defaults to 1 article per day.
+- Publish planning has a hard MVP cap of 2 articles per day.
+- Publish scripts count existing `publishedDate` entries before scheduling more articles for the same day.
+- Applying article writes requires both `--apply` and `--manual-approval`.
+
 Gap:
 
 - `ENABLE_CALCULATOR_MATCHING` is listed as a future flag but is not yet wired through the pipeline.
@@ -913,6 +920,8 @@ Acceptance criteria:
 Risk:
 
 - A malformed article data write can break the build. Always run build after publish.
+
+Status: completed for local static publishing controls.
 
 ### TASK-011: Cloudflare Phase 2 Design
 

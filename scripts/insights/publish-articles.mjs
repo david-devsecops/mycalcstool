@@ -1,10 +1,11 @@
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
+import { articles } from '../../src/data/articles.mjs';
 import { runAutomationJob } from '../../src/lib/insights/automation-runner.mjs';
 import { readJsonlRecords } from '../../src/lib/insights/jsonl-store.mjs';
 import { buildUpdatedArticlesModule } from '../../src/lib/insights/article-data-writer.mjs';
-import { planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
+import { countPublishedOnDate, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
 
 await runAutomationJob({
   jobName: 'article-publisher',
@@ -18,13 +19,14 @@ await runAutomationJob({
     const articleCandidates = await readJsonlRecords(resolve(dataDir, 'article-candidates.jsonl'));
     const articlesSource = await readFile(articlesPath, 'utf8');
     const existingSlugs = [...articlesSource.matchAll(/["']?slug["']?\s*:\s*["']([^"']+)["']/g)].map((match) => match[1]);
+    const publishDate = new Date().toISOString().slice(0, 10);
     const plan = planArticlePublication(articleCandidates, {
       autoPublish: apply && manualApproval,
       existingSlugs,
       maxPerDay: Number(process.env.MAX_ARTICLES_PER_DAY || 1),
-      alreadyPublishedToday: 0,
+      alreadyPublishedToday: countPublishedOnDate(articles, publishDate),
     });
-    const nextSource = buildUpdatedArticlesModule(articlesSource, plan.toPublish, new Date().toISOString().slice(0, 10));
+    const nextSource = buildUpdatedArticlesModule(articlesSource, plan.toPublish, publishDate);
     const targetPath = apply && manualApproval ? articlesPath : previewPath;
 
     await mkdir(dirname(targetPath), { recursive: true });
