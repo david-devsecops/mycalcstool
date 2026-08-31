@@ -54,6 +54,7 @@ function renderContentMetrics(rows) {
     '',
     `- Total clicks: ${summary.totalClicks}`,
     `- Total impressions: ${summary.totalImpressions}`,
+    `- Total calculator clicks: ${summary.totalCalculatorClicks}`,
     `- CTR: ${percent(summary.ctr)}`,
     '',
     '### Top Articles',
@@ -62,6 +63,12 @@ function renderContentMetrics(rows) {
       (article) =>
         `- ${article.slug}: ${article.clicks} clicks / ${article.impressions} impressions / CTR ${percent(article.ctr)}`,
     ),
+    '',
+    '### Calculator Clicks',
+    '',
+    ...summary.articles
+      .filter((article) => article.calculatorClicks > 0)
+      .map((article) => `- ${article.slug}: ${article.calculatorClicks} calculator clicks`),
     '',
   ].join('\n');
 }
@@ -97,6 +104,29 @@ function renderPerformanceClassification(rows, publishedArticles, generatedAt) {
   ].join('\n');
 }
 
+function recommendationFor(status) {
+  return {
+    WINNER: 'add supporting cluster articles and keep the calculator CTA prominent',
+    GROWING: 'refresh examples and add one internal link from a related calculator',
+    UNDERPERFORM: 'rewrite title and meta description around the user money question',
+    DEAD: 'review source freshness and merge or noindex if it still has no impressions',
+    NEW: 'wait for enough Search Console data before changing the page',
+    NORMAL: 'monitor without increasing publishing volume',
+  }[status] || 'review manually';
+}
+
+function renderRecommendedActions(rows, publishedArticles, generatedAt) {
+  const classifications = classifyArticlePerformance(rows, publishedArticles, { now: generatedAt });
+  if (classifications.length === 0) return '## Recommended Actions\n\nNo article performance data.\n';
+
+  return [
+    '## Recommended Actions',
+    '',
+    ...classifications.map((article) => `- ${article.slug}: ${recommendationFor(article.status)}`),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
@@ -120,5 +150,6 @@ export function buildInsightReport({
     renderContentMetrics(contentMetrics),
     renderPublishedArticleAudit(publishedArticles),
     renderPerformanceClassification(contentMetrics, publishedArticles, generatedAt),
+    renderRecommendedActions(contentMetrics, publishedArticles, generatedAt),
   ].join('\n');
 }

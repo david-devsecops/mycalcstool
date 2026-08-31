@@ -18,6 +18,7 @@
     "insights:publish:plan": "node scripts/insights/publish-candidates.mjs",
     "insights:publish:articles": "node scripts/insights/publish-articles.mjs",
     "insights:metrics:import": "node scripts/insights/import-search-console-csv.mjs",
+    "insights:metrics:import:ga4": "node scripts/insights/import-ga4-calculator-clicks.mjs",
     "insights:report": "node scripts/insights/report.mjs"
   },
   "dependencies": {

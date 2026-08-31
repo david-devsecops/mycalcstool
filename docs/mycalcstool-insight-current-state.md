@@ -63,6 +63,7 @@ Important npm scripts:
 - `npm run insights:publish:plan`: publication planning
 - `npm run insights:publish:articles`: manual approved article write
 - `npm run insights:metrics:import`: Search Console CSV import
+- `npm run insights:metrics:import:ga4`: GA4 article-to-calculator click CSV import
 - `npm run insights:report`: local insight report generation
 
 Dependencies are intentionally small:
@@ -353,7 +354,7 @@ CTA click tracking:
 Current limitation:
 
 - Search Console import exists for article search performance.
-- GA4 calculator-click metrics are tracked in the browser but not yet imported into the local insight report.
+- GA4 calculator-click metrics are tracked in the browser and can be imported from CSV into the local insight report.
 
 ## 17. AdSense
 
@@ -451,7 +452,9 @@ Implemented:
 - Manual approval requirement for article writes
 - Calculator backlog candidate builder
 - Search Console CSV import
+- GA4 article-to-calculator click CSV import
 - Local insight report builder
+- Report-level recommended actions from article performance class
 - Rendered article quality tests
 
 Not implemented:
@@ -461,7 +464,6 @@ Not implemented:
 - Authenticated admin dashboard
 - LLM provider integration
 - Semantic official-page content verification
-- GA4 calculator-click import into reports
 - AdSense revenue import
 - Affiliate/CPA automation
 
@@ -469,9 +471,8 @@ Not implemented:
 
 Do next:
 
-- Add GA4 calculator-click import support to connect article traffic with calculator movement.
-- Add recommendation output to the insight report so `NEW`, `GROWING`, `WINNER`, `UNDERPERFORM`, and `DEAD` articles each get concrete next actions.
 - Add sitemap verification for published article URLs.
+- Use imported Search Console and GA4 data to decide which topic clusters deserve additional articles.
 - Keep auto-publish disabled until review quality and search data are stable.
 
 Do not do next:

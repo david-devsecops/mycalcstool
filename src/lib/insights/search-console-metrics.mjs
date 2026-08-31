@@ -57,14 +57,49 @@ export function summarizeArticleMetrics(rows) {
     .filter(Boolean);
 }
 
+export function parseGa4CalculatorClickCsv(csv) {
+  const lines = String(csv || '').trim().split(/\r?\n/).filter(Boolean);
+  const headers = splitCsvLine(lines.shift() || '').map((header) => header.toLowerCase());
+
+  return lines
+    .map((line) => {
+      const cells = splitCsvLine(line);
+      const row = Object.fromEntries(headers.map((header, index) => [header, cells[index] || '']));
+      const page = row['page path and screen class'] || row['page path + query string'] || row['page path'] || row['페이지 경로 및 화면 클래스'] || row.page;
+      const eventName = row['event name'] || row['이벤트 이름'];
+      const calculatorId = row['event label'] || row['이벤트 라벨'] || row.event_label;
+      const match = page?.match(/\/articles\/([^/]+)\//);
+
+      if (eventName !== 'article_calculator_click' || !match || !calculatorId) return null;
+
+      return {
+        slug: match[1],
+        calculatorId,
+        calculatorClicks: parseNumber(row['event count'] || row['이벤트 수'] || row.events || row.count),
+      };
+    })
+    .filter(Boolean);
+}
+
 export function summarizeImportedMetrics(rows, options = {}) {
   const bySlug = new Map();
 
   for (const row of rows) {
-    const current = bySlug.get(row.slug) || { slug: row.slug, clicks: 0, impressions: 0, weightedPosition: 0 };
+    const current = bySlug.get(row.slug) || {
+      slug: row.slug,
+      clicks: 0,
+      impressions: 0,
+      weightedPosition: 0,
+      calculatorClicks: 0,
+      calculatorClickTargets: {},
+    };
     current.clicks += row.clicks || 0;
     current.impressions += row.impressions || 0;
     current.weightedPosition += (row.averagePosition || 0) * (row.impressions || 0);
+    current.calculatorClicks += row.calculatorClicks || 0;
+    if (row.calculatorId && row.calculatorClicks) {
+      current.calculatorClickTargets[row.calculatorId] = (current.calculatorClickTargets[row.calculatorId] || 0) + row.calculatorClicks;
+    }
     bySlug.set(row.slug, current);
   }
 
@@ -78,10 +113,12 @@ export function summarizeImportedMetrics(rows, options = {}) {
   const topArticles = sortedArticleMetrics.slice(0, options.limit ?? 5);
   const totalClicks = articleMetrics.reduce((sum, row) => sum + row.clicks, 0);
   const totalImpressions = articleMetrics.reduce((sum, row) => sum + row.impressions, 0);
+  const totalCalculatorClicks = articleMetrics.reduce((sum, row) => sum + row.calculatorClicks, 0);
 
   return {
     totalClicks,
     totalImpressions,
+    totalCalculatorClicks,
     ctr: totalImpressions > 0 ? totalClicks / totalImpressions : 0,
     articles: sortedArticleMetrics,
     topArticles,

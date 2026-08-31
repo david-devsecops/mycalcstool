@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   classifyArticlePerformance,
+  parseGa4CalculatorClickCsv,
   parseSearchConsoleCsv,
   summarizeArticleMetrics,
   summarizeImportedMetrics,
@@ -102,4 +103,40 @@ test('classifies article performance from imported metrics and article age', () 
   assert.equal(classifications.find((item) => item.slug === 'normal').status, 'NORMAL');
   assert.equal(classifications.find((item) => item.slug === 'new-article').status, 'NEW');
   assert.equal(classifications.find((item) => item.slug === 'dead').status, 'DEAD');
+});
+
+test('parses GA4 article calculator click CSV exports', () => {
+  const rows = parseGa4CalculatorClickCsv(`Page path and screen class,Event name,Event label,Event count
+/articles/base-rate-loan-interest-impact/,article_calculator_click,loan,9
+/articles/openai-api-price-change-cost-planning/,article_calculator_click,chatgpt-api-cost-calculator,4
+/loan/,article_calculator_click,loan,20
+/articles/base-rate-loan-interest-impact/,page_view,loan,99
+`);
+
+  assert.deepEqual(rows, [
+    {
+      slug: 'base-rate-loan-interest-impact',
+      calculatorId: 'loan',
+      calculatorClicks: 9,
+    },
+    {
+      slug: 'openai-api-price-change-cost-planning',
+      calculatorId: 'chatgpt-api-cost-calculator',
+      calculatorClicks: 4,
+    },
+  ]);
+});
+
+test('includes calculator clicks in imported metric summaries', () => {
+  const summary = summarizeImportedMetrics([
+    { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, averagePosition: 8.2 },
+    { slug: 'base-rate-loan-interest-impact', calculatorId: 'loan', calculatorClicks: 9 },
+    { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, averagePosition: 14.7 },
+    { slug: 'openai-api-price-change-cost-planning', calculatorId: 'chatgpt-api-cost-calculator', calculatorClicks: 4 },
+  ]);
+
+  assert.equal(summary.totalCalculatorClicks, 13);
+  assert.equal(summary.topArticles[0].slug, 'base-rate-loan-interest-impact');
+  assert.equal(summary.topArticles[0].calculatorClicks, 9);
+  assert.deepEqual(summary.topArticles[0].calculatorClickTargets, { loan: 9 });
 });

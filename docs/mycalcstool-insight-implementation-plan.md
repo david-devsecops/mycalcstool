@@ -445,8 +445,6 @@ Defer:
 
 Still useful before runtime automation:
 
-- GA4 calculator-click import into local metrics, so article traffic can be tied to calculator movement.
-- Report-level recommended actions for `NEW`, `GROWING`, `WINNER`, `UNDERPERFORM`, and `DEAD` articles.
 - Sitemap verification that published article URLs are included and approval-noindex routes are excluded.
 - A manual review checklist for any article candidate generated from current events.
 
@@ -673,12 +671,12 @@ Completed Phase 1 tests:
 - Official source URL reachability with timeout and failure states.
 - Published article render checks for all published articles.
 - Public copy checks for internal operator wording.
+- GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
+- Report recommendations map each performance class to a concrete next action.
 
 Required next tests:
 
 - Sitemap includes published article URLs and excludes noindex routes.
-- GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
-- Report recommendations map each performance class to a concrete next action.
 
 ## Deployment
 
@@ -974,9 +972,9 @@ Reason:
 
 Recommended next implementation sequence:
 
-1. Add GA4 article-to-calculator click import support.
-2. Add report-level recommendations for weak, growing, and winning articles.
-3. Add sitemap verification for published article URLs.
+1. Add sitemap verification for published article URLs.
+2. Use imported Search Console and GA4 data for the next topic-cluster decision.
+3. Add a manual review checklist for source-backed article candidates.
 4. Only then consider Cloudflare Worker/D1/Cron design implementation.
 
 Do not start with:

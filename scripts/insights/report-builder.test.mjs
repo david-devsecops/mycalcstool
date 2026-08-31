@@ -40,6 +40,7 @@ test('builds a queue report with status counts and review items', () => {
     ],
     contentMetrics: [
       { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, ctr: 0.05, averagePosition: 8.2 },
+      { slug: 'base-rate-loan-interest-impact', calculatorId: 'loan', calculatorClicks: 9 },
       { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, ctr: 0.03, averagePosition: 14.7 },
     ],
     publishedArticles: [
@@ -67,7 +68,9 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /중도상환수수료 제도 변경과 상환 비용 영향 계산기/);
   assert.match(report, /Content Metrics/);
   assert.match(report, /Total clicks: 15/);
+  assert.match(report, /Total calculator clicks: 9/);
   assert.match(report, /base-rate-loan-interest-impact: 12 clicks/);
+  assert.match(report, /base-rate-loan-interest-impact: 9 calculator clicks/);
   assert.match(report, /auto_publish_disabled/);
   assert.match(report, /Published Article Audit/);
   assert.match(report, /\/articles\/base-rate-loan-interest-impact\//);
@@ -75,4 +78,6 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Performance Classification/);
   assert.match(report, /WINNER: 1/);
   assert.match(report, /base-rate-loan-interest-impact: WINNER/);
+  assert.match(report, /Recommended Actions/);
+  assert.match(report, /base-rate-loan-interest-impact: add supporting cluster articles and keep the calculator CTA prominent/);
 });

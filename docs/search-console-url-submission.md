@@ -117,3 +117,27 @@ CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩
 - `UNDERPERFORM`: 노출은 있으나 클릭률 또는 평균 순위가 약한 개선 후보
 - `DEAD`: 발행 후 45일 이상 지났고 노출이 없는 통합/개선 검토 후보
 - `NORMAL`: 위 조건에 해당하지 않는 일반 관찰 대상
+
+## 6. GA4 계산기 클릭 CSV 성과 수집
+
+GA4에서는 `article_calculator_click` 이벤트를 기준으로 기사에서 계산기로 이동한 클릭 수를 확인합니다. CSV에 페이지 경로, 이벤트 이름, 이벤트 라벨, 이벤트 수가 포함되도록 내보낸 뒤 아래 명령으로 가져옵니다.
+
+```powershell
+npm run insights:metrics:import:ga4 -- path\to\ga4-calculator-clicks.csv
+npm run insights:report
+```
+
+CSV에서 `/articles/` 페이지의 `article_calculator_click` 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이벤트 라벨은 계산기 ID로 사용합니다.
+
+지원 CSV 헤더:
+
+- 영어: `Page path and screen class`, `Event name`, `Event label`, `Event count`
+- 한국어: `페이지 경로 및 화면 클래스`, `이벤트 이름`, `이벤트 라벨`, `이벤트 수`
+
+리포트에서 봐야 할 기준:
+
+- Search Console 클릭은 검색 유입입니다.
+- GA4 계산기 클릭은 기사에서 실제 도구로 이동한 전환입니다.
+- 노출은 있는데 검색 클릭이 낮으면 제목과 설명을 고칩니다.
+- 검색 클릭은 있는데 계산기 클릭이 낮으면 본문 예제와 CTA 위치를 고칩니다.
+- 둘 다 없으면 같은 주제 글을 늘리지 말고 통합, 보류, noindex 후보로 봅니다.
