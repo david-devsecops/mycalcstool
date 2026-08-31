@@ -1,3 +1,5 @@
+import { summarizeImportedMetrics } from './search-console-metrics.mjs';
+
 function countByStatus(records) {
   return records.reduce((counts, record) => {
     const status = record.status || 'unknown';
@@ -39,11 +41,37 @@ function renderBacklogItems(backlog) {
   ].join('\n');
 }
 
+function percent(value) {
+  return `${(value * 100).toFixed(2)}%`;
+}
+
+function renderContentMetrics(rows) {
+  const summary = summarizeImportedMetrics(rows);
+  if (summary.topArticles.length === 0) return '## Content Metrics\n\nNo imported metrics.\n';
+
+  return [
+    '## Content Metrics',
+    '',
+    `- Total clicks: ${summary.totalClicks}`,
+    `- Total impressions: ${summary.totalImpressions}`,
+    `- CTR: ${percent(summary.ctr)}`,
+    '',
+    '### Top Articles',
+    '',
+    ...summary.topArticles.map(
+      (article) =>
+        `- ${article.slug}: ${article.clicks} clicks / ${article.impressions} impressions / CTR ${percent(article.ctr)}`,
+    ),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
   articleCandidates = [],
   calculatorBacklog = [],
+  contentMetrics = [],
   generatedAt = new Date().toISOString(),
 } = {}) {
   return [
@@ -57,5 +85,6 @@ export function buildInsightReport({
     renderCounts('Calculator Backlog Status', countByStatus(calculatorBacklog)),
     renderReviewItems(articleCandidates),
     renderBacklogItems(calculatorBacklog),
+    renderContentMetrics(contentMetrics),
   ].join('\n');
 }

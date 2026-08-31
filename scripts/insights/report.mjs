@@ -15,12 +15,15 @@ await runAutomationJob({
     const issueCandidates = await readJsonlRecords(resolve(dataDir, 'issue-candidates.jsonl'));
     const articleCandidates = await readJsonlRecords(resolve(dataDir, 'article-candidates.jsonl'));
     const calculatorBacklog = await readJsonlRecords(resolve(dataDir, 'calculator-backlog.jsonl'));
-    const report = buildInsightReport({ issues, issueCandidates, articleCandidates, calculatorBacklog });
+    const contentMetrics = await readJsonlRecords(resolve(dataDir, 'content-metrics.jsonl'));
+    const report = buildInsightReport({ issues, issueCandidates, articleCandidates, calculatorBacklog, contentMetrics });
 
     await mkdir(dirname(outputPath), { recursive: true });
     await writeFile(outputPath, report, 'utf8');
 
     console.log(`Wrote ${outputPath}`);
-    return { itemsProcessed: issues.length + issueCandidates.length + articleCandidates.length + calculatorBacklog.length };
+    return {
+      itemsProcessed: issues.length + issueCandidates.length + articleCandidates.length + calculatorBacklog.length + contentMetrics.length,
+    };
   },
 });

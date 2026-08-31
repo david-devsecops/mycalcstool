@@ -56,3 +56,32 @@ export function summarizeArticleMetrics(rows) {
     })
     .filter(Boolean);
 }
+
+export function summarizeImportedMetrics(rows, options = {}) {
+  const bySlug = new Map();
+
+  for (const row of rows) {
+    const current = bySlug.get(row.slug) || { slug: row.slug, clicks: 0, impressions: 0, weightedPosition: 0 };
+    current.clicks += row.clicks || 0;
+    current.impressions += row.impressions || 0;
+    current.weightedPosition += (row.averagePosition || 0) * (row.impressions || 0);
+    bySlug.set(row.slug, current);
+  }
+
+  const articleMetrics = [...bySlug.values()].map((row) => ({
+      ...row,
+      ctr: row.impressions > 0 ? row.clicks / row.impressions : 0,
+      averagePosition: row.impressions > 0 ? row.weightedPosition / row.impressions : 0,
+    }));
+
+  const topArticles = articleMetrics.sort((left, right) => right.clicks - left.clicks).slice(0, options.limit ?? 5);
+  const totalClicks = articleMetrics.reduce((sum, row) => sum + row.clicks, 0);
+  const totalImpressions = articleMetrics.reduce((sum, row) => sum + row.impressions, 0);
+
+  return {
+    totalClicks,
+    totalImpressions,
+    ctr: totalImpressions > 0 ? totalClicks / totalImpressions : 0,
+    topArticles,
+  };
+}

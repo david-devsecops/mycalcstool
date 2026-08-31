@@ -38,6 +38,10 @@ test('builds a queue report with status counts and review items', () => {
         priority: 8,
       },
     ],
+    contentMetrics: [
+      { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, ctr: 0.05, averagePosition: 8.2 },
+      { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, ctr: 0.03, averagePosition: 14.7 },
+    ],
     generatedAt: '2026-08-31T09:00:00.000Z',
   });
 
@@ -51,5 +55,8 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Calculator Backlog Status/);
   assert.match(report, /candidate: 1/);
   assert.match(report, /중도상환수수료 제도 변경과 상환 비용 영향 계산기/);
+  assert.match(report, /Content Metrics/);
+  assert.match(report, /Total clicks: 15/);
+  assert.match(report, /base-rate-loan-interest-impact: 12 clicks/);
   assert.match(report, /auto_publish_disabled/);
 });
