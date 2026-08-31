@@ -20,6 +20,7 @@ export const releaseChecks = [
     ],
     expectExitCode: 1,
   },
+  { name: 'secret leak scan', command: 'npm', args: ['run', 'insights:scan:secrets'] },
 ];
 
 export function resolveCommand(command, platform = process.platform) {

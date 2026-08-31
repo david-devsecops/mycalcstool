@@ -20,6 +20,7 @@
     "insights:metrics:import": "node scripts/insights/import-search-console-csv.mjs",
     "insights:metrics:import:ga4": "node scripts/insights/import-ga4-calculator-clicks.mjs",
     "insights:report": "node scripts/insights/report.mjs",
+    "insights:scan:secrets": "node scripts/insights/scan-secrets.mjs",
     "insights:verify:sitemap": "node scripts/insights/verify-sitemap.mjs",
     "verify:release": "node scripts/insights/verify-release.mjs"
   },
