@@ -43,6 +43,7 @@ test('release gate stops on the first failed check', async () => {
 test('public operation-copy scan includes internal strategy phrases', () => {
   assert.match('승인 전 전략', publicCopyBanPattern);
   assert.match('수익화', publicCopyBanPattern);
+  assert.match('Issue → Information → Calculator', publicCopyBanPattern);
   assert.doesNotMatch('대출 이자 직접 계산하기', publicCopyBanPattern);
 });
 

@@ -1,6 +1,6 @@
 import { spawn } from 'node:child_process';
 
-export const publicCopyBanPattern = /AdSense review window|애드센스|승인 전 전략|수익화|수익형|검색 신호|운영 초점|밀어야|수익 측정/i;
+export const publicCopyBanPattern = /AdSense review window|애드센스|승인 전 전략|수익화|수익형|검색 신호|운영 초점|밀어야|수익 측정|Issue\s*→\s*Information\s*→\s*Calculator/i;
 
 export const releaseChecks = [
   { name: 'insight tests', command: 'npm', args: ['run', 'insights:test'] },
