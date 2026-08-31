@@ -18,6 +18,12 @@ const candidate = {
     { heading: '내 월급에는 어떤 영향이 있나요?', body: '근로시간, 주휴수당, 4대보험 공제에 따라 실수령액이 달라집니다.' },
     { heading: '어떻게 계산하나요?', body: '연봉 실수령액 계산기에 조건을 입력해 비교합니다.' },
   ],
+  faqs: [
+    {
+      question: '최저임금이 오르면 실수령액도 같은 비율로 오르나요?',
+      answer: '아닙니다. 세전 급여가 올라가도 4대보험과 소득세 공제가 함께 반영되므로 실수령액 증가율은 다를 수 있습니다.',
+    },
+  ],
   calculatorMatches: [{ id: 'salary', path: '/salary/', name: '연봉 실수령액 계산기', score: 91 }],
   officialSources: [{ name: '고용노동부', url: 'https://www.moel.go.kr/', verifiedAt: '2026-08-30T12:00:00.000Z' }],
   disclaimerType: 'salary',
@@ -36,6 +42,8 @@ test('builds an articles.mjs-compatible entry from an article candidate', () => 
   assert.equal(entry.categoryKey, 'salary');
   assert.equal(entry.publishedDate, '2026-08-31');
   assert.equal(entry.sections[0].paragraphs[0], '공식 고시 기준 최저임금과 적용 시점을 확인해야 합니다.');
+  assert.equal(Array.isArray(entry.faqs), true);
+  assert.equal(entry.faqs?.[0].question, '최저임금이 오르면 실수령액도 같은 비율로 오르나요?');
   assert.deepEqual(entry.calculatorCtas[0], {
     calculatorId: 'salary',
     href: '/salary/',

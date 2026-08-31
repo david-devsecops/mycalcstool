@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import ArticleCta from '../../components/ArticleCta.astro';
+import FAQ from '../../components/FAQ.astro';
 import { getPublishedArticles, getRelatedArticles } from '../../data/articles.mjs';
 import { siteMeta } from '../../data/site-meta';
 
@@ -121,6 +122,8 @@ const jsonLd = [
     </div>
 
     <ArticleCta ctas={article.calculatorCtas} />
+
+    {article.faqs?.length > 0 && <FAQ items={article.faqs} />}
 
     <section class="my-8 rounded-2xl border border-amber-100 bg-amber-50 p-5" aria-labelledby="disclaimer">
       <h2 id="disclaimer" class="text-lg font-black text-amber-950">알아둘 사항</h2>

@@ -33,6 +33,16 @@ const articleTemplates = {
         body: '대출 잔액, 남은 기간, 현재 금리, 예상 금리 차이를 입력해 월 납입액과 총 이자 차이를 비교하세요.',
       },
     ],
+    faqs: [
+      {
+        question: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?',
+        answer: '바로 같은 폭으로 바뀌지는 않습니다. 변동금리 여부, 기준금리 반영 주기, 은행의 가산금리와 우대금리 조건을 함께 확인해야 합니다.',
+      },
+      {
+        question: '금리 변화폭만 알면 이자 차이를 계산할 수 있나요?',
+        answer: '대출 잔액, 남은 기간, 상환 방식이 함께 필요합니다. 같은 금리 차이라도 원금이 줄어드는 속도에 따라 총 이자 차이가 달라질 수 있습니다.',
+      },
+    ],
   },
   '연말정산과 환급액 영향': {
     slug: 'year-end-tax-refund-paycheck-impact',
@@ -55,6 +65,16 @@ const articleTemplates = {
       {
         heading: '내 조건으로 계산하는 방법',
         body: '급여와 공제 항목을 정리한 뒤 연말정산 계산기에 입력해 추가 납부 또는 환급 가능성을 비교하세요.',
+      },
+    ],
+    faqs: [
+      {
+        question: '연말정산 환급액은 월급이 오른 것인가요?',
+        answer: '아닙니다. 매월 미리 낸 세금과 최종 세액을 비교한 결과 이미 낸 세금 일부를 돌려받는 경우가 많습니다.',
+      },
+      {
+        question: '환급액이 크면 항상 좋은 건가요?',
+        answer: '반드시 그렇지는 않습니다. 월별 원천징수액과 공제 적용 결과이므로 연간 현금흐름을 함께 확인해야 합니다.',
       },
     ],
   },
@@ -81,6 +101,16 @@ const articleTemplates = {
         body: '연봉 또는 월급, 비과세 항목, 부양가족 조건을 넣어 세전 금액과 세후 금액의 차이를 확인하세요.',
       },
     ],
+    faqs: [
+      {
+        question: '세전 월급이 오르면 실수령액도 같은 비율로 오르나요?',
+        answer: '아닙니다. 국민연금, 건강보험, 고용보험, 소득세 등이 함께 반영되기 때문에 세후 증가율은 다를 수 있습니다.',
+      },
+      {
+        question: '최저임금만 알면 월급을 바로 알 수 있나요?',
+        answer: '근로시간, 주휴수당, 비과세 항목, 공제 조건을 함께 봐야 실제 월급과 실수령액을 계산할 수 있습니다.',
+      },
+    ],
   },
   'AI API 가격 변화와 월 사용료 영향': {
     slug: 'openai-api-price-change-cost-planning',
@@ -103,6 +133,16 @@ const articleTemplates = {
       {
         heading: '내 사용량으로 계산하는 방법',
         body: '평균 토큰 수와 월 요청 수를 정한 뒤 공식 가격표의 단가를 계산기에 넣어 시나리오별 비용을 비교하세요.',
+      },
+    ],
+    faqs: [
+      {
+        question: 'AI API 비용은 요청 수만 알면 계산할 수 있나요?',
+        answer: '아닙니다. 입력 토큰, 출력 토큰, 모델 단가, 캐시나 배치 같은 별도 과금 구조를 함께 봐야 합니다.',
+      },
+      {
+        question: '공식 가격표는 언제 다시 확인해야 하나요?',
+        answer: '모델을 바꾸거나 사용량이 늘기 전, 그리고 가격 공지가 나온 뒤에는 공식 가격표를 다시 확인해야 합니다.',
       },
     ],
   },
@@ -129,6 +169,16 @@ const articleTemplates = {
         body: '해외주식 매수·매도 가격과 환율을 입력해 달러 기준 수익률과 원화 기준 수익률을 나눠 비교하세요.',
       },
     ],
+    faqs: [
+      {
+        question: '달러 수익률이 플러스면 원화 수익률도 항상 플러스인가요?',
+        answer: '아닙니다. 매수 환율과 매도 환율 차이, 환전 수수료, 세금에 따라 원화 기준 결과는 달라질 수 있습니다.',
+      },
+      {
+        question: '환율 영향은 언제 계산해야 하나요?',
+        answer: '해외주식을 매수하기 전, 매도하기 전, 환전 시점을 정하기 전에 달러 기준 수익률과 원화 기준 수익률을 나눠 계산하는 것이 좋습니다.',
+      },
+    ],
   },
 };
 
@@ -146,6 +196,12 @@ function fallbackTemplate(issue) {
       { heading: '무엇을 확인해야 하나요?', body: '공식 출처의 변경 내용, 적용일, 대상 조건을 먼저 확인해야 합니다.' },
       { heading: '내 경우에는 무엇이 달라지나요?', body: '소득, 대출 잔액, 투자 금액, 사용량처럼 개인 조건에 따라 결과가 달라질 수 있습니다.' },
       { heading: '어떻게 계산하나요?', body: '관련 계산기에 내 조건을 입력해 변경 전후 금액을 비교하세요.' },
+    ],
+    faqs: [
+      {
+        question: '이 이슈가 내 금액에 바로 적용되나요?',
+        answer: '공식 적용일, 대상 조건, 개인 상황에 따라 달라질 수 있습니다. 먼저 공식 출처를 확인한 뒤 관련 계산기에 내 조건을 입력해야 합니다.',
+      },
     ],
   };
 }
@@ -166,6 +222,7 @@ function toArticleCandidate(issue, now) {
     categoryLabel: categoryLabels[issue.category] || issue.category,
     summary: template.summary,
     sections: template.sections,
+    faqs: template.faqs,
     numericClaims: primarySource ? [{ claim: '공식 출처 확인 필요 수치', sourceUrl: primarySource.url }] : [],
     calculatorMatches: issue.calculatorMatches || [],
     officialSources: issue.officialSources || [],

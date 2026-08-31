@@ -36,6 +36,7 @@ export function buildArticleDataEntry(candidate, publishDate = new Date().toISOS
       heading: section.heading,
       paragraphs: asParagraphs(section),
     })),
+    faqs: candidate.faqs || [],
     calculatorCtas: (candidate.calculatorMatches || []).map((match) => ({
       calculatorId: match.id,
       href: match.path,

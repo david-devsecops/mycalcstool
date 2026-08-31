@@ -34,6 +34,11 @@ test('creates a publish candidate from a source-verified issue with calculator m
   assert.equal(candidates[0].calculatorMatches[0].path, '/loan/');
   assert.equal(candidates[0].officialSources[0].url, sourceVerifiedIssue.officialSources[0].url);
   assert.equal(candidates[0].numericClaims[0].sourceUrl, sourceVerifiedIssue.officialSources[0].url);
+  assert.equal(Array.isArray(candidates[0].faqs), true);
+  assert.deepEqual(candidates[0].faqs?.[0], {
+    question: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?',
+    answer: '바로 같은 폭으로 바뀌지는 않습니다. 변동금리 여부, 기준금리 반영 주기, 은행의 가산금리와 우대금리 조건을 함께 확인해야 합니다.',
+  });
 });
 
 test('keeps non-verified issues out of article generation', () => {

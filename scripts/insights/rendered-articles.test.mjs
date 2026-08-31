@@ -58,6 +58,8 @@ test('every rendered article exposes trust elements and calculator links', () =>
 
     assert.match(html, /"@type":"Article"/, `${article.slug} missing Article schema`);
     assert.match(html, /"@type":"BreadcrumbList"/, `${article.slug} missing breadcrumb schema`);
+    assert.match(html, /"@type":"FAQPage"/, `${article.slug} missing FAQ schema`);
+    assert.match(html, /자주 묻는 질문/, `${article.slug} missing visible FAQ section`);
     assert.match(html, /"image":\["https:\/\/mycalcstool\.com\/og-default\.png"\]/, `${article.slug} missing Article image`);
     assert.match(html, /"mainEntityOfPage":\{"@type":"WebPage","@id":"https:\/\/mycalcstool\.com\/articles\//, `${article.slug} missing Article WebPage entity`);
     assert.match(html, /id="sources"/, `${article.slug} missing source section`);
