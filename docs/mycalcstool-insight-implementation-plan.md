@@ -943,6 +943,8 @@ Risk:
 
 - Premature Workers/D1 work can distract from the actual question: do articles produce search traffic and calculator use?
 
+Status: completed in `docs/mycalcstool-cloudflare-phase2-design.md`.
+
 ## Implementation Recommendation
 
 The next coding slice should be TASK-002 through TASK-005 only.
