@@ -10,6 +10,8 @@
 
 **Spec:** User-provided "MyCalcsTool finance, life, AI issue-based content automation and monetization expansion project", received 2026-08-31.
 
+**Current-state companion doc:** `docs/mycalcstool-insight-current-state.md`
+
 ## Global Constraints
 
 - Do not delete existing calculators.
@@ -419,7 +421,7 @@ Only after 30 to 90 days of data:
 4. Keep auto-publish disabled until D1 records show stable source and quality behavior.
 5. Add authenticated admin review surface only if local reports become too slow.
 
-## New Components Still Needed
+## New Components Status
 
 Completed Phase 1 hardening:
 
@@ -440,6 +442,13 @@ Defer:
 - Public/admin dashboard.
 - Affiliate automation.
 - English issue articles except global AI/investing topics.
+
+Still useful before runtime automation:
+
+- GA4 calculator-click import into local metrics, so article traffic can be tied to calculator movement.
+- Report-level recommended actions for `NEW`, `GROWING`, `WINNER`, `UNDERPERFORM`, and `DEAD` articles.
+- Sitemap verification that published article URLs are included and approval-noindex routes are excluded.
+- A manual review checklist for any article candidate generated from current events.
 
 ## Data Model
 
@@ -657,13 +666,19 @@ Existing insight tests cover:
 - Search Console metrics
 - source validator
 
-Required next tests:
+Completed Phase 1 tests:
 
 - `ENABLE_CALCULATOR_MATCHING=false` keeps issue analysis but skips calculator matching, article candidate generation, and backlog noise.
 - Duplicate canonical topic rejection.
 - Official source URL reachability with timeout and failure states.
-- Published article render test for all articles, not only fixtures.
+- Published article render checks for all published articles.
+- Public copy checks for internal operator wording.
+
+Required next tests:
+
 - Sitemap includes published article URLs and excludes noindex routes.
+- GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
+- Report recommendations map each performance class to a concrete next action.
 
 ## Deployment
 
@@ -949,13 +964,20 @@ Status: completed in `docs/mycalcstool-cloudflare-phase2-design.md`.
 
 ## Implementation Recommendation
 
-The next coding slice should be TASK-002 through TASK-005 only.
+The next coding slice should not start Cloudflare runtime automation yet. The current repository already has the safer static/local MVP pieces in place.
 
 Reason:
 
 - The site already has articles and a local pipeline.
-- The biggest near-term risk is not missing features; it is accidental low-quality publishing.
-- Matching flag, duplicate gate, source reachability, and rendered article checks directly reduce that risk.
+- The biggest near-term risk is not missing infrastructure; it is publishing content that does not create search traffic or calculator movement.
+- Search Console and GA4 calculator-click data should decide whether the article layer is worth scaling.
+
+Recommended next implementation sequence:
+
+1. Add GA4 article-to-calculator click import support.
+2. Add report-level recommendations for weak, growing, and winning articles.
+3. Add sitemap verification for published article URLs.
+4. Only then consider Cloudflare Worker/D1/Cron design implementation.
 
 Do not start with:
 
@@ -965,13 +987,15 @@ Do not start with:
 - affiliate automation
 - public admin dashboard
 
+These are Phase 2 or Phase 3 items unless the local workflow becomes operationally painful.
+
 Add those only after Search Console shows that the article layer creates real impressions, clicks, and calculator movement.
 
 ## Current Decision Points For User Review
 
 - Keep `/articles/` as the issue-content namespace.
 - Keep Phase 1 static and local-script based.
-- Implement safety hardening before adding more content generation.
+- Treat the already implemented safety hardening as the baseline before adding more content generation.
 - Leave auto-publish disabled by default.
 - Use Search Console CSV import before Search Console API.
 - Defer Cloudflare Workers/D1/Cron until measurable traction exists.
