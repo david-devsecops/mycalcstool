@@ -445,7 +445,6 @@ Defer:
 
 Still useful before runtime automation:
 
-- Sitemap verification that published article URLs are included and approval-noindex routes are excluded.
 - A manual review checklist for any article candidate generated from current events.
 
 ## Data Model
@@ -673,10 +672,11 @@ Completed Phase 1 tests:
 - Public copy checks for internal operator wording.
 - GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
 - Report recommendations map each performance class to a concrete next action.
+- Sitemap includes published article URLs and excludes noindex routes.
 
 Required next tests:
 
-- Sitemap includes published article URLs and excludes noindex routes.
+- Manual review checklist covers source-backed article candidates before publishing.
 
 ## Deployment
 
@@ -972,9 +972,9 @@ Reason:
 
 Recommended next implementation sequence:
 
-1. Add sitemap verification for published article URLs.
-2. Use imported Search Console and GA4 data for the next topic-cluster decision.
-3. Add a manual review checklist for source-backed article candidates.
+1. Use imported Search Console and GA4 data for the next topic-cluster decision.
+2. Add a manual review checklist for source-backed article candidates.
+3. Keep Cloudflare Worker/D1/Cron disabled until local reports show repeatable traction.
 4. Only then consider Cloudflare Worker/D1/Cron design implementation.
 
 Do not start with:

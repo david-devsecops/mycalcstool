@@ -8,6 +8,13 @@ Search Console의 `Sitemaps` 메뉴에는 아래 1개만 제출합니다.
 
 - `https://mycalcstool.com/sitemap-index.xml`
 
+배포 전 로컬에서는 아래 순서로 sitemap을 검증합니다.
+
+```powershell
+npm run build
+npm run insights:verify:sitemap
+```
+
 빌드 검증 기준 sitemap에는 51개 indexable URL이 포함됩니다. 아래 legacy redirect URL은 sitemap에서 제외했습니다.
 
 - `https://mycalcstool.com/en/blog/age-calculator-guide-how-old-am-i/`

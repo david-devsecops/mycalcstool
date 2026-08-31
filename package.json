@@ -19,7 +19,8 @@
     "insights:publish:articles": "node scripts/insights/publish-articles.mjs",
     "insights:metrics:import": "node scripts/insights/import-search-console-csv.mjs",
     "insights:metrics:import:ga4": "node scripts/insights/import-ga4-calculator-clicks.mjs",
-    "insights:report": "node scripts/insights/report.mjs"
+    "insights:report": "node scripts/insights/report.mjs",
+    "insights:verify:sitemap": "node scripts/insights/verify-sitemap.mjs"
   },
   "dependencies": {
     "astro": "^5.6.1",

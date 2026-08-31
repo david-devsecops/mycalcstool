@@ -65,6 +65,7 @@ Important npm scripts:
 - `npm run insights:metrics:import`: Search Console CSV import
 - `npm run insights:metrics:import:ga4`: GA4 article-to-calculator click CSV import
 - `npm run insights:report`: local insight report generation
+- `npm run insights:verify:sitemap`: built sitemap verification
 
 Dependencies are intentionally small:
 
@@ -455,6 +456,7 @@ Implemented:
 - GA4 article-to-calculator click CSV import
 - Local insight report builder
 - Report-level recommended actions from article performance class
+- Built sitemap verification for published article inclusion and noindex exclusion
 - Rendered article quality tests
 
 Not implemented:
@@ -471,7 +473,6 @@ Not implemented:
 
 Do next:
 
-- Add sitemap verification for published article URLs.
 - Use imported Search Console and GA4 data to decide which topic clusters deserve additional articles.
 - Keep auto-publish disabled until review quality and search data are stable.
 
