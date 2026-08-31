@@ -98,10 +98,50 @@ test('reports Naver API failures without producing issues', async () => {
       NAVER_CLIENT_ID: 'client-id',
       NAVER_CLIENT_SECRET: 'client-secret',
     },
+    retryDelaysMs: [],
     fetchImpl: async () => ({ ok: false, status: 429, text: async () => 'rate limited' }),
   });
 
   assert.equal(result.status, 'failed');
   assert.equal(result.error, 'naver_api_429');
   assert.deepEqual(result.issues, []);
+});
+
+test('retries transient Naver request failures before collecting issues', async () => {
+  let attempts = 0;
+  const delays = [];
+
+  const result = await collectNaverNewsIssues({
+    env: {
+      ENABLE_ISSUE_COLLECTOR: 'true',
+      NAVER_CLIENT_ID: 'client-id',
+      NAVER_CLIENT_SECRET: 'client-secret',
+    },
+    retryDelaysMs: [30, 120],
+    delay: async (ms) => delays.push(ms),
+    fetchImpl: async () => {
+      attempts += 1;
+      if (attempts < 3) throw new Error('network timeout');
+      return {
+        ok: true,
+        status: 200,
+        json: async () => ({
+          items: [
+            {
+              title: 'OpenAI API 가격 변경',
+              originallink: 'https://openai.com/api/pricing/',
+              link: 'https://openai.com/api/pricing/',
+              description: 'API 가격 정보를 확인합니다.',
+              pubDate: 'Mon, 31 Aug 2026 09:00:00 +0900',
+            },
+          ],
+        }),
+      };
+    },
+  });
+
+  assert.equal(result.status, 'collected');
+  assert.equal(result.issues.length, 1);
+  assert.equal(attempts, 3);
+  assert.deepEqual(delays, [30, 120]);
 });

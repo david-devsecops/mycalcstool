@@ -1,4 +1,7 @@
+import { retryOperation } from './retry.mjs';
+
 const endpoint = 'https://openapi.naver.com/v1/search/news.json';
+const defaultRetryDelaysMs = [30000, 120000, 600000];
 
 function stripHtml(value) {
   return String(value || '')
@@ -46,6 +49,8 @@ export async function collectNaverNewsIssues({
   display = 10,
   start = 1,
   existingUrls = new Set(),
+  retryDelaysMs = defaultRetryDelaysMs,
+  delay,
 } = {}) {
   if (env.ENABLE_ISSUE_COLLECTOR !== 'true') {
     return { status: 'disabled', issues: [] };
@@ -55,12 +60,29 @@ export async function collectNaverNewsIssues({
     return { status: 'failed', error: 'naver_credentials_required', issues: [] };
   }
 
-  const response = await fetchImpl(buildSearchUrl({ query, display, start }), {
-    headers: {
-      'X-Naver-Client-Id': env.NAVER_CLIENT_ID,
-      'X-Naver-Client-Secret': env.NAVER_CLIENT_SECRET,
-    },
-  });
+  let response;
+
+  try {
+    response = await retryOperation(
+      async () => {
+        const nextResponse = await fetchImpl(buildSearchUrl({ query, display, start }), {
+          headers: {
+            'X-Naver-Client-Id': env.NAVER_CLIENT_ID,
+            'X-Naver-Client-Secret': env.NAVER_CLIENT_SECRET,
+          },
+        });
+
+        if (!nextResponse.ok && (nextResponse.status === 429 || nextResponse.status >= 500)) {
+          throw new Error(`naver_api_${nextResponse.status}`);
+        }
+
+        return nextResponse;
+      },
+      { delaysMs: retryDelaysMs, delay },
+    );
+  } catch (error) {
+    return { status: 'failed', error: error.message, issues: [] };
+  }
 
   if (!response.ok) {
     return { status: 'failed', error: `naver_api_${response.status}`, issues: [] };
