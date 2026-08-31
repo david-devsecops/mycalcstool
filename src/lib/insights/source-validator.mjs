@@ -22,6 +22,10 @@ function isOfficialHostForCategory(host, category) {
   return (categorySourceDomains[category] || officialSourceDomains).some((domain) => matchesDomain(host, domain));
 }
 
+function checkedDate(candidate, source) {
+  return source.checkedAt || candidate.checkedAt || candidate.verifiedAt || new Date().toISOString().slice(0, 10);
+}
+
 async function isReachable(url, { fetchImpl, timeoutMs }) {
   const controller = new AbortController();
   const timeout = setTimeout(() => controller.abort(), timeoutMs);
@@ -70,7 +74,7 @@ export function validateOfficialSources(candidate) {
       const host = url.hostname.toLowerCase();
 
       if (isOfficialHost(host) && isOfficialHostForCategory(host, candidate.category)) {
-        officialSources.push({ ...source, host });
+        officialSources.push({ ...source, host, checkedAt: checkedDate(candidate, source) });
       } else if (isOfficialHost(host) && !errors.includes('official_source_category_mismatch')) {
         errors.push('official_source_category_mismatch');
       }

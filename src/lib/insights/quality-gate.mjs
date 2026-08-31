@@ -5,6 +5,10 @@ function sourceUrls(candidate) {
   return new Set((candidate.officialSources || []).map((source) => source.url));
 }
 
+function hasSourceCheckDate(source) {
+  return Boolean(source.checkedAt || source.verifiedAt);
+}
+
 function normalizeTopic(value) {
   return String(value || '').replace(/\s+/g, ' ').trim().toLowerCase();
 }
@@ -40,6 +44,10 @@ export function evaluateArticleCandidate(candidate, options = {}) {
 
   if (sourceRequiredCategories.has(candidate.category) && officialUrls.size === 0) {
     errors.push('official_source_required');
+  }
+
+  if (sourceRequiredCategories.has(candidate.category) && (candidate.officialSources || []).some((source) => !hasSourceCheckDate(source))) {
+    errors.push('official_source_checked_at_required');
   }
 
   for (const numericClaim of candidate.numericClaims || []) {

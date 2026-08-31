@@ -15,6 +15,7 @@ const sourceVerifiedIssue = {
     {
       name: '한국은행 기준금리 추이',
       url: 'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643',
+      checkedAt: '2026-08-31',
     },
   ],
   calculatorMatches: [{ id: 'loan', path: '/loan/', name: '대출 이자 계산기', score: 96 }],
@@ -68,7 +69,7 @@ test('creates user-question templates for supported tax salary and exchange-rate
       canonicalTopic: '연말정산과 환급액 영향',
       category: 'tax',
       intent: ['TAX', 'CALCULATOR', 'COST'],
-      officialSources: [{ name: '국세청 연말정산', url: 'https://www.nts.go.kr/' }],
+      officialSources: [{ name: '국세청 연말정산', url: 'https://www.nts.go.kr/', checkedAt: '2026-08-31' }],
       calculatorMatches: [{ id: 'tax-refund', path: '/tax-refund/', name: '연말정산 환급액 계산기', score: 92 }],
     },
     {
@@ -77,7 +78,7 @@ test('creates user-question templates for supported tax salary and exchange-rate
       canonicalTopic: '월급과 연봉 실수령액 영향',
       category: 'salary',
       intent: ['SALARY', 'CALCULATOR', 'COST'],
-      officialSources: [{ name: '고용노동부 최저임금', url: 'https://www.moel.go.kr/' }],
+      officialSources: [{ name: '고용노동부 최저임금', url: 'https://www.moel.go.kr/', checkedAt: '2026-08-31' }],
       calculatorMatches: [{ id: 'salary', path: '/salary/', name: '연봉 실수령액 계산기', score: 90 }],
     },
     {
@@ -86,7 +87,7 @@ test('creates user-question templates for supported tax salary and exchange-rate
       canonicalTopic: '환율 변화와 해외주식 원화 수익률 영향',
       category: 'investing',
       intent: ['INVESTMENT', 'RATE', 'CALCULATOR'],
-      officialSources: [{ name: '한국은행 경제통계', url: 'https://ecos.bok.or.kr/' }],
+      officialSources: [{ name: '한국은행 경제통계', url: 'https://ecos.bok.or.kr/', checkedAt: '2026-08-31' }],
       calculatorMatches: [{ id: 'foreign-stock-return-calculator', path: '/foreign-stock-return-calculator/', name: '해외주식 환율 수익률 계산기', score: 88 }],
     },
   ];

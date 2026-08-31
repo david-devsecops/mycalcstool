@@ -14,6 +14,7 @@ const validCandidate = {
     {
       name: '한국은행 기준금리 추이',
       url: 'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643',
+      checkedAt: '2026-08-31',
     },
   ],
   numericClaims: [
@@ -61,6 +62,20 @@ test('quality gate rejects finance candidates without official sources', () => {
 
   assert.equal(result.status, 'rejected');
   assert.equal(result.errors.includes('official_source_required'), true);
+});
+
+test('quality gate rejects source-required candidates when official source check dates are missing', () => {
+  const result = evaluateArticleCandidate(
+    {
+      ...validCandidate,
+      slug: 'missing-source-check-date',
+      officialSources: validCandidate.officialSources.map(({ checkedAt, ...source }) => source),
+    },
+    { existingSlugs: [] },
+  );
+
+  assert.equal(result.status, 'rejected');
+  assert.equal(result.errors.includes('official_source_checked_at_required'), true);
 });
 
 test('quality gate rejects unsupported investment guarantees', () => {

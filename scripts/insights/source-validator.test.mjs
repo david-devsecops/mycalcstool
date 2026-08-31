@@ -5,6 +5,7 @@ import { validateOfficialSources, validateOfficialSourcesReachability } from '..
 test('accepts allowlisted official finance sources', () => {
   const result = validateOfficialSources({
     category: 'finance',
+    checkedAt: '2026-08-31',
     sources: [
       {
         name: '한국은행 기준금리 추이',
@@ -16,6 +17,7 @@ test('accepts allowlisted official finance sources', () => {
   assert.equal(result.ok, true);
   assert.deepEqual(result.errors, []);
   assert.equal(result.officialSources[0].host, 'www.bok.or.kr');
+  assert.equal(result.officialSources[0].checkedAt, '2026-08-31');
 });
 
 test('rejects finance candidates backed only by news domains', () => {
