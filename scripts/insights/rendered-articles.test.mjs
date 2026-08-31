@@ -40,6 +40,11 @@ test('calculator pages link back to relevant issue articles', () => {
   assert.match(aiCostHtml, /\/articles\/openai-api-price-change-cost-planning\//);
 });
 
+test('global Korean navigation exposes the issue article index', () => {
+  assert.match(loanHtml, /<nav class="hidden md:flex[^"]*" aria-label="주요 메뉴"[\s\S]*href="\/articles\/"[\s\S]*이슈 가이드/);
+  assert.match(loanHtml, /<nav id="mobile-menu"[\s\S]*정보[\s\S]*href="\/articles\/"[\s\S]*이슈 가이드/);
+});
+
 test('published article records expose audit fields for duplicate and source gates', () => {
   for (const article of articles.filter((item) => item.status === 'published')) {
     assert.equal(typeof article.issueId, 'string', `${article.slug} missing issueId`);

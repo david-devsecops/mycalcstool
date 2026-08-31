@@ -6,6 +6,7 @@ const koNavItems = [
   { path: '/loan', label: '대출 계산기', category: '금융' },
   { path: '/salary', label: '연봉 계산기', category: '금융' },
   { path: '/tax-refund', label: '연말정산', category: '금융' },
+  { path: '/articles/', label: '이슈 가이드', category: '정보' },
   { path: '/compound', label: '복리 계산기', category: '금융' },
   { path: '/severance', label: '퇴직금', category: '금융' },
   { path: '/stock-average-calculator', label: '주식 평단가', category: '투자' },
@@ -32,7 +33,7 @@ const enNavItems = [
 const navItems = isEnglish ? enNavItems : koNavItems;
 const homeHref = isEnglish ? '/en/' : '/';
 const langToggleHref = isEnglish ? '/' : '/en/';
-const categories = isEnglish ? ['Finance', 'Investing', 'AI'] : ['금융', '투자', 'AI'];
+const categories = isEnglish ? ['Finance', 'Investing', 'AI'] : ['정보', '금융', '투자', 'AI'];
 ---
 
 <header class="bg-white border-b border-gray-200 sticky top-0 z-50 shadow-sm">
@@ -51,7 +52,7 @@ const categories = isEnglish ? ['Finance', 'Investing', 'AI'] : ['금융', '투�
       </a>
 
       <!-- 데스크톱 네비게이션 -->
-      <nav class="hidden md:flex items-center gap-1" aria-label="주요 계산기">
+      <nav class="hidden md:flex items-center gap-1" aria-label="주요 메뉴">
         {navItems.slice(0, 6).map(item => (
           <a
             href={item.path}
