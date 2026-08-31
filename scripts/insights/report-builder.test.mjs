@@ -46,6 +46,37 @@ test('builds a queue report with status counts and review items', () => {
       { slug: 'base-rate-loan-interest-impact', calculatorId: 'loan', calculatorClicks: 9 },
       { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, ctr: 0.03, averagePosition: 14.7 },
     ],
+    automationRuns: [
+      {
+        id: 'run-1',
+        jobName: 'collect-naver',
+        status: 'success',
+        itemsProcessed: 12,
+        itemsFailed: 0,
+        cost: 0.01,
+        finishedAt: '2026-08-31T08:00:00.000Z',
+      },
+      {
+        id: 'run-2',
+        jobName: 'generate-articles',
+        status: 'failed',
+        itemsProcessed: 0,
+        itemsFailed: 1,
+        cost: 0.07,
+        errorMessage: 'official_source_missing',
+        finishedAt: '2026-08-31T08:10:00.000Z',
+      },
+      {
+        id: 'run-3',
+        jobName: 'publish-candidates',
+        status: 'skipped',
+        itemsProcessed: 0,
+        itemsFailed: 0,
+        cost: 0,
+        errorMessage: 'automation_disabled',
+        finishedAt: '2026-08-31T08:20:00.000Z',
+      },
+    ],
     publishedArticles: [
       {
         slug: 'base-rate-loan-interest-impact',
@@ -121,5 +152,11 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /openai-api-price-change-cost-planning: open every official source URL and confirm it supports the exact topic/);
   assert.match(report, /openai-api-price-change-cost-planning: verify every numeric claim has an official source URL/);
   assert.match(report, /openai-api-price-change-cost-planning: confirm the calculator CTA matches the user's money question/);
+  assert.match(report, /Automation Runs/);
+  assert.match(report, /success: 1/);
+  assert.match(report, /failed: 1/);
+  assert.match(report, /skipped: 1/);
+  assert.match(report, /Total automation cost: 0.08/);
+  assert.match(report, /generate-articles: failed \/ failed 1 \/ official_source_missing/);
   assert.doesNotMatch(report, /특정 종목 매수 추천: open every official source URL/);
 });

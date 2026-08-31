@@ -229,6 +229,31 @@ function renderTopicClusterDecisions(rows, publishedArticles, generatedAt) {
   ].join('\n');
 }
 
+function renderAutomationRuns(runs) {
+  if (runs.length === 0) return '## Automation Runs\n\nNo automation runs.\n';
+
+  const counts = countByStatus(runs);
+  const totalCost = runs.reduce((sum, run) => sum + (Number(run.cost) || 0), 0);
+  const failedRuns = runs.filter((run) => run.status === 'failed' || Number(run.itemsFailed) > 0).slice(-5);
+
+  return [
+    '## Automation Runs',
+    '',
+    ...Object.entries(counts).sort(([left], [right]) => left.localeCompare(right)).map(([status, count]) => `- ${status}: ${count}`),
+    `- Total automation cost: ${totalCost.toFixed(2)}`,
+    '',
+    '### Recent Failures',
+    '',
+    ...(failedRuns.length
+      ? failedRuns.map(
+          (run) =>
+            `- ${run.jobName}: ${run.status || 'unknown'} / failed ${run.itemsFailed || 0} / ${run.errorMessage || 'no error message'}`,
+        )
+      : ['No recent failures.']),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
@@ -236,6 +261,7 @@ export function buildInsightReport({
   calculatorBacklog = [],
   contentMetrics = [],
   publishedArticles = [],
+  automationRuns = [],
   budgetStatus,
   generatedAt = new Date().toISOString(),
 } = {}) {
@@ -253,6 +279,7 @@ export function buildInsightReport({
     renderArticleManualReviewChecklist(articleCandidates),
     renderBacklogItems(calculatorBacklog),
     renderContentMetrics(contentMetrics),
+    renderAutomationRuns(automationRuns),
     renderPublishedArticleAudit(publishedArticles),
     renderSourceFreshnessReview(publishedArticles, generatedAt),
     renderPerformanceClassification(contentMetrics, publishedArticles, generatedAt),

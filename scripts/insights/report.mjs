@@ -17,12 +17,14 @@ await runAutomationJob({
     const articleCandidates = await readJsonlRecords(resolve(dataDir, 'article-candidates.jsonl'));
     const calculatorBacklog = await readJsonlRecords(resolve(dataDir, 'calculator-backlog.jsonl'));
     const contentMetrics = await readJsonlRecords(resolve(dataDir, 'content-metrics.jsonl'));
+    const automationRuns = await readJsonlRecords(resolve(dataDir, 'automation-runs.jsonl'));
     const report = buildInsightReport({
       issues,
       issueCandidates,
       articleCandidates,
       calculatorBacklog,
       contentMetrics,
+      automationRuns,
       publishedArticles: getPublishedArticles(),
     });
 
