@@ -1,0 +1,21 @@
+export const officialSourceDomains = [
+  'bok.or.kr',
+  'fsc.go.kr',
+  'fss.or.kr',
+  'moef.go.kr',
+  'nts.go.kr',
+  'moel.go.kr',
+  'mohw.go.kr',
+  'molit.go.kr',
+  'gov.kr',
+  'law.go.kr',
+  'openai.com',
+  'platform.openai.com',
+  'anthropic.com',
+  'platform.claude.com',
+  'ai.google.dev',
+  'cloud.google.com',
+  'aws.amazon.com',
+  'learn.microsoft.com',
+];
+
