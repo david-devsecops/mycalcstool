@@ -10,6 +10,7 @@
     "astro": "astro",
     "update:ads-txt": "node ./scripts/update-ads-txt.mjs",
     "insights:test": "node --test scripts/insights/*.test.mjs",
+    "insights:collect:naver": "node scripts/insights/collect-naver.mjs",
     "insights:report": "node scripts/insights/report.mjs"
   },
   "dependencies": {
