@@ -9,6 +9,10 @@ test('builds a queue report with status counts and review items', () => {
       { id: 'issue-1', status: 'analyzed', canonicalTopic: '기준금리 변화와 대출 이자 영향' },
       { id: 'issue-2', status: 'rejected', canonicalTopic: '특정 종목 매수 추천' },
     ],
+    issueCandidates: [
+      { id: 'candidate-1', status: 'source_verified', canonicalTopic: '기준금리 변화와 대출 이자 영향' },
+      { id: 'candidate-2', status: 'review_required', canonicalTopic: '연말정산과 환급액 영향' },
+    ],
     articleCandidates: [
       {
         id: 'article-1',
@@ -33,6 +37,7 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Generated: 2026-08-31T09:00:00.000Z/);
   assert.match(report, /analyzed: 1/);
   assert.match(report, /rejected: 1/);
+  assert.match(report, /source_verified: 1/);
   assert.match(report, /review_required: 1/);
   assert.match(report, /scheduled: 1/);
   assert.match(report, /auto_publish_disabled/);

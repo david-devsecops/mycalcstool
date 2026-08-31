@@ -28,13 +28,14 @@ function renderReviewItems(candidates) {
   ].join('\n');
 }
 
-export function buildInsightReport({ issues = [], articleCandidates = [], generatedAt = new Date().toISOString() } = {}) {
+export function buildInsightReport({ issues = [], issueCandidates = [], articleCandidates = [], generatedAt = new Date().toISOString() } = {}) {
   return [
     '# MyCalcsTool Insight Queue Report',
     '',
     `Generated: ${generatedAt}`,
     '',
     renderCounts('Issue Status', countByStatus(issues)),
+    renderCounts('Issue Candidate Status', countByStatus(issueCandidates)),
     renderCounts('Article Candidate Status', countByStatus(articleCandidates)),
     renderReviewItems(articleCandidates),
   ].join('\n');

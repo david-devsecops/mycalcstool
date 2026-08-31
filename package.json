@@ -11,6 +11,7 @@
     "update:ads-txt": "node ./scripts/update-ads-txt.mjs",
     "insights:test": "node --test scripts/insights/*.test.mjs",
     "insights:collect:naver": "node scripts/insights/collect-naver.mjs",
+    "insights:analyze": "node scripts/insights/analyze-issues.mjs",
     "insights:report": "node scripts/insights/report.mjs"
   },
   "dependencies": {
