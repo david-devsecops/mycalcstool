@@ -11,6 +11,7 @@
     "update:ads-txt": "node ./scripts/update-ads-txt.mjs",
     "insights:test": "node --test scripts/insights/*.test.mjs",
     "insights:collect:naver": "node scripts/insights/collect-naver.mjs",
+    "insights:pipeline": "node scripts/insights/run-local-pipeline.mjs",
     "insights:analyze": "node scripts/insights/analyze-issues.mjs",
     "insights:generate:articles": "node scripts/insights/generate-article-candidates.mjs",
     "insights:generate:calculator-backlog": "node scripts/insights/generate-calculator-backlog.mjs",
