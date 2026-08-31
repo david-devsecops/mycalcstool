@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 import { articles } from '../../src/data/articles.mjs';
 import { runAutomationJob } from '../../src/lib/insights/automation-runner.mjs';
 import { readJsonlRecords, upsertJsonlRecord } from '../../src/lib/insights/jsonl-store.mjs';
-import { countPublishedOnDate, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
+import { countPublishedOnDate, dateKeyForTimeZone, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
 import { buildPublishPlanRecords } from '../../src/lib/insights/publish-plan-builder.mjs';
 
 await runAutomationJob({
@@ -14,7 +14,7 @@ await runAutomationJob({
     const existingSlugs = articles.map((article) => article.slug);
     const autoPublish = process.env.ENABLE_AUTO_PUBLISH === 'true';
     const maxPerDay = Number(process.env.MAX_ARTICLES_PER_DAY || 1);
-    const publishDate = new Date().toISOString().slice(0, 10);
+    const publishDate = dateKeyForTimeZone();
     const plan = planArticlePublication(articleCandidates, {
       autoPublish,
       maxPerDay,

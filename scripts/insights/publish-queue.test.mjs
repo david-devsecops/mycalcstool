@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { countPublishedOnDate, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
+import { countPublishedOnDate, dateKeyForTimeZone, planArticlePublication } from '../../src/lib/insights/publish-queue.mjs';
 
 const candidate = {
   id: 'article-base-rate',
@@ -66,4 +66,11 @@ test('counts already published articles for the same date', () => {
   );
 
   assert.equal(count, 2);
+});
+
+test('builds publish date keys in the configured timezone', () => {
+  const instant = new Date('2026-08-31T15:30:00.000Z');
+
+  assert.equal(dateKeyForTimeZone(instant, 'Asia/Seoul'), '2026-09-01');
+  assert.equal(dateKeyForTimeZone(instant, 'UTC'), '2026-08-31');
 });

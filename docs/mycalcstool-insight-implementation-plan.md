@@ -350,6 +350,7 @@ Implemented publishing safeguards:
 - Publish planning defaults to 1 article per day.
 - Publish planning has a hard MVP cap of 2 articles per day.
 - Publish scripts count existing `publishedDate` entries before scheduling more articles for the same day.
+- Publish scripts use the `Asia/Seoul` date key so Korean operating-day limits do not drift at UTC midnight.
 - Applying article writes requires both `--apply` and `--manual-approval`.
 
 Gap:
