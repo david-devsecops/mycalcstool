@@ -17,6 +17,7 @@ await runAutomationJob({
       contentMetrics,
       existingSlugs: articles.map((article) => article.slug),
       autoPublish: process.env.ENABLE_AUTO_PUBLISH === 'true',
+      enableArticleGeneration: process.env.ENABLE_ARTICLE_GENERATION !== 'false',
       maxPerDay: Number(process.env.MAX_ARTICLES_PER_DAY || 1),
     });
 

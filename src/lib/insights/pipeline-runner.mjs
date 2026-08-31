@@ -10,13 +10,16 @@ export function runInsightPipeline({
   issueCandidates,
   existingSlugs = [],
   autoPublish = false,
+  enableArticleGeneration = true,
   maxPerDay = 1,
   alreadyPublishedToday = 0,
   contentMetrics = [],
   now = new Date().toISOString(),
 } = {}) {
   const analyzedIssueCandidates = issueCandidates || buildIssueCandidates(rawIssues);
-  const articleCandidates = buildArticleCandidates(analyzedIssueCandidates, { existingSlugs, now });
+  const articleCandidates = enableArticleGeneration
+    ? buildArticleCandidates(analyzedIssueCandidates, { existingSlugs, now })
+    : [];
   const calculatorBacklog = buildCalculatorBacklog(analyzedIssueCandidates);
   const publishPlan = planArticlePublication(articleCandidates, {
     autoPublish,

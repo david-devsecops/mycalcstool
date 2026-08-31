@@ -29,6 +29,20 @@ test('runs raw issues through the Phase 1A insight pipeline', () => {
   assert.match(result.report, /Article Candidate Status/);
 });
 
+test('keeps issue analysis but skips article candidates when article generation is disabled', () => {
+  const result = runInsightPipeline({
+    rawIssues: [baseRateIssue],
+    existingSlugs: [],
+    enableArticleGeneration: false,
+    now: '2026-08-31T09:00:00.000Z',
+  });
+
+  assert.equal(result.issueCandidates[0].status, 'source_verified');
+  assert.deepEqual(result.articleCandidates, []);
+  assert.deepEqual(result.publishPlanRecords, []);
+  assert.match(result.report, /Article Candidate Status/);
+});
+
 test('keeps source-verified unmatched issues in the calculator backlog', () => {
   const result = runInsightPipeline({
     issueCandidates: [

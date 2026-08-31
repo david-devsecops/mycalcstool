@@ -8,6 +8,11 @@ import { readJsonlRecords, upsertJsonlRecord } from '../../src/lib/insights/json
 await runAutomationJob({
   jobName: 'article-candidate-generator',
   task: async () => {
+    if (process.env.ENABLE_ARTICLE_GENERATION === 'false') {
+      console.log('Article generation disabled.');
+      return { itemsProcessed: 0 };
+    }
+
     const dataDir = resolve('data/insights');
     const issueCandidates = await readJsonlRecords(resolve(dataDir, 'issue-candidates.jsonl'));
     const existingSlugs = articles.map((article) => article.slug);
