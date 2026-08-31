@@ -15,6 +15,21 @@ function renderCounts(title, counts) {
   return [`## ${title}`, '', ...rows.map(([status, count]) => `- ${status}: ${count}`), ''].join('\n');
 }
 
+function renderBudgetStatus(budgetStatus) {
+  if (!budgetStatus) return '';
+
+  const reasons = budgetStatus.reasons?.length ? budgetStatus.reasons.join(', ') : 'none';
+  return [
+    '## Budget Status',
+    '',
+    `- status: ${budgetStatus.status}`,
+    `- reasons: ${reasons}`,
+    `- daily: ${budgetStatus.dailySpent ?? 0} / ${budgetStatus.dailyLimit ?? 'unlimited'}`,
+    `- monthly: ${budgetStatus.monthlySpent ?? 0} / ${budgetStatus.monthlyLimit ?? 'unlimited'}`,
+    '',
+  ].join('\n');
+}
+
 function renderReviewItems(candidates) {
   const reviewItems = candidates.filter((candidate) => candidate.status === 'review_required' || candidate.status === 'rejected');
   if (reviewItems.length === 0) return '## Review Items\n\nNo review items.\n';
@@ -221,6 +236,7 @@ export function buildInsightReport({
   calculatorBacklog = [],
   contentMetrics = [],
   publishedArticles = [],
+  budgetStatus,
   generatedAt = new Date().toISOString(),
 } = {}) {
   return [
@@ -228,6 +244,7 @@ export function buildInsightReport({
     '',
     `Generated: ${generatedAt}`,
     '',
+    renderBudgetStatus(budgetStatus),
     renderCounts('Issue Status', countByStatus(issues)),
     renderCounts('Issue Candidate Status', countByStatus(issueCandidates)),
     renderCounts('Article Candidate Status', countByStatus(articleCandidates)),

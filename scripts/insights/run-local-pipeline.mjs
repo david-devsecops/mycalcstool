@@ -22,6 +22,12 @@ await runAutomationJob({
       enableArticleGeneration: process.env.ENABLE_ARTICLE_GENERATION !== 'false',
       enableCalculatorMatching: process.env.ENABLE_CALCULATOR_MATCHING !== 'false',
       maxPerDay: Number(process.env.MAX_ARTICLES_PER_DAY || 1),
+      costBudget: {
+        dailyLimit: process.env.DAILY_LLM_BUDGET,
+        dailySpent: process.env.LLM_DAILY_SPENT,
+        monthlyLimit: process.env.MONTHLY_LLM_BUDGET,
+        monthlySpent: process.env.LLM_MONTHLY_SPENT,
+      },
     });
 
     for (const candidate of result.issueCandidates) {

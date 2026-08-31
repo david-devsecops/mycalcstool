@@ -93,3 +93,25 @@ test('keeps source-verified unmatched issues in the calculator backlog', () => {
   assert.notEqual(result.articleCandidates[0].status, 'publish_candidate');
   assert.match(result.report, /Calculator Backlog Status/);
 });
+
+test('stops downstream generation when the LLM budget is exhausted', () => {
+  const result = runInsightPipeline({
+    rawIssues: [baseRateIssue],
+    costBudget: {
+      dailyLimit: 1,
+      dailySpent: 1,
+      monthlyLimit: 30,
+      monthlySpent: 5,
+    },
+    now: '2026-08-31T09:00:00.000Z',
+  });
+
+  assert.equal(result.budgetStatus.status, 'blocked');
+  assert.deepEqual(result.budgetStatus.reasons, ['daily_llm_budget_exhausted']);
+  assert.equal(result.issueCandidates[0].status, 'source_verified');
+  assert.deepEqual(result.articleCandidates, []);
+  assert.deepEqual(result.calculatorBacklog, []);
+  assert.deepEqual(result.publishPlanRecords, []);
+  assert.match(result.report, /Budget Status/);
+  assert.match(result.report, /daily_llm_budget_exhausted/);
+});

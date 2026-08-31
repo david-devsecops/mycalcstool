@@ -5,6 +5,32 @@ import { buildPublishPlanRecords } from './publish-plan-builder.mjs';
 import { planArticlePublication } from './publish-queue.mjs';
 import { buildInsightReport } from './report-builder.mjs';
 
+function optionalNumber(value) {
+  if (value === undefined || value === null || value === '') return undefined;
+  const parsed = Number(value);
+  return Number.isFinite(parsed) ? parsed : undefined;
+}
+
+export function evaluateBudget(costBudget = {}) {
+  const dailyLimit = optionalNumber(costBudget.dailyLimit);
+  const monthlyLimit = optionalNumber(costBudget.monthlyLimit);
+  const dailySpent = optionalNumber(costBudget.dailySpent) ?? 0;
+  const monthlySpent = optionalNumber(costBudget.monthlySpent) ?? 0;
+  const reasons = [];
+
+  if (dailyLimit !== undefined && dailySpent >= dailyLimit) reasons.push('daily_llm_budget_exhausted');
+  if (monthlyLimit !== undefined && monthlySpent >= monthlyLimit) reasons.push('monthly_llm_budget_exhausted');
+
+  return {
+    status: reasons.length > 0 ? 'blocked' : 'ok',
+    reasons,
+    dailyLimit,
+    dailySpent,
+    monthlyLimit,
+    monthlySpent,
+  };
+}
+
 export function runInsightPipeline({
   rawIssues = [],
   issueCandidates,
@@ -17,13 +43,16 @@ export function runInsightPipeline({
   alreadyPublishedToday = 0,
   contentMetrics = [],
   publishedArticles = [],
+  costBudget,
   now = new Date().toISOString(),
 } = {}) {
   const analyzedIssueCandidates = issueCandidates || buildIssueCandidates(rawIssues, { enableCalculatorMatching });
-  const articleCandidates = enableArticleGeneration && enableCalculatorMatching
+  const budgetStatus = evaluateBudget(costBudget);
+  const downstreamEnabled = enableCalculatorMatching && budgetStatus.status === 'ok';
+  const articleCandidates = enableArticleGeneration && downstreamEnabled
     ? buildArticleCandidates(analyzedIssueCandidates, { existingSlugs, existingCanonicalTopics, now })
     : [];
-  const calculatorBacklog = enableCalculatorMatching ? buildCalculatorBacklog(analyzedIssueCandidates) : [];
+  const calculatorBacklog = downstreamEnabled ? buildCalculatorBacklog(analyzedIssueCandidates) : [];
   const publishPlan = planArticlePublication(articleCandidates, {
     autoPublish,
     maxPerDay,
@@ -38,6 +67,7 @@ export function runInsightPipeline({
     calculatorBacklog,
     contentMetrics,
     publishedArticles,
+    budgetStatus,
     generatedAt: now,
   });
 
@@ -47,6 +77,7 @@ export function runInsightPipeline({
     calculatorBacklog,
     publishPlan,
     publishPlanRecords,
+    budgetStatus,
     report,
   };
 }
