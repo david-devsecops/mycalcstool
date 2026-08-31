@@ -28,7 +28,24 @@ function renderReviewItems(candidates) {
   ].join('\n');
 }
 
-export function buildInsightReport({ issues = [], issueCandidates = [], articleCandidates = [], generatedAt = new Date().toISOString() } = {}) {
+function renderBacklogItems(backlog) {
+  if (backlog.length === 0) return '## Calculator Backlog\n\nNo calculator backlog items.\n';
+
+  return [
+    '## Calculator Backlog',
+    '',
+    ...backlog.map((candidate) => `- priority ${candidate.priority ?? 'n/a'}: ${candidate.title || candidate.id}`),
+    '',
+  ].join('\n');
+}
+
+export function buildInsightReport({
+  issues = [],
+  issueCandidates = [],
+  articleCandidates = [],
+  calculatorBacklog = [],
+  generatedAt = new Date().toISOString(),
+} = {}) {
   return [
     '# MyCalcsTool Insight Queue Report',
     '',
@@ -37,6 +54,8 @@ export function buildInsightReport({ issues = [], issueCandidates = [], articleC
     renderCounts('Issue Status', countByStatus(issues)),
     renderCounts('Issue Candidate Status', countByStatus(issueCandidates)),
     renderCounts('Article Candidate Status', countByStatus(articleCandidates)),
+    renderCounts('Calculator Backlog Status', countByStatus(calculatorBacklog)),
     renderReviewItems(articleCandidates),
+    renderBacklogItems(calculatorBacklog),
   ].join('\n');
 }

@@ -30,6 +30,14 @@ test('builds a queue report with status counts and review items', () => {
         qualityScore: 92,
       },
     ],
+    calculatorBacklog: [
+      {
+        id: 'calc-ko-prepayment-fee-policy',
+        title: '중도상환수수료 제도 변경과 상환 비용 영향 계산기',
+        status: 'candidate',
+        priority: 8,
+      },
+    ],
     generatedAt: '2026-08-31T09:00:00.000Z',
   });
 
@@ -40,5 +48,8 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /source_verified: 1/);
   assert.match(report, /review_required: 1/);
   assert.match(report, /scheduled: 1/);
+  assert.match(report, /Calculator Backlog Status/);
+  assert.match(report, /candidate: 1/);
+  assert.match(report, /중도상환수수료 제도 변경과 상환 비용 영향 계산기/);
   assert.match(report, /auto_publish_disabled/);
 });

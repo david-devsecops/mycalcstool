@@ -10,7 +10,8 @@ const outputPath = resolve(dataDir, 'reports/latest.md');
 const issues = await readJsonlRecords(resolve(dataDir, 'issues.jsonl'));
 const issueCandidates = await readJsonlRecords(resolve(dataDir, 'issue-candidates.jsonl'));
 const articleCandidates = await readJsonlRecords(resolve(dataDir, 'article-candidates.jsonl'));
-const report = buildInsightReport({ issues, issueCandidates, articleCandidates });
+const calculatorBacklog = await readJsonlRecords(resolve(dataDir, 'calculator-backlog.jsonl'));
+const report = buildInsightReport({ issues, issueCandidates, articleCandidates, calculatorBacklog });
 
 await mkdir(dirname(outputPath), { recursive: true });
 await writeFile(outputPath, report, 'utf8');
