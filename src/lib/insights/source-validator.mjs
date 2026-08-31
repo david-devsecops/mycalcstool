@@ -1,9 +1,25 @@
 import { officialSourceDomains } from '../../data/official-source-allowlist.mjs';
 
 const sourceRequiredCategories = new Set(['finance', 'tax', 'salary', 'support', 'investing', 'ai']);
+const categorySourceDomains = {
+  finance: ['bok.or.kr', 'fsc.go.kr', 'fss.or.kr', 'moef.go.kr', 'gov.kr', 'law.go.kr'],
+  tax: ['nts.go.kr', 'moef.go.kr', 'gov.kr', 'law.go.kr'],
+  salary: ['moel.go.kr', 'nts.go.kr', 'mohw.go.kr', 'gov.kr', 'law.go.kr'],
+  support: ['gov.kr', 'mohw.go.kr', 'molit.go.kr', 'moel.go.kr', 'moef.go.kr', 'law.go.kr'],
+  investing: ['bok.or.kr', 'fsc.go.kr', 'fss.or.kr', 'moef.go.kr', 'law.go.kr'],
+  ai: ['openai.com', 'platform.openai.com', 'anthropic.com', 'platform.claude.com', 'ai.google.dev', 'cloud.google.com', 'aws.amazon.com', 'learn.microsoft.com'],
+};
 
 function isOfficialHost(host) {
   return officialSourceDomains.some((domain) => host === domain || host.endsWith(`.${domain}`));
+}
+
+function matchesDomain(host, domain) {
+  return host === domain || host.endsWith(`.${domain}`);
+}
+
+function isOfficialHostForCategory(host, category) {
+  return (categorySourceDomains[category] || officialSourceDomains).some((domain) => matchesDomain(host, domain));
 }
 
 async function isReachable(url, { fetchImpl, timeoutMs }) {
@@ -34,8 +50,10 @@ export function validateOfficialSources(candidate) {
       const url = new URL(source.url);
       const host = url.hostname.toLowerCase();
 
-      if (isOfficialHost(host)) {
+      if (isOfficialHost(host) && isOfficialHostForCategory(host, candidate.category)) {
         officialSources.push({ ...source, host });
+      } else if (isOfficialHost(host) && !errors.includes('official_source_category_mismatch')) {
+        errors.push('official_source_category_mismatch');
       }
     } catch {
       errors.push('invalid_source_url');

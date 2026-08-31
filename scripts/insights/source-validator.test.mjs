@@ -38,6 +38,28 @@ test('rejects invalid source URLs', () => {
   assert.equal(result.errors.includes('invalid_source_url'), true);
 });
 
+test('rejects official domains that do not match the issue category', () => {
+  const result = validateOfficialSources({
+    category: 'tax',
+    sources: [{ name: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' }],
+  });
+
+  assert.equal(result.ok, false);
+  assert.equal(result.officialSources.length, 0);
+  assert.equal(result.errors.includes('official_source_category_mismatch'), true);
+  assert.equal(result.errors.includes('official_source_required'), true);
+});
+
+test('accepts AI official domains only for AI cost topics', () => {
+  const result = validateOfficialSources({
+    category: 'ai',
+    sources: [{ name: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' }],
+  });
+
+  assert.equal(result.ok, true);
+  assert.equal(result.officialSources[0].host, 'openai.com');
+});
+
 test('keeps allowlisted reachable sources valid', async () => {
   const result = await validateOfficialSourcesReachability(
     {

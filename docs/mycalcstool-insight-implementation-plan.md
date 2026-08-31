@@ -355,12 +355,11 @@ Implemented publishing safeguards:
 
 Gap:
 
-- `ENABLE_CALCULATOR_MATCHING` is listed as a future flag but is not yet wired through the pipeline.
 - There is no Cloudflare Cron trigger.
 - There is no production queue.
 - There is no authenticated admin dashboard.
 - There is no LLM provider integration.
-- Official source validation is domain allowlist-based, not semantic page-content verification.
+- Official source validation is category-aware and reachability-aware, but not semantic page-content verification.
 
 ## Existing Analytics And Monetization
 
@@ -422,14 +421,15 @@ Only after 30 to 90 days of data:
 
 ## New Components Still Needed
 
-Required next:
+Completed Phase 1 hardening:
 
 - Calculator-matching feature flag wired through `issue-candidate-builder`, `pipeline-runner`, and scripts.
 - Topic/slug duplicate check against published `articles.mjs`.
 - Official source URL reachability check with timeout.
+- Official source category-to-domain matching for finance, tax, salary, support, investing, and AI.
 - Rendered article test that validates every published article has source links and CTA links.
-- Search Console export import documentation and sample CSV fixture.
-- Local report file writer, not only console output.
+- Search Console CSV import workflow and owner-facing documentation.
+- Local report file writer under `data/insights/reports/latest.md`.
 
 Defer:
 
@@ -541,6 +541,8 @@ Required additions:
 - Check article rendered output contains official source section.
 - Check article rendered output contains at least one CTA for matched calculator.
 - Add stricter public-copy checks so internal operation language never appears in rendered pages.
+
+Status: completed for the local static MVP. Semantic page-content verification remains Phase 2 or later.
 
 ## SEO Impact
 
