@@ -77,6 +77,31 @@ test('keeps allowlisted but unreachable official sources in review', async () =>
   assert.equal(candidates[0].officialSources[0].reachable, false);
 });
 
+test('keeps official sources in review when source content does not match the issue topic', async () => {
+  const candidates = await buildIssueCandidatesWithSourceReachability(
+    [
+      {
+        title: '한국은행 기준금리 인하와 대출 이자 영향',
+        url: 'https://www.bok.or.kr/base-rate',
+        sourceName: '한국은행',
+        publishedAt: '2026-08-31T00:00:00.000Z',
+        language: 'ko',
+      },
+    ],
+    {
+      enableSourceContentMatch: true,
+      fetchImpl: async (_url, init) => ({
+        ok: true,
+        status: 200,
+        text: async () => (init.method === 'GET' ? '한국은행 경제교육 일반 안내' : ''),
+      }),
+    },
+  );
+
+  assert.equal(candidates[0].status, 'review_required');
+  assert.equal(candidates[0].sourceErrors.includes('official_source_content_mismatch'), true);
+});
+
 test('keeps excluded issues rejected', () => {
   const candidates = buildIssueCandidates([
     {

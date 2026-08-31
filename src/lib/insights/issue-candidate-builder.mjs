@@ -37,7 +37,11 @@ export async function buildIssueCandidatesWithSourceReachability(rawIssues, opti
 
   for (const issue of issues) {
     const sourceValidation = await validateOfficialSourcesReachability(
-      { category: issue.category, sources: issue.sources },
+      {
+        category: issue.category,
+        sources: issue.sources,
+        sourceKeywords: options.enableSourceContentMatch ? issue.sourceKeywords : [],
+      },
       { fetchImpl: options.fetchImpl, timeoutMs: options.timeoutMs },
     );
     candidates.push(buildIssueCandidate(issue, sourceValidation, options));

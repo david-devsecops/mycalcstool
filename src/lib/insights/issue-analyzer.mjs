@@ -7,6 +7,7 @@ const topicRules = [
     category: 'finance',
     intent: ['POLICY_CHANGE', 'RATE', 'CALCULATOR'],
     keywords: ['기준금리', '대출금리', '금리 인하', '금리 인상', '주담대', '대출 이자'],
+    sourceKeywords: ['기준금리'],
     score: 88,
   },
   {
@@ -14,6 +15,7 @@ const topicRules = [
     category: 'tax',
     intent: ['TAX', 'CALCULATOR', 'COST'],
     keywords: ['연말정산', '환급액', '소득공제', '세액공제', '원천징수'],
+    sourceKeywords: ['연말정산'],
     score: 86,
   },
   {
@@ -21,6 +23,7 @@ const topicRules = [
     category: 'salary',
     intent: ['SALARY', 'CALCULATOR', 'COST'],
     keywords: ['최저임금', '월급', '연봉', '실수령액', '4대보험'],
+    sourceKeywords: ['최저임금', '실수령액'],
     score: 84,
   },
   {
@@ -28,6 +31,7 @@ const topicRules = [
     category: 'ai',
     intent: ['AI_COST', 'COMPARISON', 'COST'],
     keywords: ['openai', 'gpt', 'api', '토큰', 'token', '가격', '비용'],
+    sourceKeywords: ['pricing', 'api', 'token'],
     score: 90,
   },
   {
@@ -35,6 +39,7 @@ const topicRules = [
     category: 'investing',
     intent: ['INVESTMENT', 'RATE', 'CALCULATOR'],
     keywords: ['환율', '달러', '해외주식', '원화 수익률'],
+    sourceKeywords: ['환율', 'exchange rate'],
     score: 82,
   },
 ];
@@ -109,6 +114,7 @@ export function analyzeIssues(rawIssues) {
       sourceCount: 1,
       relevanceScore: rule.score,
       intent: [...rule.intent],
+      sourceKeywords: [...rule.sourceKeywords],
       status: 'analyzed',
       exclusionReasons: [],
       firstDetectedAt: raw.publishedAt,

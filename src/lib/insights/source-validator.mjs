@@ -41,6 +41,25 @@ async function isReachable(url, { fetchImpl, timeoutMs }) {
   }
 }
 
+async function contentMatches(url, keywords, { fetchImpl, timeoutMs }) {
+  if (!keywords?.length) return undefined;
+
+  const controller = new AbortController();
+  const timeout = setTimeout(() => controller.abort(), timeoutMs);
+
+  try {
+    const response = await fetchImpl(url, { method: 'GET', signal: controller.signal });
+    if (!response.ok || typeof response.text !== 'function') return false;
+
+    const text = (await response.text()).toLowerCase();
+    return keywords.some((keyword) => text.includes(String(keyword).toLowerCase()));
+  } catch {
+    return false;
+  } finally {
+    clearTimeout(timeout);
+  }
+}
+
 export function validateOfficialSources(candidate) {
   const errors = [];
   const officialSources = [];
@@ -75,6 +94,7 @@ export async function validateOfficialSourcesReachability(candidate, options = {
   const fetchImpl = options.fetchImpl || globalThis.fetch;
   const timeoutMs = options.timeoutMs || 5000;
   const result = validateOfficialSources(candidate);
+  const sourceKeywords = candidate.sourceKeywords || options.sourceKeywords || [];
 
   if (!fetchImpl || result.officialSources.length === 0) {
     return result;
@@ -85,10 +105,14 @@ export async function validateOfficialSourcesReachability(candidate, options = {
 
   for (const source of result.officialSources) {
     const reachable = await isReachable(source.url, { fetchImpl, timeoutMs });
-    officialSources.push({ ...source, reachable });
+    const matches = reachable ? await contentMatches(source.url, sourceKeywords, { fetchImpl, timeoutMs }) : undefined;
+    officialSources.push({ ...source, reachable, contentMatches: matches });
 
     if (!reachable && !errors.includes('official_source_unreachable')) {
       errors.push('official_source_unreachable');
+    }
+    if (matches === false && !errors.includes('official_source_content_mismatch')) {
+      errors.push('official_source_content_mismatch');
     }
   }
 

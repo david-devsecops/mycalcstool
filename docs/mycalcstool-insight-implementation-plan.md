@@ -332,6 +332,7 @@ Implemented controls:
 - `ENABLE_ARTICLE_GENERATION=false` disables article candidate generation in the local pipeline.
 - `ENABLE_AUTO_PUBLISH=true` is required for automatic publish planning.
 - `MAX_ARTICLES_PER_DAY` controls daily publish volume.
+- `ENABLE_SOURCE_CONTENT_MATCH=true` verifies reachable official-source page text against topic keywords during issue analysis.
 
 Implemented article candidate templates:
 
@@ -361,7 +362,7 @@ Gap:
 - There is no production queue.
 - There is no authenticated admin dashboard.
 - There is no LLM provider integration.
-- Official source validation is category-aware and reachability-aware, but not semantic page-content verification.
+- Official source validation is category-aware, reachability-aware, and can run optional topic keyword content matching.
 
 ## Existing Analytics And Monetization
 
@@ -428,6 +429,7 @@ Completed Phase 1 hardening:
 - Calculator-matching feature flag wired through `issue-candidate-builder`, `pipeline-runner`, and scripts.
 - Topic/slug duplicate check against published `articles.mjs`.
 - Official source URL reachability check with timeout.
+- Optional official source content matching against topic keywords.
 - Official source category-to-domain matching for finance, tax, salary, support, investing, and AI.
 - Rendered article test that validates every published article has source links and CTA links.
 - Search Console CSV import workflow and owner-facing documentation.
@@ -548,7 +550,7 @@ Required additions:
 - Check article rendered output contains at least one CTA for matched calculator.
 - Add stricter public-copy checks so internal operation language never appears in rendered pages.
 
-Status: completed for the local static MVP. Semantic page-content verification remains Phase 2 or later.
+Status: completed for the local static MVP. Full semantic page-content verification remains Phase 2 or later.
 
 ## SEO Impact
 
@@ -668,6 +670,7 @@ Completed Phase 1 tests:
 - `ENABLE_CALCULATOR_MATCHING=false` keeps issue analysis but skips calculator matching, article candidate generation, and backlog noise.
 - Duplicate canonical topic rejection.
 - Official source URL reachability with timeout and failure states.
+- Optional official source topic keyword matching.
 - Published article render checks for all published articles.
 - Public copy checks for internal operator wording.
 - GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.

@@ -15,6 +15,7 @@ await runAutomationJob({
     const candidatesPath = resolve(dataDir, 'issue-candidates.jsonl');
     const options = {
       enableCalculatorMatching: process.env.ENABLE_CALCULATOR_MATCHING !== 'false',
+      enableSourceContentMatch: process.env.ENABLE_SOURCE_CONTENT_MATCH === 'true',
     };
     const candidates =
       process.env.ENABLE_SOURCE_REACHABILITY === 'true'

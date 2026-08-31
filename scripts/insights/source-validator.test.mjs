@@ -110,3 +110,50 @@ test('times out official source reachability checks', async () => {
   assert.equal(result.ok, false);
   assert.equal(result.errors.includes('official_source_unreachable'), true);
 });
+
+test('rejects reachable official sources when required topic keywords are missing from fetched content', async () => {
+  const calls = [];
+  const result = await validateOfficialSourcesReachability(
+    {
+      category: 'finance',
+      sourceKeywords: ['기준금리'],
+      sources: [{ name: '한국은행', url: 'https://www.bok.or.kr/base-rate' }],
+    },
+    {
+      fetchImpl: async (_url, init) => {
+        calls.push(init.method);
+        return {
+          ok: true,
+          status: 200,
+          text: async () => '통화정책 일반 안내',
+        };
+      },
+    },
+  );
+
+  assert.deepEqual(calls, ['HEAD', 'GET']);
+  assert.equal(result.ok, false);
+  assert.equal(result.errors.includes('official_source_content_mismatch'), true);
+  assert.equal(result.officialSources[0].contentMatches, false);
+});
+
+test('accepts reachable official sources when fetched content contains a required topic keyword', async () => {
+  const result = await validateOfficialSourcesReachability(
+    {
+      category: 'finance',
+      sourceKeywords: ['기준금리'],
+      sources: [{ name: '한국은행', url: 'https://www.bok.or.kr/base-rate' }],
+    },
+    {
+      fetchImpl: async (_url, init) => ({
+        ok: true,
+        status: 200,
+        text: async () => (init.method === 'GET' ? '한국은행 기준금리 추이 안내' : ''),
+      }),
+    },
+  );
+
+  assert.equal(result.ok, true);
+  assert.deepEqual(result.errors, []);
+  assert.equal(result.officialSources[0].contentMatches, true);
+});
