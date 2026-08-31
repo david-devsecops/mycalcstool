@@ -1,62 +1,77 @@
 # MyCalcsTool Insight Automation Implementation Plan
 
-> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` or `superpowers:executing-plans` when implementing this plan. Use `ponytail` implementation shape: preserve the current static Astro site first, add the smallest useful automation layer, and do not introduce Cloudflare D1/Workers/Cron until the file-based MVP proves useful.
+> **For agentic workers:** REQUIRED SUB-SKILL: Use `superpowers:subagent-driven-development` or `superpowers:executing-plans` to implement future tasks. This document is the current-state analysis and Phase 1 implementation plan for applying the brief to the existing MyCalcsTool repository.
 
-**Goal:** Extend MyCalcsTool from a calculator-only acquisition path into `Issue -> Information -> Calculator -> Revenue` without deleting existing calculators, changing indexed calculator URLs, or publishing low-value automated news rewrites.
+**Goal:** Add an `Issue -> Information -> Calculator -> Revenue` layer while preserving existing calculators, existing SEO URLs, static Cloudflare Pages deployment, and user-facing trust.
 
-**Architecture:** Current site is a static Astro 5 site deployed as Cloudflare Pages-compatible static output. Phase 1 should start as an in-repo, file-based article and candidate pipeline with auto-publish disabled. Cloudflare Workers/D1/Cron should be Phase 1B or Phase 2 after content quality and search traction are validated.
+**Architecture:** Keep the current Astro static site as the production surface. Use local file-based insight automation first, with strict gates and manual publishing controls. Move to Cloudflare Workers/D1/Cron only after the local pipeline proves useful through Search Console and calculator-click data.
 
-**Technology Stack:** Astro 5, Tailwind CSS, `@astrojs/sitemap`, static HTML output, npm scripts, client-side calculator JavaScript, GA4 event tracking, optional AdSense loading behind public env configuration.
+**Tech Stack:** Astro 5 static output, Tailwind CSS, npm scripts, JSON/JSONL data files, Node built-in test runner, GA4 click events, Cloudflare Pages static hosting.
+
+**Spec:** User-provided "MyCalcsTool finance, life, AI issue-based content automation and monetization expansion project", received 2026-08-31.
+
+## Global Constraints
+
+- Do not delete existing calculators.
+- Do not change existing calculator URLs without redirect, canonical, sitemap, and Search Console impact review.
+- Do not turn the site into a generic news rewrite site.
+- Treat news/search APIs as issue-discovery inputs, not final factual sources.
+- Require official sources for finance, tax, salary, investing, support, and AI pricing facts.
+- Do not publish articles that guarantee returns, loan approval, tax outcomes, or investment performance.
+- Do not store personal calculator inputs server-side.
+- Keep production auto-publish disabled until quality and search data justify it.
+- Do not add affiliate automation in Phase 1.
+- Do not automatically translate Korean policy content into English.
+- Keep the implementation small: static pages and local scripts before Workers/D1/Cron.
 
 ---
 
 ## Current State
 
-Repository path analyzed: `D:\02_Dev\03_Web\website\mycalcstool`
+Repository analyzed: `D:\02_Dev\03_Web\website\mycalcstool`
 
-The repository is a static Astro site. `astro.config.mjs` sets `output: 'static'`, `build.format: 'directory'`, `site: 'https://mycalcstool.com'`, `trailingSlash: 'always'`, and uses `@astrojs/sitemap` plus Tailwind.
+The project is an Astro static site. `astro.config.mjs` sets:
 
-The site currently builds successfully with `npm run build`. The latest observed build generated 98 static pages into `dist/`.
+- `site: 'https://mycalcstool.com'`
+- `trailingSlash: 'always'`
+- `output: 'static'`
+- `build.format: 'directory'`
+- `@astrojs/sitemap` integration with noindex filtering
+- Tailwind integration
 
-The package manager is npm. `package.json` has only four runtime dependencies:
+Package manager is npm. Dependencies are intentionally small:
 
 - `astro`
 - `@astrojs/sitemap`
 - `@astrojs/tailwind`
 - `tailwindcss`
 
-There is no detected application server runtime, API route layer, database client, ORM, Cloudflare Worker, Cloudflare D1, KV, R2, Queue, or Cron configuration in the repository.
+No repository-level backend runtime was found:
 
-The current architecture is therefore:
+- No `wrangler.toml`
+- No Cloudflare Worker source
+- No D1 migrations
+- No KV/R2/Queue bindings
+- No Cron trigger config
+- No ORM
+- No API routes
+- No `.github` workflows
+- No `.openai/hosting.json`
 
-1. Astro source files and data files in `src/`.
-2. Build-time static page generation.
-3. Cloudflare Pages-style static deployment inferred from `public/_headers`, `public/_redirects`, static output, and the user's stated deployment environment.
-4. Browser-side calculators and tracking scripts.
-5. No persistent backend for user calculator inputs.
+The current production model is:
 
-This is good for speed, privacy, and AdSense review stability. It is not yet enough for live hourly issue collection, source validation, queueing, or automated publishing without either local/manual scripts or a Cloudflare runtime layer.
+1. Astro builds static HTML into `dist`.
+2. Cloudflare Pages serves the static output.
+3. Calculators run client-side.
+4. GA4 tracks page and click events through existing frontend scripts.
+5. Ad scripts are controlled by public environment variables and remain optional.
+6. Insight automation runs as local npm scripts, not as production cron jobs.
 
-## Current Directory Structure
-
-Important directories:
-
-- `src/pages/`: Astro routes.
-- `src/pages/en/`: English routes.
-- `src/pages/blog/`: Korean guide pages.
-- `src/pages/en/blog/`: English guide pages.
-- `src/components/`: shared layouts, SEO, monetization, FAQ, header/footer, dynamic calculator component.
-- `src/layouts/`: base and blog layouts.
-- `src/data/`: site config, calculator metadata, guide metadata, tax/rate data, noindex path config.
-- `scripts/`: build-time utility scripts and current regression checks.
-- `public/`: static assets, `robots.txt`, `_headers`, `_redirects`, `ads.txt`, Naver verification file.
-- `docs/`: planning and operational documents.
-
-No `.github/` workflows were found. No `.openai/hosting.json` was found. No `wrangler.toml` was found.
+This is a good fit for the first stage because it protects speed, privacy, and existing calculator routes. It is not yet a complete fully automated production issue collector.
 
 ## Current Route Map
 
-Korean core routes:
+### Korean Core
 
 - `/`
 - `/about/`
@@ -65,7 +80,7 @@ Korean core routes:
 - `/privacy/`
 - `/terms/`
 
-Korean fixed calculator routes:
+### Korean Calculators
 
 - `/loan/`
 - `/salary/`
@@ -82,9 +97,6 @@ Korean fixed calculator routes:
 - `/unit-converter/`
 - `/tip-calculator/`
 - `/moving-cost-calculator/`
-
-Korean dynamic growth calculator routes generated by `src/pages/[growthCalculator].astro` and `src/data/growth-calculators.ts`:
-
 - `/stock-average-calculator/`
 - `/stock-averaging-down-calculator/`
 - `/stock-return-calculator/`
@@ -96,7 +108,7 @@ Korean dynamic growth calculator routes generated by `src/pages/[growthCalculato
 - `/chatgpt-api-cost-calculator/`
 - `/ai-model-cost-comparison/`
 
-Korean guide routes:
+### Korean Guides
 
 - `/blog/`
 - `/blog/loan-repayment-method-guide/`
@@ -113,7 +125,14 @@ Korean guide routes:
 - `/blog/percentage-calculator-guide/`
 - `/blog/unit-converter-guide/`
 
-English core routes:
+### Issue Article Routes
+
+- `/articles/`
+- `/articles/base-rate-loan-interest-impact/`
+- `/articles/year-end-tax-refund-paycheck-impact/`
+- `/articles/openai-api-price-change-cost-planning/`
+
+### English Core And Calculators
 
 - `/en/`
 - `/en/about/`
@@ -121,9 +140,6 @@ English core routes:
 - `/en/methodology/`
 - `/en/privacy/`
 - `/en/terms/`
-
-English fixed calculator routes:
-
 - `/en/mortgage-calculator/`
 - `/en/salary-calculator/`
 - `/en/compound-interest-calculator/`
@@ -136,9 +152,6 @@ English fixed calculator routes:
 - `/en/percentage-calculator/`
 - `/en/tip-calculator/`
 - `/en/unit-converter/`
-
-English dynamic growth calculator routes generated by `src/pages/en/[growthCalculator].astro`:
-
 - `/en/stock-average-calculator/`
 - `/en/stock-averaging-down-calculator/`
 - `/en/stock-return-calculator/`
@@ -150,308 +163,278 @@ English dynamic growth calculator routes generated by `src/pages/en/[growthCalcu
 - `/en/chatgpt-api-cost-calculator/`
 - `/en/ai-model-cost-comparison/`
 
-English guide routes:
+### English Guides
 
-- `/en/blog/`
-- `/en/blog/pmi-guide-how-private-mortgage-insurance-works/`
-- `/en/blog/salary-calculator-guide-gross-vs-net-pay/`
-- `/en/blog/how-much-house-can-i-afford-guide/`
-- `/en/blog/first-time-homebuyer-guide/`
-- plus additional English health/date/utility guides that are currently built but mostly excluded from the approval surface by noindex rules.
-
-Affiliate handoff route:
-
-- `/go/moving/`, marked `noIndex={true}` and excluded from the AdSense approval surface.
+English guide pages exist under `/en/blog/`. They are useful content assets, but many are intentionally excluded from the focused indexing surface through `src/data/approval-noindex-paths.mjs`.
 
 ## Calculator Inventory
 
-The primary Korean calculator inventory currently lives in `src/data/site-config.json`.
+The active matching inventory is already normalized in `src/data/calculator-metadata.mjs`.
 
-| ID | Route | Name | Category |
-| --- | --- | --- | --- |
-| `loan` | `/loan/` | 대출 이자 계산기 | 금융 |
-| `salary` | `/salary/` | 연봉 실수령액 계산기 | 금융 |
-| `tax-refund` | `/tax-refund/` | 연말정산 환급 계산기 | 금융 |
-| `bmi` | `/bmi/` | BMI 계산기 | 건강 |
-| `compound` | `/compound/` | 복리 계산기 | 금융 |
-| `stock-average-calculator` | `/stock-average-calculator/` | 주식 평단가 계산기 | 금융 |
-| `stock-averaging-down-calculator` | `/stock-averaging-down-calculator/` | 주식 물타기 계산기 | 금융 |
-| `stock-return-calculator` | `/stock-return-calculator/` | 주식 수익률 계산기 | 금융 |
-| `dividend-calculator` | `/dividend-calculator/` | 배당금 계산기 | 금융 |
-| `dividend-yield-calculator` | `/dividend-yield-calculator/` | 배당수익률 계산기 | 금융 |
-| `foreign-stock-return-calculator` | `/foreign-stock-return-calculator/` | 해외주식 환율 수익률 계산기 | 금융 |
-| `etf-investment-calculator` | `/etf-investment-calculator/` | ETF 적립식 투자 계산기 | 금융 |
-| `ai-token-calculator` | `/ai-token-calculator/` | AI 토큰 계산기 | AI |
-| `chatgpt-api-cost-calculator` | `/chatgpt-api-cost-calculator/` | ChatGPT API 비용 계산기 | AI |
-| `ai-model-cost-comparison` | `/ai-model-cost-comparison/` | AI 모델 비용 비교 계산기 | AI |
-| `calorie` | `/calorie/` | 칼로리 계산기 | 건강 |
-| `severance` | `/severance/` | 퇴직금 계산기 | 금융 |
-| `due-date` | `/due-date/` | 출산 예정일 계산기 | 생활 |
-| `tdee` | `/tdee/` | 기초대사량(TDEE) 계산기 | 건강 |
-| `dday` | `/dday/` | D-day 날짜 계산기 | 생활 |
-| `age-calculator` | `/age-calculator/` | 나이 계산기 | 생활 |
-| `percentage-calculator` | `/percentage-calculator/` | 퍼센트 계산기 | 생활 |
-| `unit-converter` | `/unit-converter/` | 단위 변환기 | 생활 |
-| `tip-calculator` | `/tip-calculator/` | 더치페이 계산기 | 생활 |
+Korean high-priority calculators:
 
-Additional English calculator metadata exists in `src/data/en-calculators.ts`, and growth calculator page definitions exist in `src/data/growth-calculators.ts`.
+- `loan` -> `/loan/`
+- `salary` -> `/salary/`
+- `tax-refund` -> `/tax-refund/`
+- `compound` -> `/compound/`
+- `severance` -> `/severance/`
+- `stock-return-calculator` -> `/stock-return-calculator/`
+- `stock-average-calculator` -> `/stock-average-calculator/`
+- `stock-averaging-down-calculator` -> `/stock-averaging-down-calculator/`
+- `dividend-calculator` -> `/dividend-calculator/`
+- `dividend-yield-calculator` -> `/dividend-yield-calculator/`
+- `foreign-stock-return-calculator` -> `/foreign-stock-return-calculator/`
+- `etf-investment-calculator` -> `/etf-investment-calculator/`
+- `ai-token-calculator` -> `/ai-token-calculator/`
+- `chatgpt-api-cost-calculator` -> `/chatgpt-api-cost-calculator/`
+- `ai-model-cost-comparison` -> `/ai-model-cost-comparison/`
+- `moving-cost-calculator` -> `/moving-cost-calculator/`
 
-Implementation implication: do not create a second disconnected calculator source of truth. Phase 1 should add a normalized matching metadata layer that imports or maps from these existing files.
+Supporting Korean utility/health calculators:
 
-## Existing Cloudflare Architecture
+- `bmi` -> `/bmi/`
+- `calorie` -> `/calorie/`
+- `tdee` -> `/tdee/`
+- `due-date` -> `/due-date/`
+- `dday` -> `/dday/`
+- `age-calculator` -> `/age-calculator/`
+- `percentage-calculator` -> `/percentage-calculator/`
+- `unit-converter` -> `/unit-converter/`
+- `tip-calculator` -> `/tip-calculator/`
 
-Confirmed or inferred:
+English calculator metadata also exists for mortgage, salary, compound interest, investing, AI cost, health, dates, percentage, tip, and unit conversion.
 
-- Static output is compatible with Cloudflare Pages.
-- `public/_headers` defines security and ad/analytics-compatible CSP headers.
-- `public/_redirects` defines trailing slash and legacy guide redirects.
-- `public/robots.txt` references `https://mycalcstool.com/sitemap-index.xml`.
-- `public/ads.txt` contains the real AdSense publisher line.
-
-Not found in repository:
-
-- `wrangler.toml`
-- Cloudflare Worker source
-- D1 schema or migrations
-- KV/R2 bindings
-- Queue configuration
-- Cron trigger config
-
-Conclusion: the pasted architecture vision is valid long term, but implementing D1/Workers/Cron immediately would be a major architecture change. The safe MVP should first use static pages and local build-time scripts.
+Implementation rule: keep `calculator-metadata.mjs` as the current matcher layer, but continue checking it against `site-config.json`, `growth-calculators.ts`, and `en-calculators.ts` so route truth does not drift.
 
 ## Existing SEO
 
-SEO is centralized mostly through `src/components/SEOHead.astro` and the two layouts:
+SEO is centralized through:
 
+- `src/components/SEOHead.astro`
 - `src/layouts/BaseLayout.astro`
 - `src/layouts/BlogLayout.astro`
+- `astro.config.mjs`
+- `src/data/approval-noindex-paths.mjs`
 
-Current SEO features:
+Implemented SEO features:
 
-- Per-page title and description.
-- Canonical URL normalization with trailing slash.
-- Open Graph metadata.
-- Twitter card metadata.
-- `hreflang` support for Korean/English pairs.
-- Organization JSON-LD on every page.
-- Per-page JSON-LD injection for calculators and blog pages.
-- `robots` meta generated from explicit props and `approvalNoIndexPathSet`.
-- `@astrojs/sitemap` generation.
-- Sitemap filtering using `src/data/approval-noindex-paths.mjs`.
-- Redirects for non-trailing slash URLs and old English guide URLs.
+- Per-page title and description
+- Canonical URL with trailing slash
+- Open Graph metadata
+- Twitter card metadata
+- `hreflang` support for Korean/English pairs
+- Organization JSON-LD
+- Calculator and article JSON-LD where pages supply it
+- `robots` meta using explicit props and noindex path set
+- `@astrojs/sitemap` generation
+- Sitemap filtering for noindexed paths
+- Static `robots.txt`
+- Static `_redirects` for trailing slash and legacy URL preservation
 
-Current SEO risk controls:
+Current issue article SEO:
 
-- Many weaker or less relevant pages remain live for users but are noindexed.
-- `/go/moving/` is noindexed.
-- Sitemap excludes noindexed approval-surface pages.
+- `/articles/` renders a `CollectionPage` JSON-LD object.
+- `/articles/[slug]/` renders `Article` and `BreadcrumbList` JSON-LD.
+- Article pages include official source links, published date, updated date, category, summary, disclaimer, and calculator CTA.
+- Article pages are generated only from `getPublishedArticles('ko')`.
 
-Current SEO gaps relevant to the new project:
+SEO risks to continue managing:
 
-- No dedicated `/articles/` or `/insights/` information route exists.
-- Existing `/blog/` is guide-oriented and partly noindexed, so using it for automated issue articles could mix old static guides with time-sensitive content.
-- Article metadata is page-file based, not content-collection based.
-- There is no automated duplication gate for article topics.
-- There is no source-verification metadata model.
-- There is no article-to-calculator conversion reporting beyond GA click events.
+- Do not publish thin issue pages.
+- Do not create many near-duplicate pages around only changed amounts.
+- Do not mix internal operator copy into public pages.
+- Do not route low-quality drafts into the sitemap.
+- Do not use FAQ schema unless the visible page actually contains matching FAQ content.
+
+## Existing Cloudflare Architecture
+
+Confirmed in repository:
+
+- Cloudflare Pages-compatible static output
+- `public/_headers`
+- `public/_redirects`
+- `public/robots.txt`
+- `public/ads.txt`
+- Naver ownership verification file
+
+Not present:
+
+- Workers
+- D1
+- KV
+- R2
+- Queues
+- Cron
+- Wrangler config
+
+Recommended decision: do not add Cloudflare runtime services in the next coding slice. Use local scripts and static output until the article model, source gate, calculator CTA, and Search Console feedback loop prove useful.
 
 ## Existing Database
 
-No database is present in the repository.
+There is no production database.
 
-Existing structured data is file-based:
+Current data is file-based:
 
+- `src/data/articles.mjs`
+- `src/data/calculator-metadata.mjs`
+- `src/data/official-source-allowlist.mjs`
 - `src/data/site-config.json`
 - `src/data/growth-calculators.ts`
 - `src/data/en-calculators.ts`
 - `src/data/ko-finance-guides.ts`
 - `src/data/en-blog-posts.ts`
-- tax/rate JSON files under `src/data/`
+- rate/tax JSON files under `src/data/`
+- local insight queue/report files under `data/insights/`, ignored from Git except `.gitkeep`
 
-This strongly favors a file-based MVP before D1.
+This matches the safe MVP direction. Future D1 tables should map from the current JSONL shape, not force a rewrite now.
+
+## Existing Insight Automation
+
+Implemented modules:
+
+- `src/lib/insights/naver-collector.mjs`
+- `src/lib/insights/retry.mjs`
+- `src/lib/insights/jsonl-store.mjs`
+- `src/lib/insights/issue-analyzer.mjs`
+- `src/lib/insights/source-validator.mjs`
+- `src/lib/insights/calculator-matcher.mjs`
+- `src/lib/insights/issue-candidate-builder.mjs`
+- `src/lib/insights/article-candidate-builder.mjs`
+- `src/lib/insights/quality-gate.mjs`
+- `src/lib/insights/publish-queue.mjs`
+- `src/lib/insights/publish-plan-builder.mjs`
+- `src/lib/insights/article-data-writer.mjs`
+- `src/lib/insights/calculator-backlog-builder.mjs`
+- `src/lib/insights/search-console-metrics.mjs`
+- `src/lib/insights/report-builder.mjs`
+- `src/lib/insights/automation-runner.mjs`
+- `src/lib/insights/pipeline-runner.mjs`
+
+Implemented scripts:
+
+- `npm run insights:test`
+- `npm run insights:collect:naver`
+- `npm run insights:analyze`
+- `npm run insights:pipeline`
+- `npm run insights:generate:articles`
+- `npm run insights:generate:calculator-backlog`
+- `npm run insights:publish:plan`
+- `npm run insights:publish:articles`
+- `npm run insights:metrics:import`
+- `npm run insights:report`
+
+Implemented controls:
+
+- `AUTOMATION_ENABLED=false` skips automation jobs.
+- `ENABLE_ISSUE_COLLECTOR=true` is required for Naver collection.
+- `ENABLE_ARTICLE_GENERATION=false` disables article candidate generation in the local pipeline.
+- `ENABLE_AUTO_PUBLISH=true` is required for automatic publish planning.
+- `MAX_ARTICLES_PER_DAY` controls daily publish volume.
+
+Gap:
+
+- `ENABLE_CALCULATOR_MATCHING` is listed as a future flag but is not yet wired through the pipeline.
+- There is no Cloudflare Cron trigger.
+- There is no production queue.
+- There is no authenticated admin dashboard.
+- There is no LLM provider integration.
+- Official source validation is domain allowlist-based, not semantic page-content verification.
 
 ## Existing Analytics And Monetization
 
 GA4:
 
 - `src/data/site-meta.ts` defaults `PUBLIC_GA_MEASUREMENT_ID` to `G-DWJ06N3894`.
-- `src/components/MonetizationHead.astro` loads `gtag.js`.
-- The same component sends click events for elements with `data-ga-event`.
+- `src/components/MonetizationHead.astro` loads GA.
+- `src/components/MonetizationRuntime.astro` sends events for elements with `data-ga-event`.
+- `ArticleCta.astro` emits `article_calculator_click` with the calculator id as label.
 
-AdSense:
+AdSense readiness:
 
-- `src/data/site-meta.ts` supports only `none` and `adsense`.
-- AdSense script loads only when `PUBLIC_AD_PROVIDER=adsense` and `PUBLIC_ADSENSE_CLIENT` is configured.
-- `src/components/AdSlot.astro` renders only when a valid provider and slot id exist.
-- `scripts/update-ads-txt.mjs` writes `public/ads.txt`.
-- `public/ads.txt` currently contains `google.com, pub-2898972256894696, DIRECT, f08c47fec0942fa0`.
+- `src/data/site-meta.ts` supports `PUBLIC_AD_PROVIDER=adsense`.
+- `PUBLIC_ADSENSE_CLIENT` defaults to `ca-pub-2898972256894696`.
+- `AdSlot.astro` renders only when provider and slot id are configured.
+- `scripts/update-ads-txt.mjs` manages `public/ads.txt`.
+- `public/ads.txt` contains the Google publisher record.
 
 Affiliate/CPA:
 
-- One moving-cost CPA handoff exists at `/go/moving/`.
-- It uses `rel="sponsored noopener noreferrer"`.
-- It is noindexed.
-
-Implementation implication: Article CTA clicks should use the existing `data-ga-event` pattern. Do not add a custom click-log backend in Phase 1A.
+- Existing `/go/moving/` route is isolated and noindexed.
+- Phase 1 should not expand CPA/affiliate automation.
 
 ## Proposed Architecture
 
-Use a two-stage implementation.
+### Phase 1A: Current Static MVP
 
-### Phase 1A: Static, File-Based MVP
+This is the correct near-term shape:
 
-Purpose: validate whether issue-informed articles can drive search impressions and calculator usage without changing production architecture.
+1. Keep calculators static and client-side.
+2. Keep `/articles/` as the issue-content namespace.
+3. Keep issue pipeline as local scripts.
+4. Store local queue/report data in `data/insights/*.jsonl`.
+5. Publish only reviewed article data into `src/data/articles.mjs`.
+6. Use source allowlist and quality gate before publishing.
+7. Use GA4 article-to-calculator click events for early conversion data.
+8. Use manual Search Console export/import before adding API credentials.
 
-Core idea:
+### Phase 1B: Harden The Local Pipeline
 
-1. Collect or manually register issue candidates into local JSONL files.
-2. Run rule-based dedupe, relevance, source validation, and calculator matching locally.
-3. Generate article candidates as draft Markdown or data files.
-4. Run quality gates.
-5. Publish only approved articles through static Astro build.
-6. Keep auto-publish disabled by default.
+Add the missing safety controls before production scheduling:
 
-Recommended new paths:
+1. Wire `ENABLE_CALCULATOR_MATCHING`.
+2. Add duplicate topic checks against already published article slugs and canonical topics.
+3. Add official-source URL reachability checks.
+4. Add rendered article checks for every published article.
+5. Add report output that separates `source_verified`, `review_required`, `rejected`, `publish_candidate`, and `published`.
+6. Add CSV import workflow for Search Console page/query performance.
 
-- `src/content/config.ts`
-- `src/content/articles/*.md`
-- `src/pages/articles/[slug].astro`
-- `src/pages/articles/index.astro`
-- `src/components/ArticleCta.astro`
-- `src/components/RelatedArticles.astro`
-- `src/data/calculator-metadata.ts`
-- `src/lib/insights/types.ts`
-- `src/lib/insights/relevance.ts`
-- `src/lib/insights/calculator-matcher.ts`
-- `src/lib/insights/quality-gate.ts`
-- `scripts/insights/collect-naver.mjs`
-- `scripts/insights/analyze-issues.mjs`
-- `scripts/insights/generate-article-draft.mjs`
-- `scripts/insights/quality-check.mjs`
-- `data/insights/issues.jsonl`
-- `data/insights/issue-sources.jsonl`
-- `data/insights/article-candidates.jsonl`
-- `data/insights/calculator-backlog.jsonl`
-- `data/insights/automation-runs.jsonl`
+### Phase 2: Cloudflare Runtime
 
-Why `src/content/articles`:
+Only after 30 to 90 days of data:
 
-- Astro has native content collection support.
-- It avoids creating one `.astro` page per article.
-- It lets Article Schema, canonical, sitemap, and listing pages be generated consistently.
-- It keeps static Cloudflare Pages deployment intact.
+1. Add Cloudflare Worker collector.
+2. Add Cron trigger.
+3. Add D1 tables for issues, sources, article candidates, calculator backlog, automation runs, and metrics.
+4. Keep auto-publish disabled until D1 records show stable source and quality behavior.
+5. Add authenticated admin review surface only if local reports become too slow.
 
-Why `data/insights/*.jsonl`:
+## New Components Still Needed
 
-- Append-only local audit trail.
-- Easy dedupe by URL, title hash, canonical topic, and source URL.
-- Migration-compatible with D1 later.
-- No backend required during validation.
+Required next:
 
-### Phase 1B: Cloudflare Runtime Only After Validation
+- Calculator-matching feature flag wired through `issue-candidate-builder`, `pipeline-runner`, and scripts.
+- Topic/slug duplicate check against published `articles.mjs`.
+- Official source URL reachability check with timeout.
+- Rendered article test that validates every published article has source links and CTA links.
+- Search Console export import documentation and sample CSV fixture.
+- Local report file writer, not only console output.
 
-Move issue collection and queue persistence to Cloudflare only after Phase 1A proves article quality and demand.
+Defer:
 
-Candidate Phase 1B services:
+- LLM article writer integration.
+- Cloudflare D1.
+- Cloudflare Cron.
+- Cloudflare Queues.
+- Public/admin dashboard.
+- Affiliate automation.
+- English issue articles except global AI/investing topics.
 
-- Cloudflare Worker for collector and analyzer endpoints.
-- Cloudflare Cron Trigger for hourly collection.
-- Cloudflare D1 for issue/source/article/metrics tables.
-- Cloudflare Queues only if processing volume requires async decoupling.
+## Data Model
 
-Do not start with R2, KV, Queues, or multi-agent automation unless a concrete bottleneck appears.
+Keep current in-repo records and map them to future D1 later.
 
-## New Components
+Current and near-term record shapes:
 
-Required for Phase 1A:
+- Issue: id, title, canonicalTopic, category, language, sourceCount, relevanceScore, intent, status, dates, sources.
+- Issue source: title, url, sourceName, summary, publishedAt, language, collectedAt, official host if validated.
+- Article candidate: issueId, slug, title, description, category, summary, sections, numericClaims, calculatorMatches, officialSources, disclaimerType, qualityScore, status.
+- Published article: same public fields as `src/data/articles.mjs`, with `status: 'published'`.
+- Calculator metadata: id, path, language, category, name, keywords.
+- Calculator backlog: title, reason, category, relatedIssueId, estimatedDemand, priority, status.
+- Content metrics: article slug/page, date, impressions, clicks, CTR, average position, pageviews if available, calculator clicks if available.
+- Automation run: jobName, startedAt, finishedAt, status, itemsProcessed, itemsFailed, cost, errorMessage.
 
-- Article content collection.
-- Article listing page.
-- Article detail page.
-- Article layout or reusable article component.
-- Article-to-calculator CTA component.
-- Calculator-to-article related link component.
-- Calculator metadata matcher.
-- Local issue candidate storage.
-- Local official-source allowlist.
-- Rule-based relevance scorer.
-- Rule-based duplicate checker.
-- Rule-based quality gate.
-- Local generation scripts.
-- Local report output for review.
-
-Optional after Phase 1A:
-
-- Cloudflare D1 schema.
-- Worker Cron collector.
-- Search Console metrics importer.
-- Admin dashboard.
-
-## Database Changes
-
-No production database should be introduced in the first implementation step.
-
-Use TypeScript interfaces and JSONL records first:
-
-```ts
-export interface IssueRecord {
-  id: string;
-  title: string;
-  canonicalTopic: string;
-  category: 'finance' | 'tax' | 'salary' | 'support' | 'investing' | 'ai' | 'lifestyle';
-  language: 'ko' | 'en';
-  sourceCount: number;
-  trendScore: number;
-  relevanceScore: number;
-  intent: string[];
-  status:
-    | 'collected'
-    | 'clustered'
-    | 'analyzed'
-    | 'source_verified'
-    | 'generating'
-    | 'quality_check'
-    | 'publish_candidate'
-    | 'scheduled'
-    | 'published'
-    | 'rejected'
-    | 'review_required';
-  firstDetectedAt: string;
-  latestDetectedAt: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
-export interface IssueSourceRecord {
-  id: string;
-  issueId: string;
-  title: string;
-  url: string;
-  sourceName: string;
-  publishedAt?: string;
-  isOfficial: boolean;
-  collectedAt: string;
-}
-
-export interface ArticleCandidateRecord {
-  id: string;
-  issueId: string;
-  language: 'ko' | 'en';
-  slug: string;
-  title: string;
-  description: string;
-  category: string;
-  status: IssueRecord['status'];
-  qualityScore: number;
-  matchedCalculatorIds: string[];
-  officialSourceUrls: string[];
-  scheduledAt?: string;
-  publishedAt?: string;
-  updatedAt: string;
-}
-```
-
-When moving to D1, use tables equivalent to the project brief:
+Future D1 tables can mirror these:
 
 - `issues`
 - `issue_sources`
@@ -462,254 +445,139 @@ When moving to D1, use tables equivalent to the project brief:
 - `content_metrics`
 - `automation_runs`
 
-Migration rule: the JSONL field names should map directly to future D1 columns.
+## External API Plan
 
-## New Routes
+Current:
 
-Recommended article routes:
+- Naver News Search adapter exists and is gated behind `ENABLE_ISSUE_COLLECTOR=true`.
 
-- `/articles/`
-- `/articles/[slug]/`
-- `/en/articles/`
-- `/en/articles/[slug]/`
+Next:
 
-However, implement `/en/articles/` only after there are English/global topics worth publishing. Do not auto-translate Korean policy topics.
+- Use Naver only for discovery.
+- Store original source URL, Naver URL, title, summary, published date, and collection time.
+- Do not treat Naver/news result summaries as final factual support.
+- Add official source reachability validation for allowlisted URLs.
+- Keep Search Console as manual CSV import first.
 
-Do not use `/blog/` for this system initially because current `/blog/` is already used for static guides and has mixed noindex rules. A separate `/articles/` namespace makes Search Console analysis, sitemap filtering, and rollback easier.
+Later:
 
-Article route requirements:
-
-- Stable trailing slash URLs.
-- Canonical from `SEOHead.astro`.
-- `Article` JSON-LD only when article metadata is complete.
-- `BreadcrumbList` JSON-LD.
-- Published and updated date.
-- Official source section.
-- Calculator CTA.
-- Category-specific disclaimer.
-- Related articles and related calculators.
-
-## External API
-
-Phase 1A allowed sources:
-
-- Manual seed file for known test issues.
-- Naver Search/News API adapter behind `ENABLE_ISSUE_COLLECTOR`.
-- Official source URLs manually attached or validated through an allowlist.
-
-Phase 2 candidates:
-
-- Google Search Console API for performance metrics.
-- Google Trends or a compliant trend source after terms and reliability are checked.
-- Korean government/public institution feeds where available.
-- AI provider official pricing pages for monitored cost changes.
-
-Official-source allowlist should start narrow:
-
-- `bok.or.kr`
-- `fsc.go.kr`
-- `fss.or.kr`
-- `moef.go.kr`
-- `nts.go.kr`
-- `moel.go.kr`
-- `mohw.go.kr`
-- `molit.go.kr`
-- `gov.kr`
-- `law.go.kr`
-- `openai.com`
-- `platform.openai.com`
-- `anthropic.com`
-- `platform.claude.com`
-- `ai.google.dev`
-- `cloud.google.com`
-- `aws.amazon.com`
-- `learn.microsoft.com`
-
-News articles should be treated as issue-discovery input, not final source of truth.
+- Search Console API.
+- Google Trends or compliant trend source.
+- Official public/government data feeds.
+- AI provider pricing monitors.
 
 ## LLM Architecture
 
-Use LLMs only where they add value.
+No LLM provider integration exists yet. That is acceptable.
 
-Rule-first stages:
+Rule-first stages already exist and should remain primary:
 
-- URL dedupe.
-- Source-domain classification.
-- Excluded-topic filtering.
-- Calculator keyword matching.
-- Banned-claim detection.
-- Required-section validation.
-- Daily publish limit.
+- Excluded-topic filtering
+- Topic grouping by known rules
+- Relevance scoring
+- Intent labels
+- Official domain allowlist
+- Calculator matching
+- Quality gate
+- Publish queue limits
 
-LLM-assisted stages:
+Future LLM use should be limited to:
 
-- Canonical topic naming.
-- Search intent classification.
-- User impact framing.
-- Draft outline.
-- Draft prose.
-- Secondary quality review.
+- Borderline intent classification
+- Draft outline
+- Draft prose
+- Final quality review
 
-LLM must not invent:
+LLM must not be the source of truth for:
 
-- 금리
-- 세율
-- 시행일
-- 지원금 금액
-- 소득 기준
-- API 가격
-- 대출 한도
-- 정책 조건
-
-LLM output contract:
-
-```ts
-export interface ArticleDraftOutput {
-  title: string;
-  description: string;
-  summaryBullets: string[];
-  sections: Array<{ heading: string; body: string }>;
-  numericClaims: Array<{ claim: string; sourceUrl: string }>;
-  calculatorCtas: Array<{ calculatorId: string; anchorText: string }>;
-  officialSources: Array<{ name: string; url: string; checkedAt: string }>;
-  disclaimerType: 'finance' | 'tax' | 'investing' | 'ai' | 'general';
-}
-```
-
-Budget controls:
-
-- `DAILY_LLM_BUDGET`
-- `MONTHLY_LLM_BUDGET`
-- `MAX_ARTICLES_PER_DAY`
-- `MAX_SOURCE_LOOKUPS_PER_ARTICLE`
-- `ENABLE_ARTICLE_GENERATION`
-
-If budget is exceeded, keep candidates in queue and skip generation.
-
-## Scheduler
-
-Phase 1A scheduler:
-
-- No production cron.
-- Run local scripts manually or from a controlled CI/manual job.
-- Publish candidates only after quality gate and owner review.
-- Default `ENABLE_AUTO_PUBLISH=false`.
-
-Phase 1B scheduler:
-
-- Cloudflare Cron hourly collector.
-- Daily publish scheduler with max 1 approved article during initial operation.
-- Increase to max 2 only after Search Console indexing and quality are stable.
-
-Recommended first four weeks:
-
-- Week 1: collect only, no articles.
-- Week 2: generate previews only, no publish.
-- Week 3: publish up to 1 article/day.
-- Week 4+: consider up to 2 articles/day if quality and indexing are stable.
+- Rates
+- Taxes
+- Effective dates
+- Eligibility
+- Support amounts
+- API prices
+- Loan limits
+- Product terms
 
 ## Quality Gate
 
-Minimum gates before an article can be published:
+Current `quality-gate.mjs` checks:
 
-- `Source Gate`: at least one official source for finance/tax/policy/AI pricing content.
-- `URL Gate`: official source URLs return a valid response during generation or review.
-- `Numeric Gate`: numeric claims must reference an official source or structured input.
-- `Duplication Gate`: slug, canonical topic, and title similarity checked against existing article records.
-- `Value Gate`: article must answer "그래서 내 경우에는 얼마인가?" with an example or calculator CTA.
-- `Calculator Gate`: at least one relevant calculator match above threshold unless article is explicitly marked as calculator-backlog candidate.
-- `Compliance Gate`: reject guaranteed returns, guaranteed loan approval, unsupported forecasts, buy/sell recommendations, copied news text, and promotional exaggeration.
-- `SEO Gate`: title, description, canonical, Article schema, breadcrumb, dates, source section, and disclaimer present.
-- `Surface Gate`: default new article is `draft` or `review_required`; `published` requires explicit approval until the system has a quality record.
+- Duplicate slug
+- Required metadata
+- Official source requirement by category
+- Numeric claims tied to official source URLs
+- Calculator match requirement
+- Short article warning
+- Banned claims such as guaranteed returns or buy/sell recommendations
 
-Suggested score weights:
+Required additions:
 
-- Source Quality: 25
-- Factual Accuracy: 25
-- User Value: 20
-- Calculator Relevance: 10
-- Originality: 10
-- SEO Quality: 5
-- Compliance: 5
-
-Suggested thresholds:
-
-- `85+`: publish candidate.
-- `70-84`: review required.
-- `<70`: reject.
+- Detect duplicate canonical topic, not only duplicate slug.
+- Check source URL reachability.
+- Check that official source host and category make sense.
+- Check article rendered output contains official source section.
+- Check article rendered output contains at least one CTA for matched calculator.
+- Add stricter public-copy checks so internal operation language never appears in rendered pages.
 
 ## SEO Impact
 
-Main SEO rule: do not weaken the existing AdSense review surface.
+Low-risk choices already made:
 
-Required safeguards:
+- `/articles/` is separate from `/blog/`.
+- Calculator routes are unchanged.
+- Article routes use static generation.
+- Sitemap generation remains centralized.
+- Article pages have canonical and structured data.
+- Existing noindex surface remains centralized.
 
-- Keep existing calculator routes unchanged.
-- Keep existing redirects.
-- Keep existing noindex list.
-- Add article routes to sitemap only when article status is `published` and not `noindex`.
-- Avoid adding automatically generated low-value pages to `/blog/`.
-- Do not create multiple pages for amount variants such as "대출 1억", "대출 2억", "대출 3억".
-- Avoid automatic English translation of Korean policy articles.
-- Use `Article` schema only for real article pages.
-- Use `FAQPage` schema only when visible FAQ content exists.
-- Keep affiliate handoff pages noindexed and sponsored.
-- Ensure all time-sensitive pages show `updatedDate` and official source links.
+Risks:
 
-Recommended default for the first article route:
+- Publishing too many similar articles can reduce perceived quality.
+- Publishing source-thin financial/tax pages can harm trust.
+- Using stale source information can create YMYL quality issues.
+- English expansion of Korea-only policy topics would be low value.
 
-- Create `/articles/` but keep it lightly linked from the homepage only after at least 3 high-quality published articles exist.
-- Before that, link article pages from relevant calculator pages only where the topic is directly useful.
+Mitigation:
 
-## Internal Linking
-
-Article to calculator:
-
-- Every article should include a visible CTA such as "내 조건으로 직접 계산하기".
-- CTA links should use existing calculator URLs.
-- CTA clicks should use `data-ga-event` for GA4.
-
-Calculator to article:
-
-- Add related article blocks selectively to high-value calculators.
-- Do not add global article lists to every calculator.
-- Start with `/loan/`, `/salary/`, `/tax-refund/`, `/compound/`, stock calculators, and AI calculators.
-
-Topic cluster examples:
-
-- 기준금리 issue -> loan calculator -> fixed/variable rate guide -> DSR future calculator candidate.
-- 최저임금 issue -> salary calculator -> tax/refund guide -> social insurance assumptions.
-- OpenAI pricing issue -> AI API cost calculator -> AI model comparison calculator.
-- 환율 issue -> foreign stock return calculator -> stock return calculator.
+- Maximum 1 to 2 articles per day.
+- Require official sources.
+- Keep topic clusters focused on calculator usefulness.
+- Use Search Console data to update, merge, or pause weak article topics.
+- Do not index drafts or review-required candidates.
 
 ## Cost
 
-Phase 1A expected added infrastructure cost should be near zero because it stays static and local-script based.
+Current added infrastructure cost is near zero:
 
-Cost-bearing items:
+- Static Cloudflare Pages
+- Local scripts
+- No D1
+- No Worker runtime
+- No LLM calls
 
-- Naver API usage if activated.
-- LLM calls for intent, outline, draft, and review.
-- Optional search/source lookup calls depending on provider.
-- Developer/runtime time for manual review.
+Potential cost sources later:
 
-Cost controls:
+- Naver API usage
+- LLM provider usage
+- Search Console API integration work
+- Cloudflare D1/Worker usage at scale
+
+Controls:
 
 - Collect many, publish few.
-- Use rules before LLM.
-- Use low-cost model for classification.
-- Use stronger model only for article draft or review.
-- Cache issue/source records.
-- Set max source lookups per article.
-- Keep daily publish max at 1 to 2.
-
-Do not rely on stale model/API pricing assumptions in code or documentation. Verify official provider pricing before enabling automated LLM generation.
+- Rule-based rejection before LLM.
+- Strong model only for final article drafting/review if needed.
+- `MAX_ARTICLES_PER_DAY`
+- `DAILY_LLM_BUDGET`
+- `MONTHLY_LLM_BUDGET`
+- `MAX_SOURCE_LOOKUPS_PER_ARTICLE`
 
 ## Security
 
-Secrets must not be committed.
+Do not commit secrets.
 
-Future env variables:
+Secret candidates:
 
 - `NAVER_CLIENT_ID`
 - `NAVER_CLIENT_SECRET`
@@ -718,18 +586,8 @@ Future env variables:
 - `GOOGLE_SEARCH_CONSOLE_CLIENT_EMAIL`
 - `GOOGLE_SEARCH_CONSOLE_PRIVATE_KEY`
 - `CLOUDFLARE_API_TOKEN`
-- `DAILY_LLM_BUDGET`
-- `MONTHLY_LLM_BUDGET`
-- `MAX_ARTICLES_PER_DAY`
-- `MAX_SOURCE_LOOKUPS_PER_ARTICLE`
-- `AUTOMATION_ENABLED`
-- `ENABLE_ISSUE_COLLECTOR`
-- `ENABLE_ARTICLE_GENERATION`
-- `ENABLE_AUTO_PUBLISH`
-- `ENABLE_CALCULATOR_MATCHING`
-- `ENABLE_ENGLISH_CONTENT`
 
-Current public env values:
+Public build-time env candidates:
 
 - `PUBLIC_AD_PROVIDER`
 - `PUBLIC_GA_MEASUREMENT_ID`
@@ -742,642 +600,346 @@ Current public env values:
 - `PUBLIC_ADSENSE_SLOT_MID`
 - `PUBLIC_ADSENSE_SLOT_MID2`
 
-Privacy rules:
+Privacy rule:
 
-- Do not store user calculator inputs server-side unless there is a specific product requirement and privacy review.
-- Do not send salary, loan amount, asset amount, or other sensitive calculator input values as analytics event labels.
-- Track clicks and page-level engagement, not personal financial values.
+- Track article CTA clicks, not user-entered salary, loan amount, investment amount, or API usage details.
 
 ## Testing
 
-Current test coverage is minimal. `scripts/check-growth-homepage.mjs` is a custom regression check for homepage growth positioning and GA events.
+Existing test surface:
 
-For Phase 1, use Node's built-in `node:test` first instead of adding a large test framework.
+- `npm run insights:test`
+- `node scripts/check-growth-homepage.mjs`
+- `npm run build`
 
-Unit tests:
+Existing insight tests cover:
 
-- Collector handles success, API failure, rate limit, malformed response, duplicate URL.
-- Dedupe groups same issue and separates unrelated issues.
-- Relevance accepts finance/tax/salary/investing/AI-cost issues and rejects promotional or unrelated issues.
-- Official source validator accepts allowlisted official domains and rejects missing/invalid sources.
-- Calculator matcher maps issues to the expected calculator and respects low-score rejection.
-- Article generator refuses to generate without source data for YMYL content.
-- Quality gate rejects missing source, unsupported numeric claims, investment recommendations, and duplicate slugs.
-- Publisher enforces max daily publish count and slug collision handling.
+- article candidate builder
+- article data writer
+- automation runner
+- calculator backlog builder
+- calculator matcher
+- JSONL store
+- issue analyzer
+- issue candidate builder
+- Naver collector
+- pipeline runner
+- publish plan builder
+- publish queue
+- quality gate
+- rendered articles
+- report builder
+- retry
+- Search Console metrics
+- source validator
 
-Integration test:
+Required next tests:
 
-- Mock base-rate issue -> collector -> dedupe -> relevance -> source validation -> calculator match -> draft -> quality gate -> article route preview.
-
-E2E smoke tests:
-
-- Homepage loads.
-- Representative Korean calculator loads and calculates.
-- Representative English calculator loads and calculates.
-- New article page loads.
-- Article CTA navigates to calculator.
-- Sitemap includes only published indexable article routes.
-- Noindex pages stay excluded from sitemap.
-
-Existing verification commands:
-
-```powershell
-npm run build
-node scripts/check-growth-homepage.mjs
-git diff --check
-```
+- `ENABLE_CALCULATOR_MATCHING=false` keeps issue analysis but skips calculator matching, article candidate generation, and backlog noise.
+- Duplicate canonical topic rejection.
+- Official source URL reachability with timeout and failure states.
+- Published article render test for all articles, not only fixtures.
+- Sitemap includes published article URLs and excludes noindex routes.
 
 ## Deployment
 
-Current deployment assumption: Cloudflare Pages builds the Astro static site from the Git repository.
+Current deployment should remain:
 
-Deployment steps for Phase 1A:
+- Build command: `npm run build`
+- Output directory: `dist`
+- Cloudflare Pages deploys from Git
 
-1. Create implementation branch or worktree if larger work starts.
-2. Add static article framework behind conservative defaults.
-3. Keep homepage article promotion disabled until enough high-quality articles exist.
-4. Run `npm run build`.
-5. Run targeted regression scripts.
-6. Commit and push.
-7. Wait for Cloudflare Pages deployment.
-8. Verify production URLs after propagation.
-9. Submit only approved article URLs to Search Console.
+Safe rollout procedure:
 
-Cloudflare Pages config to keep:
-
-- Build command: `npm run build`.
-- Output directory: `dist`.
-- Node version should match Astro 5 requirements.
+1. Keep implementation on Git with small commits.
+2. Run targeted tests.
+3. Run `npm run insights:test`.
+4. Run `node scripts/check-growth-homepage.mjs`.
+5. Run `npm run build`.
+6. Confirm `public/ads.txt` was not accidentally changed.
+7. Push to `origin/master`.
+8. Wait for Cloudflare Pages propagation.
+9. Verify production article and calculator URLs.
+10. Submit only approved URLs in Search Console.
 
 ## Rollback
 
-Phase 1A rollback is simple if routes are isolated:
+Static rollback is simple:
 
-- Revert the article system commit.
-- Or remove article nav links and mark `/articles/` noindex.
-- Because calculators remain unchanged, calculator traffic should continue.
-- Existing `/blog/` and calculator URLs should not be affected.
+- Revert the commit that introduced bad article data or route changes.
+- Or set article `status` away from `published` and rebuild.
+- Or remove homepage/article index links while leaving calculators live.
+- Existing calculators should continue because article routes are isolated.
 
-If Phase 1B Cloudflare services are added later:
+If Cloudflare runtime is added later:
 
 - Set `AUTOMATION_ENABLED=false`.
 - Set `ENABLE_AUTO_PUBLISH=false`.
 - Disable Cron trigger.
-- Keep D1 records for audit; do not delete records blindly.
-- Roll back site commit if rendered pages are faulty.
+- Keep D1 records for audit.
+- Roll back static site commit if rendered public pages are wrong.
 
-## Conflicts With The Brief And Safer Adjustments
+## Phase 1 Implementation Order
 
-The provided long-term architecture mentions D1, Workers, Cron, Queue, dashboard, retry, logs, metrics, and automated publishing. That is valid as a future architecture, but it conflicts with the current repository's static-only architecture if implemented immediately.
+### TASK-001: Baseline Verification
 
-Safer adjustment:
-
-- Start with local scripts plus static Astro pages.
-- Add D1/Workers only when there is enough issue volume and publishing cadence to justify it.
-- Use a generated local admin report first instead of a public/admin dashboard.
-- Keep auto-publish off until quality gates have a track record.
-
-The brief also includes Affiliate/CPA as a revenue layer. Current user direction says AdSense is the main path and Ezoic later at high MAU. Current CPA platform coverage is not broad enough to justify automatic affiliate routing. Therefore:
-
-- Do not build affiliate automation in Phase 1.
-- Keep the existing moving CPA page isolated and noindexed.
-- Track Article -> Calculator clicks first.
-
-## Phase 1 Tasks
-
-### TASK-001 Existing Site Baseline
-
-Purpose: freeze current architecture, route inventory, and SEO surface.
+Purpose: confirm current static build and route surface before new changes.
 
 Files:
 
-- Read-only: `astro.config.mjs`, `package.json`, `src/pages/**`, `src/components/SEOHead.astro`, `src/data/**`, `public/**`.
-
-Dependency: none.
+- Read: `package.json`
+- Read: `astro.config.mjs`
+- Read: `src/pages/**`
+- Read: `src/components/SEOHead.astro`
+- Read: `src/data/approval-noindex-paths.mjs`
+- Read: `public/_redirects`
+- Read: `public/robots.txt`
 
 Test:
 
+- `git status --short --branch`
 - `npm run build`
-- `node scripts/check-growth-homepage.mjs`
 
-Acceptance Criteria:
+Acceptance criteria:
 
-- Current routes and indexed/noindexed surfaces are documented.
-- Existing build passes before implementation.
+- Working tree is understood before edits.
+- Existing calculator URLs remain unchanged.
+- Build passes before implementation.
 
-Risk:
+Status: completed for this analysis.
 
-- Hidden Cloudflare dashboard settings are not in repo. Confirm build command and env vars in Cloudflare UI before production rollout.
+### TASK-002: Calculator Matching Flag
 
-### TASK-002 Calculator Metadata Layer
-
-Purpose: create a matcher-friendly calculator inventory without duplicating route truth.
+Purpose: allow issue collection/source review while pausing calculator matching cleanly.
 
 Files:
 
-- Create `src/data/calculator-metadata.ts`.
-- Read from or map existing `site-config.json`, `growth-calculators.ts`, and `en-calculators.ts`.
+- Modify: `src/lib/insights/issue-candidate-builder.mjs`
+- Modify: `src/lib/insights/pipeline-runner.mjs`
+- Modify: `scripts/insights/analyze-issues.mjs`
+- Modify: `scripts/insights/run-local-pipeline.mjs`
+- Test: `scripts/insights/issue-candidate-builder.test.mjs`
+- Test: `scripts/insights/pipeline-runner.test.mjs`
 
-Dependency: TASK-001.
+Acceptance criteria:
 
-Test:
-
-- Unit test verifies all current calculator routes exist and have keywords.
-
-Acceptance Criteria:
-
-- Every active calculator has id, name, path, language, category, keywords, and status.
-- Existing calculator URLs do not change.
+- `ENABLE_CALCULATOR_MATCHING=false` returns source-verified issue candidates with empty matches.
+- Pipeline skips article candidate and calculator backlog output when matching is disabled.
+- Existing default behavior does not change.
 
 Risk:
 
-- Duplicated metadata can drift. Prefer a small mapping layer over a second full source of truth.
+- If disabled matching still creates backlog records, it can generate false calculator candidates. Avoid that.
 
-### TASK-003 Article Content Model
+### TASK-003: Duplicate Topic Gate
 
-Purpose: add static article content support.
+Purpose: block same-topic issue articles even when slugs differ.
 
 Files:
 
-- Create `src/content/config.ts`.
-- Create `src/content/articles/` with no production article initially or one reviewed sample only after approval.
+- Modify: `src/lib/insights/quality-gate.mjs`
+- Modify: `src/lib/insights/article-candidate-builder.mjs`
+- Test: `scripts/insights/quality-gate.test.mjs`
+- Test: `scripts/insights/article-candidate-builder.test.mjs`
 
-Dependency: TASK-002.
+Acceptance criteria:
 
-Test:
-
-- Build with empty article collection.
-- Schema validation catches missing source, date, category, slug, title, and CTA.
-
-Acceptance Criteria:
-
-- Article schema supports status, language, category, official sources, calculator matches, published date, updated date, and noindex.
+- Existing published slugs block duplicate slugs.
+- Existing published canonical topics block duplicate issue pages.
+- Related but distinct topics are not blocked.
 
 Risk:
 
-- Publishing low-quality articles too early can worsen AdSense review. Default new article status must not be indexed unless approved.
+- Over-blocking can prevent legitimate updates. Prefer `review_required` for close matches.
 
-### TASK-004 Article Routes
+### TASK-004: Official Source Reachability
 
-Purpose: render article index and article detail pages.
+Purpose: make source validation stronger than domain allowlist.
 
 Files:
 
-- Create `src/pages/articles/index.astro`.
-- Create `src/pages/articles/[slug].astro`.
-- Create optional `src/pages/en/articles/index.astro` and `src/pages/en/articles/[slug].astro` only when English articles are enabled.
-- Create `src/layouts/ArticleLayout.astro` or reuse `BlogLayout.astro` after checking requirements.
+- Modify: `src/lib/insights/source-validator.mjs`
+- Test: `scripts/insights/source-validator.test.mjs`
 
-Dependency: TASK-003.
+Acceptance criteria:
 
-Test:
-
-- Build verifies routes.
-- Rendered page includes title, canonical, date, official source, disclaimer, Article JSON-LD, BreadcrumbList JSON-LD, and calculator CTA.
-
-Acceptance Criteria:
-
-- `/articles/` works without changing `/blog/`.
-- Only `published` and indexable articles are listed.
+- Invalid URLs fail.
+- Non-allowlisted URLs fail for source-required categories.
+- Allowlisted but unreachable URLs become `review_required`, not published.
+- Fetch timeout is enforced.
 
 Risk:
 
-- Duplicate blog/article surfaces. Keep `/articles/` for issue-driven content and `/blog/` for evergreen guides.
+- Official sites can intermittently fail. Do not permanently reject on one transient failure.
 
-### TASK-005 Issue Storage
+### TASK-005: Rendered Article Quality Check
 
-Purpose: create local queue files and types for collected issues.
+Purpose: prevent public pages from missing required trust elements.
 
 Files:
 
-- Create `src/lib/insights/types.ts`.
-- Create `data/insights/.gitkeep`.
-- Create JSONL file conventions documented in `docs/`.
+- Modify: `scripts/insights/rendered-articles.test.mjs`
+- Read: `src/pages/articles/[slug].astro`
+- Read: `src/data/articles.mjs`
 
-Dependency: TASK-001.
+Acceptance criteria:
 
-Test:
-
-- Parser test validates JSONL records.
-
-Acceptance Criteria:
-
-- Issue, source, article candidate, backlog, metric, and run record types exist.
+- Every published article has title, description, summary, official source, disclaimer, and CTA.
+- Every CTA path resolves to a known calculator route.
+- Public output contains no internal operation copy.
 
 Risk:
 
-- JSONL files can grow. This is acceptable for MVP; D1 migration comes later.
+- Data-only articles can pass module tests but fail rendered UX. This test closes that gap.
 
-### TASK-006 Collector Adapter
+### TASK-006: Local Report File Output
 
-Purpose: collect issue candidates without publishing.
+Purpose: make review easier without building an admin dashboard.
 
 Files:
 
-- Create `scripts/insights/collect-naver.mjs`.
-- Create `src/lib/insights/collector.ts`.
+- Modify: `src/lib/insights/report-builder.mjs`
+- Modify: `scripts/insights/report.mjs`
+- Test: `scripts/insights/report-builder.test.mjs`
 
-Dependency: TASK-005.
+Acceptance criteria:
 
-Test:
-
-- Mock API response.
-- Failure and malformed response tests.
-
-Acceptance Criteria:
-
-- Collector appends unique issue/source records.
-- It refuses to run if `ENABLE_ISSUE_COLLECTOR` is not enabled.
+- Report includes collected, source verified, review required, rejected, publish candidates, scheduled, published, backlog, and metrics summary.
+- Report can be written to `data/insights/reports/latest.md`.
+- Generated report path remains ignored from Git.
 
 Risk:
 
-- API terms and quotas must be verified before production scheduling.
+- A public admin dashboard would require authentication. Keep this local.
 
-### TASK-007 Dedupe And Clustering
+### TASK-007: Search Console CSV Workflow
 
-Purpose: avoid one article per news item.
+Purpose: use real search data before adding API credentials.
 
 Files:
 
-- Create `src/lib/insights/dedupe.ts`.
-- Create `src/lib/insights/clustering.ts`.
+- Modify: `src/lib/insights/search-console-metrics.mjs`
+- Modify: `scripts/insights/import-search-console-csv.mjs`
+- Test: `scripts/insights/search-console-metrics.test.mjs`
+- Create or update: `docs/search-console-url-submission.md`
 
-Dependency: TASK-005.
+Acceptance criteria:
 
-Test:
-
-- Same base-rate issue across several titles maps to one canonical topic.
-- Different issues remain separate.
-
-Acceptance Criteria:
-
-- URL hash, title normalized hash, keyword similarity, and canonical topic are stored.
+- CSV import maps page URL to article slug.
+- Metrics include impressions, clicks, CTR, and average position.
+- Report groups article performance into new/growing/winner/underperform/dead candidates.
 
 Risk:
 
-- Over-aggressive clustering can merge unrelated policies. Start conservative.
+- Search Console exports can change column names. Support the current Korean/English export headers used by the owner.
 
-### TASK-008 Relevance And Intent Analyzer
+### TASK-008: Article Data Hardening
 
-Purpose: score whether an issue fits MyCalcsTool.
+Purpose: make existing published article records safer and easier to audit.
 
 Files:
 
-- Create `src/lib/insights/relevance.ts`.
-- Create `src/lib/insights/intent.ts`.
+- Modify: `src/data/articles.mjs`
+- Test: `scripts/insights/rendered-articles.test.mjs`
 
-Dependency: TASK-007.
+Acceptance criteria:
 
-Test:
-
-- Accepts base rate, salary, tax refund, dividend tax, exchange rate, and AI pricing issues.
-- Rejects executive reshuffles, PR news, celebrity wealth, market rumors, buy/sell stock recommendations.
-
-Acceptance Criteria:
-
-- Each candidate gets category, relevance score, intent labels, and reason.
+- Every published article has `issueId` or equivalent trace field.
+- Every article has official source checked date.
+- Every article has matched calculator ids.
+- Dates are ISO `YYYY-MM-DD`.
 
 Risk:
 
-- A purely keyword-based scorer may miss nuance. Add LLM only for borderline candidates.
+- Do not bulk rewrite public article copy unless the rendered test or source audit requires it.
 
-### TASK-009 Official Source Validator
+### TASK-009: Source-Backed Article Candidate Templates
 
-Purpose: ensure YMYL facts come from official sources.
+Purpose: keep generated drafts useful instead of generic.
 
 Files:
 
-- Create `src/lib/insights/source-validator.ts`.
-- Create `src/data/official-source-allowlist.ts`.
+- Modify: `src/lib/insights/article-candidate-builder.mjs`
+- Test: `scripts/insights/article-candidate-builder.test.mjs`
 
-Dependency: TASK-008.
+Acceptance criteria:
 
-Test:
-
-- Accept allowlisted domains.
-- Reject missing source, unavailable URL, and non-official-only numeric claims.
-
-Acceptance Criteria:
-
-- Finance/tax/policy/AI pricing candidates cannot reach publish candidate status without official source metadata.
+- Base-rate, tax, salary, exchange-rate, and AI-cost topics produce user-question titles.
+- Drafts include official source URLs.
+- Drafts include calculator CTAs.
+- Drafts fail quality gate if source or calculator match is missing.
 
 Risk:
 
-- Some official documents are PDFs or dynamic pages. MVP can mark them `review_required`.
+- Template sprawl can become maintenance cost. Add templates only for topics that connect to calculators.
 
-### TASK-010 Calculator Matcher
+### TASK-010: Controlled Publishing
 
-Purpose: connect each article to existing calculators.
+Purpose: keep publishing small, reviewable, and reversible.
 
 Files:
 
-- Create `src/lib/insights/calculator-matcher.ts`.
-- Use `src/data/calculator-metadata.ts`.
+- Modify: `src/lib/insights/publish-queue.mjs`
+- Modify: `scripts/insights/publish-candidates.mjs`
+- Modify: `scripts/insights/publish-articles.mjs`
+- Test: `scripts/insights/publish-queue.test.mjs`
+- Test: `scripts/insights/article-data-writer.test.mjs`
 
-Dependency: TASK-002, TASK-008.
+Acceptance criteria:
 
-Test:
-
-- Base rate -> `/loan/`.
-- Minimum wage -> `/salary/`.
-- Year-end tax -> `/tax-refund/`.
-- Dividend tax -> `/dividend-calculator/`.
-- Exchange rate -> `/foreign-stock-return-calculator/`.
-- OpenAI price -> `/chatgpt-api-cost-calculator/` and `/ai-model-cost-comparison/`.
-
-Acceptance Criteria:
-
-- Matcher returns calculator id, path, score, and reason.
-- Low-score candidates create calculator backlog instead of forced CTA.
+- Default max publish count is 1.
+- Hard cap remains 2 for MVP unless explicitly changed.
+- Auto-publish requires `ENABLE_AUTO_PUBLISH=true`.
+- Manual publish writes deterministic diffs to `src/data/articles.mjs`.
 
 Risk:
 
-- Over-linking irrelevant calculators reduces trust. Threshold should be conservative.
+- A malformed article data write can break the build. Always run build after publish.
 
-### TASK-011 Article Generator
+### TASK-011: Cloudflare Phase 2 Design
 
-Purpose: generate article drafts in the MyCalcsTool format.
+Purpose: prepare runtime automation without implementing it too early.
 
 Files:
 
-- Create `scripts/insights/generate-article-draft.mjs`.
-- Create `src/lib/insights/article-generator.ts`.
+- Create: `docs/mycalcstool-cloudflare-phase2-design.md`
 
-Dependency: TASK-009, TASK-010.
+Acceptance criteria:
 
-Test:
-
-- Refuses to generate without official source for required categories.
-- Output has summary, user impact, examples, calculator CTA, source section, disclaimer, dates.
-
-Acceptance Criteria:
-
-- Drafts are saved as candidates, not automatically published.
+- D1 schema maps from current JSONL fields.
+- Worker Cron only runs collector/analyzer, not public page rendering.
+- Emergency flags are listed.
+- Rollback procedure is listed.
 
 Risk:
 
-- LLM prose can look generic. Template must force specific user-impact examples and source-backed numbers.
+- Premature Workers/D1 work can distract from the actual question: do articles produce search traffic and calculator use?
 
-### TASK-012 Quality Gate
+## Implementation Recommendation
 
-Purpose: block thin, risky, duplicate, or unsupported content.
+The next coding slice should be TASK-002 through TASK-005 only.
 
-Files:
+Reason:
 
-- Create `src/lib/insights/quality-gate.ts`.
-- Create `scripts/insights/quality-check.mjs`.
+- The site already has articles and a local pipeline.
+- The biggest near-term risk is not missing features; it is accidental low-quality publishing.
+- Matching flag, duplicate gate, source reachability, and rendered article checks directly reduce that risk.
 
-Dependency: TASK-011.
+Do not start with:
 
-Test:
+- Cloudflare D1
+- Cron
+- LLM generation
+- affiliate automation
+- public admin dashboard
 
-- Rejects copied-news style summaries.
-- Rejects missing source.
-- Rejects unsupported numeric claims.
-- Rejects 투자 권유 and guaranteed-return phrasing.
-- Rejects duplicate slug.
+Add those only after Search Console shows that the article layer creates real impressions, clicks, and calculator movement.
 
-Acceptance Criteria:
+## Current Decision Points For User Review
 
-- Candidate receives score and status.
-- Only `85+` can become `publish_candidate`.
-
-Risk:
-
-- Automated quality scoring is not a substitute for early human review. Keep review required initially.
-
-### TASK-013 Publishing Queue
-
-Purpose: move approved article candidates into static content files under a controlled limit.
-
-Files:
-
-- Create `scripts/insights/publish-candidates.mjs`.
-- Create `data/insights/publish-log.jsonl`.
-
-Dependency: TASK-012.
-
-Test:
-
-- Max daily publish limit.
-- Slug collision.
-- Auto-publish disabled.
-
-Acceptance Criteria:
-
-- Script refuses publish unless `ENABLE_AUTO_PUBLISH=true` or an explicit manual approval flag is used.
-
-Risk:
-
-- Accidental mass publishing. Default limit should be 1 and hard cap 2 during MVP.
-
-### TASK-014 Sitemap And Noindex Integration
-
-Purpose: ensure Article SEO is safe.
-
-Files:
-
-- Modify `astro.config.mjs` only if collection filtering requires it.
-- Modify `src/data/approval-noindex-paths.mjs` only for deliberate noindex decisions.
-
-Dependency: TASK-004, TASK-013.
-
-Test:
-
-- Build sitemap.
-- Verify only published/indexable articles appear.
-
-Acceptance Criteria:
-
-- Existing noindex list is preserved.
-- Draft/review article pages are not in sitemap.
-
-Risk:
-
-- Static drafts accidentally routed. Prefer not rendering draft routes at all.
-
-### TASK-015 Article To Calculator CTA
-
-Purpose: capture calculator conversion from articles.
-
-Files:
-
-- Create `src/components/ArticleCta.astro`.
-- Use existing GA event listener with `data-ga-event`.
-
-Dependency: TASK-004, TASK-010.
-
-Test:
-
-- Render CTA with correct calculator path.
-- HTML contains event attributes but no sensitive user input values.
-
-Acceptance Criteria:
-
-- CTA is clearly site-owned utility, not ad-like.
-
-Risk:
-
-- Too many CTAs can look spammy. Use one primary CTA and optional related links.
-
-### TASK-016 Calculator To Article Links
-
-Purpose: build two-way topic clusters.
-
-Files:
-
-- Create `src/components/RelatedArticles.astro`.
-- Add selective usage to high-value calculators after at least one relevant article exists.
-
-Dependency: TASK-004.
-
-Test:
-
-- No broken links.
-- No unrelated article suggestions.
-
-Acceptance Criteria:
-
-- Calculator pages link only to relevant published articles.
-
-Risk:
-
-- Adding article blocks across every calculator can dilute UX. Start selectively.
-
-### TASK-017 Local Admin Report
-
-Purpose: review queue quality without building a public admin system.
-
-Files:
-
-- Create `scripts/insights/report.mjs`.
-- Output `data/insights/reports/latest.md` or console summary.
-
-Dependency: TASK-005 through TASK-013.
-
-Test:
-
-- Report includes collected, clustered, rejected, review required, publish candidate, and published counts.
-
-Acceptance Criteria:
-
-- Owner can review candidates before publishing.
-
-Risk:
-
-- A public admin dashboard would require authentication. Do not add one in static MVP.
-
-### TASK-018 Metrics Import Stub
-
-Purpose: prepare performance feedback without premature API integration.
-
-Files:
-
-- Create `src/lib/insights/metrics.ts`.
-- Create CSV/JSON import convention for Search Console exports.
-
-Dependency: TASK-004.
-
-Test:
-
-- Import sample Search Console CSV and map page URLs to article slugs.
-
-Acceptance Criteria:
-
-- Article performance can be classified manually from exported data.
-
-Risk:
-
-- Full Search Console API requires credentials and account setup. Defer to Phase 2.
-
-### TASK-019 Integration And E2E Fixtures
-
-Purpose: prove the whole flow with mock data before real publishing.
-
-Files:
-
-- Create `tests/fixtures/base-rate-issue.json`.
-- Create `scripts/insights/e2e-mock.mjs`.
-
-Dependency: TASK-006 through TASK-013.
-
-Test:
-
-- Mock base-rate issue creates a reviewable article candidate with `/loan/` CTA and source metadata.
-
-Acceptance Criteria:
-
-- No production article is published during test.
-
-Risk:
-
-- Test fixtures can accidentally be indexed if placed under `src/content`. Keep fixtures outside rendered content.
-
-### TASK-020 Production Rollout
-
-Purpose: safely expose the new system.
-
-Files:
-
-- Minimal homepage or calculator page links only after approval.
-- Redirects only if a route is renamed; avoid new redirects otherwise.
-
-Dependency: all previous tasks.
-
-Test:
-
-- `npm run build`
-- `node scripts/check-growth-homepage.mjs`
-- article route smoke test
-- sitemap check
-- production URL check after Cloudflare deployment delay
-
-Acceptance Criteria:
-
-- Existing calculator pages work.
-- Existing SEO route surface is preserved.
-- First articles have official sources, useful examples, calculator CTAs, and no unsupported claims.
-
-Risk:
-
-- Search engines may still classify low-quality automation negatively. Publish fewer, better articles and watch Search Console for 30 to 90 days.
-
-## First Implementation Recommendation
-
-Do not implement the entire Phase 1 list in one commit.
-
-Recommended first coding slice after user approval:
-
-1. Add `calculator-metadata.ts`.
-2. Add article content schema and `/articles/` routes with zero or one manually reviewed sample article.
-3. Add article CTA component and Article JSON-LD.
-4. Add quality-gate module with tests against static fixtures.
-5. Add local candidate JSONL conventions.
-
-This creates the publishing surface and quality guardrails first. Only after that should collection and LLM generation be added.
-
-## Verification Performed During This Analysis
-
-Commands run:
-
-```powershell
-git status --short --branch
-npm run build
-```
-
-Observed result:
-
-- Git branch was `master...origin/master`.
-- Working tree was clean before this document was added.
-- `npm run build` completed successfully.
-- Astro generated 98 static pages.
-
-## Decision Required Before Code Implementation
-
-Before production code changes, confirm these choices:
-
-- Use `/articles/` as the new issue-content namespace.
-- Start with file-based static MVP, not immediate D1/Workers/Cron.
-- Keep `ENABLE_AUTO_PUBLISH=false` until reviewed drafts prove quality.
-- Do not add affiliate automation in Phase 1.
-- Do not automatically translate Korean policy content into English.
+- Keep `/articles/` as the issue-content namespace.
+- Keep Phase 1 static and local-script based.
+- Implement safety hardening before adding more content generation.
+- Leave auto-publish disabled by default.
+- Use Search Console CSV import before Search Console API.
+- Defer Cloudflare Workers/D1/Cron until measurable traction exists.
