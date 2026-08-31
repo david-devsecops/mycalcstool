@@ -20,6 +20,7 @@ export const releaseChecks = [
     ],
     expectExitCode: 1,
   },
+  { name: 'analytics privacy scan', command: 'npm', args: ['run', 'insights:scan:analytics-privacy'] },
   { name: 'secret leak scan', command: 'npm', args: ['run', 'insights:scan:secrets'] },
 ];
 

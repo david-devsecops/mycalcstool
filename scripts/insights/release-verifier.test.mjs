@@ -19,6 +19,7 @@ test('release gate lists the required deployment checks in order', () => {
       'static build',
       'sitemap coverage',
       'public operation-copy scan',
+      'analytics privacy scan',
       'secret leak scan',
     ],
   );
