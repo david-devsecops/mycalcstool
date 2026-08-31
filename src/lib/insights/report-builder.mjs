@@ -149,6 +149,42 @@ function renderRecommendedActions(rows, publishedArticles, generatedAt) {
   ].join('\n');
 }
 
+function decisionFor(status, calculatorClicks) {
+  if (status === 'WINNER' && calculatorClicks > 0) return 'EXPAND';
+  if (status === 'UNDERPERFORM') return 'IMPROVE';
+  if (status === 'NEW') return 'WAIT';
+  return 'MONITOR';
+}
+
+function renderTopicClusterDecisions(rows, publishedArticles, generatedAt) {
+  const classifications = classifyArticlePerformance(rows, publishedArticles, { now: generatedAt });
+  if (classifications.length === 0) return '## Topic Cluster Decisions\n\nNo article performance data.\n';
+
+  const articlesBySlug = new Map(publishedArticles.map((article) => [article.slug, article]));
+  const decisions = classifications.flatMap((metric) => {
+    const article = articlesBySlug.get(metric.slug);
+    const calculatorIds = article?.calculatorCtas?.map((cta) => cta.calculatorId) || [];
+
+    return calculatorIds.map((calculatorId) => ({
+      key: `${article.categoryKey || 'uncategorized'} / ${calculatorId}`,
+      decision: decisionFor(metric.status, metric.calculatorClicks || 0),
+      metric,
+    }));
+  });
+
+  if (decisions.length === 0) return '## Topic Cluster Decisions\n\nNo calculator-linked article data.\n';
+
+  return [
+    '## Topic Cluster Decisions',
+    '',
+    ...decisions.map(
+      ({ key, decision, metric }) =>
+        `- ${key}: ${decision} (${metric.clicks} search clicks, ${metric.impressions} impressions, ${metric.calculatorClicks || 0} calculator clicks)`,
+    ),
+    '',
+  ].join('\n');
+}
+
 export function buildInsightReport({
   issues = [],
   issueCandidates = [],
@@ -174,5 +210,6 @@ export function buildInsightReport({
     renderPublishedArticleAudit(publishedArticles),
     renderPerformanceClassification(contentMetrics, publishedArticles, generatedAt),
     renderRecommendedActions(contentMetrics, publishedArticles, generatedAt),
+    renderTopicClusterDecisions(contentMetrics, publishedArticles, generatedAt),
   ].join('\n');
 }

@@ -52,8 +52,18 @@ test('builds a queue report with status counts and review items', () => {
         title: '기준금리가 바뀌면 내 대출 이자는 얼마나 달라질까?',
         publishedDate: '2026-07-01',
         updatedDate: '2026-08-31',
+        categoryKey: 'finance',
         officialSources: [{ name: '한국은행', url: 'https://www.bok.or.kr/', checkedAt: '2026-08-31' }],
         calculatorCtas: [{ calculatorId: 'loan', href: '/loan/' }],
+      },
+      {
+        slug: 'openai-api-price-change-cost-planning',
+        title: 'OpenAI API 가격이 바뀌면 월 사용료는 어떻게 달라질까?',
+        publishedDate: '2026-08-25',
+        updatedDate: '2026-08-31',
+        categoryKey: 'ai',
+        officialSources: [{ name: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/', checkedAt: '2026-08-31' }],
+        calculatorCtas: [{ calculatorId: 'chatgpt-api-cost-calculator', href: '/chatgpt-api-cost-calculator/' }],
       },
     ],
     generatedAt: '2026-08-31T09:00:00.000Z',
@@ -83,6 +93,9 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /base-rate-loan-interest-impact: WINNER/);
   assert.match(report, /Recommended Actions/);
   assert.match(report, /base-rate-loan-interest-impact: add supporting cluster articles and keep the calculator CTA prominent/);
+  assert.match(report, /Topic Cluster Decisions/);
+  assert.match(report, /finance \/ loan: EXPAND/);
+  assert.match(report, /ai \/ chatgpt-api-cost-calculator: WAIT/);
   assert.match(report, /Article Manual Review Checklist/);
   assert.match(report, /openai-api-price-change-cost-planning: open every official source URL and confirm it supports the exact topic/);
   assert.match(report, /openai-api-price-change-cost-planning: verify every numeric claim has an official source URL/);

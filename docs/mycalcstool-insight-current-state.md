@@ -458,6 +458,7 @@ Implemented:
 - Report-level recommended actions from article performance class
 - Manual review checklist for article candidates before publishing
 - Built sitemap verification for published article inclusion and noindex exclusion
+- Topic-cluster decisions from imported Search Console and GA4 metrics
 - Rendered article quality tests
 
 Not implemented:
@@ -474,8 +475,8 @@ Not implemented:
 
 Do next:
 
-- Use imported Search Console and GA4 data to decide which topic clusters deserve additional articles.
 - Keep auto-publish disabled until review quality and search data are stable.
+- Defer Cloudflare Worker/D1/Cron until local reports show repeatable traction or manual operation becomes too frequent.
 
 Do not do next:
 

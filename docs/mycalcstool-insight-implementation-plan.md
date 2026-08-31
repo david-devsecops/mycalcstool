@@ -445,7 +445,7 @@ Defer:
 
 Still useful before runtime automation:
 
-- Search Console and GA4 data review using the local insight report before adding new topic clusters.
+- A 30 to 90 day operating log that proves article impressions, search clicks, and calculator clicks are repeatable.
 
 ## Data Model
 
@@ -674,10 +674,11 @@ Completed Phase 1 tests:
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
 - Manual review checklist covers source-backed article candidates before publishing.
+- Topic-cluster decisions can be derived from imported Search Console and GA4 metrics.
 
 Required next tests:
 
-- Topic-cluster decisions can be derived from imported Search Console and GA4 metrics.
+- Cloudflare runtime automation can be added without changing public calculator routes or storing calculator inputs.
 
 ## Deployment
 
@@ -973,9 +974,9 @@ Reason:
 
 Recommended next implementation sequence:
 
-1. Use imported Search Console and GA4 data for the next topic-cluster decision.
-2. Keep Cloudflare Worker/D1/Cron disabled until local reports show repeatable traction.
-3. Add Cloudflare runtime only when manual reports become too slow or too frequent.
+1. Keep Cloudflare Worker/D1/Cron disabled until local reports show repeatable traction.
+2. Add Cloudflare runtime only when manual reports become too slow or too frequent.
+3. Start Cloudflare implementation with D1 schema and read-only collector persistence, not auto-publish.
 4. Only then consider Cloudflare Worker/D1/Cron design implementation.
 
 Do not start with:
