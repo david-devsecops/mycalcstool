@@ -331,6 +331,14 @@ Implemented controls:
 - `ENABLE_AUTO_PUBLISH=true` is required for automatic publish planning.
 - `MAX_ARTICLES_PER_DAY` controls daily publish volume.
 
+Implemented article candidate templates:
+
+- Base-rate loan impact
+- Year-end tax refund impact
+- Salary/take-home pay impact
+- AI API cost impact
+- Exchange-rate foreign stock return impact
+
 Gap:
 
 - `ENABLE_CALCULATOR_MATCHING` is listed as a future flag but is not yet wired through the pipeline.
@@ -872,6 +880,8 @@ Acceptance criteria:
 Risk:
 
 - Template sprawl can become maintenance cost. Add templates only for topics that connect to calculators.
+
+Status: completed for the five current rule-supported topics.
 
 ### TASK-010: Controlled Publishing
 
