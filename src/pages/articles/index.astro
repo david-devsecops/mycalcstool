@@ -1,19 +1,51 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import { getPublishedArticles } from '../../data/articles.mjs';
+import { siteMeta } from '../../data/site-meta';
 
 const title = '금융·생활 이슈 계산 가이드';
 const description = '기준금리, 연말정산, AI API 가격처럼 실제 금액 판단이 필요한 이슈를 계산기와 함께 정리합니다.';
 const articles = getPublishedArticles('ko');
 
-const jsonLd = {
-  '@context': 'https://schema.org',
-  '@type': 'CollectionPage',
-  name: title,
-  description,
-  url: 'https://mycalcstool.com/articles/',
-  inLanguage: 'ko',
-};
+const articlesUrl = `${siteMeta.url}/articles/`;
+const jsonLd = [
+  {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: title,
+    description,
+    url: articlesUrl,
+    inLanguage: 'ko',
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      {
+        '@type': 'ListItem',
+        position: 1,
+        name: '홈',
+        item: siteMeta.url,
+      },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: '이슈 계산 가이드',
+        item: articlesUrl,
+      },
+    ],
+  },
+  {
+    '@context': 'https://schema.org',
+    '@type': 'ItemList',
+    itemListElement: articles.map((article, index) => ({
+      '@type': 'ListItem',
+      position: index + 1,
+      url: `${articlesUrl}${article.slug}/`,
+      name: article.title,
+    })),
+  },
+];
 ---
 
 <BaseLayout title={title} description={description} keywords="금융 이슈, 생활경제, 계산기 가이드, AI 비용" jsonLd={jsonLd}>
@@ -56,4 +88,3 @@ const jsonLd = {
     ))}
   </section>
 </BaseLayout>
-

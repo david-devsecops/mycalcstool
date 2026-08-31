@@ -4,6 +4,7 @@ import { readFileSync } from 'node:fs';
 import { articles, getPublishedArticles, getPublishedCanonicalTopics } from '../../src/data/articles.mjs';
 
 const articleHtml = readFileSync('dist/articles/base-rate-loan-interest-impact/index.html', 'utf8');
+const articlesIndexHtml = readFileSync('dist/articles/index.html', 'utf8');
 const loanHtml = readFileSync('dist/loan/index.html', 'utf8');
 const taxRefundHtml = readFileSync('dist/tax-refund/index.html', 'utf8');
 const aiCostHtml = readFileSync('dist/chatgpt-api-cost-calculator/index.html', 'utf8');
@@ -24,6 +25,13 @@ test('sitemap includes published issue articles', () => {
   assert.match(sitemap, /https:\/\/mycalcstool\.com\/articles\/base-rate-loan-interest-impact\//);
   assert.match(sitemap, /https:\/\/mycalcstool\.com\/articles\/year-end-tax-refund-paycheck-impact\//);
   assert.match(sitemap, /https:\/\/mycalcstool\.com\/articles\/openai-api-price-change-cost-planning\//);
+});
+
+test('rendered article index exposes collection list structured data', () => {
+  assert.match(articlesIndexHtml, /"@type":"CollectionPage"/);
+  assert.match(articlesIndexHtml, /"@type":"ItemList"/);
+  assert.match(articlesIndexHtml, /"itemListElement":\[\{"@type":"ListItem","position":1,"url":"https:\/\/mycalcstool\.com\/articles\/base-rate-loan-interest-impact\/","name":"기준금리가 바뀌면 내 대출 이자는 얼마나 달라질까\?"/);
+  assert.match(articlesIndexHtml, /"@type":"BreadcrumbList"/);
 });
 
 test('calculator pages link back to relevant issue articles', () => {
