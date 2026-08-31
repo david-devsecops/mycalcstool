@@ -86,3 +86,20 @@ test('quality gate rejects duplicate slugs', () => {
   assert.equal(result.status, 'rejected');
   assert.equal(result.errors.includes('duplicate_slug'), true);
 });
+
+test('quality gate rejects duplicate canonical topics', () => {
+  const result = evaluateArticleCandidate(
+    {
+      ...validCandidate,
+      slug: 'base-rate-impact-new-slug',
+      canonicalTopic: '기준금리 변화와 대출 이자 영향',
+    },
+    {
+      existingSlugs: [],
+      existingCanonicalTopics: ['기준금리 변화와 대출 이자 영향'],
+    },
+  );
+
+  assert.equal(result.status, 'rejected');
+  assert.equal(result.errors.includes('duplicate_canonical_topic'), true);
+});

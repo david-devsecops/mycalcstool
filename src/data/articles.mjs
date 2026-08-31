@@ -1,5 +1,7 @@
 export const articles = [
   {
+    issueId: 'ko-기준금리-변화와-대출-이자-영향',
+    canonicalTopic: '기준금리 변화와 대출 이자 영향',
     slug: 'base-rate-loan-interest-impact',
     language: 'ko',
     status: 'published',
@@ -50,15 +52,19 @@ export const articles = [
       {
         name: '한국은행 기준금리 추이',
         url: 'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643',
+        checkedAt: '2026-08-31',
       },
       {
         name: '한국은행 기준금리 설명',
         url: 'https://www.bok.or.kr/portal/singl/baseRate/progress.do?dataSeCd=01&menuNo=200656',
+        checkedAt: '2026-08-31',
       },
     ],
     disclaimerType: 'finance',
   },
   {
+    issueId: 'ko-연말정산과-환급액-영향',
+    canonicalTopic: '연말정산과 환급액 영향',
     slug: 'year-end-tax-refund-paycheck-impact',
     language: 'ko',
     status: 'published',
@@ -115,15 +121,19 @@ export const articles = [
       {
         name: '국세청 연말정산 세액계산방법',
         url: 'https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=7870&mi=6434',
+        checkedAt: '2026-08-31',
       },
       {
         name: '국세청 연말정산 종합 안내',
         url: 'https://www.nts.go.kr/nts/cm/cntnts/cntntsView.do?cntntsId=238938&mi=2304',
+        checkedAt: '2026-08-31',
       },
     ],
     disclaimerType: 'tax',
   },
   {
+    issueId: 'ko-ai-api-가격-변화와-월-사용료-영향',
+    canonicalTopic: 'AI API 가격 변화와 월 사용료 영향',
     slug: 'openai-api-price-change-cost-planning',
     language: 'ko',
     status: 'published',
@@ -180,6 +190,7 @@ export const articles = [
       {
         name: 'OpenAI API Pricing',
         url: 'https://openai.com/api/pricing/',
+        checkedAt: '2026-08-31',
       },
     ],
     disclaimerType: 'ai',
@@ -188,6 +199,12 @@ export const articles = [
 
 export function getPublishedArticles(language = 'ko') {
   return articles.filter((article) => article.language === language && article.status === 'published' && article.noIndex !== true);
+}
+
+export function getPublishedCanonicalTopics(language = 'ko') {
+  return getPublishedArticles(language)
+    .map((article) => article.canonicalTopic)
+    .filter(Boolean);
 }
 
 export function getArticleBySlug(slug, language = 'ko') {

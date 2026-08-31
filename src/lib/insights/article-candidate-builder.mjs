@@ -85,6 +85,7 @@ function toArticleCandidate(issue, now) {
   return {
     id: `article-${issue.id}`,
     issueId: issue.id,
+    canonicalTopic: issue.canonicalTopic,
     language: issue.language,
     slug: template.slug,
     title: template.title,
@@ -108,7 +109,10 @@ export function buildArticleCandidates(issueCandidates, options = {}) {
     .filter((issue) => issue.status === 'source_verified')
     .map((issue) => {
       const candidate = toArticleCandidate(issue, now);
-      const quality = evaluateArticleCandidate(candidate, { existingSlugs: options.existingSlugs || [] });
+      const quality = evaluateArticleCandidate(candidate, {
+        existingSlugs: options.existingSlugs || [],
+        existingCanonicalTopics: options.existingCanonicalTopics || [],
+      });
 
       return {
         ...candidate,

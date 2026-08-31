@@ -1,7 +1,10 @@
 import { resolve } from 'node:path';
 
 import { runAutomationJob } from '../../src/lib/insights/automation-runner.mjs';
-import { buildIssueCandidates } from '../../src/lib/insights/issue-candidate-builder.mjs';
+import {
+  buildIssueCandidates,
+  buildIssueCandidatesWithSourceReachability,
+} from '../../src/lib/insights/issue-candidate-builder.mjs';
 import { readJsonlRecords, upsertJsonlRecord } from '../../src/lib/insights/jsonl-store.mjs';
 
 await runAutomationJob({
@@ -10,7 +13,13 @@ await runAutomationJob({
     const dataDir = resolve('data/insights');
     const issues = await readJsonlRecords(resolve(dataDir, 'issues.jsonl'));
     const candidatesPath = resolve(dataDir, 'issue-candidates.jsonl');
-    const candidates = buildIssueCandidates(issues);
+    const options = {
+      enableCalculatorMatching: process.env.ENABLE_CALCULATOR_MATCHING !== 'false',
+    };
+    const candidates =
+      process.env.ENABLE_SOURCE_REACHABILITY === 'true'
+        ? await buildIssueCandidatesWithSourceReachability(issues, options)
+        : buildIssueCandidates(issues, options);
 
     for (const candidate of candidates) {
       await upsertJsonlRecord(candidatesPath, candidate);

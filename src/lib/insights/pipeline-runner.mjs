@@ -9,18 +9,20 @@ export function runInsightPipeline({
   rawIssues = [],
   issueCandidates,
   existingSlugs = [],
+  existingCanonicalTopics = [],
   autoPublish = false,
   enableArticleGeneration = true,
+  enableCalculatorMatching = true,
   maxPerDay = 1,
   alreadyPublishedToday = 0,
   contentMetrics = [],
   now = new Date().toISOString(),
 } = {}) {
-  const analyzedIssueCandidates = issueCandidates || buildIssueCandidates(rawIssues);
-  const articleCandidates = enableArticleGeneration
-    ? buildArticleCandidates(analyzedIssueCandidates, { existingSlugs, now })
+  const analyzedIssueCandidates = issueCandidates || buildIssueCandidates(rawIssues, { enableCalculatorMatching });
+  const articleCandidates = enableArticleGeneration && enableCalculatorMatching
+    ? buildArticleCandidates(analyzedIssueCandidates, { existingSlugs, existingCanonicalTopics, now })
     : [];
-  const calculatorBacklog = buildCalculatorBacklog(analyzedIssueCandidates);
+  const calculatorBacklog = enableCalculatorMatching ? buildCalculatorBacklog(analyzedIssueCandidates) : [];
   const publishPlan = planArticlePublication(articleCandidates, {
     autoPublish,
     maxPerDay,

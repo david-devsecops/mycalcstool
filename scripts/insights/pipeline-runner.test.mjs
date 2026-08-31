@@ -43,6 +43,33 @@ test('keeps issue analysis but skips article candidates when article generation 
   assert.match(result.report, /Article Candidate Status/);
 });
 
+test('keeps issue analysis but skips downstream records when calculator matching is disabled', () => {
+  const result = runInsightPipeline({
+    rawIssues: [baseRateIssue],
+    existingSlugs: [],
+    enableCalculatorMatching: false,
+    now: '2026-08-31T09:00:00.000Z',
+  });
+
+  assert.equal(result.issueCandidates[0].status, 'source_verified');
+  assert.deepEqual(result.issueCandidates[0].calculatorMatches, []);
+  assert.deepEqual(result.articleCandidates, []);
+  assert.deepEqual(result.calculatorBacklog, []);
+  assert.deepEqual(result.publishPlanRecords, []);
+});
+
+test('passes existing canonical topics into article quality checks', () => {
+  const result = runInsightPipeline({
+    rawIssues: [baseRateIssue],
+    existingSlugs: [],
+    existingCanonicalTopics: ['기준금리 변화와 대출 이자 영향'],
+    now: '2026-08-31T09:00:00.000Z',
+  });
+
+  assert.equal(result.articleCandidates[0].status, 'rejected');
+  assert.ok(result.articleCandidates[0].qualityErrors.includes('duplicate_canonical_topic'));
+});
+
 test('keeps source-verified unmatched issues in the calculator backlog', () => {
   const result = runInsightPipeline({
     issueCandidates: [

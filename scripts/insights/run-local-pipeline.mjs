@@ -1,7 +1,7 @@
 import { mkdir, writeFile } from 'node:fs/promises';
 import { dirname, resolve } from 'node:path';
 
-import { articles } from '../../src/data/articles.mjs';
+import { articles, getPublishedCanonicalTopics } from '../../src/data/articles.mjs';
 import { runAutomationJob } from '../../src/lib/insights/automation-runner.mjs';
 import { readJsonlRecords, upsertJsonlRecord } from '../../src/lib/insights/jsonl-store.mjs';
 import { runInsightPipeline } from '../../src/lib/insights/pipeline-runner.mjs';
@@ -16,8 +16,10 @@ await runAutomationJob({
       rawIssues,
       contentMetrics,
       existingSlugs: articles.map((article) => article.slug),
+      existingCanonicalTopics: getPublishedCanonicalTopics(),
       autoPublish: process.env.ENABLE_AUTO_PUBLISH === 'true',
       enableArticleGeneration: process.env.ENABLE_ARTICLE_GENERATION !== 'false',
+      enableCalculatorMatching: process.env.ENABLE_CALCULATOR_MATCHING !== 'false',
       maxPerDay: Number(process.env.MAX_ARTICLES_PER_DAY || 1),
     });
 

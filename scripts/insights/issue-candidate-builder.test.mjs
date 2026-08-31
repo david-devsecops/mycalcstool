@@ -1,7 +1,10 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import { buildIssueCandidates } from '../../src/lib/insights/issue-candidate-builder.mjs';
+import {
+  buildIssueCandidates,
+  buildIssueCandidatesWithSourceReachability,
+} from '../../src/lib/insights/issue-candidate-builder.mjs';
 
 test('keeps news-only finance issues in review while preserving calculator matches', () => {
   const candidates = buildIssueCandidates([
@@ -33,6 +36,45 @@ test('marks official-source finance issues as source verified', () => {
   assert.equal(candidates[0].status, 'source_verified');
   assert.equal(candidates[0].officialSources[0].host, 'www.bok.or.kr');
   assert.equal(candidates[0].calculatorMatches[0].path, '/loan/');
+});
+
+test('keeps source verification while calculator matching is disabled', () => {
+  const candidates = buildIssueCandidates(
+    [
+      {
+        title: '한국은행 기준금리 인하와 대출 이자 영향',
+        url: 'https://www.bok.or.kr/portal/singl/baseRate/list.do?dataSeCd=01&menuNo=200643',
+        sourceName: '한국은행',
+        publishedAt: '2026-08-31T00:00:00.000Z',
+        language: 'ko',
+      },
+    ],
+    { enableCalculatorMatching: false },
+  );
+
+  assert.equal(candidates[0].status, 'source_verified');
+  assert.deepEqual(candidates[0].calculatorMatches, []);
+});
+
+test('keeps allowlisted but unreachable official sources in review', async () => {
+  const candidates = await buildIssueCandidatesWithSourceReachability(
+    [
+      {
+        title: '한국은행 기준금리 인하와 대출 이자 영향',
+        url: 'https://www.bok.or.kr/missing',
+        sourceName: '한국은행',
+        publishedAt: '2026-08-31T00:00:00.000Z',
+        language: 'ko',
+      },
+    ],
+    {
+      fetchImpl: async () => ({ ok: false, status: 404 }),
+    },
+  );
+
+  assert.equal(candidates[0].status, 'review_required');
+  assert.equal(candidates[0].sourceErrors.includes('official_source_unreachable'), true);
+  assert.equal(candidates[0].officialSources[0].reachable, false);
 });
 
 test('keeps excluded issues rejected', () => {

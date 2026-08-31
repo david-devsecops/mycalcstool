@@ -49,3 +49,13 @@ test('rejects duplicate slugs through the quality gate', () => {
   assert.equal(candidates[0].status, 'rejected');
   assert.ok(candidates[0].qualityErrors.includes('duplicate_slug'));
 });
+
+test('rejects duplicate canonical topics through the quality gate', () => {
+  const candidates = buildArticleCandidates([sourceVerifiedIssue], {
+    existingSlugs: [],
+    existingCanonicalTopics: ['기준금리 변화와 대출 이자 영향'],
+  });
+
+  assert.equal(candidates[0].status, 'rejected');
+  assert.ok(candidates[0].qualityErrors.includes('duplicate_canonical_topic'));
+});
