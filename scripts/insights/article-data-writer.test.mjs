@@ -4,6 +4,8 @@ import test from 'node:test';
 import { buildArticleDataEntry, buildUpdatedArticlesModule } from '../../src/lib/insights/article-data-writer.mjs';
 
 const candidate = {
+  issueId: 'ko-월급과-연봉-실수령액-영향',
+  canonicalTopic: '월급과 연봉 실수령액 영향',
   slug: 'minimum-wage-paycheck-impact',
   language: 'ko',
   category: 'salary',
@@ -17,7 +19,7 @@ const candidate = {
     { heading: '어떻게 계산하나요?', body: '연봉 실수령액 계산기에 조건을 입력해 비교합니다.' },
   ],
   calculatorMatches: [{ id: 'salary', path: '/salary/', name: '연봉 실수령액 계산기', score: 91 }],
-  officialSources: [{ name: '고용노동부', url: 'https://www.moel.go.kr/' }],
+  officialSources: [{ name: '고용노동부', url: 'https://www.moel.go.kr/', verifiedAt: '2026-08-30T12:00:00.000Z' }],
   disclaimerType: 'salary',
   updatedAt: '2026-08-31T09:00:00.000Z',
 };
@@ -25,6 +27,8 @@ const candidate = {
 test('builds an articles.mjs-compatible entry from an article candidate', () => {
   const entry = buildArticleDataEntry(candidate, '2026-08-31');
 
+  assert.equal(entry.issueId, 'ko-월급과-연봉-실수령액-영향');
+  assert.equal(entry.canonicalTopic, '월급과 연봉 실수령액 영향');
   assert.equal(entry.slug, 'minimum-wage-paycheck-impact');
   assert.equal(entry.status, 'published');
   assert.equal(entry.noIndex, false);
@@ -37,6 +41,11 @@ test('builds an articles.mjs-compatible entry from an article candidate', () => 
     href: '/salary/',
     label: '연봉 실수령액 계산기',
     description: '내 조건으로 직접 계산합니다.',
+  });
+  assert.deepEqual(entry.officialSources[0], {
+    name: '고용노동부',
+    url: 'https://www.moel.go.kr/',
+    checkedAt: '2026-08-30',
   });
 });
 

@@ -339,6 +339,12 @@ Implemented article candidate templates:
 - AI API cost impact
 - Exchange-rate foreign stock return impact
 
+Implemented article writer safeguards:
+
+- Published entries preserve `issueId`.
+- Published entries preserve `canonicalTopic`.
+- Published official sources always include `checkedAt`.
+
 Gap:
 
 - `ENABLE_CALCULATOR_MATCHING` is listed as a future flag but is not yet wired through the pipeline.
@@ -860,6 +866,8 @@ Acceptance criteria:
 Risk:
 
 - Do not bulk rewrite public article copy unless the rendered test or source audit requires it.
+
+Status: completed for current published data and new article writer output.
 
 ### TASK-009: Source-Backed Article Candidate Templates
 

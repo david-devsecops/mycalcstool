@@ -12,8 +12,14 @@ function ctaLabel(match) {
   return match.name || '관련 계산기';
 }
 
+function sourceCheckedAt(source, publishDate) {
+  return (source.checkedAt || source.verifiedAt || publishDate).slice(0, 10);
+}
+
 export function buildArticleDataEntry(candidate, publishDate = new Date().toISOString().slice(0, 10)) {
   return {
+    issueId: candidate.issueId,
+    canonicalTopic: candidate.canonicalTopic,
     slug: candidate.slug,
     language: candidate.language || 'ko',
     status: 'published',
@@ -36,7 +42,11 @@ export function buildArticleDataEntry(candidate, publishDate = new Date().toISOS
       label: ctaLabel(match),
       description: '내 조건으로 직접 계산합니다.',
     })),
-    officialSources: candidate.officialSources || [],
+    officialSources: (candidate.officialSources || []).map((source) => ({
+      name: source.name,
+      url: source.url,
+      checkedAt: sourceCheckedAt(source, publishDate),
+    })),
     disclaimerType: candidate.disclaimerType || candidate.category,
   };
 }
