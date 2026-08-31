@@ -15,6 +15,12 @@ npm run build
 npm run insights:verify:sitemap
 ```
 
+전체 배포 전 검증은 아래 한 줄로 실행할 수 있습니다.
+
+```powershell
+npm run verify:release
+```
+
 빌드 검증 기준 sitemap에는 51개 indexable URL이 포함됩니다. 아래 legacy redirect URL은 sitemap에서 제외했습니다.
 
 - `https://mycalcstool.com/en/blog/age-calculator-guide-how-old-am-i/`
