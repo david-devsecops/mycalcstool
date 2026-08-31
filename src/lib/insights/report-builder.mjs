@@ -30,6 +30,28 @@ function renderReviewItems(candidates) {
   ].join('\n');
 }
 
+function renderArticleManualReviewChecklist(candidates) {
+  const reviewableStatuses = new Set(['publish_candidate', 'scheduled', 'review_required']);
+  const reviewableCandidates = candidates.filter((candidate) => reviewableStatuses.has(candidate.status));
+  if (reviewableCandidates.length === 0) return '## Article Manual Review Checklist\n\nNo article candidates to review.\n';
+
+  return [
+    '## Article Manual Review Checklist',
+    '',
+    ...reviewableCandidates.flatMap((candidate) => {
+      const id = candidate.slug || candidate.id;
+      return [
+        `- [ ] ${id}: open every official source URL and confirm it supports the exact topic`,
+        `- [ ] ${id}: verify every numeric claim has an official source URL`,
+        `- [ ] ${id}: confirm the calculator CTA matches the user's money question`,
+        `- [ ] ${id}: check the title, summary, and examples are not thin or duplicated`,
+        `- [ ] ${id}: confirm the final preview contains no guarantees, investment advice, or internal operation copy`,
+      ];
+    }),
+    '',
+  ].join('\n');
+}
+
 function renderBacklogItems(backlog) {
   if (backlog.length === 0) return '## Calculator Backlog\n\nNo calculator backlog items.\n';
 
@@ -146,6 +168,7 @@ export function buildInsightReport({
     renderCounts('Article Candidate Status', countByStatus(articleCandidates)),
     renderCounts('Calculator Backlog Status', countByStatus(calculatorBacklog)),
     renderReviewItems(articleCandidates),
+    renderArticleManualReviewChecklist(articleCandidates),
     renderBacklogItems(calculatorBacklog),
     renderContentMetrics(contentMetrics),
     renderPublishedArticleAudit(publishedArticles),

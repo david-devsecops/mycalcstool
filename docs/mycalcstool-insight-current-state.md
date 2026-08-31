@@ -456,6 +456,7 @@ Implemented:
 - GA4 article-to-calculator click CSV import
 - Local insight report builder
 - Report-level recommended actions from article performance class
+- Manual review checklist for article candidates before publishing
 - Built sitemap verification for published article inclusion and noindex exclusion
 - Rendered article quality tests
 

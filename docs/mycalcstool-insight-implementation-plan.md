@@ -445,7 +445,7 @@ Defer:
 
 Still useful before runtime automation:
 
-- A manual review checklist for any article candidate generated from current events.
+- Search Console and GA4 data review using the local insight report before adding new topic clusters.
 
 ## Data Model
 
@@ -673,10 +673,11 @@ Completed Phase 1 tests:
 - GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
+- Manual review checklist covers source-backed article candidates before publishing.
 
 Required next tests:
 
-- Manual review checklist covers source-backed article candidates before publishing.
+- Topic-cluster decisions can be derived from imported Search Console and GA4 metrics.
 
 ## Deployment
 
@@ -973,8 +974,8 @@ Reason:
 Recommended next implementation sequence:
 
 1. Use imported Search Console and GA4 data for the next topic-cluster decision.
-2. Add a manual review checklist for source-backed article candidates.
-3. Keep Cloudflare Worker/D1/Cron disabled until local reports show repeatable traction.
+2. Keep Cloudflare Worker/D1/Cron disabled until local reports show repeatable traction.
+3. Add Cloudflare runtime only when manual reports become too slow or too frequent.
 4. Only then consider Cloudflare Worker/D1/Cron design implementation.
 
 Do not start with:

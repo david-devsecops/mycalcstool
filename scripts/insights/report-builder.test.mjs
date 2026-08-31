@@ -28,6 +28,9 @@ test('builds a queue report with status counts and review items', () => {
         slug: 'openai-api-price-change-cost-planning',
         status: 'scheduled',
         qualityScore: 92,
+        officialSources: [{ name: 'OpenAI Pricing', url: 'https://openai.com/api/pricing/' }],
+        numericClaims: [{ claim: 'API price', sourceUrl: 'https://openai.com/api/pricing/' }],
+        calculatorMatches: [{ id: 'chatgpt-api-cost-calculator', score: 91 }],
       },
     ],
     calculatorBacklog: [
@@ -80,4 +83,9 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /base-rate-loan-interest-impact: WINNER/);
   assert.match(report, /Recommended Actions/);
   assert.match(report, /base-rate-loan-interest-impact: add supporting cluster articles and keep the calculator CTA prominent/);
+  assert.match(report, /Article Manual Review Checklist/);
+  assert.match(report, /openai-api-price-change-cost-planning: open every official source URL and confirm it supports the exact topic/);
+  assert.match(report, /openai-api-price-change-cost-planning: verify every numeric claim has an official source URL/);
+  assert.match(report, /openai-api-price-change-cost-planning: confirm the calculator CTA matches the user's money question/);
+  assert.doesNotMatch(report, /특정 종목 매수 추천: open every official source URL/);
 });
