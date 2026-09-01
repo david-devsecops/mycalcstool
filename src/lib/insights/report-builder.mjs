@@ -15,6 +15,10 @@ function renderCounts(title, counts) {
   return [`## ${title}`, '', ...rows.map(([status, count]) => `- ${status}: ${count}`), ''].join('\n');
 }
 
+function countPublishedArticleStatus(articles) {
+  return countByStatus(articles.map((article) => ({ status: article.status || 'published' })));
+}
+
 function renderBudgetStatus(budgetStatus) {
   if (!budgetStatus) return '';
 
@@ -296,6 +300,7 @@ export function buildInsightReport({
     renderCounts('Issue Candidate Status', countByStatus(issueCandidates)),
     renderCounts('Article Candidate Status', countByStatus(articleCandidates)),
     renderCounts('Calculator Backlog Status', countByStatus(calculatorBacklog)),
+    renderCounts('Published Article Status', countPublishedArticleStatus(publishedArticles)),
     renderReviewItems(articleCandidates),
     renderArticleManualReviewChecklist(articleCandidates),
     renderBacklogItems(calculatorBacklog),

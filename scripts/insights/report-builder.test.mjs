@@ -147,6 +147,8 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /base-rate-loan-interest-impact: 7 FAQ clicks/);
   assert.match(report, /auto_publish_disabled/);
   assert.match(report, /Published Article Audit/);
+  assert.match(report, /Published Article Status/);
+  assert.match(report, /published: 4/);
   assert.match(report, /\/articles\/base-rate-loan-interest-impact\//);
   assert.match(report, /sources 1 \/ CTAs 1 \/ updated 2026-08-31/);
   assert.match(report, /Performance Classification/);
