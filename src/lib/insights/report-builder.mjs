@@ -86,6 +86,22 @@ function percent(value) {
   return `${(value * 100).toFixed(2)}%`;
 }
 
+function renderSearchQueries(articles) {
+  const rows = articles.flatMap((article) =>
+    Object.entries(article.searchQueries || {}).map(([query, metrics]) => ({ slug: article.slug, query, ...metrics })),
+  );
+  if (rows.length === 0) return ['### Search Queries', '', 'No query metrics.'];
+
+  return [
+    '### Search Queries',
+    '',
+    ...rows
+      .sort((left, right) => right.clicks - left.clicks)
+      .slice(0, 10)
+      .map((row) => `- ${row.slug}: ${row.query} (${row.clicks} clicks / ${row.impressions} impressions)`),
+  ];
+}
+
 function renderContentMetrics(rows) {
   const summary = summarizeImportedMetrics(rows);
   if (summary.topArticles.length === 0) return '## Content Metrics\n\nNo imported metrics.\n';
@@ -108,6 +124,8 @@ function renderContentMetrics(rows) {
       (article) =>
         `- ${article.slug}: ${article.clicks} clicks / ${article.impressions} impressions / CTR ${percent(article.ctr)}`,
     ),
+    '',
+    ...renderSearchQueries(summary.articles),
     '',
     '### Calculator Clicks',
     '',

@@ -108,19 +108,19 @@ Search Console의 `URL 검사`에서 아래 URL을 먼저 검사하고 색인 �
 
 ## 5. Search Console CSV 성과 수집
 
-Search Console의 `실적` 메뉴에서 페이지 기준 CSV를 내려받은 뒤 로컬에서 아래 명령으로 가져옵니다.
+Search Console의 `실적` 메뉴에서 페이지 기준 CSV를 내려받은 뒤 로컬에서 아래 명령으로 가져옵니다. 가능하면 페이지와 검색어가 함께 포함된 CSV를 사용하면 기사별 검색어도 리포트에 남습니다.
 
 ```powershell
 npm run insights:metrics:import -- path\to\search-console-pages.csv
 npm run insights:report
 ```
 
-CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이후 `data/insights/reports/latest.md`의 `Content Metrics`, `Performance Classification`, `Published Article Audit` 섹션을 확인합니다.
+CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이후 `data/insights/reports/latest.md`의 `Content Metrics`, `Search Queries`, `Performance Classification`, `Published Article Audit` 섹션을 확인합니다.
 
 지원 CSV 헤더:
 
-- 영어: `Top pages`, `Clicks`, `Impressions`, `CTR`, `Position`
-- 한국어: `상위 페이지`, `클릭수`, `노출수`, `CTR`, `게재순위`
+- 영어: `Top pages`, `Top queries`, `Clicks`, `Impressions`, `CTR`, `Position`
+- 한국어: `상위 페이지`, `상위 검색어`, `클릭수`, `노출수`, `CTR`, `게재순위`
 
 성과 분류 기준:
 
@@ -156,11 +156,13 @@ CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩
 리포트에서 봐야 할 기준:
 
 - Search Console 클릭은 검색 유입입니다.
+- Search Console 검색어는 사용자가 실제로 묻는 표현입니다.
 - GA4 계산기 클릭은 기사에서 실제 도구로 이동한 전환입니다.
 - GA4 기사 이동 클릭은 내부 링크가 다음 글 탐색을 만드는지 보여줍니다.
 - GA4 계산기에서 기사로 이동한 클릭은 계산기 방문자가 설명 콘텐츠도 필요로 하는지 보여줍니다.
 - GA4 FAQ 클릭은 사용자가 본문 이후 어떤 질문을 더 확인하는지 보여줍니다.
 - 노출은 있는데 검색 클릭이 낮으면 제목과 설명을 고칩니다.
+- 특정 검색어 노출이 많으면 해당 표현을 제목, 요약, FAQ, 계산 예제에 자연스럽게 반영합니다.
 - 검색 클릭은 있는데 계산기 클릭이 낮으면 본문 예제와 CTA 위치를 고칩니다.
 - FAQ 클릭은 많은데 계산기 클릭이 낮으면 FAQ 답변 안에 계산 예시 또는 관련 계산기 CTA를 자연스럽게 보강합니다.
 - 둘 다 없으면 같은 주제 글을 늘리지 말고 통합, 보류, noindex 후보로 봅니다.

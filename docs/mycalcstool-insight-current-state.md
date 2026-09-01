@@ -357,7 +357,7 @@ CTA click tracking:
 
 Current limitation:
 
-- Search Console import exists for article search performance.
+- Search Console import exists for article search performance and article-level query review.
 - GA4 article interaction metrics are tracked in the browser and can be imported from CSV into the local insight report, including article-to-calculator, article-to-article, article-index, calculator-to-article, and FAQ interactions.
 
 ## 17. AdSense
@@ -458,7 +458,7 @@ Implemented:
 - Seoul-date publishing count
 - Manual approval requirement for article writes
 - Calculator backlog candidate builder
-- Search Console CSV import
+- Search Console CSV import with article query preservation
 - GA4 article interaction CSV import
 - Local insight report builder
 - Publish plan status reporting from `data/insights/publish-plan.jsonl`
@@ -503,8 +503,8 @@ Issue discovery should feed calculator-linked articles, not a generic news feed.
 
 Commands run during this review:
 
-- `npm run insights:test`: 106 tests passed.
-- `npm run verify:release`: release gate passed after publish-plan report hardening.
+- `npm run insights:test`: 109 tests passed.
+- `npm run verify:release`: release gate passed after Search Console query report hardening.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 The repository is now past pure Phase 0 documentation. The current safe implementation remains static/local-script based; Cloudflare runtime automation is still deferred.

@@ -61,6 +61,7 @@ test('builds a queue report with status counts and review items', () => {
     ],
     contentMetrics: [
       { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, ctr: 0.05, averagePosition: 8.2 },
+      { slug: 'base-rate-loan-interest-impact', query: '기준금리 대출이자', clicks: 8, impressions: 120, averagePosition: 7.4 },
       { slug: 'base-rate-loan-interest-impact', calculatorId: 'loan', calculatorClicks: 9 },
       { slug: 'base-rate-loan-interest-impact', targetArticleSlug: 'year-end-tax-refund-paycheck-impact', relatedArticleClicks: 3 },
       { slug: 'base-rate-loan-interest-impact', articleIndexClicks: 5 },
@@ -154,18 +155,20 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /candidate: 1/);
   assert.match(report, /중도상환수수료 제도 변경과 상환 비용 영향 계산기/);
   assert.match(report, /Content Metrics/);
-  assert.match(report, /Total clicks: 15/);
+  assert.match(report, /Total clicks: 23/);
   assert.match(report, /Total calculator clicks: 9/);
   assert.match(report, /Total related article clicks: 3/);
   assert.match(report, /Total article index clicks: 5/);
   assert.match(report, /Total calculator to article clicks: 2/);
   assert.match(report, /Total FAQ clicks: 7/);
-  assert.match(report, /base-rate-loan-interest-impact: 12 clicks/);
+  assert.match(report, /base-rate-loan-interest-impact: 20 clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 9 calculator clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 3 related article clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 5 article index clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 2 calculator to article clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 7 FAQ clicks/);
+  assert.match(report, /Search Queries/);
+  assert.match(report, /base-rate-loan-interest-impact: 기준금리 대출이자 \(8 clicks \/ 120 impressions\)/);
   assert.match(report, /auto_publish_disabled/);
   assert.match(report, /Published Article Audit/);
   assert.match(report, /Published Article Status/);

@@ -39,6 +39,17 @@ https://mycalcstool.com/articles/base-rate-loan-interest-impact/,7,140,5%,9.4
   assert.equal(rows[0].averagePosition, 9.4);
 });
 
+test('preserves Search Console query columns for article SEO review', () => {
+  const rows = parseSearchConsoleCsv(`Top pages,Top queries,Clicks,Impressions,CTR,Position
+https://mycalcstool.com/articles/base-rate-loan-interest-impact/,기준금리 대출이자,8,120,6.67%,7.4
+`);
+
+  assert.equal(rows[0].page, 'https://mycalcstool.com/articles/base-rate-loan-interest-impact/');
+  assert.equal(rows[0].query, '기준금리 대출이자');
+  assert.equal(rows[0].clicks, 8);
+  assert.equal(rows[0].impressions, 120);
+});
+
 test('summarizes only article page metrics by slug', () => {
   const summary = summarizeArticleMetrics(parseSearchConsoleCsv(csv));
 
@@ -205,6 +216,19 @@ test('summarizes imported article interaction metrics', () => {
   assert.deepEqual(summary.topArticles[0].faqClickTargets, { '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?': 7 });
 });
 
+test('summarizes Search Console queries by article slug', () => {
+  const summary = summarizeImportedMetrics([
+    { slug: 'base-rate-loan-interest-impact', query: '기준금리 대출이자', clicks: 8, impressions: 120, averagePosition: 7.4 },
+    { slug: 'base-rate-loan-interest-impact', query: '금리 인하 대출', clicks: 2, impressions: 80, averagePosition: 11.2 },
+    { slug: 'base-rate-loan-interest-impact', query: '기준금리 대출이자', clicks: 1, impressions: 20, averagePosition: 8 },
+  ]);
+
+  assert.deepEqual(summary.topArticles[0].searchQueries, {
+    '기준금리 대출이자': { clicks: 9, impressions: 140 },
+    '금리 인하 대출': { clicks: 2, impressions: 80 },
+  });
+});
+
 test('builds distinct import record ids for FAQ questions on the same article', () => {
   const importedAt = '2026-09-02T00:00:00.000Z';
 
@@ -218,6 +242,25 @@ test('builds distinct import record ids for FAQ questions on the same article', 
       slug: 'base-rate-loan-interest-impact',
       faqQuestion: '0.25%p 금리 차이는 1억원 대출에서 얼마인가요?',
       faqClicks: 4,
+    }),
+  );
+});
+
+test('builds distinct import record ids for Search Console queries on the same article', () => {
+  const importedAt = '2026-09-02T00:00:00.000Z';
+
+  assert.notEqual(
+    buildContentMetricRecordId(importedAt, {
+      slug: 'base-rate-loan-interest-impact',
+      query: '기준금리 대출이자',
+      clicks: 8,
+      impressions: 120,
+    }),
+    buildContentMetricRecordId(importedAt, {
+      slug: 'base-rate-loan-interest-impact',
+      query: '금리 인하 대출',
+      clicks: 2,
+      impressions: 80,
     }),
   );
 });

@@ -35,11 +35,12 @@ function metricKind(row) {
   if (row.articleIndexClicks) return 'article-index';
   if (row.calculatorToArticleClicks) return 'calculator-article';
   if (row.faqClicks) return 'article-faq';
+  if (row.query) return 'search-query';
   return 'search';
 }
 
 function metricTarget(row) {
-  return row.calculatorId || row.targetArticleSlug || row.sourceCalculatorId || row.faqQuestion || 'page';
+  return row.calculatorId || row.targetArticleSlug || row.sourceCalculatorId || row.faqQuestion || row.query || 'page';
 }
 
 function cleanIdPart(value) {
@@ -65,6 +66,7 @@ export function parseSearchConsoleCsv(csv) {
 
     return {
       page: row['top pages'] || row['상위 페이지'] || row.page || row.pages,
+      query: row['top queries'] || row['상위 검색어'] || row.query || row.queries,
       clicks: parseNumber(row.clicks || row['클릭수']),
       impressions: parseNumber(row.impressions || row['노출수']),
       ctr: parseCtr(row.ctr),
@@ -170,6 +172,7 @@ export function summarizeImportedMetrics(rows, options = {}) {
       relatedArticleClickTargets: {},
       calculatorToArticleSources: {},
       faqClickTargets: {},
+      searchQueries: {},
     };
     current.clicks += row.clicks || 0;
     current.impressions += row.impressions || 0;
@@ -190,6 +193,12 @@ export function summarizeImportedMetrics(rows, options = {}) {
     }
     if (row.faqQuestion && row.faqClicks) {
       current.faqClickTargets[row.faqQuestion] = (current.faqClickTargets[row.faqQuestion] || 0) + row.faqClicks;
+    }
+    if (row.query) {
+      const query = current.searchQueries[row.query] || { clicks: 0, impressions: 0 };
+      query.clicks += row.clicks || 0;
+      query.impressions += row.impressions || 0;
+      current.searchQueries[row.query] = query;
     }
     bySlug.set(row.slug, current);
   }
