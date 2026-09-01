@@ -468,6 +468,7 @@ Implemented:
 - Topic-cluster decisions from imported Search Console and GA4 metrics
 - Rendered article quality tests
 - FAQ interaction tracking and FAQ metric reporting
+- Low-CTR Search Console query opportunity reporting
 
 Not implemented:
 
@@ -503,7 +504,7 @@ Issue discovery should feed calculator-linked articles, not a generic news feed.
 
 Commands run during this review:
 
-- `npm run insights:test`: 109 tests passed.
+- `npm run insights:test`: 110 tests passed.
 - `npm run verify:release`: release gate passed after Search Console query report hardening.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 

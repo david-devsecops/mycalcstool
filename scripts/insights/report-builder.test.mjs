@@ -198,3 +198,23 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /generate-articles: failed \/ failed 1 \/ official_source_missing/);
   assert.doesNotMatch(report, /특정 종목 매수 추천: open every official source URL/);
 });
+
+test('reports low-CTR Search Console queries as SEO opportunities', () => {
+  const report = buildInsightReport({
+    contentMetrics: [
+      {
+        slug: 'base-rate-loan-interest-impact',
+        query: '금리 인하 대출 이자 얼마나 줄어',
+        clicks: 0,
+        impressions: 180,
+        averagePosition: 12,
+      },
+    ],
+  });
+
+  assert.match(report, /Search Query Opportunities/);
+  assert.match(
+    report,
+    /base-rate-loan-interest-impact: review "금리 인하 대출 이자 얼마나 줄어" in title, summary, FAQ, or examples \(0 clicks \/ 180 impressions \/ CTR 0.00%\)/,
+  );
+});

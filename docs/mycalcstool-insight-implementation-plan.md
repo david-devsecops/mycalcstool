@@ -703,6 +703,7 @@ Completed Phase 1 tests:
 - Search Console CSV import preserves article-level query data for SEO and AEO review.
 - GA4 metric import record ids remain distinct across calculators, related articles, article-index clicks, calculator-to-article clicks, and FAQ questions.
 - Search Console query import record ids remain distinct across different queries on the same article.
+- Low-CTR Search Console queries are reported as concrete title, summary, FAQ, or example review opportunities.
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
 - Manual review checklist covers source-backed article candidates before publishing.
@@ -1040,7 +1041,7 @@ This document is the reviewable implementation plan requested before additional 
 
 Verification snapshot from the 2026-09-02 repository review:
 
-- `npm run insights:test`: 109 tests passed.
+- `npm run insights:test`: 110 tests passed.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 Recommended user approval gate before coding:

@@ -102,6 +102,33 @@ function renderSearchQueries(articles) {
   ];
 }
 
+function renderSearchQueryOpportunities(articles) {
+  const rows = articles
+    .flatMap((article) =>
+      Object.entries(article.searchQueries || {}).map(([query, metrics]) => ({
+        slug: article.slug,
+        query,
+        clicks: metrics.clicks || 0,
+        impressions: metrics.impressions || 0,
+      })),
+    )
+    .filter((row) => row.impressions >= 100 && row.clicks / row.impressions < 0.01);
+
+  if (rows.length === 0) return ['### Search Query Opportunities', '', 'No low-CTR query opportunities.'];
+
+  return [
+    '### Search Query Opportunities',
+    '',
+    ...rows
+      .sort((left, right) => right.impressions - left.impressions)
+      .slice(0, 10)
+      .map(
+        (row) =>
+          `- ${row.slug}: review "${row.query}" in title, summary, FAQ, or examples (${row.clicks} clicks / ${row.impressions} impressions / CTR ${percent(row.clicks / row.impressions)})`,
+      ),
+  ];
+}
+
 function renderContentMetrics(rows) {
   const summary = summarizeImportedMetrics(rows);
   if (summary.topArticles.length === 0) return '## Content Metrics\n\nNo imported metrics.\n';
@@ -126,6 +153,8 @@ function renderContentMetrics(rows) {
     ),
     '',
     ...renderSearchQueries(summary.articles),
+    '',
+    ...renderSearchQueryOpportunities(summary.articles),
     '',
     '### Calculator Clicks',
     '',
