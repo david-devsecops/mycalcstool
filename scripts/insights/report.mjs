@@ -15,6 +15,7 @@ await runAutomationJob({
     const issues = await readJsonlRecords(resolve(dataDir, 'issues.jsonl'));
     const issueCandidates = await readJsonlRecords(resolve(dataDir, 'issue-candidates.jsonl'));
     const articleCandidates = await readJsonlRecords(resolve(dataDir, 'article-candidates.jsonl'));
+    const publishPlanRecords = await readJsonlRecords(resolve(dataDir, 'publish-plan.jsonl'));
     const calculatorBacklog = await readJsonlRecords(resolve(dataDir, 'calculator-backlog.jsonl'));
     const contentMetrics = await readJsonlRecords(resolve(dataDir, 'content-metrics.jsonl'));
     const automationRuns = await readJsonlRecords(resolve(dataDir, 'automation-runs.jsonl'));
@@ -22,6 +23,7 @@ await runAutomationJob({
       issues,
       issueCandidates,
       articleCandidates,
+      publishPlanRecords,
       calculatorBacklog,
       contentMetrics,
       automationRuns,

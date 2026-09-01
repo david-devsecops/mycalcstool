@@ -461,7 +461,7 @@ Implemented:
 - Search Console CSV import
 - GA4 article interaction CSV import
 - Local insight report builder
-- Publish plan status reporting
+- Publish plan status reporting from `data/insights/publish-plan.jsonl`
 - Report-level recommended actions from article performance class
 - Manual review checklist for article candidates before publishing
 - Built sitemap verification for published article inclusion and noindex exclusion
@@ -503,7 +503,7 @@ Issue discovery should feed calculator-linked articles, not a generic news feed.
 
 Commands run during this review:
 
-- `npm run insights:test`: 105 tests passed.
+- `npm run insights:test`: 106 tests passed.
 - `npm run verify:release`: release gate passed after publish-plan report hardening.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 

@@ -455,7 +455,7 @@ Completed Phase 1 hardening:
 - Rendered article test that validates every published article has source links and CTA links.
 - Search Console CSV import workflow and owner-facing documentation.
 - Local report file writer under `data/insights/reports/latest.md`.
-- Publish plan status reporting wired from the pipeline into the local report.
+- Publish plan status reporting wired from the pipeline and stored `publish-plan.jsonl` into the local report.
 
 Defer:
 
@@ -871,6 +871,7 @@ Files:
 - Modify: `src/lib/insights/report-builder.mjs`
 - Modify: `scripts/insights/report.mjs`
 - Test: `scripts/insights/report-builder.test.mjs`
+- Test: `scripts/insights/report-script.test.mjs`
 
 Acceptance criteria:
 
@@ -1037,7 +1038,7 @@ This document is the reviewable implementation plan requested before additional 
 
 Verification snapshot from the 2026-09-02 repository review:
 
-- `npm run insights:test`: 105 tests passed.
+- `npm run insights:test`: 106 tests passed.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 Recommended user approval gate before coding:
