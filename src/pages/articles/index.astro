@@ -73,13 +73,25 @@ const jsonLd = [
           <span class="rounded-full bg-primary-50 px-2.5 py-1 text-xs font-bold text-primary-700">{article.category}</span>
           <time class="text-xs text-gray-400" datetime={article.updatedDate}>업데이트 {article.updatedDate}</time>
         </div>
-        <a href={`/articles/${article.slug}/`} class="block no-underline">
+        <a
+          href={`/articles/${article.slug}/`}
+          data-ga-event="article_index_article_click"
+          data-ga-category="articles"
+          data-ga-label={article.slug}
+          class="block no-underline"
+        >
           <h2 class="text-xl font-black text-gray-900 transition-colors hover:text-primary-700">{article.title}</h2>
           <p class="mt-2 text-sm leading-relaxed text-gray-600">{article.description}</p>
         </a>
         <div class="mt-4 flex flex-wrap gap-2">
           {article.calculatorCtas.map((cta) => (
-            <a href={cta.href} class="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-bold text-primary-700 hover:border-primary-200 hover:bg-primary-50">
+            <a
+              href={cta.href}
+              data-ga-event="article_index_calculator_click"
+              data-ga-category="articles"
+              data-ga-label={cta.calculatorId}
+              class="rounded-lg border border-gray-200 px-3 py-1.5 text-xs font-bold text-primary-700 hover:border-primary-200 hover:bg-primary-50"
+            >
               {cta.label}
             </a>
           ))}

@@ -34,6 +34,12 @@ test('rendered article index exposes collection list structured data', () => {
   assert.match(articlesIndexHtml, /"@type":"BreadcrumbList"/);
 });
 
+test('rendered article index tracks article and calculator CTA clicks', () => {
+  assert.match(articlesIndexHtml, /href="\/articles\/base-rate-loan-interest-impact\/"[^>]*data-ga-event="article_index_article_click"[^>]*data-ga-label="base-rate-loan-interest-impact"/);
+  assert.match(articlesIndexHtml, /href="\/loan\/"[^>]*data-ga-event="article_index_calculator_click"[^>]*data-ga-label="loan"/);
+  assert.doesNotMatch(articlesIndexHtml, /data-ga-label="\d{4,}"/);
+});
+
 test('calculator pages link back to relevant issue articles', () => {
   assert.match(loanHtml, /\/articles\/base-rate-loan-interest-impact\//);
   assert.match(taxRefundHtml, /\/articles\/year-end-tax-refund-paycheck-impact\//);
