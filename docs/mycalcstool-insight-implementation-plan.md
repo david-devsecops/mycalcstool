@@ -8,7 +8,7 @@
 
 **Tech Stack:** Astro 5 static output, Tailwind CSS, npm scripts, JSON/JSONL data files, Node built-in test runner, GA4 click events, Cloudflare Pages static hosting.
 
-**Spec:** User-provided "MyCalcsTool finance, life, AI issue-based content automation and monetization expansion project", received 2026-08-31.
+**Spec:** User-provided "MyCalcsTool finance, life, AI issue-based content automation and monetization expansion project", reviewed against the repository on 2026-09-02.
 
 **Current-state companion doc:** `docs/mycalcstool-insight-current-state.md`
 
@@ -27,6 +27,27 @@
 - Keep the implementation small: static pages and local scripts before Workers/D1/Cron.
 
 ---
+
+## Phase 0 Decision
+
+This repository can support the requested `Issue -> Information -> Calculator -> Revenue` direction, but it should not be implemented as a generic automated news site.
+
+Keep:
+
+- Existing calculator routes and calculation behavior.
+- Existing Korean/English route split.
+- Static Cloudflare Pages deployment.
+- `/articles/` as the issue-content namespace.
+- Local scripts as the first automation layer.
+
+Do not change yet:
+
+- Do not add Cloudflare Workers, D1, KV, Queues, or Cron for Phase 1 coding.
+- Do not enable automatic production publishing.
+- Do not add affiliate/CPA automation.
+- Do not add LLM drafting until source gates, duplicate gates, and rendered article checks remain stable under real operation.
+
+The next production-code phase should be limited to small hardening tasks that improve trust, measurement, and review safety. Runtime automation belongs in Phase 2 after Search Console impressions, organic clicks, and article-to-calculator click data show traction.
 
 ## Current State
 
@@ -643,6 +664,9 @@ Existing test surface:
 - `npm run insights:test`
 - `node scripts/check-growth-homepage.mjs`
 - `npm run build`
+- `npm run insights:verify:calculator-routes`
+- `npm run insights:verify:sitemap`
+- `npm run verify:release`
 
 Existing insight tests cover:
 
@@ -681,7 +705,9 @@ Completed Phase 1 tests:
 
 Required next tests:
 
+- Article FAQ engagement tracking can be measured without storing private calculator inputs.
 - Cloudflare runtime automation can be added without changing public calculator routes or storing calculator inputs.
+- Cloudflare runtime automation can be disabled with `AUTOMATION_ENABLED=false` and `ENABLE_AUTO_PUBLISH=false`.
 
 ## Deployment
 
@@ -1002,3 +1028,18 @@ Add those only after Search Console shows that the article layer creates real im
 - Leave auto-publish disabled by default.
 - Use Search Console CSV import before Search Console API.
 - Defer Cloudflare Workers/D1/Cron until measurable traction exists.
+
+## Phase 0 Review Output
+
+This document is the reviewable implementation plan requested before additional production-code changes. The companion current-state file is `docs/mycalcstool-insight-current-state.md`.
+
+Verification snapshot from the 2026-09-02 repository review:
+
+- `npm run insights:test`: 102 tests passed.
+- `node scripts/check-growth-homepage.mjs`: 13 checks passed.
+
+Recommended user approval gate before coding:
+
+- Approve keeping Phase 1 on the static/local-script architecture.
+- Approve deferring Cloudflare Workers/D1/Cron until real traffic data supports the extra runtime.
+- Approve using `/articles/` for issue content and preserving all existing calculator URLs.

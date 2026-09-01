@@ -1,6 +1,6 @@
 # MyCalcsTool Insight Automation Current State
 
-Analysis date: 2026-08-31
+Analysis date: 2026-09-02
 
 Repository: `D:\02_Dev\03_Web\website\mycalcstool`
 
@@ -8,9 +8,11 @@ Production URL: `https://mycalcstool.com/`
 
 ## Executive Summary
 
-MyCalcsTool is currently an Astro static site deployed in a Cloudflare Pages-compatible shape. The existing calculator routes are client-side/static and should remain the core asset. The repository already contains a local Insight Automation MVP layer: article routes, calculator metadata, source validation, article candidate generation, quality gates, publishing limits, Search Console CSV import, and local report generation.
+MyCalcsTool is currently an Astro static site deployed in a Cloudflare Pages-compatible shape. The existing calculator routes are client-side/static and should remain the core asset. The repository already contains a local Insight Automation MVP layer: article routes, calculator metadata, source validation, article candidate generation, quality gates, publishing limits, Search Console CSV import, GA4 article-interaction CSV import, and local report generation.
 
 The current architecture is suitable for the first validation phase because it protects existing SEO, avoids server-side storage of sensitive calculator inputs, and keeps operating cost close to zero. The next major Cloudflare pieces, such as Workers, D1, KV, Queues, and Cron, are not present in the repository and should remain deferred until Search Console and calculator-click data show enough demand.
+
+Phase 0 review result: do not rebuild the site around a new news system. The safer path is to preserve the static calculator site, keep `/articles/` as the issue-to-calculator bridge, and operate the automation pipeline locally until search and click data justify Cloudflare runtime automation.
 
 ## 1. Framework
 
@@ -391,6 +393,9 @@ Additional verification:
 - `node scripts/check-growth-homepage.mjs`
 - `npm run build`
 - `node --test scripts/insights/rendered-articles.test.mjs`
+- `npm run insights:verify:calculator-routes`
+- `npm run insights:verify:sitemap`
+- `npm run verify:release`
 
 Covered areas:
 
@@ -490,3 +495,12 @@ Do not do next:
 The current repository can support the requested direction, but the safe version is incremental:
 
 Issue discovery should feed calculator-linked articles, not a generic news feed. Existing calculators and indexed URLs should stay untouched. The local Insight Automation layer is the right Phase 1 base. Cloudflare runtime automation, LLM drafting, and monetization expansion should be Phase 2 or Phase 3 work after measurable search traffic and article-to-calculator conversion exist.
+
+## 24. Phase 0 Verification Snapshot
+
+Commands run during this review:
+
+- `npm run insights:test`: 102 tests passed.
+- `node scripts/check-growth-homepage.mjs`: 13 checks passed.
+
+No production source file changes are required for this Phase 0 review. Documentation updates only.
