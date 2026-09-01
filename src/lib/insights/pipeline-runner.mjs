@@ -64,6 +64,7 @@ export function runInsightPipeline({
     issues: rawIssues,
     issueCandidates: analyzedIssueCandidates,
     articleCandidates,
+    publishPlanRecords,
     calculatorBacklog,
     contentMetrics,
     publishedArticles,

@@ -33,6 +33,24 @@ test('builds a queue report with status counts and review items', () => {
         calculatorMatches: [{ id: 'chatgpt-api-cost-calculator', score: 91 }],
       },
     ],
+    publishPlanRecords: [
+      {
+        id: 'plan-1',
+        articleCandidateId: 'article-2',
+        slug: 'openai-api-price-change-cost-planning',
+        status: 'scheduled',
+        queue: 'toPublish',
+        reason: 'ready_to_publish',
+      },
+      {
+        id: 'plan-2',
+        articleCandidateId: 'article-1',
+        slug: 'base-rate-loan-interest-impact',
+        status: 'review_required',
+        queue: 'queued',
+        reason: 'auto_publish_disabled',
+      },
+    ],
     calculatorBacklog: [
       {
         id: 'calc-ko-prepayment-fee-policy',
@@ -129,6 +147,9 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /source_verified: 1/);
   assert.match(report, /review_required: 1/);
   assert.match(report, /scheduled: 1/);
+  assert.match(report, /Publish Plan Status/);
+  assert.match(report, /Publish Plan Status[\s\S]*scheduled: 1/);
+  assert.match(report, /Publish Plan Status[\s\S]*review_required: 1/);
   assert.match(report, /Calculator Backlog Status/);
   assert.match(report, /candidate: 1/);
   assert.match(report, /중도상환수수료 제도 변경과 상환 비용 영향 계산기/);

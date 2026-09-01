@@ -461,6 +461,7 @@ Implemented:
 - Search Console CSV import
 - GA4 article interaction CSV import
 - Local insight report builder
+- Publish plan status reporting
 - Report-level recommended actions from article performance class
 - Manual review checklist for article candidates before publishing
 - Built sitemap verification for published article inclusion and noindex exclusion
@@ -502,8 +503,8 @@ Issue discovery should feed calculator-linked articles, not a generic news feed.
 
 Commands run during this review:
 
-- `npm run insights:test`: 104 tests passed.
-- `npm run verify:release`: release gate passed after FAQ engagement/import-id hardening.
+- `npm run insights:test`: 105 tests passed.
+- `npm run verify:release`: release gate passed after publish-plan report hardening.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 The repository is now past pure Phase 0 documentation. The current safe implementation remains static/local-script based; Cloudflare runtime automation is still deferred.

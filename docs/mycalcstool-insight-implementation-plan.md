@@ -430,7 +430,7 @@ Add the missing safety controls before production scheduling:
 2. Add duplicate topic checks against already published article slugs and canonical topics.
 3. Add official-source URL reachability checks.
 4. Add rendered article checks for every published article.
-5. Add report output that separates `source_verified`, `review_required`, `rejected`, `publish_candidate`, and `published`.
+5. Add report output that separates `source_verified`, `review_required`, `rejected`, `publish_candidate`, publish plan status, and `published`.
 6. Add CSV import workflow for Search Console page/query performance.
 
 ### Phase 2: Cloudflare Runtime
@@ -455,6 +455,7 @@ Completed Phase 1 hardening:
 - Rendered article test that validates every published article has source links and CTA links.
 - Search Console CSV import workflow and owner-facing documentation.
 - Local report file writer under `data/insights/reports/latest.md`.
+- Publish plan status reporting wired from the pipeline into the local report.
 
 Defer:
 
@@ -873,7 +874,7 @@ Files:
 
 Acceptance criteria:
 
-- Report includes collected, source verified, review required, rejected, publish candidates, scheduled, published, backlog, and metrics summary.
+- Report includes collected, source verified, review required, rejected, publish candidates, publish plan status, scheduled, published, backlog, and metrics summary.
 - Report can be written to `data/insights/reports/latest.md`.
 - Generated report path remains ignored from Git.
 
@@ -1036,7 +1037,7 @@ This document is the reviewable implementation plan requested before additional 
 
 Verification snapshot from the 2026-09-02 repository review:
 
-- `npm run insights:test`: 104 tests passed.
+- `npm run insights:test`: 105 tests passed.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 Recommended user approval gate before coding:

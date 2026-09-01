@@ -29,6 +29,19 @@ test('runs raw issues through the Phase 1A insight pipeline', () => {
   assert.match(result.report, /Article Candidate Status/);
 });
 
+test('includes publish plan status in the pipeline report', () => {
+  const result = runInsightPipeline({
+    rawIssues: [baseRateIssue],
+    existingSlugs: [],
+    autoPublish: true,
+    now: '2026-08-31T09:00:00.000Z',
+  });
+
+  assert.equal(result.publishPlanRecords[0].status, 'scheduled');
+  assert.match(result.report, /Publish Plan Status/);
+  assert.match(result.report, /Publish Plan Status[\s\S]*scheduled: 1/);
+});
+
 test('keeps issue analysis but skips article candidates when article generation is disabled', () => {
   const result = runInsightPipeline({
     rawIssues: [baseRateIssue],
