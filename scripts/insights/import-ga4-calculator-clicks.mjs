@@ -3,7 +3,7 @@ import { resolve } from 'node:path';
 
 import { runAutomationJob } from '../../src/lib/insights/automation-runner.mjs';
 import { appendJsonlRecord } from '../../src/lib/insights/jsonl-store.mjs';
-import { parseGa4ArticleInteractionCsv } from '../../src/lib/insights/search-console-metrics.mjs';
+import { buildContentMetricRecordId, parseGa4ArticleInteractionCsv } from '../../src/lib/insights/search-console-metrics.mjs';
 
 const csvPath = process.argv[2];
 
@@ -22,7 +22,7 @@ await runAutomationJob({
 
     for (const row of rows) {
       await appendJsonlRecord(outputPath, {
-        id: `${importedAt}-${row.slug}-${row.calculatorId || row.targetArticleSlug || row.sourceCalculatorId || 'index'}`,
+        id: buildContentMetricRecordId(importedAt, row),
         importedAt,
         ...row,
       });

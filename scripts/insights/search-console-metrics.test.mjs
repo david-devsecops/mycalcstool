@@ -2,6 +2,7 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import {
+  buildContentMetricRecordId,
   classifyArticlePerformance,
   parseGa4ArticleInteractionCsv,
   parseGa4CalculatorClickCsv,
@@ -202,4 +203,21 @@ test('summarizes imported article interaction metrics', () => {
   assert.deepEqual(summary.topArticles[0].relatedArticleClickTargets, { 'year-end-tax-refund-paycheck-impact': 3 });
   assert.deepEqual(summary.topArticles[0].calculatorToArticleSources, { loan: 2 });
   assert.deepEqual(summary.topArticles[0].faqClickTargets, { '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?': 7 });
+});
+
+test('builds distinct import record ids for FAQ questions on the same article', () => {
+  const importedAt = '2026-09-02T00:00:00.000Z';
+
+  assert.notEqual(
+    buildContentMetricRecordId(importedAt, {
+      slug: 'base-rate-loan-interest-impact',
+      faqQuestion: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?',
+      faqClicks: 7,
+    }),
+    buildContentMetricRecordId(importedAt, {
+      slug: 'base-rate-loan-interest-impact',
+      faqQuestion: '0.25%p 금리 차이는 1억원 대출에서 얼마인가요?',
+      faqClicks: 4,
+    }),
+  );
 });

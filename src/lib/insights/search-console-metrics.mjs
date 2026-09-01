@@ -29,6 +29,32 @@ function splitCsvLine(line) {
   return cells.map((cell) => cell.trim());
 }
 
+function metricKind(row) {
+  if (row.calculatorClicks) return 'article-calculator';
+  if (row.relatedArticleClicks) return 'article-related';
+  if (row.articleIndexClicks) return 'article-index';
+  if (row.calculatorToArticleClicks) return 'calculator-article';
+  if (row.faqClicks) return 'article-faq';
+  return 'search';
+}
+
+function metricTarget(row) {
+  return row.calculatorId || row.targetArticleSlug || row.sourceCalculatorId || row.faqQuestion || 'page';
+}
+
+function cleanIdPart(value) {
+  return String(value || 'unknown').trim().replace(/\s+/g, '-').replace(/[^\p{L}\p{N}._:-]+/gu, '-');
+}
+
+export function buildContentMetricRecordId(importedAt, row) {
+  return [
+    importedAt,
+    cleanIdPart(row.slug),
+    metricKind(row),
+    cleanIdPart(metricTarget(row)),
+  ].join('-');
+}
+
 export function parseSearchConsoleCsv(csv) {
   const lines = String(csv || '').trim().split(/\r?\n/).filter(Boolean);
   const headers = splitCsvLine(lines.shift() || '').map((header) => header.toLowerCase());
