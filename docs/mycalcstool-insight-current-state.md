@@ -63,7 +63,7 @@ Important npm scripts:
 - `npm run insights:publish:plan`: publication planning
 - `npm run insights:publish:articles`: manual approved article write
 - `npm run insights:metrics:import`: Search Console CSV import
-- `npm run insights:metrics:import:ga4`: GA4 article-to-calculator click CSV import
+- `npm run insights:metrics:import:ga4`: GA4 article interaction CSV import
 - `npm run insights:report`: local insight report generation
 - `npm run insights:verify:sitemap`: built sitemap verification
 
@@ -355,7 +355,7 @@ CTA click tracking:
 Current limitation:
 
 - Search Console import exists for article search performance.
-- GA4 calculator-click metrics are tracked in the browser and can be imported from CSV into the local insight report.
+- GA4 article interaction metrics are tracked in the browser and can be imported from CSV into the local insight report.
 
 ## 17. AdSense
 
@@ -453,7 +453,7 @@ Implemented:
 - Manual approval requirement for article writes
 - Calculator backlog candidate builder
 - Search Console CSV import
-- GA4 article-to-calculator click CSV import
+- GA4 article interaction CSV import
 - Local insight report builder
 - Report-level recommended actions from article performance class
 - Manual review checklist for article candidates before publishing

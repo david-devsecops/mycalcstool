@@ -92,6 +92,9 @@ function renderContentMetrics(rows) {
     `- Total clicks: ${summary.totalClicks}`,
     `- Total impressions: ${summary.totalImpressions}`,
     `- Total calculator clicks: ${summary.totalCalculatorClicks}`,
+    `- Total related article clicks: ${summary.totalRelatedArticleClicks}`,
+    `- Total article index clicks: ${summary.totalArticleIndexClicks}`,
+    `- Total calculator to article clicks: ${summary.totalCalculatorToArticleClicks}`,
     `- CTR: ${percent(summary.ctr)}`,
     '',
     '### Top Articles',
@@ -106,6 +109,17 @@ function renderContentMetrics(rows) {
     ...summary.articles
       .filter((article) => article.calculatorClicks > 0)
       .map((article) => `- ${article.slug}: ${article.calculatorClicks} calculator clicks`),
+    '',
+    '### Article Navigation Clicks',
+    '',
+    ...summary.articles
+      .filter((article) => article.relatedArticleClicks > 0 || article.articleIndexClicks > 0 || article.calculatorToArticleClicks > 0)
+      .flatMap((article) => [
+        article.relatedArticleClicks > 0 ? `- ${article.slug}: ${article.relatedArticleClicks} related article clicks` : null,
+        article.articleIndexClicks > 0 ? `- ${article.slug}: ${article.articleIndexClicks} article index clicks` : null,
+        article.calculatorToArticleClicks > 0 ? `- ${article.slug}: ${article.calculatorToArticleClicks} calculator to article clicks` : null,
+      ])
+      .filter(Boolean),
     '',
   ].join('\n');
 }

@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import {
   classifyArticlePerformance,
+  parseGa4ArticleInteractionCsv,
   parseGa4CalculatorClickCsv,
   parseSearchConsoleCsv,
   summarizeArticleMetrics,
@@ -139,4 +140,56 @@ test('includes calculator clicks in imported metric summaries', () => {
   assert.equal(summary.topArticles[0].slug, 'base-rate-loan-interest-impact');
   assert.equal(summary.topArticles[0].calculatorClicks, 9);
   assert.deepEqual(summary.topArticles[0].calculatorClickTargets, { loan: 9 });
+});
+
+test('parses GA4 article interaction CSV exports without private calculator inputs', () => {
+  const rows = parseGa4ArticleInteractionCsv(`Page path and screen class,Event name,Event label,Event count
+/articles/base-rate-loan-interest-impact/,article_calculator_click,loan,9
+/articles/base-rate-loan-interest-impact/,article_related_article_click,base-rate-loan-interest-impact:year-end-tax-refund-paycheck-impact,3
+/articles/,article_index_article_click,openai-api-price-change-cost-planning,5
+/loan/,calculator_related_article_click,loan:base-rate-loan-interest-impact,2
+/salary/,salary_calculate,52000000,99
+`);
+
+  assert.deepEqual(rows, [
+    {
+      slug: 'base-rate-loan-interest-impact',
+      calculatorId: 'loan',
+      calculatorClicks: 9,
+    },
+    {
+      slug: 'base-rate-loan-interest-impact',
+      targetArticleSlug: 'year-end-tax-refund-paycheck-impact',
+      relatedArticleClicks: 3,
+    },
+    {
+      slug: 'openai-api-price-change-cost-planning',
+      articleIndexClicks: 5,
+    },
+    {
+      slug: 'base-rate-loan-interest-impact',
+      sourceCalculatorId: 'loan',
+      calculatorToArticleClicks: 2,
+    },
+  ]);
+});
+
+test('summarizes imported article interaction metrics', () => {
+  const summary = summarizeImportedMetrics([
+    { slug: 'base-rate-loan-interest-impact', clicks: 12, impressions: 240, averagePosition: 8.2 },
+    { slug: 'base-rate-loan-interest-impact', calculatorId: 'loan', calculatorClicks: 9 },
+    { slug: 'base-rate-loan-interest-impact', targetArticleSlug: 'year-end-tax-refund-paycheck-impact', relatedArticleClicks: 3 },
+    { slug: 'base-rate-loan-interest-impact', articleIndexClicks: 5 },
+    { slug: 'base-rate-loan-interest-impact', sourceCalculatorId: 'loan', calculatorToArticleClicks: 2 },
+  ]);
+
+  assert.equal(summary.totalCalculatorClicks, 9);
+  assert.equal(summary.totalRelatedArticleClicks, 3);
+  assert.equal(summary.totalArticleIndexClicks, 5);
+  assert.equal(summary.totalCalculatorToArticleClicks, 2);
+  assert.equal(summary.topArticles[0].relatedArticleClicks, 3);
+  assert.equal(summary.topArticles[0].articleIndexClicks, 5);
+  assert.equal(summary.topArticles[0].calculatorToArticleClicks, 2);
+  assert.deepEqual(summary.topArticles[0].relatedArticleClickTargets, { 'year-end-tax-refund-paycheck-impact': 3 });
+  assert.deepEqual(summary.topArticles[0].calculatorToArticleSources, { loan: 2 });
 });

@@ -131,16 +131,21 @@ CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩
 - `DEAD`: 발행 후 45일 이상 지났고 노출이 없는 통합/개선 검토 후보
 - `NORMAL`: 위 조건에 해당하지 않는 일반 관찰 대상
 
-## 6. GA4 계산기 클릭 CSV 성과 수집
+## 6. GA4 기사 상호작용 CSV 성과 수집
 
-GA4에서는 `article_calculator_click` 이벤트를 기준으로 기사에서 계산기로 이동한 클릭 수를 확인합니다. CSV에 페이지 경로, 이벤트 이름, 이벤트 라벨, 이벤트 수가 포함되도록 내보낸 뒤 아래 명령으로 가져옵니다.
+GA4에서는 기사 유입과 이동 흐름을 함께 확인합니다. CSV에 페이지 경로, 이벤트 이름, 이벤트 라벨, 이벤트 수가 포함되도록 내보낸 뒤 아래 명령으로 가져옵니다.
 
 ```powershell
-npm run insights:metrics:import:ga4 -- path\to\ga4-calculator-clicks.csv
+npm run insights:metrics:import:ga4 -- path\to\ga4-article-interactions.csv
 npm run insights:report
 ```
 
-CSV에서 `/articles/` 페이지의 `article_calculator_click` 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이벤트 라벨은 계산기 ID로 사용합니다.
+CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이벤트 라벨에는 계산기 ID나 article slug만 사용하며, 사용자가 입력한 금액·연봉·대출잔액 같은 값은 저장하지 않습니다.
+
+- `article_calculator_click`: 기사에서 계산기로 이동
+- `article_related_article_click`: 기사에서 다른 기사로 이동
+- `article_index_article_click`: 기사 목록에서 기사로 이동
+- `calculator_related_article_click`: 계산기에서 관련 기사로 이동
 
 지원 CSV 헤더:
 
@@ -151,6 +156,8 @@ CSV에서 `/articles/` 페이지의 `article_calculator_click` 이벤트만 `dat
 
 - Search Console 클릭은 검색 유입입니다.
 - GA4 계산기 클릭은 기사에서 실제 도구로 이동한 전환입니다.
+- GA4 기사 이동 클릭은 내부 링크가 다음 글 탐색을 만드는지 보여줍니다.
+- GA4 계산기에서 기사로 이동한 클릭은 계산기 방문자가 설명 콘텐츠도 필요로 하는지 보여줍니다.
 - 노출은 있는데 검색 클릭이 낮으면 제목과 설명을 고칩니다.
 - 검색 클릭은 있는데 계산기 클릭이 낮으면 본문 예제와 CTA 위치를 고칩니다.
 - 둘 다 없으면 같은 주제 글을 늘리지 말고 통합, 보류, noindex 후보로 봅니다.

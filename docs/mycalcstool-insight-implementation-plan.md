@@ -398,7 +398,7 @@ This is the correct near-term shape:
 4. Store local queue/report data in `data/insights/*.jsonl`.
 5. Publish only reviewed article data into `src/data/articles.mjs`.
 6. Use source allowlist and quality gate before publishing.
-7. Use GA4 article-to-calculator click events for early conversion data.
+7. Use GA4 article interaction events for early conversion and internal-navigation data.
 8. Use manual Search Console export/import before adding API credentials.
 
 ### Phase 1B: Harden The Local Pipeline
@@ -673,7 +673,7 @@ Completed Phase 1 tests:
 - Optional official source topic keyword matching.
 - Published article render checks for all published articles.
 - Public copy checks for internal operator wording.
-- GA4 calculator-click import maps article CTA click exports to article slugs and calculator ids.
+- GA4 article interaction import maps article CTA, article-to-article, article-index, and calculator-to-article click exports to article slugs.
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
 - Manual review checklist covers source-backed article candidates before publishing.

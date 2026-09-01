@@ -58,6 +58,11 @@ export function summarizeArticleMetrics(rows) {
 }
 
 export function parseGa4CalculatorClickCsv(csv) {
+  return parseGa4ArticleInteractionCsv(csv)
+    .filter((row) => row.calculatorId && row.calculatorClicks);
+}
+
+export function parseGa4ArticleInteractionCsv(csv) {
   const lines = String(csv || '').trim().split(/\r?\n/).filter(Boolean);
   const headers = splitCsvLine(lines.shift() || '').map((header) => header.toLowerCase());
 
@@ -67,16 +72,48 @@ export function parseGa4CalculatorClickCsv(csv) {
       const row = Object.fromEntries(headers.map((header, index) => [header, cells[index] || '']));
       const page = row['page path and screen class'] || row['page path + query string'] || row['page path'] || row['페이지 경로 및 화면 클래스'] || row.page;
       const eventName = row['event name'] || row['이벤트 이름'];
-      const calculatorId = row['event label'] || row['이벤트 라벨'] || row.event_label;
+      const eventLabel = row['event label'] || row['이벤트 라벨'] || row.event_label;
+      const eventCount = parseNumber(row['event count'] || row['이벤트 수'] || row.events || row.count);
       const match = page?.match(/\/articles\/([^/]+)\//);
 
-      if (eventName !== 'article_calculator_click' || !match || !calculatorId) return null;
+      if (eventName === 'article_calculator_click' && match && eventLabel) {
+        return {
+          slug: match[1],
+          calculatorId: eventLabel,
+          calculatorClicks: eventCount,
+        };
+      }
 
-      return {
-        slug: match[1],
-        calculatorId,
-        calculatorClicks: parseNumber(row['event count'] || row['이벤트 수'] || row.events || row.count),
-      };
+      if (eventName === 'article_related_article_click' && match && eventLabel) {
+        const [, targetArticleSlug] = eventLabel.split(':');
+        if (!targetArticleSlug) return null;
+
+        return {
+          slug: match[1],
+          targetArticleSlug,
+          relatedArticleClicks: eventCount,
+        };
+      }
+
+      if (eventName === 'article_index_article_click' && eventLabel) {
+        return {
+          slug: eventLabel,
+          articleIndexClicks: eventCount,
+        };
+      }
+
+      if (eventName === 'calculator_related_article_click' && eventLabel) {
+        const [sourceCalculatorId, slug] = eventLabel.split(':');
+        if (!sourceCalculatorId || !slug) return null;
+
+        return {
+          slug,
+          sourceCalculatorId,
+          calculatorToArticleClicks: eventCount,
+        };
+      }
+
+      return null;
     })
     .filter(Boolean);
 }
@@ -91,14 +128,28 @@ export function summarizeImportedMetrics(rows, options = {}) {
       impressions: 0,
       weightedPosition: 0,
       calculatorClicks: 0,
+      relatedArticleClicks: 0,
+      articleIndexClicks: 0,
+      calculatorToArticleClicks: 0,
       calculatorClickTargets: {},
+      relatedArticleClickTargets: {},
+      calculatorToArticleSources: {},
     };
     current.clicks += row.clicks || 0;
     current.impressions += row.impressions || 0;
     current.weightedPosition += (row.averagePosition || 0) * (row.impressions || 0);
     current.calculatorClicks += row.calculatorClicks || 0;
+    current.relatedArticleClicks += row.relatedArticleClicks || 0;
+    current.articleIndexClicks += row.articleIndexClicks || 0;
+    current.calculatorToArticleClicks += row.calculatorToArticleClicks || 0;
     if (row.calculatorId && row.calculatorClicks) {
       current.calculatorClickTargets[row.calculatorId] = (current.calculatorClickTargets[row.calculatorId] || 0) + row.calculatorClicks;
+    }
+    if (row.targetArticleSlug && row.relatedArticleClicks) {
+      current.relatedArticleClickTargets[row.targetArticleSlug] = (current.relatedArticleClickTargets[row.targetArticleSlug] || 0) + row.relatedArticleClicks;
+    }
+    if (row.sourceCalculatorId && row.calculatorToArticleClicks) {
+      current.calculatorToArticleSources[row.sourceCalculatorId] = (current.calculatorToArticleSources[row.sourceCalculatorId] || 0) + row.calculatorToArticleClicks;
     }
     bySlug.set(row.slug, current);
   }
@@ -114,11 +165,17 @@ export function summarizeImportedMetrics(rows, options = {}) {
   const totalClicks = articleMetrics.reduce((sum, row) => sum + row.clicks, 0);
   const totalImpressions = articleMetrics.reduce((sum, row) => sum + row.impressions, 0);
   const totalCalculatorClicks = articleMetrics.reduce((sum, row) => sum + row.calculatorClicks, 0);
+  const totalRelatedArticleClicks = articleMetrics.reduce((sum, row) => sum + row.relatedArticleClicks, 0);
+  const totalArticleIndexClicks = articleMetrics.reduce((sum, row) => sum + row.articleIndexClicks, 0);
+  const totalCalculatorToArticleClicks = articleMetrics.reduce((sum, row) => sum + row.calculatorToArticleClicks, 0);
 
   return {
     totalClicks,
     totalImpressions,
     totalCalculatorClicks,
+    totalRelatedArticleClicks,
+    totalArticleIndexClicks,
+    totalCalculatorToArticleClicks,
     ctr: totalImpressions > 0 ? totalClicks / totalImpressions : 0,
     articles: sortedArticleMetrics,
     topArticles,
