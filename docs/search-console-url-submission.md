@@ -1,6 +1,6 @@
 # Google Search Console URL 제출 목록
 
-기준일: 2026-08-31
+기준일: 2026-09-02
 
 ## 1. Sitemap 제출
 
@@ -140,12 +140,13 @@ npm run insights:metrics:import:ga4 -- path\to\ga4-article-interactions.csv
 npm run insights:report
 ```
 
-CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이벤트 라벨에는 계산기 ID나 article slug만 사용하며, 사용자가 입력한 금액·연봉·대출잔액 같은 값은 저장하지 않습니다.
+CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이벤트 라벨에는 계산기 ID, article slug, 또는 사이트가 작성한 FAQ 질문 문구만 사용합니다. 사용자가 입력한 금액·연봉·대출잔액·세율·토큰 수 같은 값은 저장하지 않습니다.
 
 - `article_calculator_click`: 기사에서 계산기로 이동
 - `article_related_article_click`: 기사에서 다른 기사로 이동
 - `article_index_article_click`: 기사 목록에서 기사로 이동
 - `calculator_related_article_click`: 계산기에서 관련 기사로 이동
+- `article_faq_toggle`: 기사에서 FAQ 항목 열기
 
 지원 CSV 헤더:
 
@@ -158,6 +159,8 @@ CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩
 - GA4 계산기 클릭은 기사에서 실제 도구로 이동한 전환입니다.
 - GA4 기사 이동 클릭은 내부 링크가 다음 글 탐색을 만드는지 보여줍니다.
 - GA4 계산기에서 기사로 이동한 클릭은 계산기 방문자가 설명 콘텐츠도 필요로 하는지 보여줍니다.
+- GA4 FAQ 클릭은 사용자가 본문 이후 어떤 질문을 더 확인하는지 보여줍니다.
 - 노출은 있는데 검색 클릭이 낮으면 제목과 설명을 고칩니다.
 - 검색 클릭은 있는데 계산기 클릭이 낮으면 본문 예제와 CTA 위치를 고칩니다.
+- FAQ 클릭은 많은데 계산기 클릭이 낮으면 FAQ 답변 안에 계산 예시 또는 관련 계산기 CTA를 자연스럽게 보강합니다.
 - 둘 다 없으면 같은 주제 글을 늘리지 말고 통합, 보류, noindex 후보로 봅니다.

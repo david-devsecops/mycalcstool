@@ -698,6 +698,8 @@ Completed Phase 1 tests:
 - Published article render checks for all published articles.
 - Public copy checks for internal operator wording.
 - GA4 article interaction import maps article CTA, article-to-article, article-index, and calculator-to-article click exports to article slugs.
+- GA4 article interaction import maps FAQ engagement exports to article slugs and distinct FAQ questions.
+- GA4 metric import record ids remain distinct across calculators, related articles, article-index clicks, calculator-to-article clicks, and FAQ questions.
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
 - Manual review checklist covers source-backed article candidates before publishing.
@@ -705,7 +707,6 @@ Completed Phase 1 tests:
 
 Required next tests:
 
-- Article FAQ engagement tracking can be measured without storing private calculator inputs.
 - Cloudflare runtime automation can be added without changing public calculator routes or storing calculator inputs.
 - Cloudflare runtime automation can be disabled with `AUTOMATION_ENABLED=false` and `ENABLE_AUTO_PUBLISH=false`.
 
@@ -1035,7 +1036,7 @@ This document is the reviewable implementation plan requested before additional 
 
 Verification snapshot from the 2026-09-02 repository review:
 
-- `npm run insights:test`: 102 tests passed.
+- `npm run insights:test`: 104 tests passed.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 Recommended user approval gate before coding:

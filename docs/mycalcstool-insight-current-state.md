@@ -353,11 +353,12 @@ CTA click tracking:
 
 - `src/components/ArticleCta.astro`
 - GA event: `article_calculator_click`
+- Article FAQ engagement tracking uses `article_faq_toggle` on visible FAQ buttons.
 
 Current limitation:
 
 - Search Console import exists for article search performance.
-- GA4 article interaction metrics are tracked in the browser and can be imported from CSV into the local insight report.
+- GA4 article interaction metrics are tracked in the browser and can be imported from CSV into the local insight report, including article-to-calculator, article-to-article, article-index, calculator-to-article, and FAQ interactions.
 
 ## 17. AdSense
 
@@ -465,6 +466,7 @@ Implemented:
 - Built sitemap verification for published article inclusion and noindex exclusion
 - Topic-cluster decisions from imported Search Console and GA4 metrics
 - Rendered article quality tests
+- FAQ interaction tracking and FAQ metric reporting
 
 Not implemented:
 
@@ -500,7 +502,8 @@ Issue discovery should feed calculator-linked articles, not a generic news feed.
 
 Commands run during this review:
 
-- `npm run insights:test`: 102 tests passed.
+- `npm run insights:test`: 104 tests passed.
+- `npm run verify:release`: release gate passed after FAQ engagement/import-id hardening.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
-No production source file changes are required for this Phase 0 review. Documentation updates only.
+The repository is now past pure Phase 0 documentation. The current safe implementation remains static/local-script based; Cloudflare runtime automation is still deferred.
