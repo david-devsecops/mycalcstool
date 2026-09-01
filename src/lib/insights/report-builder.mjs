@@ -129,6 +129,30 @@ function renderSearchQueryOpportunities(articles) {
   ];
 }
 
+function renderCalculatorConversionOpportunities(articles) {
+  const rows = articles
+    .map((article) => ({
+      slug: article.slug,
+      clicks: article.clicks || 0,
+      calculatorClicks: article.calculatorClicks || 0,
+    }))
+    .filter((article) => article.clicks >= 10 && article.calculatorClicks / article.clicks < 0.1);
+
+  if (rows.length === 0) return ['### Calculator Conversion Opportunities', '', 'No weak calculator conversion opportunities.'];
+
+  return [
+    '### Calculator Conversion Opportunities',
+    '',
+    ...rows
+      .sort((left, right) => right.clicks - left.clicks)
+      .slice(0, 10)
+      .map(
+        (row) =>
+          `- ${row.slug}: strengthen examples and calculator CTA (${row.clicks} search clicks / ${row.calculatorClicks} calculator clicks / ${percent(row.calculatorClicks / row.clicks)} conversion)`,
+      ),
+  ];
+}
+
 function renderContentMetrics(rows) {
   const summary = summarizeImportedMetrics(rows);
   if (summary.topArticles.length === 0) return '## Content Metrics\n\nNo imported metrics.\n';
@@ -155,6 +179,8 @@ function renderContentMetrics(rows) {
     ...renderSearchQueries(summary.articles),
     '',
     ...renderSearchQueryOpportunities(summary.articles),
+    '',
+    ...renderCalculatorConversionOpportunities(summary.articles),
     '',
     '### Calculator Clicks',
     '',

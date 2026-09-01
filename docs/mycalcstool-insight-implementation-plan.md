@@ -704,6 +704,7 @@ Completed Phase 1 tests:
 - GA4 metric import record ids remain distinct across calculators, related articles, article-index clicks, calculator-to-article clicks, and FAQ questions.
 - Search Console query import record ids remain distinct across different queries on the same article.
 - Low-CTR Search Console queries are reported as concrete title, summary, FAQ, or example review opportunities.
+- Weak article-to-calculator conversion is reported as a concrete example and CTA review opportunity.
 - Report recommendations map each performance class to a concrete next action.
 - Sitemap includes published article URLs and excludes noindex routes.
 - Manual review checklist covers source-backed article candidates before publishing.
@@ -1041,7 +1042,7 @@ This document is the reviewable implementation plan requested before additional 
 
 Verification snapshot from the 2026-09-02 repository review:
 
-- `npm run insights:test`: 110 tests passed.
+- `npm run insights:test`: 111 tests passed.
 - `node scripts/check-growth-homepage.mjs`: 13 checks passed.
 
 Recommended user approval gate before coding:

@@ -115,7 +115,7 @@ npm run insights:metrics:import -- path\to\search-console-pages.csv
 npm run insights:report
 ```
 
-CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이후 `data/insights/reports/latest.md`의 `Content Metrics`, `Search Queries`, `Search Query Opportunities`, `Performance Classification`, `Published Article Audit` 섹션을 확인합니다.
+CSV에서 `/articles/` URL만 `data/insights/content-metrics.jsonl`에 저장됩니다. 이후 `data/insights/reports/latest.md`의 `Content Metrics`, `Search Queries`, `Search Query Opportunities`, `Calculator Conversion Opportunities`, `Performance Classification`, `Published Article Audit` 섹션을 확인합니다.
 
 지원 CSV 헤더:
 
@@ -163,6 +163,7 @@ CSV에서 아래 이벤트만 `data/insights/content-metrics.jsonl`에 저장됩
 - GA4 FAQ 클릭은 사용자가 본문 이후 어떤 질문을 더 확인하는지 보여줍니다.
 - 노출은 있는데 검색 클릭이 낮으면 제목과 설명을 고칩니다.
 - `Search Query Opportunities`는 노출 100 이상이지만 CTR 1% 미만인 검색어를 보여줍니다.
+- `Calculator Conversion Opportunities`는 검색 클릭 10회 이상이지만 계산기 클릭 전환율 10% 미만인 글을 보여줍니다.
 - 특정 검색어 노출이 많으면 해당 표현을 제목, 요약, FAQ, 계산 예제에 자연스럽게 반영합니다.
 - 검색 클릭은 있는데 계산기 클릭이 낮으면 본문 예제와 CTA 위치를 고칩니다.
 - FAQ 클릭은 많은데 계산기 클릭이 낮으면 FAQ 답변 안에 계산 예시 또는 관련 계산기 CTA를 자연스럽게 보강합니다.

@@ -218,3 +218,18 @@ test('reports low-CTR Search Console queries as SEO opportunities', () => {
     /base-rate-loan-interest-impact: review "금리 인하 대출 이자 얼마나 줄어" in title, summary, FAQ, or examples \(0 clicks \/ 180 impressions \/ CTR 0.00%\)/,
   );
 });
+
+test('reports articles with weak calculator conversion as CTA opportunities', () => {
+  const report = buildInsightReport({
+    contentMetrics: [
+      { slug: 'year-end-tax-refund-paycheck-impact', clicks: 30, impressions: 300, averagePosition: 6 },
+      { slug: 'year-end-tax-refund-paycheck-impact', calculatorId: 'tax-refund', calculatorClicks: 1 },
+    ],
+  });
+
+  assert.match(report, /Calculator Conversion Opportunities/);
+  assert.match(
+    report,
+    /year-end-tax-refund-paycheck-impact: strengthen examples and calculator CTA \(30 search clicks \/ 1 calculator clicks \/ 3.33% conversion\)/,
+  );
+});
