@@ -17,6 +17,7 @@ test('release gate lists the required deployment checks in order', () => {
       'insight tests',
       'growth homepage checks',
       'static build',
+      'calculator route coverage',
       'sitemap coverage',
       'public operation-copy scan',
       'analytics privacy scan',

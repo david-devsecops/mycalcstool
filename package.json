@@ -22,6 +22,7 @@
     "insights:report": "node scripts/insights/report.mjs",
     "insights:scan:analytics-privacy": "node scripts/insights/scan-analytics-privacy.mjs",
     "insights:scan:secrets": "node scripts/insights/scan-secrets.mjs",
+    "insights:verify:calculator-routes": "node scripts/insights/verify-calculator-routes.mjs",
     "insights:verify:sitemap": "node scripts/insights/verify-sitemap.mjs",
     "verify:release": "node scripts/insights/verify-release.mjs"
   },

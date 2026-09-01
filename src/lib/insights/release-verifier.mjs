@@ -6,6 +6,7 @@ export const releaseChecks = [
   { name: 'insight tests', command: 'npm', args: ['run', 'insights:test'] },
   { name: 'growth homepage checks', command: 'node', args: ['scripts/check-growth-homepage.mjs'] },
   { name: 'static build', command: 'npm', args: ['run', 'build'] },
+  { name: 'calculator route coverage', command: 'npm', args: ['run', 'insights:verify:calculator-routes'] },
   { name: 'sitemap coverage', command: 'npm', args: ['run', 'insights:verify:sitemap'] },
   {
     name: 'public operation-copy scan',
