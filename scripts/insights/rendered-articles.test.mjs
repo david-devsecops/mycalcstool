@@ -46,6 +46,11 @@ test('calculator pages link back to relevant issue articles', () => {
   assert.match(aiCostHtml, /\/articles\/openai-api-price-change-cost-planning\//);
 });
 
+test('calculator pages track related issue article clicks', () => {
+  assert.match(loanHtml, /href="\/articles\/base-rate-loan-interest-impact\/"[^>]*data-ga-event="calculator_related_article_click"[^>]*data-ga-category="calculator_related_articles"[^>]*data-ga-label="loan:base-rate-loan-interest-impact"/);
+  assert.match(taxRefundHtml, /href="\/articles\/year-end-tax-refund-paycheck-impact\/"[^>]*data-ga-event="calculator_related_article_click"[^>]*data-ga-label="tax-refund:year-end-tax-refund-paycheck-impact"/);
+});
+
 test('global Korean navigation exposes the issue article index', () => {
   assert.match(loanHtml, /<nav class="hidden md:flex[^"]*" aria-label="주요 메뉴"[\s\S]*href="\/articles\/"[\s\S]*이슈 가이드/);
   assert.match(loanHtml, /<nav id="mobile-menu"[\s\S]*정보[\s\S]*href="\/articles\/"[\s\S]*이슈 가이드/);
