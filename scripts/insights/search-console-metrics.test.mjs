@@ -148,6 +148,7 @@ test('parses GA4 article interaction CSV exports without private calculator inpu
 /articles/base-rate-loan-interest-impact/,article_related_article_click,base-rate-loan-interest-impact:year-end-tax-refund-paycheck-impact,3
 /articles/,article_index_article_click,openai-api-price-change-cost-planning,5
 /loan/,calculator_related_article_click,loan:base-rate-loan-interest-impact,2
+/articles/base-rate-loan-interest-impact/,article_faq_toggle,기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?,7
 /salary/,salary_calculate,52000000,99
 `);
 
@@ -171,6 +172,11 @@ test('parses GA4 article interaction CSV exports without private calculator inpu
       sourceCalculatorId: 'loan',
       calculatorToArticleClicks: 2,
     },
+    {
+      slug: 'base-rate-loan-interest-impact',
+      faqQuestion: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?',
+      faqClicks: 7,
+    },
   ]);
 });
 
@@ -181,15 +187,19 @@ test('summarizes imported article interaction metrics', () => {
     { slug: 'base-rate-loan-interest-impact', targetArticleSlug: 'year-end-tax-refund-paycheck-impact', relatedArticleClicks: 3 },
     { slug: 'base-rate-loan-interest-impact', articleIndexClicks: 5 },
     { slug: 'base-rate-loan-interest-impact', sourceCalculatorId: 'loan', calculatorToArticleClicks: 2 },
+    { slug: 'base-rate-loan-interest-impact', faqQuestion: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?', faqClicks: 7 },
   ]);
 
   assert.equal(summary.totalCalculatorClicks, 9);
   assert.equal(summary.totalRelatedArticleClicks, 3);
   assert.equal(summary.totalArticleIndexClicks, 5);
   assert.equal(summary.totalCalculatorToArticleClicks, 2);
+  assert.equal(summary.totalFaqClicks, 7);
   assert.equal(summary.topArticles[0].relatedArticleClicks, 3);
   assert.equal(summary.topArticles[0].articleIndexClicks, 5);
   assert.equal(summary.topArticles[0].calculatorToArticleClicks, 2);
+  assert.equal(summary.topArticles[0].faqClicks, 7);
   assert.deepEqual(summary.topArticles[0].relatedArticleClickTargets, { 'year-end-tax-refund-paycheck-impact': 3 });
   assert.deepEqual(summary.topArticles[0].calculatorToArticleSources, { loan: 2 });
+  assert.deepEqual(summary.topArticles[0].faqClickTargets, { '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?': 7 });
 });

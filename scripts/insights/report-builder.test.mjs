@@ -47,6 +47,7 @@ test('builds a queue report with status counts and review items', () => {
       { slug: 'base-rate-loan-interest-impact', targetArticleSlug: 'year-end-tax-refund-paycheck-impact', relatedArticleClicks: 3 },
       { slug: 'base-rate-loan-interest-impact', articleIndexClicks: 5 },
       { slug: 'base-rate-loan-interest-impact', sourceCalculatorId: 'loan', calculatorToArticleClicks: 2 },
+      { slug: 'base-rate-loan-interest-impact', faqQuestion: '기준금리가 바뀌면 내 대출금리도 바로 바뀌나요?', faqClicks: 7 },
       { slug: 'openai-api-price-change-cost-planning', clicks: 3, impressions: 100, ctr: 0.03, averagePosition: 14.7 },
     ],
     automationRuns: [
@@ -137,11 +138,13 @@ test('builds a queue report with status counts and review items', () => {
   assert.match(report, /Total related article clicks: 3/);
   assert.match(report, /Total article index clicks: 5/);
   assert.match(report, /Total calculator to article clicks: 2/);
+  assert.match(report, /Total FAQ clicks: 7/);
   assert.match(report, /base-rate-loan-interest-impact: 12 clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 9 calculator clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 3 related article clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 5 article index clicks/);
   assert.match(report, /base-rate-loan-interest-impact: 2 calculator to article clicks/);
+  assert.match(report, /base-rate-loan-interest-impact: 7 FAQ clicks/);
   assert.match(report, /auto_publish_disabled/);
   assert.match(report, /Published Article Audit/);
   assert.match(report, /\/articles\/base-rate-loan-interest-impact\//);

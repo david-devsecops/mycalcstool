@@ -113,6 +113,14 @@ export function parseGa4ArticleInteractionCsv(csv) {
         };
       }
 
+      if (eventName === 'article_faq_toggle' && match && eventLabel) {
+        return {
+          slug: match[1],
+          faqQuestion: eventLabel,
+          faqClicks: eventCount,
+        };
+      }
+
       return null;
     })
     .filter(Boolean);
@@ -131,9 +139,11 @@ export function summarizeImportedMetrics(rows, options = {}) {
       relatedArticleClicks: 0,
       articleIndexClicks: 0,
       calculatorToArticleClicks: 0,
+      faqClicks: 0,
       calculatorClickTargets: {},
       relatedArticleClickTargets: {},
       calculatorToArticleSources: {},
+      faqClickTargets: {},
     };
     current.clicks += row.clicks || 0;
     current.impressions += row.impressions || 0;
@@ -142,6 +152,7 @@ export function summarizeImportedMetrics(rows, options = {}) {
     current.relatedArticleClicks += row.relatedArticleClicks || 0;
     current.articleIndexClicks += row.articleIndexClicks || 0;
     current.calculatorToArticleClicks += row.calculatorToArticleClicks || 0;
+    current.faqClicks += row.faqClicks || 0;
     if (row.calculatorId && row.calculatorClicks) {
       current.calculatorClickTargets[row.calculatorId] = (current.calculatorClickTargets[row.calculatorId] || 0) + row.calculatorClicks;
     }
@@ -150,6 +161,9 @@ export function summarizeImportedMetrics(rows, options = {}) {
     }
     if (row.sourceCalculatorId && row.calculatorToArticleClicks) {
       current.calculatorToArticleSources[row.sourceCalculatorId] = (current.calculatorToArticleSources[row.sourceCalculatorId] || 0) + row.calculatorToArticleClicks;
+    }
+    if (row.faqQuestion && row.faqClicks) {
+      current.faqClickTargets[row.faqQuestion] = (current.faqClickTargets[row.faqQuestion] || 0) + row.faqClicks;
     }
     bySlug.set(row.slug, current);
   }
@@ -168,6 +182,7 @@ export function summarizeImportedMetrics(rows, options = {}) {
   const totalRelatedArticleClicks = articleMetrics.reduce((sum, row) => sum + row.relatedArticleClicks, 0);
   const totalArticleIndexClicks = articleMetrics.reduce((sum, row) => sum + row.articleIndexClicks, 0);
   const totalCalculatorToArticleClicks = articleMetrics.reduce((sum, row) => sum + row.calculatorToArticleClicks, 0);
+  const totalFaqClicks = articleMetrics.reduce((sum, row) => sum + row.faqClicks, 0);
 
   return {
     totalClicks,
@@ -176,6 +191,7 @@ export function summarizeImportedMetrics(rows, options = {}) {
     totalRelatedArticleClicks,
     totalArticleIndexClicks,
     totalCalculatorToArticleClicks,
+    totalFaqClicks,
     ctr: totalImpressions > 0 ? totalClicks / totalImpressions : 0,
     articles: sortedArticleMetrics,
     topArticles,

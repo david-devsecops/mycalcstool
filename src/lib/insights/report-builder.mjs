@@ -95,6 +95,7 @@ function renderContentMetrics(rows) {
     `- Total related article clicks: ${summary.totalRelatedArticleClicks}`,
     `- Total article index clicks: ${summary.totalArticleIndexClicks}`,
     `- Total calculator to article clicks: ${summary.totalCalculatorToArticleClicks}`,
+    `- Total FAQ clicks: ${summary.totalFaqClicks}`,
     `- CTR: ${percent(summary.ctr)}`,
     '',
     '### Top Articles',
@@ -120,6 +121,12 @@ function renderContentMetrics(rows) {
         article.calculatorToArticleClicks > 0 ? `- ${article.slug}: ${article.calculatorToArticleClicks} calculator to article clicks` : null,
       ])
       .filter(Boolean),
+    '',
+    '### FAQ Clicks',
+    '',
+    ...summary.articles
+      .filter((article) => article.faqClicks > 0)
+      .map((article) => `- ${article.slug}: ${article.faqClicks} FAQ clicks`),
     '',
   ].join('\n');
 }
