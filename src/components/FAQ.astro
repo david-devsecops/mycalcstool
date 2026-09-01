@@ -42,6 +42,9 @@ const faqSchema = {
           aria-expanded="false"
           aria-controls={`faq-answer-${index}`}
           id={`faq-question-${index}`}
+          data-ga-event="article_faq_toggle"
+          data-ga-category="article_faq"
+          data-ga-label={item.question}
           type="button"
         >
           <span>{item.question}</span>

@@ -44,6 +44,11 @@ test('rendered article pages track related article clicks', () => {
   assert.match(articleHtml, /href="\/articles\/year-end-tax-refund-paycheck-impact\/"[^>]*data-ga-event="article_related_article_click"[^>]*data-ga-category="article_related_articles"[^>]*data-ga-label="base-rate-loan-interest-impact:year-end-tax-refund-paycheck-impact"/);
 });
 
+test('rendered article pages track FAQ engagement without private calculator inputs', () => {
+  assert.match(articleHtml, /id="faq-question-0"[^>]*data-ga-event="article_faq_toggle"[^>]*data-ga-category="article_faq"[^>]*data-ga-label="기준금리가 바뀌면 내 대출금리도 바로 바뀌나요\?"/);
+  assert.doesNotMatch(articleHtml, /data-ga-label="\d{4,}"/);
+});
+
 test('calculator pages link back to relevant issue articles', () => {
   assert.match(loanHtml, /\/articles\/base-rate-loan-interest-impact\//);
   assert.match(taxRefundHtml, /\/articles\/year-end-tax-refund-paycheck-impact\//);
