@@ -149,7 +149,13 @@ const jsonLd = [
         <h2 id="related-articles" class="mb-4 text-xl font-black text-gray-900">관련 글</h2>
         <div class="grid grid-cols-1 gap-3">
           {related.map((item) => (
-            <a href={`/articles/${item.slug}/`} class="rounded-xl border border-gray-200 bg-white p-4 no-underline transition-colors hover:border-primary-200 hover:bg-primary-50">
+            <a
+              href={`/articles/${item.slug}/`}
+              data-ga-event="article_related_article_click"
+              data-ga-category="article_related_articles"
+              data-ga-label={`${article.slug}:${item.slug}`}
+              class="rounded-xl border border-gray-200 bg-white p-4 no-underline transition-colors hover:border-primary-200 hover:bg-primary-50"
+            >
               <p class="font-bold text-gray-900">{item.title}</p>
               <p class="mt-1 text-sm leading-relaxed text-gray-600">{item.description}</p>
             </a>

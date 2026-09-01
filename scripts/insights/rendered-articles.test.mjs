@@ -40,6 +40,10 @@ test('rendered article index tracks article and calculator CTA clicks', () => {
   assert.doesNotMatch(articlesIndexHtml, /data-ga-label="\d{4,}"/);
 });
 
+test('rendered article pages track related article clicks', () => {
+  assert.match(articleHtml, /href="\/articles\/year-end-tax-refund-paycheck-impact\/"[^>]*data-ga-event="article_related_article_click"[^>]*data-ga-category="article_related_articles"[^>]*data-ga-label="base-rate-loan-interest-impact:year-end-tax-refund-paycheck-impact"/);
+});
+
 test('calculator pages link back to relevant issue articles', () => {
   assert.match(loanHtml, /\/articles\/base-rate-loan-interest-impact\//);
   assert.match(taxRefundHtml, /\/articles\/year-end-tax-refund-paycheck-impact\//);

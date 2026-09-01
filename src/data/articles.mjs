@@ -242,9 +242,11 @@ export function getArticleBySlug(slug, language = 'ko') {
 }
 
 export function getRelatedArticles(currentSlug, categoryKey, limit = 3) {
-  return getPublishedArticles()
-    .filter((article) => article.slug !== currentSlug && article.categoryKey === categoryKey)
-    .slice(0, limit);
+  const otherArticles = getPublishedArticles().filter((article) => article.slug !== currentSlug);
+  const sameCategory = otherArticles.filter((article) => article.categoryKey === categoryKey);
+  const fallback = otherArticles.filter((article) => article.categoryKey !== categoryKey);
+
+  return [...sameCategory, ...fallback].slice(0, limit);
 }
 
 export function getArticlesForCalculator(calculatorId, language = 'ko', limit = 3) {
